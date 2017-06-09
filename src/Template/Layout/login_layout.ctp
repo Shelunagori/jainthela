@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Mewar Hi-Tech</title>
+<title>Jain-Thela</title>
 <!-- Include external files and scripts here (See HTML helper for more info.) -->
 <?php
 echo $this->fetch('meta');
@@ -53,7 +53,7 @@ select
 <body class="login" style="background-color:#364150 !important;">
 <!-- BEGIN LOGO -->
 <div class="logo">
-</span><span class="title-main" style="color:#0ECCEE !important;">Mewar Hi-Tech</span>
+</span><span class="title-main" style="color:#0ECCEE !important;">Jain-Thela</span>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
