@@ -74,54 +74,7 @@
 	</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-
-<script type="text/javascript">
-$('tbody').sortable();	
-$(document).ready(function() {
-	var isDragging = false;
-	$("tr").mousedown(function() {
-		isDragging = false;
-	}).mousemove(function() {
-		isDragging = true;
-	}).mouseup(function() {
-		var wasDragging = isDragging;
-		var rowCount = $("#main_tble > tbody > tr").length;
-		var abc=[];
-		var k=0;
-	setTimeout(
-		function(){
-			$(".all").each(function(){ 
-			k++;
-			var finish_good_id=$(this).attr("finish_good_id");
-      
-            abc.push({[finish_good_id]:k});
-		});
-		
-	}, 1000);
-    
-	setTimeout( function(){	 
-		myJSON = JSON.stringify(abc);
-		var url="<?php echo $this->Url->build(['controller'=>'FinishGoods','action'=>'updateSequence']); ?>";
-		url=url+'?Finishgooddata='+myJSON;
-        $.ajax({
-		url: url,
-		type: 'GET',
-		dataType: 'text'
-		}).done(function(response) {});
-		}, 2000);
-
-		isDragging = false;
-		if (!wasDragging) {
-		$("#throbble").toggle();
-		}
-	});
-
-	$("ul").sortable();
-});
-</script>
 <script>
-
 $(document).ready(function() {
 	
   //--------- FORM VALIDATION

@@ -1,6 +1,2 @@
-<?php
-if (!isset($params['escape']) || $params['escape'] !== false) {
-    $message = h($message);
-}
-?>
-<div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div>
+<div class="toast toast-error" onclick="this.classList.add('hidden');"><button class="toast-close-button" role="button">×</button><div class="toast-message"><?= h($message) ?></div></div>
+

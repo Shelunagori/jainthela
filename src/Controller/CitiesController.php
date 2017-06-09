@@ -18,12 +18,19 @@ class CitiesController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index($id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-		$city = $this->Cities->newEntity();
-        if ($this->request->is('post')) {
+		if(!$id){
+			$city = $this->Cities->newEntity();
+		}else{
+			$city = $this->Cities->get($id, [
+				'contain' => []
+			]);
+		}
+		
+        if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->Cities->patchEntity($city, $this->request->getData());
             if ($this->Cities->save($city)) {
                 $this->Flash->success(__('The city has been saved.'));
