@@ -141,11 +141,8 @@
 			<!-- BEGIN HEADER INNER -->
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
-				<div class="page-logo" style="padding-top:12px; width: auto;">
-					<span style="color: #cd2831;font-weight: bold;font-size: 17px;" class="myshortlogo">
-					<img src="<?php echo $this->Html->script ?>img/jainthela.png" width="135px" height="35px"  alt=""  rel='tab' style="color:#578EBE; padding-bottom:5px;"></a>
-		</span>
-					<br> 
+				<div class="page-logo" style="padding-top:2px; width: auto;">
+					<img src="<?php echo $this->Html->script ?>img/jainthela.png" height="40px"  alt="Jain Thela"  rel='tab' style="color:#578EBE; padding-bottom:2px;">
 				</div>
 				<!-- End LOGO -->
 				<div class="hor-menu hidden-sm hidden-xs">
