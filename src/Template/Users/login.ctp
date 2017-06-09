@@ -12,13 +12,7 @@
     <p class="login-box-msg">  
 		<?= $this->Form->create() ?>  
 		<h3 class="form-title">Login to your account</h3>
-        <div class="alert alert-danger display-hide">
-			<button class="close" data-close="alert"></button>
-			<span>
-			Enter your login ID and password. </span>
-		</div>
-		
-       
+        <?= $this->Flash->render() ?>
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 			<label class="control-label visible-ie8 visible-ie9">Username</label>
