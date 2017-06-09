@@ -22,7 +22,7 @@ class UsersTable extends Table
 	public function findAuth(\Cake\ORM\Query $query, array $options)
 	{
 		$query
-			->where(['Users.status' => 1]);
+			->where(['Users.status' => 'Active']);
 
 		return $query;
 	}

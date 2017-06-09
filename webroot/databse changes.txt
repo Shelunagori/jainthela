@@ -1,5 +1,7 @@
 ---Abhilash----
-1. 9-june: replace table "items"
+9-june: replace table "items"
 
 
 
+----Ashish-----
+09-june    Crate field in Users Table "franchise_id" int 11

@@ -10,7 +10,9 @@ use Cake\Validation\Validator;
  * Franchises Model
  *
  * @property \App\Model\Table\CitiesTable|\Cake\ORM\Association\BelongsTo $Cities
+ * @property |\Cake\ORM\Association\HasMany $Companies
  * @property \App\Model\Table\FranchiseItemCategoriesTable|\Cake\ORM\Association\HasMany $FranchiseItemCategories
+ * @property |\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\Franchise get($primaryKey, $options = [])
  * @method \App\Model\Entity\Franchise newEntity($data = null, array $options = [])
@@ -36,12 +38,27 @@ class FranchisesTable extends Table
         $this->setTable('franchises');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-
+		
+		$this->belongsToMany('ItemCategories', [
+            'foreignKey' => 'franchise_id',
+            'targetForeignKey' => 'item_category_id',
+            'joinTable' => 'franchise_item_categories'
+        ]);
+        $this->hasMany('FranchiseItemCategories', [
+            'foreignKey' => 'franchise_id'
+        ]);
+		
         $this->belongsTo('Cities', [
             'foreignKey' => 'city_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('Companies', [
+            'foreignKey' => 'franchise_id'
+        ]);
         $this->hasMany('FranchiseItemCategories', [
+            'foreignKey' => 'franchise_id'
+        ]);
+        $this->hasMany('Users', [
             'foreignKey' => 'franchise_id'
         ]);
     }

@@ -39,13 +39,13 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Franchise Id') ?></th>
-                <th scope="col"><?= __('City Id') ?></th>
+                <th scope="col"><?= __('Item Category Id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($franchise->franchise_item_categories as $franchiseItemCategories): ?>
             <tr>
                 <td><?= h($franchiseItemCategories->franchise_id) ?></td>
-                <td><?= h($franchiseItemCategories->city_id) ?></td>
+                <td><?= h($franchiseItemCategories->item_category_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'FranchiseItemCategories', 'action' => 'view', $franchiseItemCategories->franchise_id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'FranchiseItemCategories', 'action' => 'edit', $franchiseItemCategories->franchise_id]) ?>
