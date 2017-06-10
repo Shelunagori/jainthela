@@ -30,7 +30,7 @@ class ItemCategoriesController extends AppController
 			]);
 		}
 		
-		 if ($this->request->is(['patch', 'post', 'put'])) {
+		if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->ItemCategories->patchEntity($itemCategory, $this->request->getData());
             if ($this->ItemCategories->save($itemCategory)) {
                 $this->Flash->success(__('The Item Category has been saved.'));
