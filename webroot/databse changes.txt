@@ -14,3 +14,7 @@
 10 june: 
   1: create new field inunit table 'is_deleted'
   2: create new table 'vendors'
+  
+  
+----- Ashish----------
+1.  import db jainthela(1)
