@@ -53,9 +53,11 @@ class FranchisesController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $franchise = $this->Franchises->newEntity();
         if ($this->request->is('post')) {
             $franchise = $this->Franchises->patchEntity($franchise, $this->request->getData());
+			
             if ($this->Franchises->save($franchise)) {
                 $this->Flash->success(__('The franchise has been saved.'));
 
@@ -64,9 +66,7 @@ class FranchisesController extends AppController
             $this->Flash->error(__('The franchise could not be saved. Please, try again.'));
         }
         $cities = $this->Franchises->Cities->find('list', ['limit' => 200]);
-        $ItemCategories = $this->Franchises->ItemCategories->find('list', ['limit' => 200]);
-		pr($ItemCategories->toArray());
-		exit;
+        $ItemCategories = $this->Franchises->ItemCategories->find('list');
         $this->set(compact('franchise', 'cities', 'ItemCategories'));
         $this->set('_serialize', ['franchise']);
     }

@@ -30,7 +30,7 @@ class ItemCategoriesController extends AppController
 			]);
 		}
 		
-		 if ($this->request->is(['patch', 'post', 'put'])) {
+		if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->ItemCategories->patchEntity($itemCategory, $this->request->getData());
             if ($this->ItemCategories->save($itemCategory)) {
                 $this->Flash->success(__('The Item Category has been saved.'));
@@ -40,7 +40,7 @@ class ItemCategoriesController extends AppController
             $this->Flash->error(__('The Item Category could not be saved. Please, try again.'));
         }
         
-        $itemCategories = $this->ItemCategories->find();
+        $itemCategories = $this->ItemCategories->find()->where(['is_deleted'=>0]);
 
         $this->set(compact('itemCategory', 'itemCategories'));
 		$this->set('_serialize', ['itemCategory']);
@@ -122,7 +122,8 @@ class ItemCategoriesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $itemCategory = $this->ItemCategories->get($id);
-        if ($this->ItemCategories->delete($itemCategory)) {
+        $itemCategory->is_deleted = 1;
+        if ($this->ItemCategories->save($itemCategory)) {
             $this->Flash->success(__('The item category has been deleted.'));
         } else {
             $this->Flash->error(__('The item category could not be deleted. Please, try again.'));

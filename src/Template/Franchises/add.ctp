@@ -1,18 +1,3 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Franchises'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Franchise Item Categories'), ['controller' => 'FranchiseItemCategories', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Franchise Item Category'), ['controller' => 'FranchiseItemCategories', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="franchises form large-9 medium-8 columns content">
     <?= $this->Form->create($franchise) ?>
     <fieldset>
@@ -20,7 +5,13 @@
         <?php
             echo $this->Form->control('name');
             echo $this->Form->control('city_id', ['options' => $cities]);
-        ?>
+			 echo $this->Form->control('users[0][username]');
+			  echo $this->Form->control('users[0][password]');
+			  echo $this->Form->control('users[0][role]',['type'=>'hidden','value'=>'franchise']);
+			echo $this->Form->input('item_categories._ids', ['label' => false,'options' => $ItemCategories,'multiple' => 'checkbox']); ?>
+			
+            
+        
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>

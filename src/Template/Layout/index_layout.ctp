@@ -141,8 +141,8 @@
 			<!-- BEGIN HEADER INNER -->
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
-				<div class="page-logo" style="padding-top:2px; width: auto;">
-					<img src="<?php echo $this->Html->script ?>img/jainthela.png" height="40px"  alt="Jain Thela"  rel='tab' style="color:#578EBE; padding-bottom:2px;">
+				<div class="page-logo" style="padding-top:2px;padding-bottom:2px; width: auto;">
+					<?php echo $this->Html->image('/img/jainthela.png', ['height' => '40px']); ?>
 				</div>
 				<!-- End LOGO -->
 				<div class="hor-menu hidden-sm hidden-xs">
@@ -199,6 +199,7 @@
 						<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 						<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 						<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+<<<<<<< HEAD
 							<li class="start active">
 								<a href="javascript:;">
 								<i class="icon-home"></i>
@@ -226,6 +227,20 @@
 										Add</a>
 									</li>
 								</ul>
+							<li>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Users/index',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="icon-settings"></i> Item Categories','/Item-Categories/index',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Franchises','/Franchises/index',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Cities','/Cities/index',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
 							</li>
 									
 								</ul>
