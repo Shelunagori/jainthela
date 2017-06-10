@@ -212,7 +212,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Cities','/Cities/index',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> add new item','/Items/add',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
 							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->

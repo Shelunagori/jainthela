@@ -8,7 +8,8 @@
 						<i class="fa fa-plus"></i> Add Item
 					</span>
 				</div>
-				<div class="actions"></div>
+				<div class="actions">
+				</div>
 			</div>
 			<div class="portlet-body">
 			<?= $this->Form->create($item,['id'=>'form_sample_3']) ?>

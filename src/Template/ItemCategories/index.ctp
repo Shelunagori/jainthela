@@ -63,6 +63,13 @@
 								<td><?= h($itemCategory->name) ?></td>
 								<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'index', $itemCategory->id],['escape'=>false,'class'=>'btn btn-xs blue']); ?>
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+									['action' => 'delete', $itemCategory->id], 
+									[
+										'escape' => false,
+										'class' => 'btn btn-xs btn-danger',
+										'confirm' => __('Are you sure to delete this category?')
+									]) ?>
 								</td>
 							</tr>
 							<?php endforeach; ?>
