@@ -5,3 +5,12 @@
 
 ----Ashish-----
 09-june    Crate field in Users Table "franchise_id" int 11
+
+
+
+
+
+---------Nilesh.......
+10 june: 
+  1: create new field inunit table 'is_deleted'
+  2: create new table 'vendors'

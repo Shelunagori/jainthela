@@ -208,22 +208,32 @@
 								</a>
 								<ul class="sub-menu">
 									<li class="active">
-										<a href="index.html">
-										<i class="icon-bar-chart"></i>
-										Default Dashboard</a>
+										<a href="units">
+										<i class="fa fa-circle"></i>
+										Unit</a>
 									</li>
-									<li>
-										<a href="index_2.html">
-										<i class="icon-bulb"></i>
-										New Dashboard #1</a>
-									</li>
-									<li>
-										<a href="index_3.html">
-										<i class="icon-graph"></i>
-										New Dashboard #2</a>
+									<li class="start active">
+								<a href="javascript:;">
+								<i class="fa fa-user"></i>
+								<span class="title">Vendor</span>
+								<span class="selected"></span>
+								<span class="arrow open"></span>
+								</a>
+								<ul class="sub-menu">
+									<li class="active1">
+										<a href="units">
+										<i class="fa fa-plus"></i>
+										Add</a>
 									</li>
 								</ul>
 							</li>
+									
+								</ul>
+							</li>
+							
+							
+							
+							
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>

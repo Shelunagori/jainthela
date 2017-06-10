@@ -53,7 +53,8 @@ select
 <body class="login" style="background-color:#364150 !important;">
 <!-- BEGIN LOGO -->
 <div class="logo">
-</span><span class="title-main" style="color:#0ECCEE !important;">Jain-Thela</span>
+</span><span class="title-main" style="color:#0ECCEE !important;"><img src="<?php echo $this->Html->script ?>img/jainthela.png" width="225px" height="75px"  alt=""  rel='tab' style="color:#578EBE; padding-bottom:5px;"></a>
+</span>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
