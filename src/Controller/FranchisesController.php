@@ -64,7 +64,10 @@ class FranchisesController extends AppController
             $this->Flash->error(__('The franchise could not be saved. Please, try again.'));
         }
         $cities = $this->Franchises->Cities->find('list', ['limit' => 200]);
-        $this->set(compact('franchise', 'cities'));
+        $ItemCategories = $this->Franchises->ItemCategories->find('list', ['limit' => 200]);
+		pr($ItemCategories->toArray());
+		exit;
+        $this->set(compact('franchise', 'cities', 'ItemCategories'));
         $this->set('_serialize', ['franchise']);
     }
 
