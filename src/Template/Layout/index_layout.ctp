@@ -207,25 +207,12 @@
 								<span class="arrow open"></span>
 								</a>
 								<ul class="sub-menu">
-									<li class="active">
-										<a href="units">
-										<i class="fa fa-circle"></i>
-										Unit</a>
-									</li>
-									<li class="start active">
-								<a href="javascript:;">
-								<i class="fa fa-user"></i>
-								<span class="title">Vendor</span>
-								<span class="selected"></span>
-								<span class="arrow open"></span>
-								</a>
-								<ul class="sub-menu">
-									<li class="active1">
-										<a href="units">
-										<i class="fa fa-plus"></i>
-										Add</a>
-									</li>
-								</ul>
+									<li>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Unit','/Units',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Vendor','/Vendors',['escape'=>false]) ?>
+							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Users/index',['escape'=>false]) ?>
 							</li>

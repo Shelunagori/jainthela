@@ -1,133 +1,60 @@
+<style>
+.table>thead>tr>th{
+	font-size:12px !important;
+}
+</style>
 <div class="row">
-	<div class="col-md-12 col-sm-12">
+	<div class="col-md-12">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						
-							<i class="fa fa-plus"></i> Add Vendor
-						
+						<i class="fa fa-plus"></i> Add Vendor
 					</span>
 				</div>
-				
+				<div class="actions">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Vendors/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($vendors,['id'=>'form_sample_3']) ?>
-				<div class="row">
-					<div class="col-md-6">
-						<label class=" control-label">Vendor Name <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('name',['placeholder'=>'Vendor Name','class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-					<div class="col-md-6">
-						<label class=" control-label">Mobile No. <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('mobile',['placeholder'=>'Moble No.','class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<label class=" control-label">Email <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('email',['placeholder'=>'Email','class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-					<div class="col-md-6">
-						<label class=" control-label">Franchise Name <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('franchise_id',['empty'=>'---select---','options' => $franchises,'placeholder'=>'Franchise Name','class'=>'form-control input-sm select select2me select2','label'=>false]); ?>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<label class=" control-label">Address <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false, 'rows'=>'2']); ?>
-					</div>
-					
-				</div>
-				<br/>
-				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
-				<?= $this->Form->end() ?>
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Franchise Name</th>
+							<th>Vendor Name</th>
+							<th>Mobile No.</th>
+							<th>Email</th>
+							<th>Address</th>
+							<th scope="col" class="actions"><?= __('Actions') ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($vendors as $vendor): ?>
+						<tr>
+							<td><?= $this->Number->format($vendor->id) ?></td>
+							<td><?= h($vendor->franchise->name) ?></td>
+							<td><?= h($vendor->name) ?></td>
+							<td><?= h($vendor->mobile) ?></td>
+							<td><?= h($vendor->email) ?></td>
+							<td><?= h($vendor->address) ?></td>
+							<td class="actions">
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $vendor->id]) ?>
+								<?= $this->Form->postLink(__('Freeze'), ['action' => 'delete', $vendor->id], ['confirm' => __('Are you sure you want to delete # {0}?', $vendor->id)]) ?>
+							</td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
-$(document).ready(function() {
-	
-  //--------- FORM VALIDATION
-	var form3 = $('#form_sample_3');
-	var error3 = $('.alert-danger', form3);
-	var success3 = $('.alert-success', form3);
-	form3.validate({
-		
-		errorElement: 'span', //default input error message container
-		errorClass: 'help-block help-block-error', // default input error message class
-		focusInvalid: true, // do not focus the last invalid input
-		rules: {
-				name:{
-					required: true,					 
-				},
-				franchise_id:{
-					required: true,
-				},
-				mobile:{
-					required: true,
-				},
-				email:{
-					required: true,
-				},
-				address:{
-					required: true,
-				}
-			},
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
-
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			success3.show();
-			error3.hide();
-			form[0].submit(); // submit the form
-		}
-
-	});
-	//--	 END OF VALIDATION
-	
-	var $rows = $('#main_tble tbody tr');
+var $rows = $('#main_tble tbody tr');
 	$('#search3').on('keyup',function() {
 		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 		var v = $(this).val();
@@ -141,6 +68,4 @@ $(document).ready(function() {
 			$rows.show();
 		}
 	});
-});
 </script>
-

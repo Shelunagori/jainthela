@@ -22,21 +22,11 @@ class VendorsController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-		if(!$id){
-			$vendors = $this->Vendors->newEntity();
-		}
-		
-if ($this->request->is(['post'])) {
-            $unit = $this->Vendors->patchEntity($vendors, $this->request->getData());
-            if ($this->Vendors->save($vendors)) {
-                $this->Flash->success(__('The vendor has been saved.'));
+		$vendors = $this->Vendors->find()->contain(['Franchises']);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
-        }
-		$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('vendors', 'franchises'));
+	
+		//$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
+        $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);
     }
 
@@ -62,22 +52,24 @@ if ($this->request->is(['post'])) {
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id=null)
     {
-        $vendor = $this->Vendors->newEntity();
-        if ($this->request->is('post')) {
-            $vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
-            if ($this->Vendors->save($vendor)) {
+        $this->viewBuilder()->layout('index_layout');
+		if(!$id){
+			$vendors = $this->Vendors->newEntity();
+		}
+       if ($this->request->is(['post'])) {
+            $unit = $this->Vendors->patchEntity($vendors, $this->request->getData());
+            if ($this->Vendors->save($vendors)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
-		
-        $franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('vendor', 'franchises'));
-        $this->set('_serialize', ['vendor']);
+		$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
+        $this->set(compact('vendors', 'franchises'));
+        $this->set('_serialize', ['vendors']);
     }
 
     /**
@@ -89,13 +81,14 @@ if ($this->request->is(['post'])) {
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $vendor = $this->Vendors->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
             if ($this->Vendors->save($vendor)) {
-                $this->Flash->success(__('The vendor has been saved.'));
+                $this->Flash->success(__('The vendor has been update.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -117,12 +110,13 @@ if ($this->request->is(['post'])) {
     {
         $this->request->allowMethod(['post', 'delete']);
         $vendor = $this->Vendors->get($id);
-        if ($this->Vendors->delete($vendor)) {
-            $this->Flash->success(__('The vendor has been deleted.'));
+		
+		$vendor->freeze=1;
+        if ($this->Vendors->save($vendor)) {
+            $this->Flash->success(__('The item has been freezed.'));
         } else {
-            $this->Flash->error(__('The vendor could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 }
