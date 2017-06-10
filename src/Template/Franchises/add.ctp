@@ -29,6 +29,8 @@
 						echo $this->Form->control('users[0][role]',['type'=>'hidden','value'=>'franchise']);
 						?>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-3">
 						<div class="checkbox-list" data-error-container="#form_2_services_error">
 						<?php echo $this->Form->input('item_categories._ids', ['options' => $ItemCategories,'multiple' => 'checkbox','class'=>'form-control input-sm']); ?>
@@ -74,7 +76,12 @@ $(document).ready(function() {
 				},
 				
 			},
-
+			messages: {
+			 'users[0][username]': {
+              remote: "This User Name is already exist."
+            }
+			
+		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
 				error.insertAfter(element.parent(".input-group"));
@@ -96,6 +103,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit
 			success3.hide();
 			error3.show();
+			event.preventDefault();
 		},
 
 		highlight: function (element) { // hightlight error inputs
