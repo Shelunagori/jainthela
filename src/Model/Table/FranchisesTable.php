@@ -91,6 +91,7 @@ class FranchisesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['username'], 'Users'));
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
 
         return $rules;
