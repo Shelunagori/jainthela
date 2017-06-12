@@ -22,9 +22,7 @@ class VendorsController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-		$vendors = $this->Vendors->find()->contain(['Franchises']);
-
-	
+		$vendors = $this->Vendors->find()->where(['freeze !=' => 1])->contain(['Franchises']);  
 		//$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
         $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);

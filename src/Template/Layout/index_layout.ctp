@@ -214,6 +214,12 @@
 								<?php echo $this->Html->link('<i class="icon-home"></i> Vendor','/Vendors',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Supplier','/Suppliers',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Customers','/Customers',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Users/index',['escape'=>false]) ?>
 							</li>
 							<li>
