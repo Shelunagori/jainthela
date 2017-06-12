@@ -21,7 +21,7 @@ class UnitsController extends AppController
     public function index($id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$city_id=$this->Auth->User('city_id');
 		if(!$id){
 			$unit = $this->Units->newEntity();
 		}else{

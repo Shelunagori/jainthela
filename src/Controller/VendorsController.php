@@ -57,7 +57,7 @@ class VendorsController extends AppController
 			$vendors = $this->Vendors->newEntity();
 		}
        if ($this->request->is(['post'])) {
-            $unit = $this->Vendors->patchEntity($vendors, $this->request->getData());
+            $vendors = $this->Vendors->patchEntity($vendors, $this->request->getData());
             if ($this->Vendors->save($vendors)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 

@@ -20,11 +20,8 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Franchises']
-        ];
-        $customers = $this->paginate($this->Customers);
-
+		$this->viewBuilder()->layout('index_layout');
+		$customers = $this->Customers->find()->where(['freeze !=' => 1])->contain(['Franchises']);  
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
@@ -51,21 +48,24 @@ class CustomersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id=null)
     {
-        $customer = $this->Customers->newEntity();
-        if ($this->request->is('post')) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
-            if ($this->Customers->save($customer)) {
+          $this->viewBuilder()->layout('index_layout');
+		if(!$id){
+			$customers = $this->Customers->newEntity();
+		}
+       if ($this->request->is(['post'])) {
+            $customers = $this->Customers->patchEntity($customers, $this->request->getData());
+            if ($this->Customers->save($customers)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $franchises = $this->Customers->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('customer', 'franchises'));
-        $this->set('_serialize', ['customer']);
+		$franchises = $this->Customers->Franchises->find('list', ['limit' => 200]);
+        $this->set(compact('customers', 'franchises'));
+        $this->set('_serialize', ['customers']);
     }
 
     /**
