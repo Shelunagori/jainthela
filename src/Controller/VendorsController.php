@@ -22,9 +22,7 @@ class VendorsController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-		$vendors = $this->Vendors->find()->contain(['Franchises']);
-
-	
+		$vendors = $this->Vendors->find()->where(['freeze !=' => 1])->contain(['Franchises']);  
 		//$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
         $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);
@@ -59,7 +57,7 @@ class VendorsController extends AppController
 			$vendors = $this->Vendors->newEntity();
 		}
        if ($this->request->is(['post'])) {
-            $unit = $this->Vendors->patchEntity($vendors, $this->request->getData());
+            $vendors = $this->Vendors->patchEntity($vendors, $this->request->getData());
             if ($this->Vendors->save($vendors)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 
