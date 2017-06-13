@@ -65,26 +65,28 @@ class ItemLedgersController extends AppController
 			$i=0;
 			foreach($quantities as $value){ 
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status'])
+				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','city_id'])
 						->values([
 						'supplier_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
-						'status' => 'out'
+						'status' => 'out',
+						'city_id' => $city_id
 						])
 				->execute();
 				
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status'])
+				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
 						->values([
 						'supplier_id' => $supplier_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
-						'status' => 'in'
+						'status' => 'in',
+						'city_id' => $city_id
 						])
 				->execute();
 				$i++;
@@ -108,6 +110,7 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
+		$city_id=$this->Auth->User('city_id');
         if ($this->request->is('post')) { 			
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
@@ -117,26 +120,28 @@ class ItemLedgersController extends AppController
 			$i=0;
 			foreach($quantities as $value){ 
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status'])
+				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
 						->values([
 						'supplier_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
-						'status' => 'in'
+						'status' => 'in',
+						'city_id' => $city_id
 						])
 				->execute();
 				
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status'])
+				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
 						->values([
 						'supplier_id' => $supplier_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
-						'status' => 'out'
+						'status' => 'out',
+						'city_id' => $city_id
 						])
 				->execute();
 				$i++;

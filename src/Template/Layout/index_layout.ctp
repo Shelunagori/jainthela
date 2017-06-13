@@ -220,6 +220,12 @@
 						<li>
 							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
 						</li>
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
+						</li>
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
+						</li>
 							<li class="start active">
 								<a href="javascript:;">
 								<i class="icon-home"></i>
