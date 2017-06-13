@@ -55,6 +55,7 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
+		$city_id=$this->Auth->User('city_id');
         if ($this->request->is('post')) { 			
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
