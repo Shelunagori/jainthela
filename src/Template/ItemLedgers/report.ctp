@@ -7,7 +7,7 @@
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
-								<h3 style="text-align:center;">STOCK RETURN</h3>
+								<h3 style="text-align:center;">STOCK REPORT</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Suppliers <span class="required" 	aria-required="true">*</span></label>
@@ -18,12 +18,6 @@
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
 											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 										</div>
-										 
-									<div class="col-md-2">
-										<label class="control-label">Date <span class="required" aria-require>*</span></label>
-										
-										<?= $this->Form->input('transaction_date', ['type'=>'text','label' =>false,'class'=>'form-control input-sm','data-date-format'=>'dd-mm-yyyy','data-date-end-date'=>'+0d','value'=>date('d-m-Y')]) ?>
-									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
 							</div>
@@ -36,9 +30,7 @@
 							<div class="col-md-4"></div>
 							<div class="col-md-4"> </div>
 						</div>
-						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success']); ?>
-						</div>
+						 
 					</div>
 				</div>
 			<?= $this->Form->end() ?>
@@ -200,7 +192,7 @@ $(document).ready(function() {
 			m_data.append('supplier',supplier);
 			
 		$.ajax({
-			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_stock_return"]); ?>",
+			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_report"]); ?>",
 			data: m_data,
 			processData: false,
 			contentType: false,
