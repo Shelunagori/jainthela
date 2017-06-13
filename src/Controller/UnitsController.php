@@ -30,8 +30,11 @@ class UnitsController extends AppController
 			]);
 		}
 		
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $unit = $this->Units->patchEntity($unit, $this->request->getData());
+			$unit->city_id=$city_id;
+			//pr($unit); exit;
             if ($this->Units->save($unit)) {
                 $this->Flash->success(__('The unit has been saved.'));
 
@@ -41,7 +44,7 @@ class UnitsController extends AppController
         }
 		
         
-        $units = $this->Units->find()->where(['is_deleted !=' => 1]);
+        $units = $this->Units->find()->where(['is_deleted !=' => 1])->where(['Units.city_id'=>$city_id]);
 
         $this->set(compact('unit', 'units'));
 		$this->set('_serialize', ['unit']);

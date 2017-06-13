@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-12 col-sm-12">
+	<div class="col-md-9">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
@@ -13,29 +13,23 @@
 				
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($customers,['id'=>'form_sample_3']) ?>
+				<?= $this->Form->create($customer,['id'=>'form_sample_3']) ?>
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label class=" control-label">Customer Name <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('name',['placeholder'=>'Customer Name','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label class=" control-label">Mobile No. <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('mobile',['placeholder'=>'Moble No.','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<label class=" control-label">Email <span class="required" aria-required="true">*</span></label>
+					<div class="col-md-4">
+						<label class=" control-label">Email </label>
 						<?php echo $this->Form->control('email',['placeholder'=>'Email','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-6">
-						<label class=" control-label">Franchise Name <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('franchise_id',['empty'=>'---select---','options' => $franchises,'placeholder'=>'Franchise Name','class'=>'form-control input-sm select select2me select2','label'=>false]); ?>
-					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-9">
 						<label class=" control-label">Address <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false, 'rows'=>'2']); ?>
 					</div>
@@ -70,9 +64,6 @@ $(document).ready(function() {
 					required: true,
 				},
 				mobile:{
-					required: true,
-				},
-				email:{
 					required: true,
 				},
 				address:{

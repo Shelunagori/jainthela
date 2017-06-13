@@ -22,7 +22,8 @@ class VendorsController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-		$vendors = $this->Vendors->find()->where(['freeze !=' => 1])->contain(['Franchises']);  
+		$city_id=$this->Auth->User('city_id');
+		$vendors = $this->Vendors->find()->where(['Vendors.city_id'=>$city_id]);  
 		//$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
         $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);
@@ -38,7 +39,7 @@ class VendorsController extends AppController
     public function view($id = null)
     {
         $vendor = $this->Vendors->get($id, [
-            'contain' => ['Franchises']
+            'contain' => []
         ]);
 
         $this->set('vendor', $vendor);
@@ -53,21 +54,22 @@ class VendorsController extends AppController
     public function add($id=null)
     {
         $this->viewBuilder()->layout('index_layout');
+		$city_id=$this->Auth->User('city_id');
 		if(!$id){
-			$vendors = $this->Vendors->newEntity();
+			$vendor = $this->Vendors->newEntity();
 		}
        if ($this->request->is(['post'])) {
-            $vendors = $this->Vendors->patchEntity($vendors, $this->request->getData());
-            if ($this->Vendors->save($vendors)) {
+            $vendor = $this->Vendors->patchEntity($vendors, $this->request->getData());
+            $vendor->city_id=$city_id;
+			if ($this->Vendors->save($vendor)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
-		$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('vendors', 'franchises'));
-        $this->set('_serialize', ['vendors']);
+        $this->set(compact('vendor'));
+        $this->set('_serialize', ['vendor']);
     }
 
     /**
@@ -80,20 +82,21 @@ class VendorsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$city_id=$this->Auth->User('city_id');
         $vendor = $this->Vendors->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
-            if ($this->Vendors->save($vendor)) {
+            $vendor->city_id=$city_id;
+			if ($this->Vendors->save($vendor)) {
                 $this->Flash->success(__('The vendor has been update.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
-        $franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('vendor', 'franchises'));
+        $this->set(compact('vendor'));
         $this->set('_serialize', ['vendor']);
     }
 

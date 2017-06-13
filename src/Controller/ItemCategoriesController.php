@@ -21,7 +21,7 @@ class ItemCategoriesController extends AppController
    	public function index($id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$city_id=$this->Auth->User('city_id');
 		if(!$id){
 			$itemCategory = $this->ItemCategories->newEntity();
 		}else{
@@ -32,7 +32,8 @@ class ItemCategoriesController extends AppController
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->ItemCategories->patchEntity($itemCategory, $this->request->getData());
-            if ($this->ItemCategories->save($itemCategory)) {
+            $itemCategory->city_id=$city_id;
+			if ($this->ItemCategories->save($itemCategory)) {
                 $this->Flash->success(__('The Item Category has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -40,7 +41,7 @@ class ItemCategoriesController extends AppController
             $this->Flash->error(__('The Item Category could not be saved. Please, try again.'));
         }
         
-        $itemCategories = $this->ItemCategories->find()->where(['is_deleted'=>0]);
+        $itemCategories = $this->ItemCategories->find()->where(['is_deleted'=>0])->where(['ItemCategories.city_id'=>$city_id]);
 
         $this->set(compact('itemCategory', 'itemCategories'));
 		$this->set('_serialize', ['itemCategory']);

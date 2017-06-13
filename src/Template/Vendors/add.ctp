@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-12 col-sm-12">
+	<div class="col-md-9">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
@@ -13,33 +13,26 @@
 				
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($vendors,['id'=>'form_sample_3']) ?>
+				<?= $this->Form->create($vendor,['id'=>'form_sample_3']) ?>
 				<div class="row">
-					<div class="col-md-6">
-						<label class=" control-label">Vendor Name <span class="required" aria-required="true">*</span></label>
+					<div class="col-md-4">
+						<label class=" control-label">Name <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('name',['placeholder'=>'Vendor Name','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-6">
-						<label class=" control-label">Mobile No. <span class="required" aria-required="true">*</span></label>
+					<div class="col-md-4">
+						<label class=" control-label">Mobile No. </label>
 						<?php echo $this->Form->control('mobile',['placeholder'=>'Moble No.','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<label class=" control-label">Email <span class="required" aria-required="true">*</span></label>
+					<div class="col-md-4">
+						<label class=" control-label">Email </label>
 						<?php echo $this->Form->control('email',['placeholder'=>'Email','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-6">
-						<label class=" control-label">Franchise Name <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('franchise_id',['empty'=>'---select---','options' => $franchises,'placeholder'=>'Franchise Name','class'=>'form-control input-sm select select2me select2','label'=>false]); ?>
-					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
-						<label class=" control-label">Address <span class="required" aria-required="true">*</span></label>
+					<div class="col-md-6">
+						<label class=" control-label">Address </label>
 						<?php echo $this->Form->control('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false, 'rows'=>'2']); ?>
 					</div>
-					
 				</div>
 				<br/>
 				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
@@ -47,7 +40,6 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
@@ -65,18 +57,6 @@ $(document).ready(function() {
 		rules: {
 				name:{
 					required: true,					 
-				},
-				franchise_id:{
-					required: true,
-				},
-				mobile:{
-					required: true,
-				},
-				email:{
-					required: true,
-				},
-				address:{
-					required: true,
 				}
 			},
 
@@ -126,21 +106,6 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
-	var $rows = $('#main_tble tbody tr');
-	$('#search3').on('keyup',function() {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-		var v = $(this).val();
-		if(v){ 
-			$rows.show().filter(function() {
-				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-	
-				return !~text.indexOf(val);
-			}).hide();
-		}else{
-			$rows.show();
-		}
-	});
 });
 </script>
 

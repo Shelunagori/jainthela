@@ -21,7 +21,7 @@ class CustomersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$customers = $this->Customers->find()->where(['freeze !=' => 1])->contain(['Franchises']);  
+		$customers = $this->Customers->find();  
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
@@ -50,11 +50,9 @@ class CustomersController extends AppController
      */
     public function add($id=null)
     {
-          $this->viewBuilder()->layout('index_layout');
-		if(!$id){
-			$customers = $this->Customers->newEntity();
-		}
-       if ($this->request->is(['post'])) {
+        $this->viewBuilder()->layout('index_layout');
+		$customer = $this->Customers->newEntity();
+		if ($this->request->is(['post'])) {
             $customers = $this->Customers->patchEntity($customers, $this->request->getData());
             if ($this->Customers->save($customers)) {
                 $this->Flash->success(__('The customer has been saved.'));
@@ -63,9 +61,8 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-		$franchises = $this->Customers->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('customers', 'franchises'));
-        $this->set('_serialize', ['customers']);
+        $this->set(compact('customer'));
+        $this->set('_serialize', ['customer']);
     }
 
     /**
@@ -77,6 +74,7 @@ class CustomersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->get($id, [
             'contain' => []
         ]);
@@ -89,8 +87,7 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $franchises = $this->Customers->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('customer', 'franchises'));
+        $this->set(compact('customer'));
         $this->set('_serialize', ['customer']);
     }
 

@@ -62,19 +62,11 @@ class CustomersTable extends Table
             ->requirePresence('mobile', 'create')
             ->notEmpty('mobile');
 
-        $validator
-            ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
 
         $validator
             ->requirePresence('address', 'create')
             ->notEmpty('address');
 
-        $validator
-            ->boolean('freeze')
-            ->requirePresence('freeze', 'create')
-            ->notEmpty('freeze');
 
         return $validator;
     }

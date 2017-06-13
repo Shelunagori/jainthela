@@ -33,7 +33,7 @@ class UnitsTable extends Table
         parent::initialize($config);
 
         $this->setTable('units');
-        $this->setDisplayField('id');
+        $this->setDisplayField('shortname');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Items', [

@@ -10,7 +10,7 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-plus"></i> Add Vendor
+						<i class="fa fa-plus"></i> Vendors
 					</span>
 				</div>
 				<div class="actions">
@@ -23,7 +23,6 @@
 					<thead>
 						<tr>
 							<th>Sr</th>
-							<th>Franchise Name</th>
 							<th>Vendor Name</th>
 							<th>Mobile No.</th>
 							<th>Email</th>
@@ -35,14 +34,12 @@
 						<?php foreach ($vendors as $vendor): ?>
 						<tr>
 							<td><?= $this->Number->format($vendor->id) ?></td>
-							<td><?= h($vendor->franchise->name) ?></td>
 							<td><?= h($vendor->name) ?></td>
 							<td><?= h($vendor->mobile) ?></td>
 							<td><?= h($vendor->email) ?></td>
 							<td><?= h($vendor->address) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $vendor->id]) ?>
-								<?= $this->Form->postLink(__('Freeze'), ['action' => 'delete', $vendor->id], ['confirm' => __('Are you sure you want to delete # {0}?', $vendor->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

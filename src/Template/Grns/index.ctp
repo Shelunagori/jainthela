@@ -10,11 +10,11 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-plus"></i> Customers
+						<i class="fa fa-plus"></i> Grns
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Customers/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Grns/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>
@@ -22,24 +22,27 @@
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr>
-							<th>Sr</th>
-							<th>Name</th>
-							<th>Mobile No.</th>
-							<th>Email</th>
-							<th>Address</th>
-							<th scope="col" class="actions"><?= __('Actions') ?></th>
+							<tr>
+								<th>Sr</th>
+								<th>Grn No</th>
+								<th>Transaction Date</th>
+								<th>Created On</th>
+								<th>Vendor</th>
+								<th scope="col" class="actions"><?= __('Actions') ?></th>
+							</tr>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($customers as $customer): ?>
+						<?php foreach ($grns as $grn): ?>
 						<tr>
-							<td><?= $this->Number->format($customer->id) ?></td>
-							<td><?= h($customer->name) ?></td>
-							<td><?= h($customer->mobile) ?></td>
-							<td><?= h($customer->email) ?></td>
-							<td><?= h($customer->address) ?></td>
+							<td><?= $this->Number->format($grn->id) ?></td>
+							<td><?= $this->Number->format($grn->grn_no) ?></td>
+							<td><?= h($grn->transaction_date) ?></td>
+							<td><?= h($grn->created_on) ?></td>
+							<td><?= h($grn->vendor->name) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
+								<?= $this->Html->link(__('Book Invoice'), ['action' => 'view', $grn->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -24,7 +24,7 @@
 						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $units,'class'=>'form-control input-sm']); ?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm']); ?>
+						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm','required']); ?>
 					</div>
 				</div><br/>
 				<div class="row">
@@ -38,7 +38,6 @@
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->control('franchise_id', ['empty'=>'--select--','options' => $franchises,'class'=>'form-control input-sm','required']); ?>
 					</div>
 				</div>
 			<?= $this->Form->button(__('Create new item'),['class'=>'btn btn-success']) ?>

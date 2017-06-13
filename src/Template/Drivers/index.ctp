@@ -10,11 +10,11 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-plus"></i> Customers
+						<i class="fa fa-plus"></i> Drivers
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Customers/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Drivers/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>
@@ -24,22 +24,16 @@
 						<tr>
 							<th>Sr</th>
 							<th>Name</th>
-							<th>Mobile No.</th>
-							<th>Email</th>
-							<th>Address</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($customers as $customer): ?>
+						<?php foreach ($drivers as $driver): ?>
 						<tr>
-							<td><?= $this->Number->format($customer->id) ?></td>
-							<td><?= h($customer->name) ?></td>
-							<td><?= h($customer->mobile) ?></td>
-							<td><?= h($customer->email) ?></td>
-							<td><?= h($customer->address) ?></td>
+							<td><?= $this->Number->format($driver->id) ?></td>
+							<td><?= h($driver->name) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $driver->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

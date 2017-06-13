@@ -10,11 +10,11 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-plus"></i> Add Item
+						<i class="fa fa-plus"></i> Items
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Items/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New','/Items/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>
@@ -28,8 +28,8 @@
 							<th>Unit</th>
 							<th>Item Category</th>
 							<th>Minimum Stock</th>
-							<th>Freeze</th>
 							<th>Minimum Quantity Factor</th>
+							<th>Freeze</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -41,11 +41,9 @@
 							<td><?= h($item->alias_name) ?></td>
 							<td><?= h($item->unit->shortname) ?></td>
 							<td><?= h($item->item_category->name) ?></td>
-							
-							
 							<td><?= $this->Number->format($item->minimum_stock) ?></td>
-							<td><?= h($item->freeze) ?></td>
 							<td><?= $this->Number->format($item->minimum_quantity_factor) ?></td>
+							<td><?= h($item->freeze) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
 								<?= $this->Form->postLink(__('Freeze'), ['action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]) ?>

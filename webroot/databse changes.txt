@@ -12,7 +12,7 @@
 
 ---------Nilesh.......
 10 june: 
-  1: create new field inunit table 'is_deleted'
+  1: create new field in unit table 'is_deleted'
   2: create new table 'vendors'
   
   

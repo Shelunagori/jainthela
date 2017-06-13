@@ -1,47 +1,28 @@
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-plus"></i> Edit Item
+						
+							<i class="fa fa-plus"></i> Add Driver
+						
 					</span>
 				</div>
-				<div class="actions">
-				</div>
+				
 			</div>
 			<div class="portlet-body">
-			<?= $this->Form->create($item,['id'=>'form_sample_3']) ?>
+				<?= $this->Form->create($driver,['id'=>'form_sample_3']) ?>
 				<div class="row">
-					<div class="col-md-3">
-						<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name']); ?>
-					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('alias_name',['class'=>'form-control input-sm','placeholder'=>'Alias Name']); ?>
-					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $units,'class'=>'form-control input-sm']); ?>
-					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm','required']); ?>
-					</div>
-				</div><br/>
-				<div class="row">
-					<div class="col-md-3">
-						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
-					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('minimum_quantity_factor',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Factor']); ?>
-					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
-					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
+						<label class=" control-label">Name <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('name',['placeholder'=>'Driver Name','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
 				</div>
-			<?= $this->Form->button(__('Edit item'),['class'=>'btn btn-success']) ?>
-			<?= $this->Form->end() ?>
+				<br/>
+				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->end() ?>
 			</div>
 		</div>
 	</div>
@@ -62,9 +43,6 @@ $(document).ready(function() {
 		rules: {
 				name:{
 					required: true,					 
-				},
-				unit_id:{
-					required: true,
 				}
 			},
 
@@ -116,4 +94,5 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 });
 </script>
+
 

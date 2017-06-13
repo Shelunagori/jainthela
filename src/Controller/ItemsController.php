@@ -21,7 +21,8 @@ class ItemsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $items = $this->Items->find()->contain(['ItemCategories', 'Units']);
+		$city_id=$this->Auth->User('city_id');
+        $items = $this->Items->find()->where(['Items.city_id'=>$city_id])->contain(['ItemCategories', 'Units']);
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
@@ -52,19 +53,20 @@ class ItemsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$city_id=$this->Auth->User('city_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
-            if ($this->Items->save($item)) {
+            $item->city_id=$city_id;
+			if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200]);
-        $units = $this->Items->Units->find('list', ['limit' => 200]);
-        $franchises = $this->Items->Franchises->find('list', ['limit' => 200]);
+        $itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
+        $units = $this->Items->Units->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
         $this->set(compact('item', 'itemCategories', 'units', 'franchises'));
         $this->set('_serialize', ['item']);
     }
@@ -79,12 +81,14 @@ class ItemsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$city_id=$this->Auth->User('city_id');
         $item = $this->Items->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
-            if ($this->Items->save($item)) {
+            $item->city_id=$city_id;
+			if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -93,7 +97,6 @@ class ItemsController extends AppController
         }
         $itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200]);
         $units = $this->Items->Units->find('list', ['limit' => 200]);
-        $franchises = $this->Items->Franchises->find('list', ['limit' => 200]);
         $this->set(compact('item', 'itemCategories', 'units', 'franchises'));
         $this->set('_serialize', ['item']);
     }
