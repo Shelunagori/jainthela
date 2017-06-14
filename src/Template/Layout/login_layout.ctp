@@ -63,6 +63,7 @@ select
 <!-- END SIDEBAR TOGGLER BUTTON -->
 <!-- BEGIN LOGIN -->
 <div class="content">
+	<?= $this->Flash->render() ?>
 	<?php echo $this->fetch('content'); ?>
 </div>
 <!-- END LOGIN -->

@@ -103,8 +103,6 @@ class ItemLedgersController extends AppController
         $this->set('_serialize', ['itemLedger']);
     }
 
-	
-	
 	public function stockReturn()
     {
 		$this->viewBuilder()->layout('index_layout'); 
@@ -118,8 +116,7 @@ class ItemLedgersController extends AppController
 			$waste=$this->request->data['waste'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			foreach($quantities as $value){ 
-			
+			foreach($quantities as $value){ 		
 			$total_quantity=$value+$waste[$i];
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
@@ -132,8 +129,7 @@ class ItemLedgersController extends AppController
 						'status' => 'in',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
-				->execute();
-				
+				->execute();		
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
@@ -145,8 +141,7 @@ class ItemLedgersController extends AppController
 						'status' => 'out',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
-				->execute();
-				
+				->execute();			
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id','different_driver_id'])
 						->values([
@@ -173,13 +168,11 @@ class ItemLedgersController extends AppController
         $this->set('_serialize', ['itemLedger']);
     }
 
-	
 	public function ajaxStockReturn()
     {
 		  $driver_id=$this->request->data['driver'];
 		  $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-
- 				$query = $this->ItemLedgers->find();
+ 			$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'in']),
@@ -192,7 +185,6 @@ class ItemLedgersController extends AppController
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
-
 		$query->select([
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
@@ -205,14 +197,11 @@ class ItemLedgersController extends AppController
         $this->set(compact('itemLedgers'));
      }
 	
-	
-	
 	public function report()
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
-		$city_id=$this->Auth->User('city_id');
-       
+		$city_id=$this->Auth->User('city_id');      
         $items = $this->ItemLedgers->Items->find('list');
         $suppliers = $this->ItemLedgers->Suppliers->find('list');
         $franchises = $this->ItemLedgers->Franchises->find('list');
@@ -241,7 +230,6 @@ class ItemLedgersController extends AppController
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
-
 		$query->select([
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'

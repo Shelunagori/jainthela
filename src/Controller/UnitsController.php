@@ -21,7 +21,7 @@ class UnitsController extends AppController
     public function index($id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		if(!$id){
 			$unit = $this->Units->newEntity();
 		}else{
@@ -33,7 +33,7 @@ class UnitsController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $unit = $this->Units->patchEntity($unit, $this->request->getData());
-			$unit->city_id=$city_id;
+			$unit->jain_thela_admin_id=$jain_thela_admin_id;
 			//pr($unit); exit;
             if ($this->Units->save($unit)) {
                 $this->Flash->success(__('The unit has been saved.'));
@@ -44,7 +44,7 @@ class UnitsController extends AppController
         }
 		
         
-        $units = $this->Units->find()->where(['is_deleted !=' => 1])->where(['Units.city_id'=>$city_id]);
+        $units = $this->Units->find()->where(['is_deleted !=' => 1])->where(['Units.jain_thela_admin_id'=>$jain_thela_admin_id]);
 
         $this->set(compact('unit', 'units'));
 		$this->set('_serialize', ['unit']);

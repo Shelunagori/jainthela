@@ -21,10 +21,8 @@ class DriversController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
-        $this->paginate = [
-            'contain' => ['Cities']
-        ];
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+        
         $drivers = $this->paginate($this->Drivers);
 
         $this->set(compact('drivers'));
@@ -56,11 +54,11 @@ class DriversController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $driver = $this->Drivers->newEntity();
         if ($this->request->is('post')) {
             $driver = $this->Drivers->patchEntity($driver, $this->request->getData());
-            $driver->city_id=$city_id;
+            $driver->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($this->Drivers->save($driver)) {
                 $this->Flash->success(__('The driver has been saved.'));
 
@@ -68,8 +66,8 @@ class DriversController extends AppController
             }
             $this->Flash->error(__('The driver could not be saved. Please, try again.'));
         }
-        $cities = $this->Drivers->Cities->find('list', ['limit' => 200]);
-        $this->set(compact('driver', 'cities'));
+       // $cities = $this->Drivers->Cities->find('list', ['limit' => 200]);
+        $this->set(compact('driver'));
         $this->set('_serialize', ['driver']);
     }
 

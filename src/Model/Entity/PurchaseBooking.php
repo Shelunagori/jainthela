@@ -4,25 +4,22 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ItemLedger Entity
+ * PurchaseBooking Entity
  *
  * @property int $id
- * @property int $jain_thela_admin_id
- * @property int $driver_id
- * @property int $item_id
- * @property int $warehouse_id
- * @property float $rate
- * @property string $status
- * @property float $quantity
+ * @property int $grn_id
+ * @property int $voucher_no
  * @property \Cake\I18n\FrozenDate $transaction_date
+ * @property int $vendor_id
+ * @property int $jain_thela_admin_id
+ * @property \Cake\I18n\FrozenTime $created_on
  *
- * @property \App\Model\Entity\Item $item
- * @property \App\Model\Entity\Franchise $franchise
- * @property \App\Model\Entity\Supplier $supplier
- * @property \App\Model\Entity\Warehouse $warehouse
- * @property \App\Model\Entity\PurchaseInwardVoucher $purchase_inward_voucher
+ * @property \App\Model\Entity\Grn $grn
+ * @property \App\Model\Entity\Vendor $vendor
+ * @property \App\Model\Entity\JainThelaAdmin $jain_thela_admin
+ * @property \App\Model\Entity\PurchaseBookingDetail[] $purchase_booking_details
  */
-class ItemLedger extends Entity
+class PurchaseBooking extends Entity
 {
 
     /**
