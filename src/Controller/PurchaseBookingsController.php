@@ -84,8 +84,7 @@ class PurchaseBookingsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-			pr($purchaseBooking);
-			exit;
+			
             $this->Flash->error(__('The purchase booking could not be saved. Please, try again.'));
         }
        

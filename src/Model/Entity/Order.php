@@ -8,15 +8,16 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $order_no
- * @property \Cake\I18n\FrozenDate $order_date
+ * @property int $jain_thela_admin_id
  * @property int $customer_id
- * @property float $delivery_charges
  * @property float $amount_from_wallet
  * @property float $amount_from_jain_cash
- * @property float $amount_from_promocode
+ * @property float $amount_from_promo_code
+ * @property float $total_amount
  * @property int $promo_code_id
  * @property string $order_type
- * @property int $franchise_id
+ * @property \Cake\I18n\FrozenTime $order_date
+ * @property string $status
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\PromoCode $promo_code

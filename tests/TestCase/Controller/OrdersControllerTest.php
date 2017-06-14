@@ -18,7 +18,6 @@ class OrdersControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.orders',
         'app.customers',
-        'app.promo_codes',
         'app.franchises',
         'app.item_categories',
         'app.items',
@@ -27,6 +26,7 @@ class OrdersControllerTest extends IntegrationTestCase
         'app.cities',
         'app.companies',
         'app.users',
+        'app.promo_codes',
         'app.order_details'
     ];
 
