@@ -158,7 +158,7 @@ class ItemLedgersController extends AppController
 				$i++;
 			}
 			$this->Flash->success(__('The item ledger has been saved.'));
-			return $this->redirect(['action' => 'index']);           
+			return $this->redirect(['action' => 'stock_return']);         
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
         $items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
