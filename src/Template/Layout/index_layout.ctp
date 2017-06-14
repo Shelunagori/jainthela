@@ -221,6 +221,12 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
 							</li>
 							<li>
