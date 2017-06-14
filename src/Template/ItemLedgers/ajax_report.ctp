@@ -1,14 +1,17 @@
-	<table id="main_table" class="table table-condensed table-bordered">
+<table id="main_table" class="table table-condensed table-bordered">
 		<thead>
 			<tr align="center">
-				<td width="12%">
+				<td width="10%">
 					<label>Sr<label>
 				</td>
 				<td width="40%">
 					<label>Item<label>
 				</td>
-				<td width="30%">
-					<label>Quantity<label>
+				<td width="20%">
+					<label>Stock In<label>
+				</td>
+				<td width="20%">
+					<label>Stock Out<label>
 				</td>
 			</tr>
 		</thead>
@@ -19,16 +22,19 @@
 				$total_out=$itemLedger->total_out;
 				$remaining=$total_in-$total_out;
 				@$i++;
-		?>
+			?>
 			<tr class="main_tr" class="tab">
 				<td align="center" width="1px"><?= $i ?>.</td>
-				<td>
+				<td align="center">
 					<?= $itemLedger->item->name ?>
 				</td>	
-				<td>
-					<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining]); ?>
+				<td align="center">
+					<?= $total_in ?>
+				</td>
+				<td align="center">
+					<?= $total_out ?>
 				</td>
 			</tr>
-		<?php } ?>
+			<?php } ?>
 		</tbody>
-	</table>
+</table>

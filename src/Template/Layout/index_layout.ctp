@@ -226,6 +226,9 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
 							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>
