@@ -4,25 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ItemLedger Entity
+ * Warehouse Entity
  *
  * @property int $id
+ * @property string $name
  * @property int $jain_thela_admin_id
- * @property int $driver_id
- * @property int $item_id
- * @property int $warehouse_id
- * @property float $rate
- * @property string $status
- * @property float $quantity
- * @property \Cake\I18n\FrozenDate $transaction_date
  *
- * @property \App\Model\Entity\Item $item
- * @property \App\Model\Entity\Franchise $franchise
- * @property \App\Model\Entity\Supplier $supplier
- * @property \App\Model\Entity\Warehouse $warehouse
- * @property \App\Model\Entity\PurchaseInwardVoucher $purchase_inward_voucher
+ * @property \App\Model\Entity\JainThelaAdmin $jain_thela_admin
+ * @property \App\Model\Entity\ItemLedger[] $item_ledgers
  */
-class ItemLedger extends Entity
+class Warehouse extends Entity
 {
 
     /**
