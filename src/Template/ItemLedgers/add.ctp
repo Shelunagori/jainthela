@@ -10,8 +10,8 @@
 								<h3 style="text-align:center;">STOCK ISSUE</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label class="col-md-6 control-label">Suppliers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('supplier_id',array('options' => $suppliers,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
+										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
@@ -59,7 +59,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success']); ?>
+							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -74,7 +74,6 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -85,13 +84,10 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				franchise_id:{
-					required: true,				
-				},
 				warehouses_id:{
 					required: false,
 				},
-				purchase_inward_voucher_id:{
+				driver_id:{
 					required: false,
 				},
 				created_on:{
@@ -138,6 +134,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form

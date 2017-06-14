@@ -55,52 +55,51 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
-		$city_id=$this->Auth->User('city_id');
-        if ($this->request->is('post')) { 			
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		 
+        if ($this->request->is('post')) {
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
-			$supplier_id=$this->request->data['supplier_id'];
+			$driver_id=$this->request->data['driver_id'];
 			$warehouse_id=$this->request->data['warehouse_id'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			foreach($quantities as $value){ 
+			foreach($quantities as $value){
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','city_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id'])
 						->values([
-						'supplier_id' => 0,
+						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
 						'status' => 'out',
-						'city_id' => $city_id
+						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
 				->execute();
 
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
-						'supplier_id' => $supplier_id,
+						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
 						'quantity' => $value,
 						'status' => 'in',
-						'city_id' => $city_id
+						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
 				->execute();
 				$i++;
 			}
 			$this->Flash->success(__('The item ledger has been saved.'));
-			return $this->redirect(['action' => 'index']);           
+			return $this->redirect(['action' => 'add']);
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list');
-        $suppliers = $this->ItemLedgers->Suppliers->find('list');
-        $franchises = $this->ItemLedgers->Franchises->find('list');
-		$warehouses = $this->ItemLedgers->Warehouses->find('list');
-        $purchaseInwardVouchers = $this->ItemLedgers->PurchaseInwardVouchers->find('list', ['limit' => 200]);
-        $this->set(compact('itemLedger', 'items', 'suppliers', 'purchaseInwardVouchers', 'warehouses'));
+		$items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
         $this->set('_serialize', ['itemLedger']);
     }
 
@@ -110,38 +109,55 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         if ($this->request->is('post')) { 			
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
-			$supplier_id=$this->request->data['supplier_id'];
+			$driver_id=$this->request->data['driver_id'];
 			$warehouse_id=$this->request->data['warehouse_id'];
+			$waste=$this->request->data['waste'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
 			foreach($quantities as $value){ 
+			
+			$total_quantity=$value+$waste[$i];
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
-						'supplier_id' => 0,
+						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
-						'quantity' => $value,
+						'quantity' => $total_quantity,
 						'status' => 'in',
-						'city_id' => $city_id
+						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
 				->execute();
 				
 				$query = $this->ItemLedgers->query();
-				$query->insert(['supplier_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'city_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
-						'supplier_id' => $supplier_id,
+						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id[$i],
-						'quantity' => $value,
+						'quantity' => $total_quantity,
 						'status' => 'out',
-						'city_id' => $city_id
+						'jain_thela_admin_id' => $jain_thela_admin_id
+						])
+				->execute();
+				
+				$query = $this->ItemLedgers->query();
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id','different_driver_id'])
+						->values([
+						'driver_id' => 0,
+						'warehouse_id' => $warehouse_id,
+						'transaction_date' => $transaction_date,
+						'item_id' => $item_id[$i],
+						'quantity' => $waste[$i],
+						'status' => 'in',
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'different_driver_id' => $driver_id
 						])
 				->execute();
 				$i++;
@@ -150,22 +166,20 @@ class ItemLedgersController extends AppController
 			return $this->redirect(['action' => 'index']);           
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list');
-        $suppliers = $this->ItemLedgers->Suppliers->find('list');
-        $franchises = $this->ItemLedgers->Franchises->find('list');
-		$warehouses = $this->ItemLedgers->Warehouses->find('list');
-        $purchaseInwardVouchers = $this->ItemLedgers->PurchaseInwardVouchers->find('list', ['limit' => 200]);
-        $this->set(compact('itemLedger', 'items', 'suppliers', 'purchaseInwardVouchers', 'warehouses'));
+        $items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
         $this->set('_serialize', ['itemLedger']);
     }
 
 	
-	
 	public function ajaxStockReturn()
     {
-		$supplier_id=$this->request->data['supplier'];
-		$city_id=$this->Auth->User('city_id');
-				$query = $this->ItemLedgers->find();
+		  $driver_id=$this->request->data['driver'];
+		  $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+
+ 				$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'in']),
@@ -183,7 +197,7 @@ class ItemLedgersController extends AppController
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
-		->where(['supplier_id'=>$supplier_id, 'city_id'=>$city_id])
+		->where(['ItemLedgers.driver_id' => $driver_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items']);

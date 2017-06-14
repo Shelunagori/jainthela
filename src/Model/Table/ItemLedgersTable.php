@@ -42,20 +42,13 @@ class ItemLedgersTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Franchises', [
-            'foreignKey' => 'franchise_id',
-            'joinType' => 'INNER'
-        ]);
-		$this->belongsTo('Suppliers', [
-            'foreignKey' => 'supplier_id',
+		
+		$this->belongsTo('Drivers', [
+            'foreignKey' => 'driver_id',
             'joinType' => 'INNER'
         ]);
 		  $this->belongsTo('Warehouses', [
             'foreignKey' => 'warehouse_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('PurchaseInwardVouchers', [
-            'foreignKey' => 'purchase_inward_voucher_id',
             'joinType' => 'INNER'
         ]);
     }
