@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ItemLedgersTable;
+use App\Model\Table\WarehousesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\ItemLedgersTable Test Case
+ * App\Model\Table\WarehousesTable Test Case
  */
-class ItemLedgersTableTest extends TestCase
+class WarehousesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ItemLedgersTable
+     * @var \App\Model\Table\WarehousesTable
      */
-    public $ItemLedgers;
+    public $Warehouses;
 
     /**
      * Fixtures
@@ -24,18 +24,18 @@ class ItemLedgersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.warehouses',
+        'app.jain_thela_admins',
         'app.item_ledgers',
+        'app.drivers',
+        'app.cities',
         'app.items',
         'app.item_categories',
         'app.units',
         'app.franchises',
         'app.franchise_item_categories',
-        'app.cities',
         'app.companies',
-        'app.users',
-        'app.suppliers',
-        'app.warehouses',
-        'app.purchase_inward_vouchers'
+        'app.users'
     ];
 
     /**
@@ -46,8 +46,8 @@ class ItemLedgersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('ItemLedgers') ? [] : ['className' => ItemLedgersTable::class];
-        $this->ItemLedgers = TableRegistry::get('ItemLedgers', $config);
+        $config = TableRegistry::exists('Warehouses') ? [] : ['className' => WarehousesTable::class];
+        $this->Warehouses = TableRegistry::get('Warehouses', $config);
     }
 
     /**
@@ -57,7 +57,7 @@ class ItemLedgersTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->ItemLedgers);
+        unset($this->Warehouses);
 
         parent::tearDown();
     }

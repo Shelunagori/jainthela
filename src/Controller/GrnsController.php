@@ -21,11 +21,9 @@ class GrnsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
-        $this->paginate = [
-            'contain' => ['Vendors', 'Cities']
-        ];
-        $grns = $this->paginate($this->Grns);
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+        
+        $grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Vendors']);
 
         $this->set(compact('grns'));
         $this->set('_serialize', ['grns']);
@@ -58,30 +56,31 @@ class GrnsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $grn = $this->Grns->newEntity();
         if ($this->request->is('post')) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
-			$last_grn_no = $this->Grns->find()->select(['grn_no'])->order(['grn_no'=>'DESC'])->where(['city_id'=>$city_id])->first();
+			$last_grn_no = $this->Grns->find()->select(['grn_no'])->order(['grn_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
 			if($last_grn_no){
 				$grn->grn_no = $last_grn_no->grn_no+1;
 			}else{
 				$grn->grn_no=1;
 			}
-			$grn->city_id=$city_id;
+			$grn->jain_thela_admin_id=$jain_thela_admin_id;
 			//pr($grn); exit;
             if ($this->Grns->save($grn)) {
 				foreach($grn->grn_details as $grn_detail){
 					$query = $this->Grns->ItemLedgers->query();
-					$query->insert(['item_id', 'city_id', 'rate', 'status', 'quantity', 'transaction_date', 'grn_id', 'rate_updated'])
+					$query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'warehouse_id', 'rate', 'status', 'quantity', 'transaction_date'])
 						->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => 0,
 							'item_id' => $grn_detail->item_id,
-							'city_id' => $city_id,
+							'warehouse_id' => $grn->warehouse_id,
 							'rate' => 0,
 							'status' => 'In',
 							'quantity' => $grn_detail->quantity,
 							'transaction_date' => $grn->transaction_date,
-							'grn_id' => $grn->id,
 							'rate_updated' => 'No'
 						]);
 					$query->execute();
@@ -92,9 +91,10 @@ class GrnsController extends AppController
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }
-        $vendors = $this->Grns->Vendors->find('list', ['limit' => 200]);
+        $vendors = $this->Grns->Vendors->find('list');
+        $warehouses = $this->Grns->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
         $items = $this->Grns->GrnDetails->Items->find('list');
-        $this->set(compact('grn', 'vendors', 'cities', 'items'));
+        $this->set(compact('grn', 'vendors', 'items', 'warehouses'));
         $this->set('_serialize', ['grn']);
     }
 

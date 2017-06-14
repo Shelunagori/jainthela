@@ -9,9 +9,10 @@ use Cake\Validation\Validator;
 /**
  * ItemLedgers Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $JainThelaAdmins
+ * @property |\Cake\ORM\Association\BelongsTo $Drivers
  * @property \App\Model\Table\ItemsTable|\Cake\ORM\Association\BelongsTo $Items
- * @property \App\Model\Table\FranchisesTable|\Cake\ORM\Association\BelongsTo $Franchises
- * @property \App\Model\Table\PurchaseInwardVouchersTable|\Cake\ORM\Association\BelongsTo $PurchaseInwardVouchers
+ * @property \App\Model\Table\WarehousesTable|\Cake\ORM\Association\BelongsTo $Warehouses
  *
  * @method \App\Model\Entity\ItemLedger get($primaryKey, $options = [])
  * @method \App\Model\Entity\ItemLedger newEntity($data = null, array $options = [])
@@ -38,24 +39,20 @@ class ItemLedgersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('JainThelaAdmins', [
+            'foreignKey' => 'jain_thela_admin_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Drivers', [
+            'foreignKey' => 'driver_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Franchises', [
-            'foreignKey' => 'franchise_id',
-            'joinType' => 'INNER'
-        ]);
-		$this->belongsTo('Suppliers', [
-            'foreignKey' => 'supplier_id',
-            'joinType' => 'INNER'
-        ]);
-		  $this->belongsTo('Warehouses', [
+        $this->belongsTo('Warehouses', [
             'foreignKey' => 'warehouse_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('PurchaseInwardVouchers', [
-            'foreignKey' => 'purchase_inward_voucher_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -71,27 +68,26 @@ class ItemLedgersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-/* 
+
         $validator
             ->decimal('rate')
             ->requirePresence('rate', 'create')
             ->notEmpty('rate');
-			
-		$validator
-            ->decimal('quantity')
-            ->requirePresence('quantity', 'create')
-            ->notEmpty('quantity');
-/* 
+
         $validator
             ->requirePresence('status', 'create')
             ->notEmpty('status');
 
-        
+        $validator
+            ->decimal('quantity')
+            ->requirePresence('quantity', 'create')
+            ->notEmpty('quantity');
+
         $validator
             ->date('transaction_date')
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
- */
+
         return $validator;
     }
 
@@ -104,9 +100,10 @@ class ItemLedgersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['jain_thela_admin_id'], 'JainThelaAdmins'));
+        $rules->add($rules->existsIn(['driver_id'], 'Drivers'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
-        $rules->add($rules->existsIn(['franchise_id'], 'Franchises'));
-        $rules->add($rules->existsIn(['purchase_inward_voucher_id'], 'PurchaseInwardVouchers'));
+        $rules->add($rules->existsIn(['warehouse_id'], 'Warehouses'));
 
         return $rules;
     }

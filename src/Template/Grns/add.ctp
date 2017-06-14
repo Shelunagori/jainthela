@@ -24,6 +24,10 @@
 						<label class=" control-label">vendor <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('vendor_id',['options' => $vendors,'class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
+					<div class="col-md-4">
+						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
 				</div><br/>
 				<div class="row">
 					<div class="col-md-1"></div>
