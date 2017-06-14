@@ -1,4 +1,4 @@
-<table id="main_table" class="table table-condensed table-bordered">
+	<table id="main_table" class="table table-condensed table-bordered">
 		<thead>
 			<tr align="center">
 				<td width="10%">
@@ -16,8 +16,7 @@
 			</tr>
 		</thead>
 		<tbody id='main_tbody' class="tab">
-		<?php 
-			foreach($itemLedgers as $itemLedger){
+		<?php foreach($itemLedgers as $itemLedger){
 				$total_in=$itemLedger->total_in;
 				$total_out=$itemLedger->total_out;
 				$remaining=$total_in-$total_out;
@@ -37,4 +36,4 @@
 			</tr>
 			<?php } ?>
 		</tbody>
-</table>
+	</table>
