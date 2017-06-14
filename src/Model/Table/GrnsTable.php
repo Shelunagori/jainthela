@@ -48,6 +48,10 @@ class GrnsTable extends Table
             'foreignKey' => 'city_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('JainThelaAdmins', [
+            'foreignKey' => 'jain_thela_admin_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('GrnDetails', [
             'foreignKey' => 'grn_id'
         ]);

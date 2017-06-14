@@ -51,8 +51,12 @@ class PurchaseBookingsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($grn_id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$grn = $this->PurchaseBookings->Grns->get($grn_id, [
+            'contain' => ['GrnDetails', 'Vendors', 'JainThelaAdmins']
+        ]);
         $purchaseBooking = $this->PurchaseBookings->newEntity();
         if ($this->request->is('post')) {
             $purchaseBooking = $this->PurchaseBookings->patchEntity($purchaseBooking, $this->request->getData());
@@ -63,10 +67,12 @@ class PurchaseBookingsController extends AppController
             }
             $this->Flash->error(__('The purchase booking could not be saved. Please, try again.'));
         }
-        $grns = $this->PurchaseBookings->Grns->find('list', ['limit' => 200]);
-        $vendors = $this->PurchaseBookings->Vendors->find('list', ['limit' => 200]);
-        $jainThelaAdmins = $this->PurchaseBookings->JainThelaAdmins->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseBooking', 'grns', 'vendors', 'jainThelaAdmins'));
+       // $grns = $this->PurchaseBookings->Grns->find()->where(['id'=>$grn_id])->;
+		
+		//pr($grns);
+		//exit;
+       
+        $this->set(compact('purchaseBooking', 'grn'));
         $this->set('_serialize', ['purchaseBooking']);
     }
 
