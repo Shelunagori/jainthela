@@ -54,6 +54,7 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
@@ -65,7 +66,7 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
+        $itemCategories = $this->Items->ItemCategories->find('list')->where(['is_deleted'=>0,'jain_thela_admin_id'=>$jain_thela_admin_id]);
         $units = $this->Items->Units->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
         $this->set(compact('item', 'itemCategories', 'units'));
         $this->set('_serialize', ['item']);
