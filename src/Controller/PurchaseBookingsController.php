@@ -55,21 +55,33 @@ class PurchaseBookingsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$grn = $this->PurchaseBookings->Grns->get($grn_id, [
-            'contain' => ['GrnDetails', 'Vendors', 'JainThelaAdmins']
+            'contain' => ['GrnDetails'=>['Items'], 'Vendors', 'JainThelaAdmins']
         ]);
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $purchaseBooking = $this->PurchaseBookings->newEntity();
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) { 
             $purchaseBooking = $this->PurchaseBookings->patchEntity($purchaseBooking, $this->request->getData());
+			
+			$last_voucher_no = $this->PurchaseBookings->find()->select(['voucher_no'])->order(['voucher_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
+			if($last_voucher_no){
+				$purchaseBooking->voucher_no = $last_voucher_no->voucher_no+1;
+			}else{
+				$purchaseBooking->voucher_no=1;
+			}
+			$purchaseBooking->jain_thela_admin_id=$jain_thela_admin_id;
+			$purchaseBooking->vendor_id=$grn->vendor_id;
+			$purchaseBooking->grn_id=$grn->id;
             if ($this->PurchaseBookings->save($purchaseBooking)) {
                 $this->Flash->success(__('The purchase booking has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+			pr($purchaseBooking);
+			exit;
             $this->Flash->error(__('The purchase booking could not be saved. Please, try again.'));
         }
-       // $grns = $this->PurchaseBookings->Grns->find()->where(['id'=>$grn_id])->;
-		
-		//pr($grns);
+       
+		//pr($grn);
 		//exit;
        
         $this->set(compact('purchaseBooking', 'grn'));
