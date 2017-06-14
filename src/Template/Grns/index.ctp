@@ -42,7 +42,7 @@
 							<td><?= h($grn->vendor->name) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
-								<?= $this->Html->link(__('Book Invoice'), ['action' => 'view', $grn->id]) ?>
+								<?= $this->Html->link(__('Book Invoice'), ['controller'=>'PurchaseBookings', 'action' => 'add', $grn->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -10,13 +10,12 @@
 								<h3 style="text-align:center;">STOCK RETURN</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label class="col-md-6 control-label">Suppliers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('supplier_id',array('options' => $suppliers,'class'=>'form-control input-sm select2me chng
-										','empty' => 'Select','label'=>false)) ?>
+										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
+										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'chng form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm ','label'=>false)) ?>
 										</div>
 										 
 									<div class="col-md-2">
@@ -24,6 +23,11 @@
 										
 										<?= $this->Form->input('transaction_date', ['type'=>'text','label' =>false,'class'=>'form-control input-sm','data-date-format'=>'dd-mm-yyyy','data-date-end-date'=>'+0d','value'=>date('d-m-Y')]) ?>
 									</div>
+									<div class="col-md-2" style="padding-top:17px;">
+										<label class="control-label">&nbsp;</label>
+										<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-search']) . __(' Go'),['class'=>'btn btn-success go','type'=>'button']); ?>
+									</div>
+									
 								 </div>
 								 <div class="col-md-12"><br></div>
 							</div>
@@ -31,14 +35,7 @@
 						<div id="data">
 						
 						</div>
-						<div class="row" style="padding-top:5px;">
-							<div class="col-md-4"></div>
-							<div class="col-md-4"></div>
-							<div class="col-md-4"> </div>
-						</div>
-						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success']); ?>
-						</div>
+						
 					</div>
 				</div>
 			<?= $this->Form->end() ?>
@@ -63,13 +60,10 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				franchise_id:{
+				driver_id:{
 					required: true,				
 				},
 				warehouses_id:{
-					required: false,
-				},
-				purchase_inward_voucher_id:{
 					required: false,
 				},
 				created_on:{
@@ -116,6 +110,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -192,12 +188,12 @@ $(document).ready(function() {
     }
     });
 	
-	$('.chng').die().live('change',function() 
+	$('.go').die().live('click',function() 
 	{ 
-		var supplier =$(this).val();
+		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
+		var driver = $("#driver-id").val();
  		var m_data = new FormData();
-		
-			m_data.append('supplier',supplier);
+		m_data.append('driver',driver);
 			
 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_stock_return"]); ?>",
@@ -210,7 +206,7 @@ $(document).ready(function() {
 			{
 				$('#data').html(data);
 			}	
-		});
+		});	
 	});
 	
 });
