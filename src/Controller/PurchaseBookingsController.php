@@ -20,6 +20,7 @@ class PurchaseBookingsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Grns', 'Vendors', 'JainThelaAdmins']
         ];
@@ -72,6 +73,13 @@ class PurchaseBookingsController extends AppController
 			$purchaseBooking->vendor_id=$grn->vendor_id;
 			$purchaseBooking->grn_id=$grn->id;
             if ($this->PurchaseBookings->save($purchaseBooking)) {
+				
+				$query=$this->PurchaseBookings->Grns->query();
+				$result = $query->update()
+                    ->set(['purchase_booked' => 'Yes'])
+                    ->where(['id' => $grn_id])
+                    ->execute();
+					
                 $this->Flash->success(__('The purchase booking has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
