@@ -22,8 +22,8 @@ class VendorsController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
-		$vendors = $this->Vendors->find()->where(['Vendors.city_id'=>$city_id]);  
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$vendors = $this->Vendors->find()->where(['Vendors.jain_thela_admin_id'=>$jain_thela_admin_id]);  
 		//$franchises = $this->Vendors->Franchises->find('list', ['limit' => 200]);
         $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);
@@ -54,13 +54,13 @@ class VendorsController extends AppController
     public function add($id=null)
     {
         $this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		if(!$id){
 			$vendor = $this->Vendors->newEntity();
 		}
        if ($this->request->is(['post'])) {
-            $vendor = $this->Vendors->patchEntity($vendors, $this->request->getData());
-            $vendor->city_id=$city_id;
+            $vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
+            $vendor->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($this->Vendors->save($vendor)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 

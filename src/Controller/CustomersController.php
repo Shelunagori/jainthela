@@ -53,10 +53,9 @@ class CustomersController extends AppController
         $this->viewBuilder()->layout('index_layout');
 		$customer = $this->Customers->newEntity();
 		if ($this->request->is(['post'])) {
-            $customers = $this->Customers->patchEntity($customers, $this->request->getData());
-            if ($this->Customers->save($customers)) {
+            $customer= $this->Customers->patchEntity($customer, $this->request->getData());
+            if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
