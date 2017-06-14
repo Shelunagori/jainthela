@@ -42,7 +42,7 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
 				return $this->redirect(['controller'=>'Users','action' => 'index']);
             }
-            $this->Flash->error(__('Invalid Username or Password'));
+            $this->Flash->error_login(__('Invalid Username or Password'));
         }
     }
 	public function index()
