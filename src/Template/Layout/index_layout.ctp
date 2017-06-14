@@ -199,67 +199,33 @@
 						<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 						<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 						<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-						<li>
-							<?php echo $this->Html->link('<i class="icon-home"></i> Units','/Units',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="icon-settings"></i> Item Categories','/Item-Categories',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Drivers','/Drivers',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
-						</li>
-							<li class="start active">
-								<a href="javascript:;">
-								<i class="icon-home"></i>
-								<span class="title">Dashboard</span>
-								<span class="selected"></span>
-								<span class="arrow open"></span>
-								</a>
-								<ul class="sub-menu">
-							
-							
 							<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Supplier','/Suppliers',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Units','/Units',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Customers','/Customers',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="icon-settings"></i> Item Categories','/Item-Categories',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Users/index',['escape'=>false]) ?>
-							</li>
-							
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Franchises','/Franchises/index',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Cities','/Cities/index',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
 							</li>
-							
-									
-								</ul>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Drivers','/Drivers',['escape'=>false]) ?>
 							</li>
-							
-							
-							
-							
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>
