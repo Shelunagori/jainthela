@@ -205,23 +205,8 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
-		$city_id=$this->Auth->User('city_id');      
-        $items = $this->ItemLedgers->Items->find('list');
-        $suppliers = $this->ItemLedgers->Suppliers->find('list');
-        $franchises = $this->ItemLedgers->Franchises->find('list');
-		$warehouses = $this->ItemLedgers->Warehouses->find('list');
-        $purchaseInwardVouchers = $this->ItemLedgers->PurchaseInwardVouchers->find('list', ['limit' => 200]);
-        $this->set(compact('itemLedger', 'items', 'suppliers', 'purchaseInwardVouchers', 'warehouses'));
-        $this->set('_serialize', ['itemLedger']);
-    }
-
-	
-	public function ajaxReport()
-    {
-		$city_id=$this->Auth->User('city_id');
-		$supplier_id=$this->request->data['supplier'];
-				 
-				$query = $this->ItemLedgers->find();
+	    $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+	    $query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'in']),
@@ -238,12 +223,19 @@ class ItemLedgersController extends AppController
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
-		->where(['supplier_id'=>$supplier_id, 'city_id' => $city_id])
+		->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items']);
         $itemLedgers = ($query);
-        $this->set(compact('itemLedgers'));
+	    $this->set(compact('itemLedgers'));
+        $this->set('_serialize', ['itemLedgers']);
+    }
+
+	
+	public function ajaxReport()
+    {
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
      }
     /**
      * Edit method

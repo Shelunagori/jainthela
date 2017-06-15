@@ -19,14 +19,14 @@
 									</div>
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>										
-										<?= $this->Form->input('created_on', ['type'=>'text','label' =>false,'class'=>'form-control input-sm','data-date-format'=>'dd-mm-yyyy','data-date-end-date'=>'+0d','value'=>date('d-m-Y')]) ?>
+										<?= $this->Form->input('created_on', ['type'=>'text','label' =>false,'class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','value'=>date('d-m-Y')]) ?>
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
 								 <div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Image <span class="required" 	aria-required="true">*</span></label>
-										 <?= $this->Form->input('image',['class'=>'form-control input-sm','label'=>false,'type'=>'File']) ?>
+										 <?= $this->Form->input('image',['class'=>'form-control','label'=>false,'type'=>'File']) ?>
 									 </div>
 									 <div class="col-md-4">
 										<label class="col-md-6 control-label">Description <span class="required" 	aria-required="true">*</span></label>
@@ -35,7 +35,6 @@
 								 <br></div>
 							</div>
 						<!-- END FORM-->
-					 
 						<div class="row" style="padding-top:5px;">
 							<div class="col-md-4"></div>
 							<div class="col-md-4"></div>
@@ -53,7 +52,6 @@
     <div class="col-md-1">
 	</div>
 </div>
-		
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {

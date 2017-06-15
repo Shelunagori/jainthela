@@ -14,7 +14,7 @@
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('Add',['controller'=>'Leads','action' => 'add'],['escape'=>false,'class'=>'btn btn-default']); ?>
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New',['controller'=>'Leads','action' => 'add'],['escape'=>false,'class'=>'btn btn-default']); ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
 					<?php if($status=='open' or $status==''){
 						$class1="btn btn-xs blue";
@@ -34,8 +34,9 @@
 					<tr>
 						<th scope="col"><?= ('Sr.no') ?></th>
 						<th scope="col"><?= ('Lead No') ?></th>
-						<th scope="col"><?= ('name') ?></th>
+						<th scope="col"><?= ('Name') ?></th>
 						<th scope="col"><?= ('Mobile') ?></th>
+						<?php if($status=='close'){ ?><th scope="col"><?= ('Reason') ?></th><?php } ?>
 						<?php if($status=='open'){ ?>
 						<th scope="col" class="actions"><?= __('Actions') ?></th>
 						<?php } ?>
@@ -48,15 +49,42 @@
 					<tr>
 						<td><?= $k ?></td>
 						<td>
-							<?= $lead->lead_no ?>
+							<?= h('#'.str_pad($lead->lead_no, 4, '0', STR_PAD_LEFT)) ?>
 						</td>
 						<td><?= $lead->name ?></td>
 						<td><?= $lead->mobile ?></td>
+						<?php if($status=='close'){ ?><td><?= $lead->reason ?></td><?php } ?>
 						<?php if($status=='open'){ ?>
 							<td class="actions">
 								<?php echo  $this->Html->link('<i class="fa fa-edit"></i>', ['action' => 'edit', $lead->id],array('escape'=>false,'class'=>'btn btn-xs yellow')); ?>
-											
-								<?php echo  $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $lead->id], ['escape'=>false,'class'=>'btn btn-xs btn-danger','confirm' => __('Are you sure you want to delete # {0}?', $lead->id)]); ?>
+								
+			<a class="btn red btn-xs"  rel="tooltip" title="Delete"  data-toggle="modal" href="#delete<?= $lead->id ?>"><i class="fa fa-trash"></i></a>
+			<div class="modal fade" id="delete<?= $lead->id ?>" tabindex="-1" aria-hidden="true" style="padding-top:35px">
+				<div class="modal-dialog modal-md">
+					<div class="modal-content">
+						<div class="modal-header">
+							<span class="modal-title" style="font-size:14px; text-align:center">Are you sure, you want to Close this Lead?</span>
+						</div>
+						<div class="modal-footer">
+						<div class="portlet-body">
+				<?= $this->Form->create($leads,['id'=>'form_sample_3']) ?>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="control-label col-md-3">Enter Your Reason <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('reason',['required','rows'=>'1','type'=>'textarea','placeholder'=>'Enter Reason...','class'=>'form-control input-sm','label'=>false]); ?>
+		<?php echo $this->Form->control('lead_id',['required','type'=>'hidden','class'=>'form-control input-sm','label'=>false, 'value'=>$lead->id]); ?>
+					</div>
+				</div>
+				<br/>				
+				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'']) . __('Close'),['class'=>'btn btn-danger','data-dismiss'=>'modal']); ?>
+				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->end() ?>
+			</div>
+						</div>
+					</div>
+				</div>
+			</div>
+								<?= $this->Html->link(__('Create Order'), ['action' => 'Orders/add/', $lead->id]) ?>
 							</td>
 						<?php } ?>
 					</tr>

@@ -24,6 +24,17 @@ class BulkBookingLeadsController extends AppController
     { 
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			$bulk_booking_lead_id=$this->request->data['bulk_booking_lead_id'];
+			$reason=$this->request->data['reason'];
+			$bulk_booking_lead=$this->BulkBookingLeads->get($bulk_booking_lead_id);
+			$bulk_booking_lead->status='Closed';
+			$bulk_booking_lead->reason=$reason;
+			$this->BulkBookingLeads->save($bulk_booking_lead);
+            //$this->Flash->sussess(__('The leads could not be saved. Please, try again.'));
+        }		
+		if($status==''){ $status='open'; }
 		if($status=='open')
 		{
 			 $bulkBookingLeads = $this->BulkBookingLeads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);

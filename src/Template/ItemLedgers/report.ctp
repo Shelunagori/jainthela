@@ -2,27 +2,45 @@
 		<div class="col-md-12">
 			<div class="portlet">
 		<div class="portlet-body"> 
-			<?= $this->Form->create($itemLedger,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
-								<h3 style="text-align:center;">STOCK REPORT</h3>
-								<div class="col-md-12">
-									<div class="col-md-4">
-										<label class="col-md-6 control-label">Suppliers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('supplier_id',array('options' => $suppliers,'class'=>'form-control input-sm select2me chng
-										','empty' => 'Select','label'=>false)) ?>
-									</div>
-									<div class="col-md-4">
-											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
-										</div>
-								 </div>
-								 <div class="col-md-12"><br></div>
-							</div>
-						<!-- END FORM-->
-						<div id="data">
+								<table id="main_table" class="table table-condensed table-bordered">
+		<thead>
+			<tr align="center">
+				<td width="10%">
+					<label>Sr<label>
+				</td>
+				<td width="40%">
+					<label>Item<label>
+				</td>
+				<td width="20%">
+					<label>Current Stock<label>
+				</td>
+				
+			</tr>
+		</thead>
+		<tbody id='main_tbody' class="tab">
+		<?php foreach($itemLedgers as $itemLedger){
+				$total_in=$itemLedger->total_in;
+				$total_out=$itemLedger->total_out;
+				$remaining=$total_in-$total_out;
+				@$i++;
+			?>
+			<tr class="main_tr" class="tab">
+				<td align="center" width="1px"><?= $i ?>.</td>
+				<td align="center">
+					<?= $itemLedger->item->name ?>
+				</td>	
+				<td align="center">
+					<?= $remaining ?>
+				</td>
+				
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
 						
 						</div>
 						<div class="row" style="padding-top:5px;">
@@ -33,7 +51,6 @@
 						 
 					</div>
 				</div>
-			<?= $this->Form->end() ?>
 		</div>
 	</div>
 </div>
@@ -183,27 +200,6 @@ $(document).ready(function() {
         return false;
     }
     });
-	
-	$('.chng').die().live('change',function() 
-	{ 
-		var supplier =$(this).val();
- 		var m_data = new FormData();
-		
-			m_data.append('supplier',supplier);
-			
-		$.ajax({
-			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_report"]); ?>",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			dataType:'text',
-			success: function(data)   // A function to be called if request succeeds
-			{
-				$('#data').html(data);
-			}	
-		});
-	});
 	
 });
 </script>
