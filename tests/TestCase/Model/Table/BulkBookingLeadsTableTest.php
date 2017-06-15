@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\OrdersTable;
+use App\Model\Table\BulkBookingLeadsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\OrdersTable Test Case
+ * App\Model\Table\BulkBookingLeadsTable Test Case
  */
-class OrdersTableTest extends TestCase
+class BulkBookingLeadsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\OrdersTable
+     * @var \App\Model\Table\BulkBookingLeadsTable
      */
-    public $Orders;
+    public $BulkBookingLeads;
 
     /**
      * Fixtures
@@ -24,18 +24,8 @@ class OrdersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.orders',
-        'app.customers',
-        'app.franchises',
-        'app.item_categories',
-        'app.items',
-        'app.units',
-        'app.franchise_item_categories',
-        'app.cities',
-        'app.companies',
-        'app.users',
-        'app.promo_codes',
-        'app.order_details'
+        'app.bulk_booking_leads',
+        'app.jain_thela_admins'
     ];
 
     /**
@@ -46,8 +36,8 @@ class OrdersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Orders') ? [] : ['className' => OrdersTable::class];
-        $this->Orders = TableRegistry::get('Orders', $config);
+        $config = TableRegistry::exists('BulkBookingLeads') ? [] : ['className' => BulkBookingLeadsTable::class];
+        $this->BulkBookingLeads = TableRegistry::get('BulkBookingLeads', $config);
     }
 
     /**
@@ -57,7 +47,7 @@ class OrdersTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Orders);
+        unset($this->BulkBookingLeads);
 
         parent::tearDown();
     }

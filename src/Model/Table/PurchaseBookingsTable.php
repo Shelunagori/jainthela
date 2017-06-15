@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * PurchaseBookings Model
@@ -55,7 +57,10 @@ class PurchaseBookingsTable extends Table
             'foreignKey' => 'purchase_booking_id'
         ]);
     }
-
+	public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        $data['transaction_date'] = trim(date('Y-m-d',strtotime($data['transaction_date'])));
+    }
     /**
      * Default validation rules.
      *
@@ -78,10 +83,6 @@ class PurchaseBookingsTable extends Table
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
 
-        $validator
-            ->dateTime('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
 
         return $validator;
     }

@@ -4,27 +4,21 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Order Entity
+ * BulkBookingLead Entity
  *
  * @property int $id
- * @property int $order_no
+ * @property int $lead_no
+ * @property string $name
+ * @property string $mobile
+ * @property string $lead_description
  * @property int $jain_thela_admin_id
- * @property int $customer_id
- * @property float $amount_from_wallet
- * @property float $amount_from_jain_cash
- * @property float $amount_from_promo_code
- * @property float $total_amount
- * @property int $promo_code_id
- * @property string $order_type
- * @property \Cake\I18n\FrozenTime $order_date
+ * @property \Cake\I18n\FrozenTime $created_on
  * @property string $status
+ * @property string $image
  *
- * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\PromoCode $promo_code
- * @property \App\Model\Entity\Franchise $franchise
- * @property \App\Model\Entity\OrderDetail[] $order_details
+ * @property \App\Model\Entity\JainThelaAdmin $jain_thela_admin
  */
-class Order extends Entity
+class BulkBookingLead extends Entity
 {
 
     /**

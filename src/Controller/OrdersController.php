@@ -20,8 +20,9 @@ class OrdersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Customers', 'PromoCodes', 'Franchises']
+            'contain' => ['Customers']
         ];
         $orders = $this->paginate($this->Orders);
 
@@ -39,7 +40,7 @@ class OrdersController extends AppController
     public function view($id = null)
     {
         $order = $this->Orders->get($id, [
-            'contain' => ['Customers', 'PromoCodes', 'Franchises', 'OrderDetails']
+            'contain' => ['Customers', 'PromoCodes', 'OrderDetails']
         ]);
 
         $this->set('order', $order);
@@ -53,20 +54,33 @@ class OrdersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $order = $this->Orders->newEntity();
         if ($this->request->is('post')) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
+			$last_order_no = $this->Orders->find()->select(['order_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
+			if($last_order_no){
+				$order->order_no = $last_order_no->order_no+1;
+			}else{
+				$order->order_no=1;
+			}
+			$order->order_type='Offline';
+			$order->jain_thela_admin_id=$jain_thela_admin_id;
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+			pr($order);
+			exit;
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
-        $customers = $this->Orders->Customers->find('list', ['limit' => 200]);
-        $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
-        $franchises = $this->Orders->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'franchises'));
+        $customers = $this->Orders->Customers->find('list');
+        $promoCodes = $this->Orders->PromoCodes->find('list');
+        $items = $this->Orders->Items->find('list');
+		
+        $this->set(compact('order', 'customers', 'promoCodes', 'items'));
         $this->set('_serialize', ['order']);
     }
 
@@ -93,8 +107,7 @@ class OrdersController extends AppController
         }
         $customers = $this->Orders->Customers->find('list', ['limit' => 200]);
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
-        $franchises = $this->Orders->Franchises->find('list', ['limit' => 200]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'franchises'));
+        $this->set(compact('order', 'customers', 'promoCodes'));
         $this->set('_serialize', ['order']);
     }
 

@@ -18,3 +18,13 @@
   
 ----- Ashish----------
 1.  import db jainthela(1)
+
+
+
+14-06-2017
+----- Ashish --------
+change in PurchaseBookingDetails Table
+invoice_quantity  decimal 10,2
+
+in GRNS table
+add field purchase_booked  varchare 10 as definde No

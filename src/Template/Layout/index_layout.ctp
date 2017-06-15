@@ -224,6 +224,12 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
 							</li>
 							<li>
@@ -231,6 +237,12 @@
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Lead Generate','/Leads/add',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads List','/Leads/index/pending',['escape'=>false]) ?>
 							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->

@@ -18,18 +18,13 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Transaction Date <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm','label'=>false,'type'=>'text']); ?>
+						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 					</div>
 					<div class="col-md-4">
-						<label class=" control-label">vendor </label>
-						<?php echo $this->Form->control('vendor_id',['value' => $grn->vendor_id,'class'=>'form-control input-sm','label'=>false,'type'=>'hidden']); ?><br/>
-						<?php echo $grn->vendor->name; 
-												?>
+						<label class=" control-label">vendor </label><br/>
+						<?= $grn->vendor->name ?>
 					</div>
-					<div class="col-md-4">
-						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
+					
 				</div><br/>
 				<div class="row">
 					<div class="col-md-1"></div>
@@ -40,26 +35,54 @@
 									<td>
 										<label>Sr<label>
 									</td>
-									<td width="70%">
+									<td>
 										<label>item<label>
 									</td>
-									<td width="20%">
+									<td>
 										<label>Quantity<label>
 									</td>
-									<td></td>
+									<td><label>Invoice Quantity<label></td>
+									<td><label>Rate<label></td>
+									<td><label>Amount<label></td>
 								</tr>
 							</thead>
-							<tbody id='main_tbody' class="tab">
+							<tbody>
+							<?php
+							$sr_no=1;
+							$grn_rows=0;
+							foreach($grn->grn_details as $grn_detail)
+							{
 								
-							</tbody>
-							<tfoot>
+							?>
 								<tr>
-									<td colspan="4"><a class="btn btn-default input-sm add_row" href="#" role="button" ><i class="fa fa-plus"></i> Add Row</a></td>
+									<td align="center" width="1px"><?= $sr_no++ ?></td>
+									<td>
+									<?php echo $this->Form->control('purchase_booking_details['.$grn_rows.'][item_id]',['value' => $grn_detail->item_id,'class'=>'form-control input-sm','label'=>false,'type'=>'hidden']); ?>
+									<?= $grn_detail->item->name ?>
+										
+									</td>
+									<td>
+									<?= $grn_detail->quantity ?>
+										<?php echo $this->Form->input('purchase_booking_details['.$grn_rows.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>$grn_detail->quantity,'type'=>'hidden']); ?>	
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_booking_details['.$grn_rows.'][invoice_quantity]', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Invoice Quantity','value'=>$grn_detail->quantity]); ?>	
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_booking_details['.$grn_rows.'][rate]', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Rate']); ?>	
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_booking_details['.$grn_rows.'][amount]', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Amount','readonly']); ?>	
+									</td>
 								</tr>
-							</tfoot>
+							<?php
+							$grn_rows++;
+							}
+							?>
+							</tbody>
 						</table>
 					</div>
-					<div class="col-md-1"></div>
+					
 				</div>
 				 
 				<br/>
@@ -133,64 +156,22 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	$('.delete-tr').live('click',function() 
-	{
-		var rowCount = $('#main_table tbody#main_tbody tr').length; 
-		if(rowCount>1)
-		{
-			 $(this).closest('tr').remove();
-			 
-		}
-		
-    });
-
-	$('.add_row').click(function(){
-		add_row();
-	});
-		
-	add_row();
-	function add_row(){
-		var tr=$("#sample_table tbody tr.main_tr").clone();
-		$("#main_table tbody#main_tbody").append(tr);
-		
-		rename_rows();
-	}
-
-	function rename_rows(){
-		var i=0; 
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-			$(this).find('td:nth-child(1)').html(i+1);
-			$(this).find("td:nth-child(2) select").select2().attr({name:"grn_details["+i+"][item_id]", id:"grn_details-"+i+"-item_id"}).rules('add', {
-						required: true
-					});
-			$(this).find("td:nth-child(3) input").attr({name:"grn_details["+i+"][quantity]", id:"grn_details-"+i+"-quantity"}).rules('add', {
-						required: true
-					});
-			i++;
-		});
-	}
 	
-	if(characterCode == 13)
-{
-    alert(1); // returning false will prevent the event from bubbling up.
-}
- 
+	$("[name^=purchase_booking_details]").each(function () {
+		$(this).rules("add", {
+			required: true
+		});
+	});
+	$(document).on('keyup','.cal_amount',function(){ 
+		var obj=$(this).closest('tr');
+		var invoice_qty=obj.find('td:nth-child(4) input').val();
+		var rate=obj.find('td:nth-child(5) input').val();
+		var amount=invoice_qty*rate;
+		var rate=obj.find('td:nth-child(6) input').val(amount);
+		
+	});
+	 
 });
 </script>
-<table id="sample_table" style="display:none;" >
-			<tbody>
-				<tr class="main_tr" class="tab">
-					<td align="center" width="1px"></td>
-				    <td>
-						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
-					</td>
-					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
-					</td>
-                    <td>
-						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+
 

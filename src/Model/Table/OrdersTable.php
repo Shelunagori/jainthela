@@ -9,10 +9,11 @@ use Cake\Validation\Validator;
 /**
  * Orders Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $JainThelaAdmins
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\PromoCodesTable|\Cake\ORM\Association\BelongsTo $PromoCodes
- * @property \App\Model\Table\FranchisesTable|\Cake\ORM\Association\BelongsTo $Franchises
  * @property \App\Model\Table\OrderDetailsTable|\Cake\ORM\Association\HasMany $OrderDetails
+ * @property |\Cake\ORM\Association\HasMany $Wallets
  *
  * @method \App\Model\Entity\Order get($primaryKey, $options = [])
  * @method \App\Model\Entity\Order newEntity($data = null, array $options = [])
@@ -39,6 +40,10 @@ class OrdersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('JainThelaAdmins', [
+            'foreignKey' => 'jain_thela_admin_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
@@ -47,11 +52,14 @@ class OrdersTable extends Table
             'foreignKey' => 'promo_code_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Franchises', [
-            'foreignKey' => 'franchise_id',
+		$this->belongsTo('Items', [
+            'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('OrderDetails', [
+            'foreignKey' => 'order_id'
+        ]);
+        $this->hasMany('Wallets', [
             'foreignKey' => 'order_id'
         ]);
     }
@@ -74,33 +82,9 @@ class OrdersTable extends Table
             ->notEmpty('order_no');
 
         $validator
-            ->date('order_date')
-            ->requirePresence('order_date', 'create')
-            ->notEmpty('order_date');
-
-        $validator
-            ->decimal('delivery_charges')
-            ->requirePresence('delivery_charges', 'create')
-            ->notEmpty('delivery_charges');
-
-        $validator
-            ->decimal('amount_from_wallet')
-            ->requirePresence('amount_from_wallet', 'create')
-            ->notEmpty('amount_from_wallet');
-
-        $validator
-            ->decimal('amount_from_jain_cash')
-            ->requirePresence('amount_from_jain_cash', 'create')
-            ->notEmpty('amount_from_jain_cash');
-
-        $validator
-            ->decimal('amount_from_promocode')
-            ->requirePresence('amount_from_promocode', 'create')
-            ->notEmpty('amount_from_promocode');
-
-        $validator
-            ->requirePresence('order_type', 'create')
-            ->notEmpty('order_type');
+            ->decimal('total_amount')
+            ->requirePresence('total_amount', 'create')
+            ->notEmpty('total_amount');
 
         return $validator;
     }
@@ -114,9 +98,9 @@ class OrdersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['jain_thela_admin_id'], 'JainThelaAdmins'));
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
         $rules->add($rules->existsIn(['promo_code_id'], 'PromoCodes'));
-        $rules->add($rules->existsIn(['franchise_id'], 'Franchises'));
 
         return $rules;
     }
