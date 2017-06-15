@@ -1,26 +1,3 @@
----Abhilash----
-9-june: replace table "items"
-
-
-
-----Ashish-----
-09-june    Crate field in Users Table "franchise_id" int 11
-
-
-
-
-
----------Nilesh.......
-10 june: 
-  1: create new field in unit table 'is_deleted'
-  2: create new table 'vendors'
-  
-  
------ Ashish----------
-1.  import db jainthela(1)
-
-
-
 14-06-2017
 ----- Ashish --------
 change in PurchaseBookingDetails Table
