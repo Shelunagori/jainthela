@@ -21,7 +21,7 @@
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
 										
-										<?= $this->Form->input('transaction_date', ['type'=>'text','label' =>false,'class'=>'form-control input-sm','data-date-format'=>'dd-mm-yyyy','data-date-end-date'=>'+0d','value'=>date('d-m-Y')]) ?>
+										<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
@@ -85,14 +85,14 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 				warehouses_id:{
-					required: false,
+					required: false
 				},
 				driver_id:{
-					required: false,
+					required: false
 				},
 				created_on:{
-					required: false,
-				}
+					required: false
+				
 			},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

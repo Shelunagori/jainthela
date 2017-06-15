@@ -21,7 +21,7 @@
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
 										
-										<?= $this->Form->input('created_on', ['type'=>'text','label' =>false,'class'=>'form-control input-sm','data-date-format'=>'dd-mm-yyyy','data-date-end-date'=>'+0d','value'=>date('d-m-Y')]) ?>
+										<?php echo $this->Form->control('created_on',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
@@ -29,6 +29,7 @@
 									 <div class="col-md-4">
 										<label class="col-md-6 control-label">Description <span class="required" 	aria-required="true">*</span></label>
 										 <?= $this->Form->input('order_description',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Order Description','rows'=>'3','style'=>'resize: none;']) ?>
+										 
 									 </div>
 								 <br></div>
 							</div>
@@ -66,16 +67,16 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 				name:{
-					required: true,				
+					required: true			
 				},
 				mobile:{
-					required: true,
+					required: true
 				},
 				created_on:{
-					required: true,
+					required: true
 				},
 				order_description:{
-					required: false,
+					required: false
 				}
 			},
 
@@ -141,7 +142,5 @@ $(document).ready(function() {
         return false;
     }
     });
-	
-	  
 });
 </script>

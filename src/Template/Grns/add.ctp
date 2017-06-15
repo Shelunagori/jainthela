@@ -18,7 +18,8 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Transaction Date <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm','label'=>false,'type'=>'text']); ?>
+						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+						
 					</div>
 					<div class="col-md-4">
 						<label class=" control-label">vendor <span class="required" aria-required="true">*</span></label>
@@ -168,11 +169,7 @@ $(document).ready(function() {
 		});
 	}
 	
-	if(characterCode == 13)
-{
-    alert(1); // returning false will prevent the event from bubbling up.
-}
- 
+	
 });
 </script>
 <table id="sample_table" style="display:none;" >
