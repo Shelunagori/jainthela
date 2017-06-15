@@ -18,10 +18,7 @@
 														<label>Item<label>
 													</td>
 													<td width="20%">
-														<label>Stock In<label>
-													</td>
-													<td width="20%">
-														<label>Stock Out<label>
+														<label>Current Stock<label>
 													</td>
 												</tr>
 											</thead>
@@ -40,11 +37,9 @@
 															<?= $itemLedger->item->name ?>
 														</td>	
 														<td align="center">
-															<?= $total_in ?>
+															<?= $remaining ?>
 														</td>
-														<td align="center">
-															<?= $total_out ?>
-														</td>
+														
 													</tr>
 												<?php } ?>
 											</tbody>

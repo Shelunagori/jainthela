@@ -236,7 +236,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads','/Leads/index/open',['escape'=>false]) ?>

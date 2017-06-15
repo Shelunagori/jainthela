@@ -200,19 +200,6 @@ class ItemLedgersController extends AppController
 		
         $this->set(compact('itemLedgers','count'));
      }
-	
-	public function report()
-    {
-		$this->viewBuilder()->layout('index_layout'); 
-        $itemLedger = $this->ItemLedgers->newEntity();
-
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');      
-        $items = $this->ItemLedgers->Items->find('list');
-        $drivers = $this->ItemLedgers->Drivers->find('list');
-		$warehouses = $this->ItemLedgers->Warehouses->find('list');
-        $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
-        $this->set('_serialize', ['itemLedger']);
-    }
 
 	public function reportShow()
     {
@@ -243,38 +230,6 @@ class ItemLedgersController extends AppController
          $this->set(compact('itemLedgers'));
     }
 	
-	public function ajaxReport()
-    {
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
-		$driver_id=$this->request->data['driver'];
-				
-	    $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-	    $query = $this->ItemLedgers->find();
-		$totalInCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$totalOutCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'out']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$query->select([
-			'total_in' => $query->func()->sum($totalInCase),
-			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
-		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
-		->group('item_id')
-		->autoFields(true)
-		->contain(['Items']);
-        $itemLedgers = ($query);
-         $this->set(compact('itemLedgers'));
-        $this->set('_serialize', ['itemLedgers']);
-    }
-
 	
 	
     /**
