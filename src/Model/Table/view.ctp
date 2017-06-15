@@ -26,7 +26,7 @@ margin-bottom: 0;
 	<table width="100%" class="divHeader">
 		
 		<tr>
-			<td colspan="3"><div style="font-size: 18px" align="center">Goods Received Note</div>
+			<td colspan="3"><div style="font-size: 18px" align="center">Purchase Booking Voucher</div>
 				<div style="border:solid 2px #0685a8;margin-bottom:5pxe;margin-top: 5px;"></div>
 			</td>
 		</tr>
@@ -36,7 +36,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="left">
 				<table>
 					<tr>
-						<td>GRN No</td>
+						<td>Voucher No.</td>
 						<td width="20" align="center">:</td>
 						<td><?= $this->Number->format($grn->id) ?></td>
 					</tr>
@@ -53,7 +53,21 @@ margin-bottom: 0;
 			</td>
 		</tr>
 	</table>
-	
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>G.R.N. No.</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($grn->grn_id) ?></td>
+						
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 	<table width="100%">
 		<tr>
 			<td width="50%" valign="top" align="right"></td>

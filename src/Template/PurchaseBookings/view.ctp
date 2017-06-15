@@ -1,89 +1,166 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\PurchaseBooking $purchaseBooking
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Purchase Booking'), ['action' => 'edit', $purchaseBooking->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Purchase Booking'), ['action' => 'delete', $purchaseBooking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseBooking->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Purchase Bookings'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Purchase Booking'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Grns'), ['controller' => 'Grns', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Grn'), ['controller' => 'Grns', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Vendors'), ['controller' => 'Vendors', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Vendor'), ['controller' => 'Vendors', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Jain Thela Admins'), ['controller' => 'JainThelaAdmins', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Jain Thela Admin'), ['controller' => 'JainThelaAdmins', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Purchase Booking Details'), ['controller' => 'PurchaseBookingDetails', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Purchase Booking Detail'), ['controller' => 'PurchaseBookingDetails', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="purchaseBookings view large-9 medium-8 columns content">
-    <h3><?= h($purchaseBooking->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Grn') ?></th>
-            <td><?= $purchaseBooking->has('grn') ? $this->Html->link($purchaseBooking->grn->id, ['controller' => 'Grns', 'action' => 'view', $purchaseBooking->grn->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Vendor') ?></th>
-            <td><?= $purchaseBooking->has('vendor') ? $this->Html->link($purchaseBooking->vendor->name, ['controller' => 'Vendors', 'action' => 'view', $purchaseBooking->vendor->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Jain Thela Admin') ?></th>
-            <td><?= $purchaseBooking->has('jain_thela_admin') ? $this->Html->link($purchaseBooking->jain_thela_admin->name, ['controller' => 'JainThelaAdmins', 'action' => 'view', $purchaseBooking->jain_thela_admin->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($purchaseBooking->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Voucher No') ?></th>
-            <td><?= $this->Number->format($purchaseBooking->voucher_no) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Transaction Date') ?></th>
-            <td><?= h($purchaseBooking->transaction_date) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created On') ?></th>
-            <td><?= h($purchaseBooking->created_on) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Purchase Booking Details') ?></h4>
-        <?php if (!empty($purchaseBooking->purchase_booking_details)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Purchase Booking Id') ?></th>
-                <th scope="col"><?= __('Item Id') ?></th>
-                <th scope="col"><?= __('Quantity') ?></th>
-                <th scope="col"><?= __('Invoice Quantity') ?></th>
-                <th scope="col"><?= __('Rate') ?></th>
-                <th scope="col"><?= __('Amount') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($purchaseBooking->purchase_booking_details as $purchaseBookingDetails): ?>
-            <tr>
-                <td><?= h($purchaseBookingDetails->id) ?></td>
-                <td><?= h($purchaseBookingDetails->purchase_booking_id) ?></td>
-                <td><?= h($purchaseBookingDetails->item_id) ?></td>
-                <td><?= h($purchaseBookingDetails->quantity) ?></td>
-                <td><?= h($purchaseBookingDetails->invoice_quantity) ?></td>
-                <td><?= h($purchaseBookingDetails->rate) ?></td>
-                <td><?= h($purchaseBookingDetails->amount) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'PurchaseBookingDetails', 'action' => 'view', $purchaseBookingDetails->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'PurchaseBookingDetails', 'action' => 'edit', $purchaseBookingDetails->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'PurchaseBookingDetails', 'action' => 'delete', $purchaseBookingDetails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseBookingDetails->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+<style>
+@media print{
+	.maindiv{
+		width:100% !important;
+	}	
+	.hidden-print{
+		display:none;
+	}
+}
+p{
+margin-bottom: 0;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+}
+</style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
+}
+</style>
+<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;" class="maindiv">	
+	<table width="100%" class="divHeader">
+		
+		<tr>
+			<td colspan="3"><div style="font-size: 18px" align="center">Purchase Booking Voucher</div>
+				<div style="border:solid 2px #0685a8;margin-bottom:5pxe;margin-top: 5px;"></div>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td>Voucher No.</td>
+						<td width="20" align="center">:</td>
+						<td><?= $this->Number->format($purchaseBooking->id) ?></td>
+					</tr>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Transaction Date</td>
+						<td width="20" align="center">:</td>
+						 <td><?= h($purchaseBooking->transaction_date) ?></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>G.R.N. No.</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($purchaseBooking->grn_id) ?></td>
+						
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Created On</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($purchaseBooking->created_on) ?></td>
+						
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Vendor</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($purchaseBooking->vendor->name)  ?></td>
+						
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<table width="100%" class="table" style="font-size:12px">
+		<tr>
+			<th><?= __('S.N.') ?></th>
+			<th><?= __('Item') ?></th>
+			<th><?= __('Quantity') ?></th>
+			<th><?= __('Rate') ?></th>
+			<th><?= __('Amount') ?></th>
+		</tr>
+		
+		<?php 
+		$i=0;
+	
+		foreach ($purchaseBooking->purchase_booking_details as $data){
+			?>
+		
+			
+			<tr>
+			<td><?=h(++$i)?></td>
+			<td><?= h($data->item->name) ?></td>
+			<td><?=h($data->quantity)?></td>
+			<td><?=h($data->rate)?></td>
+			<td><?=h($data->amount)?></td>
+			</tr>
+			
+		
+		
+		
+		<?php } ?>
+	</table>
+	
+	
+	
+	<div style="border:solid 1px ;"></div>
+	<table width="100%" class="divFooter">
+		<tr>
+			<td align="left" valign="top">
+				<table>
+					<tr>
+						<td style="font-size: 16px;font-weight: bold;">
+						</td>
+					</tr>
+					<tr>
+						
+					</tr>
+					<tr>
+						
+					</tr>
+				</table>
+			</td>
+		    <td align="right" valign="top" width="35%">
+				<table style="margin-top:3px;">
+					<tr>
+					   <td width="15%" align="center"> 
+						
+						 </hr>
+						
+						</td>
+					</tr>
+				</table>
+			 </td>
+		</tr>
+	</table>
 </div>
+

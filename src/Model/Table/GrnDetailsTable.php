@@ -42,8 +42,7 @@ class GrnDetailsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Items', [
-            'foreignKey' => 'item_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'item_id'
         ]);
     }
 
