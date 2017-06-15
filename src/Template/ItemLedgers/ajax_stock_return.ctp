@@ -17,7 +17,9 @@
 			</tr>
 		</thead>
 		<tbody id='main_tbody' class="tab">
-		<?php  foreach($itemLedgers as $itemLedger){
+		<?php  
+		$k=0;
+		foreach($itemLedgers as $itemLedger){
 				$item_id=$itemLedger->item_id;
 				$total_in=$itemLedger->total_in;
 				$total_out=$itemLedger->total_out;
@@ -28,17 +30,19 @@
 				<td align="center" width="1px"><?= $i ?>.</td>
 				<td>
 					<?= $itemLedger->item->name ?>
-					<?php echo $this->Form->input('item_id[]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number','value'=> $item_id]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][item_id]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number','value'=> $item_id]); ?>
 					
 				</td>	
 				<td>
-					<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining]); ?>
 				</td>
 				<td>
-					<?php echo $this->Form->input('waste[]', ['label' => false,'class' => 'form-control input-sm number']); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][waste]', ['label' => false,'class' => 'form-control input-sm number','value'=>0]); ?>
 				</td>
 			</tr>
-		<?php } ?>
+		<?php 
+		$k++;
+		} ?>
 		</tbody>
 	</table>
 	<div class="row" style="padding-top:5px;">

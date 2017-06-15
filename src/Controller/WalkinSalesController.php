@@ -59,8 +59,19 @@ class WalkinSalesController extends AppController
         $walkinSale = $this->WalkinSales->newEntity();
         if ($this->request->is('post')) {
             $walkinSale = $this->WalkinSales->patchEntity($walkinSale, $this->request->getData());
-			pr($walkinSale);
             if ($this->WalkinSales->save($walkinSale)) {
+				
+				$query = $this->WalkinSales->Ledgers->query();
+				$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
+						->values([
+						'ledger_account_id' => 0,
+						'purchase_booking_id' => $warehouse_id,
+						'debit' => $transaction_date,
+						'credit' => $credit[$i],
+						'transaction_date' => $credit[$i]
+						])
+				->execute();
+				 
                 $this->Flash->success(__('The walkin sale has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }

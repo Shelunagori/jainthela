@@ -109,6 +109,9 @@ class ItemLedgersController extends AppController
         $itemLedger = $this->ItemLedgers->newEntity();
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         if ($this->request->is('post')) {
+			/* $item_ledgers=$this->request->getData('item_ledgers');
+			pr($item_ledgers);
+			  */
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
 			$driver_id=$this->request->data['driver_id'];
@@ -117,6 +120,7 @@ class ItemLedgersController extends AppController
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
 			foreach($quantities as $value){	
+			
 			$total_quantity=$value+$waste[$i];
 			
 				$query = $this->ItemLedgers->query();
