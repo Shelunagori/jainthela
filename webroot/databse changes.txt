@@ -14,4 +14,7 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 15-06-2017
 ---------- Ashish ----------
 create field into item_ledgers table     grn_id int (10)
+create field into item_ledgers table     rate_updated varchare (10)
 create field into item_ledgers table     purchase_booking_id int (10)
+create field into purchase_bookings table     total_amount decimal (10,2)
+create field into grn table     warehouse_id int (10)

@@ -52,7 +52,6 @@
 							$grn_rows=0;
 							foreach($grn->grn_details as $grn_detail)
 							{
-								
 							?>
 								<tr>
 									<td align="center" width="1px"><?= $sr_no++ ?></td>
@@ -80,6 +79,13 @@
 							}
 							?>
 							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="5" style="text-align:right;">Total Amount<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Amount','type'=>'hidden']); ?></th>
+									<th id="total_amount">
+									</th>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 					
@@ -170,7 +176,12 @@ $(document).ready(function() {
 		var rate=obj.find('td:nth-child(5) input').val();
 		var amount=invoice_qty*rate;
 		var rate=obj.find('td:nth-child(6) input').val(amount);
-		
+		var total_amount=0;
+		$("#main_table tbody tr").each(function(){ 
+			total_amount+=parseFloat($(this).find("td:nth-child(6) input").val());
+		});
+		$('input[name=total_amount]').val(total_amount);
+		$('#total_amount').text(total_amount);
 	});
 	 
 });
