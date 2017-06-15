@@ -21,7 +21,7 @@
 						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 					</div>
 					<div class="col-md-4">
-						<label class=" control-label">vendor </label><br/>
+						<label class=" control-label">vendor Name</label><br/>
 						<?= $grn->vendor->name ?>
 					</div>
 					
@@ -86,8 +86,10 @@
 				</div>
 				 
 				<br/>
+				<center>
 				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
 				<?= $this->Form->end() ?>
+				</center>
 			</div>
 		</div>
 	</div>

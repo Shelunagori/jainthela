@@ -21,13 +21,12 @@
 						<thead>
 						<tr>
 							<th scope="col">Sr. No.</th>
-							<th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('grn_id') ?></th>
+							<th scope="col">Voucher No.</th>
+							<th scope="col">Grn No.</th>
 							
-							<th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('vendor_id') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('jain_thela_admin_id') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
+							<th scope="col">Transaction Date</th>
+							<th scope="col">Vendor Name</th>
+							<th scope="col">Created On</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -35,12 +34,11 @@
             <?php $sr_no=0; foreach ($purchaseBookings as $purchaseBooking): ?>
             <tr>
                 <td><?= ++$sr_no ?></td>
-				<td><?= $this->Number->format($purchaseBooking->voucher_no) ?></td>
-                <td><?= $purchaseBooking->has('grn') ? $this->Html->link($purchaseBooking->grn->id, ['controller' => 'Grns', 'action' => 'view', $purchaseBooking->grn->id]) : '' ?></td>
-                
+				<td><?= h('#'.str_pad($this->Number->format($purchaseBooking->voucher_no), 4, '0', STR_PAD_LEFT)) ?></td>
+                <td><?= h('#'.str_pad($this->Number->format($purchaseBooking->grn->grn_no), 4, '0', STR_PAD_LEFT)) ?></td>
                 <td><?= h($purchaseBooking->transaction_date) ?></td>
-                <td><?= $purchaseBooking->has('vendor') ? $this->Html->link($purchaseBooking->vendor->name, ['controller' => 'Vendors', 'action' => 'view', $purchaseBooking->vendor->id]) : '' ?></td>
-                <td><?= $purchaseBooking->has('jain_thela_admin') ? $this->Html->link($purchaseBooking->jain_thela_admin->name, ['controller' => 'JainThelaAdmins', 'action' => 'view', $purchaseBooking->jain_thela_admin->id]) : '' ?></td>
+                <td><?= $purchaseBooking->vendor->name ?></td>
+                
                 <td><?= h($purchaseBooking->created_on) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $purchaseBooking->id]) ?>

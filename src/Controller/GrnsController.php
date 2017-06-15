@@ -74,14 +74,16 @@ class GrnsController extends AppController
 				$grn->grn_no=1;
 			}
 			$grn->jain_thela_admin_id=$jain_thela_admin_id;
-			//pr($grn); exit;
+			
             if ($this->Grns->save($grn)) {
+				
 				foreach($grn->grn_details as $grn_detail){
 					$query = $this->Grns->ItemLedgers->query();
-					$query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'warehouse_id', 'rate', 'status', 'quantity', 'transaction_date'])
+					$query->insert(['jain_thela_admin_id', 'driver_id', 'grn_id', 'item_id', 'warehouse_id', 'rate', 'status', 'quantity', 'transaction_date'])
 						->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => 0,
+							'grn_id' => $grn->id,
 							'item_id' => $grn_detail->item_id,
 							'warehouse_id' => $grn->warehouse_id,
 							'rate' => 0,

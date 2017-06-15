@@ -21,10 +21,8 @@ class PurchaseBookingsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['Grns', 'Vendors', 'JainThelaAdmins']
-        ];
-        $purchaseBookings = $this->paginate($this->PurchaseBookings);
+        
+        $purchaseBookings = $this->PurchaseBookings->find()->contain(['Grns', 'Vendors', 'JainThelaAdmins']);
 
         $this->set(compact('purchaseBookings'));
         $this->set('_serialize', ['purchaseBookings']);
