@@ -1,14 +1,17 @@
 <div class="row">
-		<div class="col-md-12">
-			<div class="portlet">
-		<div class="portlet-body"> 
- 				<div class="portlet light bordered">
-					<div class="portlet-body form">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="portlet-title">
+				<div class="actions">
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+				</div>
+			</div>
+			<div class="portlet-body">
 					<!-- BEGIN FORM-->
 							<div class="row">
 								<h3 style="text-align:center;">STOCK REPORT</h3>
 									<div class="col-md-12">
-										<table id="main_table" class="table table-condensed table-bordered">
+										<table id="main_tble" class="table table-condensed table-bordered">
 											<thead>
 												<tr align="center">
 													<td width="10%">
@@ -61,7 +64,21 @@
 				</div>
  		</div>
 	</div>
-</div>
-    <div class="col-md-1">
-	</div>
-</div>	
+
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+var $rows = $('#main_tble tbody tr');
+	$('#search3').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
+	});
+</script>
