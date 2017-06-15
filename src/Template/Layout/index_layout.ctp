@@ -212,6 +212,9 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Drivers','/Drivers',['escape'=>false]) ?>
 							</li>
 							<li>
