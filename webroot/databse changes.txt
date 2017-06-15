@@ -9,3 +9,9 @@ add field purchase_booked  varchare 10 as definde No
 
 -----------nilesh------------
 add new field in customer table "bulk_booking_discount_percent" type- decimal 
+
+
+15-06-2017
+---------- Ashish ----------
+create field into item_ledgers table     grn_id int (10)
+create field into item_ledgers table     purchase_booking_id int (10)
