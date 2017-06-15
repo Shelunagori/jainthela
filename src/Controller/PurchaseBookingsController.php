@@ -21,10 +21,8 @@ class PurchaseBookingsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['Grns', 'Vendors', 'JainThelaAdmins']
-        ];
-        $purchaseBookings = $this->paginate($this->PurchaseBookings);
+        
+        $purchaseBookings = $this->PurchaseBookings->find()->contain(['Grns', 'Vendors', 'JainThelaAdmins']);
 
         $this->set(compact('purchaseBookings'));
         $this->set('_serialize', ['purchaseBookings']);
@@ -58,6 +56,7 @@ class PurchaseBookingsController extends AppController
 		$grn = $this->PurchaseBookings->Grns->get($grn_id, [
             'contain' => ['GrnDetails'=>['Items'], 'Vendors', 'JainThelaAdmins']
         ]);
+		
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $purchaseBooking = $this->PurchaseBookings->newEntity();
         if ($this->request->is('post')) { 
@@ -72,8 +71,30 @@ class PurchaseBookingsController extends AppController
 			$purchaseBooking->jain_thela_admin_id=$jain_thela_admin_id;
 			$purchaseBooking->vendor_id=$grn->vendor_id;
 			$purchaseBooking->grn_id=$grn->id;
+			
             if ($this->PurchaseBookings->save($purchaseBooking)) {
 				
+				$this->PurchaseBookings->ItemLedgers->deleteAll(['grn_id' => $grn_id]);
+				foreach($purchaseBooking->purchase_booking_details as $purchase_booking_detail)
+				{
+					$query = $this->PurchaseBookings->ItemLedgers->query();
+					$query->insert(['jain_thela_admin_id', 'driver_id', 'grn_id', 'item_id', 'warehouse_id', 'purchase_booking_id', 'rate', 'status', 'quantity','rate_updated', 'transaction_date'])
+					->values([
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'driver_id' => 0,
+						'grn_id' => $grn_id,
+						'item_id' => $purchase_booking_detail->item_id,
+						'warehouse_id' => $grn->warehouse_id,
+						'purchase_booking_id' => $purchaseBooking->id,
+						'rate' => $purchase_booking_detail->rate,
+						'status' => 'In',
+						'quantity' => $purchase_booking_detail->quantity,
+						'rate_updated' => 'Yes',
+						'transaction_date'=>$grn->transaction_date
+					]);
+					$query->execute();
+				}
+					
 				$query=$this->PurchaseBookings->Grns->query();
 				$result = $query->update()
                     ->set(['purchase_booked' => 'Yes'])

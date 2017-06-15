@@ -56,6 +56,9 @@ class PurchaseBookingsTable extends Table
         $this->hasMany('PurchaseBookingDetails', [
             'foreignKey' => 'purchase_booking_id'
         ]);
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'purchase_booking_id'
+        ]);
     }
 	public function beforeMarshal(Event $event, ArrayObject $data)
     {
