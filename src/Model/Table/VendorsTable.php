@@ -40,6 +40,10 @@ class VendorsTable extends Table
             'foreignKey' => 'franchise_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasOne('LedgerAccounts', [
+            'foreignKey' => 'vendor_id'
+        ]);
     }
 
     /**

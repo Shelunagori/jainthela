@@ -28,6 +28,9 @@
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
 										
 										<?php echo $this->Form->control('created_on',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+										
+										
+										
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>

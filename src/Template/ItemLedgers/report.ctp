@@ -10,8 +10,8 @@
 								<h3 style="text-align:center;">STOCK REPORT</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label class="col-md-6 control-label">Suppliers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('supplier_id',array('options' => $suppliers,'class'=>'form-control input-sm select2me chng
+										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
+										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'form-control input-sm select2me chng
 										','empty' => 'Select','label'=>false)) ?>
 									</div>
 									<div class="col-md-4">
@@ -186,10 +186,10 @@ $(document).ready(function() {
 	
 	$('.chng').die().live('change',function() 
 	{ 
-		var supplier =$(this).val();
+		var driver =$(this).val();
  		var m_data = new FormData();
 		
-			m_data.append('supplier',supplier);
+			m_data.append('driver',driver);
 			
 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_report"]); ?>",
