@@ -15,21 +15,25 @@
 			<div class="portlet-body">
 				<?= $this->Form->create($customer,['id'=>'form_sample_3']) ?>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class=" control-label">Customer Name <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('name',['placeholder'=>'Customer Name','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class=" control-label">Mobile No. <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('mobile',['placeholder'=>'Moble No.','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class=" control-label">Email </label>
 						<?php echo $this->Form->control('email',['placeholder'=>'Email','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
+					<div class="col-md-3">
+						<label class=" control-label">Bulk Booking Discount % </label>
+						<?php echo $this->Form->control('bulk_booking_discount_percent',['placeholder'=>'Discount %','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-12">
 						<label class=" control-label">Address <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false, 'rows'=>'2']); ?>
 					</div>
