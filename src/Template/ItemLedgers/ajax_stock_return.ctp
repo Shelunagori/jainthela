@@ -1,3 +1,4 @@
+	<?php if($count>0){ ?>
 	<table id="main_table" class="table table-condensed table-bordered">
 		<thead>
 			<tr align="center">
@@ -16,8 +17,7 @@
 			</tr>
 		</thead>
 		<tbody id='main_tbody' class="tab">
-		<?php 
-			foreach($itemLedgers as $itemLedger){
+		<?php  foreach($itemLedgers as $itemLedger){
 				$item_id=$itemLedger->item_id;
 				$total_in=$itemLedger->total_in;
 				$total_out=$itemLedger->total_out;
@@ -42,10 +42,13 @@
 		</tbody>
 	</table>
 	<div class="row" style="padding-top:5px;">
-							<div class="col-md-4"></div>
-							<div class="col-md-4"></div>
-							<div class="col-md-4"> </div>
-						</div>
-						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
-						</div>
+		<div class="col-md-4"></div>
+		<div class="col-md-4"></div>
+		<div class="col-md-4"> </div>
+	</div>
+	<div align="center">
+		<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+	</div>
+	<?php }else{ ?>
+	NO DATA FOUND
+	<?php } ?>

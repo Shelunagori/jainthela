@@ -108,7 +108,7 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-        if ($this->request->is('post')) { 			
+        if ($this->request->is('post')) {
 			$item_id=$this->request->data['item_id'];
 			$quantities=$this->request->data['quantity'];
 			$driver_id=$this->request->data['driver_id'];
@@ -116,8 +116,9 @@ class ItemLedgersController extends AppController
 			$waste=$this->request->data['waste'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			foreach($quantities as $value){ 		
+			foreach($quantities as $value){	
 			$total_quantity=$value+$waste[$i];
+			
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
@@ -172,6 +173,7 @@ class ItemLedgersController extends AppController
     {
 		  $driver_id=$this->request->data['driver'];
 		  $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		  
  			$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
@@ -194,7 +196,9 @@ class ItemLedgersController extends AppController
 		->autoFields(true)
 		->contain(['Items']);
         $itemLedgers = ($query);
-        $this->set(compact('itemLedgers'));
+		$count=$itemLedgers->count();
+		
+        $this->set(compact('itemLedgers','count'));
      }
 	
 	public function report()

@@ -4,10 +4,16 @@
 		<div class="portlet-body"> 
 			<?= $this->Form->create($lead,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
+					<div class="portlet-title">
+						<div class="caption">
+							<span>
+							<B>Lead</B>
+							</span>
+						</div>
+					</div>
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
-								<h3 style="text-align:center;">LEAD</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Name <span class="required" 	aria-required="true">*</span></label>

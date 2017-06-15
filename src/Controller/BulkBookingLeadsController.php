@@ -24,11 +24,11 @@ class BulkBookingLeadsController extends AppController
     { 
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		if($status=='pending')
+		if($status=='open')
 		{
 			 $bulkBookingLeads = $this->BulkBookingLeads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);
 		} 
-		elseif($status=='proccessed')
+		elseif($status=='close')
 		{
 			$where = $status;
 			$bulkBookingLeads = $this->BulkBookingLeads->find()->where(['status' => 'Closed','jain_thela_admin_id' => $jain_thela_admin_id ]);

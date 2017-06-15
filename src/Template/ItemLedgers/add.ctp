@@ -4,10 +4,16 @@
 		<div class="portlet-body"> 
 			<?= $this->Form->create($itemLedger,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
+					<div class="portlet-title">
+						<div class="caption">
+							<span>
+							<B>Stock Issue</B>
+							</span>
+						</div>
+					</div>
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
-								<h3 style="text-align:center;">STOCK ISSUE</h3>
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
@@ -15,7 +21,7 @@
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false)) ?>
 										</div>
 										 
 									<div class="col-md-2">
@@ -88,11 +94,11 @@ $(document).ready(function() {
 					required: false
 				},
 				driver_id:{
-					required: false
+					required: true
 				},
-				created_on:{
+				transaction_date:{
 					required: false
-				
+				}
 			},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -178,14 +184,12 @@ $(document).ready(function() {
 	add_row();
 		function add_row(){
 				var tr=$("#sample_table tbody tr.main_tr").clone();
-				$("#main_table tbody#main_tbody").append(tr);
-				
+				$("#main_table tbody#main_tbody").append(tr); 
 				rename_rows();
-				 
 			}
 
 		function rename_rows(){
-				var i=0; 
+				var i=0;
 				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
 					$(this).find("td:nth-child(2) select").select2().attr({name:"item_id[]", id:"item_id"}).rules('add', {
@@ -211,11 +215,9 @@ $(document).ready(function() {
         return false;
     }
     });
-	
-});
+	});
+ 
 </script>
-
-
 		<table id="sample_table" style="display:none;" cellpadding="5" cellspacing="5">
 			<tbody>
 				<tr class="main_tr" class="tab">

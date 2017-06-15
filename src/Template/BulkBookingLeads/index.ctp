@@ -14,17 +14,18 @@
 					</span>
 				</div>
 				<div class="actions"> 
+					<?php echo $this->Html->link('Add',['controller'=>'BulkBookingLeads','action' => 'add'],['escape'=>false,'class'=>'btn btn-default']); ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
-					<?php if($status=='pending' or $status==''){
+					<?php if($status=='open' or $status==''){
 						$class1="btn btn-xs blue";
 						$class2="btn btn-default";
-					}elseif($status=='proccessed'){
+					}elseif($status=='close'){
 						$class1="btn btn-default";
 						$class2="btn btn-xs blue";
 					}
 					 ?>
-						<?php echo $this->Html->link('Open',['controller'=>'BulkBookingLeads','action' => 'index/Pending'],['escape'=>false,'class'=>$class1]); ?>
-						<?php echo $this->Html->link('Close',['controller'=>'BulkBookingLeads','action' => 'index/Proccessed'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
+						<?php echo $this->Html->link('Open',['controller'=>'BulkBookingLeads','action' => 'index/open'],['escape'=>false,'class'=>$class1]); ?>
+						<?php echo $this->Html->link('Close',['controller'=>'BulkBookingLeads','action' => 'index/close'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -35,7 +36,7 @@
 						<th scope="col"><?= ('Lead No') ?></th>
 						<th scope="col"><?= ('name') ?></th>
 						<th scope="col"><?= ('Mobile') ?></th>
-						<?php if($status=='pending'){ ?>
+						<?php if($status=='open'){ ?>
 						<th scope="col" class="actions"><?= __('Actions') ?></th>
 						<?php } ?>
 					</tr>
@@ -51,7 +52,7 @@
 						</td>
 						<td><?= $bulkBookingLead->name ?></td>
 						<td><?= $bulkBookingLead->mobile ?></td>
-						<?php if($status=='pending'){ ?>
+						<?php if($status=='open'){ ?>
 							<td class="actions">
 								<?php echo  $this->Html->link('<i class="fa fa-edit"></i>', ['action' => 'edit', $bulkBookingLead->id],array('escape'=>false,'class'=>'btn btn-xs yellow')); ?>
 											

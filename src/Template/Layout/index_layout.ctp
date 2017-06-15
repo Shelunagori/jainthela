@@ -239,10 +239,10 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Lead Generate','/Leads/add',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads','/Leads/index/open',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads List','/Leads/index/pending',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Bulk Booking Leads','/BulkBookingLeads/index/open',['escape'=>false]) ?>
 							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
