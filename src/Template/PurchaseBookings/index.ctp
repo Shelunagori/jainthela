@@ -44,24 +44,14 @@
                 <td><?= h($purchaseBooking->created_on) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $purchaseBooking->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $purchaseBooking->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $purchaseBooking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseBooking->id)]) ?>
+                  <!--  <?= $this->Html->link(__('Edit'), ['action' => 'edit', $purchaseBooking->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $purchaseBooking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseBooking->id)]) ?>-->
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
 				</table>
 			</div>
-			<div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 		</div>
 	</div>
 </div>

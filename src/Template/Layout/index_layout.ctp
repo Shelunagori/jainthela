@@ -26,13 +26,13 @@
 			<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/icheck/skins/all.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/icheck/skins/all.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'); ?>
 			<!-- END GLOBAL MANDATORY STYLES -->
-			<?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>
 			<!-- BEGIN THEME STYLES -->
 			<?php echo $this->Html->css('/assets/global/css/components.css'); ?>
 			<?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
@@ -40,14 +40,14 @@
 			<?php echo $this->Html->css('/assets/admin/layout/css/themes/default.css'); ?>
 			<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/jquery-notific8/jquery.notific8.min.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/icheck/skins/all.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/icheck/skins/all.css'); ?>
 			<!-- BEGIN PAGE LEVEL STYLES -->
 			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css'); ?>
 			<?php //echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
 			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
-			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
+			<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
 			<?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
 			<!-- END PAGE LEVEL STYLES -->
 		<style media="print">
@@ -299,14 +299,14 @@
 			<?php echo $this->Html->script('/assets/global/plugins/jquery.cokie.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+			<?php //echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 			<!-- END CORE PLUGINS -->
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>
+			
+			<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js'); ?>
+			<?php //echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js'); ?>
+			<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js'); ?>
+			
+			<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/jquery-notific8/jquery.notific8.min.js'); ?>
 			<?php echo $this->Html->script('/assets/admin/pages/scripts/ui-notific8.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-toastr/toastr.min.js'); ?>
@@ -315,7 +315,7 @@
 			<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
-			<?php echo $this->Html->script('/assets/admin/pages/scripts/form-icheck.js'); ?>
+			<?php //echo $this->Html->script('/assets/admin/pages/scripts/form-icheck.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/jquery.pulsate.min.js'); ?>
 			<?php echo $this->Html->script('/assets/admin/pages/scripts/table-managed.js'); ?>
 			<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js'); ?>
@@ -328,7 +328,9 @@
 			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js'); ?>
-			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js'); ?>
+			<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js'); ?>
+			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>
+			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js'); ?>
 			<?php echo $this->Html->script('/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js'); ?>

@@ -15,7 +15,19 @@
 				</div>
 				<div class="actions">
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Grns/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+					
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
+					<?php if($status=='open'){
+						$class1="btn btn-xs blue";
+						$class2="btn btn-default";
+					}elseif($status=='closed'){
+						$class1="btn btn-default";
+						$class2="btn btn-xs blue";
+					}
+					 ?>
+						<?php echo $this->Html->link('Open',['controller'=>'Grns','action' => 'index/open'],['escape'=>false,'class'=>$class1]); ?>
+						<?php echo $this->Html->link('Closed',['controller'=>'Grns','action' => 'index/closed'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
+				
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -28,22 +40,28 @@
 								<th>Transaction Date</th>
 								<th>Created On</th>
 								<th>Vendor</th>
+								
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
+								
 							</tr>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($grns as $grn): ?>
+						<?php $sr_no=0; foreach ($grns as $grn): ?>
 						<tr>
-							<td><?= $this->Number->format($grn->id) ?></td>
-							<td><?= $this->Number->format($grn->grn_no) ?></td>
+							<td><?= $this->Number->format(++$sr_no) ?></td>
+							<td><?= h('#'.str_pad($this->Number->format($grn->grn_no), 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($grn->transaction_date) ?></td>
 							<td><?= h($grn->created_on) ?></td>
 							<td><?= h($grn->vendor->name) ?></td>
+							
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
+								<?php if($status=='open'){ ?>
 								<?= $this->Html->link(__('Book Invoice'), ['controller'=>'PurchaseBookings', 'action' => 'add', $grn->id]) ?>
+								<?php } ?>
 							</td>
+							
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

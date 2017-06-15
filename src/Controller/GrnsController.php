@@ -18,14 +18,21 @@ class GrnsController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index($status = Null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         
-        $grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Vendors']);
-
-        $this->set(compact('grns'));
+		if($status=='open' || $status=='')
+		{	$status='open';
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'No'])->contain(['Vendors']);
+		} 
+		elseif($status=='closed')
+		{
+			$status='closed';
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'Yes'])->contain(['Vendors']);
+		}
+        $this->set(compact(['grns','status']));
         $this->set('_serialize', ['grns']);
     }
 
