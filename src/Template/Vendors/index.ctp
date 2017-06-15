@@ -31,9 +31,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($vendors as $vendor): ?>
+						<?php
+						$i=0;
+						foreach ($vendors as $vendor):
+						$i++;
+
+						?>
 						<tr>
-							<td><?= $this->Number->format($vendor->id) ?></td>
+							<td><?= $i ?></td>
 							<td><?= h($vendor->name) ?></td>
 							<td><?= h($vendor->mobile) ?></td>
 							<td><?= h($vendor->email) ?></td>

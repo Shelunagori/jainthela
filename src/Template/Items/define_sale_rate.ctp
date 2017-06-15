@@ -41,11 +41,11 @@
 								<?php echo  $this->Form->control('items['.$i.'][item_id]',['type'=>'hidden','class'=>'form-control input-sm input-small', 'value'=>$item->id]); ?>
 							</td>
 							<td><?= h($item->unit->shortname) ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false]); ?></td>
 							<td>
-							<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small p_rate','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
+							<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
 							</td>
 						</tr>
 						<?php $i++; endforeach; ?>
@@ -88,21 +88,21 @@ var $rows = $('#main_tble tbody tr');
 <script>
 $(document).ready(function(){
 	
-	$(".p_rate").die().live("keyup",function(){
-		 var p_rate=$(this).val();
-		 d_per=$(this).closest('tr').find('.d_per').val();
-		 t_amount=p_rate*d_per/100;
-		 sale_amt=p_rate-t_amount;
-		 $(this).closest('tr').find('.s_rate').val((sale_amt).toFixed(2));
+	$(".print_rate").die().live("keyup",function(){
+		 var print_rate=$(this).val();
+		 discount_per=$(this).closest('tr').find('.discount_per').val();
+		 t_amount=print_rate*discount_per/100;
+		 sale_amt=print_rate-t_amount;
+		 $(this).closest('tr').find('.sales_rate').val((sale_amt).toFixed(2));
 	});
 
-	$(".d_per").die().live("keyup",function(){
-		 var d_per=$(this).val();
-		 p_rate=$(this).closest('tr').find('.p_rate').val();
+	$(".discount_per").die().live("keyup",function(){
+		 var discount_per=$(this).val();
+		 print_rate=$(this).closest('tr').find('.print_rate').val();
 		 
-		  t_amount=p_rate*d_per/100;
-		 sale_amt=p_rate-t_amount;
-		 $(this).closest('tr').find('.s_rate').val((sale_amt).toFixed(2));
+		  t_amount=print_rate*discount_per/100;
+		 sale_amt=print_rate-t_amount;
+		 $(this).closest('tr').find('.sales_rate').val((sale_amt).toFixed(2));
 	});
 });
 </script>

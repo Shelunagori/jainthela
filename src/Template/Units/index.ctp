@@ -63,7 +63,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($units as $unit):
+							<?php
+							$k=0;
+							foreach ($units as $unit):
 								@$k++;
 							?>
 							<tr>

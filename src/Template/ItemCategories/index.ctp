@@ -55,7 +55,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($itemCategories as $itemCategory):
+							<?php
+							$k=0;
+							foreach ($itemCategories as $itemCategory):
 								@$k++;
 							?>
 							<tr>

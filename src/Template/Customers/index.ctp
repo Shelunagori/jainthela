@@ -31,9 +31,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($customers as $customer): ?>
+						<?php $i=0;
+						foreach ($customers as $customer): 
+						$i++;
+						?>
 						<tr>
-							<td><?= $this->Number->format($customer->id) ?></td>
+							<td><?= $i ?></td>
 							<td><?= h($customer->name) ?></td>
 							<td><?= h($customer->mobile) ?></td>
 							<td><?= h($customer->email) ?></td>
