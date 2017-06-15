@@ -32,35 +32,23 @@
 						</tr>
 					</thead>
 					<tbody>
-						
-						<?php
-                        $i=0;
-                        foreach ($items as $item): 
-						$i++;
-					?>	
+						<?php $i=0; foreach ($items as $item): ?>	
 						<tr>
-							<td><?= $this->Number->format($i) ?></td>
+							<td><?php echo ++$i; $i--; ?></td>
 							<td><?= h($item->item_category->name) ?></td>
-                            <td><?= h($item->name) ?></td>
-							
-							<?php echo  $this->Form->input('item_id[]',['type'=>'hidden','class'=>'form-control input-sm input-small','placeholder'=>'', 'value'=>$this->Number->format($item->id)]); ?>
-							
-							
+                            <td>
+								<?= h($item->name) ?>
+								<?php echo  $this->Form->control('items['.$i.'][item_id]',['type'=>'hidden','class'=>'form-control input-sm input-small', 'value'=>$item->id]); ?>
+							</td>
 							<td><?= h($item->unit->shortname) ?></td>
-							<td><?php echo  $this->Form->text('print_rate[]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$this->Number->format($item->print_rate)]); ?></td>
-							<td><?php echo  $this->Form->text('discount_per[]',['class'=>'form-control input-sm input-small d_per','placeholder'=>'Discount %', 'value'=>$this->Number->format($item->discount_per)]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small p_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false]); ?></td>
 							<td>
-							<?php echo  $this->Form->lable('sales_rate[]',['class'=>'readonly form-control input-sm input-small s_rate','placeholder'=>'Sale Rate', 'value'=>$this->Number->format($item->sales_rate),'readonly']); ?>
-							 <span id="status_id" style="display:none;"><?= $this->Number->format($item->id) ?></span>
+							<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small p_rate','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
 							</td>
-							<td>
-							<?php 
-							    $readytosale_option_array=['yes'=>'yes', 'no'=>'no'];
-                                $readytosale= $item->ready_to_sale;
-							echo $this->Form->input('ready_to_sale[]', ['label'=>false,'options'=>$readytosale_option_array,'class'=>'form-control input-sm','required status','value'=>$item->ready_to_sale]); ?>
-							</td>
-							</tr>
-						<?php endforeach; ?>
+						</tr>
+						<?php $i++; endforeach; ?>
 						
 						
 						<tr>
@@ -77,6 +65,7 @@
 		<?= $this->Form->end() ?>
 	</div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 var $rows = $('#main_tble tbody tr');
@@ -106,10 +95,7 @@ $(document).ready(function(){
 		 sale_amt=p_rate-t_amount;
 		 $(this).closest('tr').find('.s_rate').val((sale_amt).toFixed(2));
 	});
-});
-</script>
-<script>
-$(document).ready(function(){
+
 	$(".d_per").die().live("keyup",function(){
 		 var d_per=$(this).val();
 		 p_rate=$(this).closest('tr').find('.p_rate').val();

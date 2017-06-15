@@ -35,33 +35,26 @@ class ItemsController extends AppController
 		$items = $this->Items->newEntity();
 		
 		if ($this->request->is(['post', 'put'])) {
-			 $items = $this->Items->patchEntity($items, $this->request->getData());
-			$item_id=$this->request->data['item_id'];
-			$print_rate=$this->request->data['print_rate'];
-			$ready_to_sale=$this->request->data['ready_to_sale'];
-			$discount_per=$this->request->data['discount_per'];
-			$sales_rate=$this->request->data['sales_rate'];
-			$i=0;
-			foreach($item_id as $updated_id)
-			{
+			$items=$this->request->getData('items');
+			foreach($items as $item){
+				$item=(object)$item;
 				$query = $this->Items->query();
                     //$query->update(['promote_date', 'due_amount', amount', 'discount', 'end_date'])
                     $query->update()
                             ->set([
-                            'print_rate' => $print_rate[$i],
-                            'ready_to_sale' => $ready_to_sale[$i],
-                            'discount_per' => $discount_per[$i],
-                            'sales_rate' => $sales_rate[$i]
+                            'print_rate' => $item->print_rate,
+                            'ready_to_sale' => $item->ready_to_sale,
+                            'discount_per' => $item->discount_per,
+                            'sales_rate' => $item->sales_rate
                             ])
-                            ->where(['id'=>$updated_id])
+                            ->where(['id'=>$item->item_id])
                     ->execute();
-					$i++;
 			}
-			
+			$this->Flash->success(__('Item rates have updated successfully.'));
 		 }
 	
-		 $items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['ItemCategories', 'Units']);
-		   $this->set(compact('items', 'itemCategories', 'units'));
+		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['ItemCategories', 'Units']);
+		$this->set(compact('items', 'itemCategories', 'units'));
         $this->set('_serialize', ['items']);
 		
     }
