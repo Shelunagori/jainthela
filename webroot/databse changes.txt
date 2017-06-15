@@ -5,3 +5,7 @@ invoice_quantity  decimal 10,2
 
 in GRNS table
 add field purchase_booked  varchare 10 as definde No
+
+
+-----------nilesh------------
+add new field in customer table "bulk_booking_discount_percent" type- decimal 
