@@ -235,6 +235,12 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report',['escape'=>false]) ?>
 							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Lead Generate','/Leads/add',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads List','/Leads/index/pending',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>
