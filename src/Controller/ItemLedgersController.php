@@ -205,7 +205,7 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
-<<<<<<< HEAD
+
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');      
         $items = $this->ItemLedgers->Items->find('list');
         $drivers = $this->ItemLedgers->Drivers->find('list');
@@ -247,12 +247,9 @@ class ItemLedgersController extends AppController
     {
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		$driver_id=$this->request->data['driver'];
-				 
-				$query = $this->ItemLedgers->find();
-=======
+				
 	    $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 	    $query = $this->ItemLedgers->find();
->>>>>>> 6bac077441685b2bf29b30bfdaa6e9bafa22529a
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'in']),
@@ -269,28 +266,17 @@ class ItemLedgersController extends AppController
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
-<<<<<<< HEAD
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
-=======
-		->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
->>>>>>> 6bac077441685b2bf29b30bfdaa6e9bafa22529a
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items']);
         $itemLedgers = ($query);
-<<<<<<< HEAD
          $this->set(compact('itemLedgers'));
-=======
-	    $this->set(compact('itemLedgers'));
         $this->set('_serialize', ['itemLedgers']);
     }
 
 	
-	public function ajaxReport()
-    {
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
->>>>>>> 6bac077441685b2bf29b30bfdaa6e9bafa22529a
-     }
+	
     /**
      * Edit method
      *
