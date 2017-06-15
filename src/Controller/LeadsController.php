@@ -22,18 +22,25 @@ class LeadsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		if($status=='open')
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			$lead_id=$this->request->data['lead_id'];
+			$reason=$this->request->data['reason'];
+			$lead=$this->Leads->get($lead_id);
+			$lead->status='Closed';
+			$lead->reason=$reason;
+			$this->Leads->save($lead);
+            //$this->Flash->sussess(__('The leads could not be saved. Please, try again.'));
+        }
+		if($status==''){ $status='open'; }
+        if($status=='open')
 		{
-			 $leads = $this->Leads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);
+			$leads = $this->Leads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);
 		} 
 		elseif($status=='close')
 		{
 			$where = $status;
 			$leads = $this->Leads->find()->where(['status' => 'Closed','jain_thela_admin_id' => $jain_thela_admin_id ]);
 		}
-		
-        //$leads =$this->Leads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);
- 
         $this->set(compact('leads','status'));
         $this->set('_serialize', ['leads']);
     }
@@ -74,6 +81,9 @@ class LeadsController extends AppController
 			}else{
 				$lead->lead_no=1;
 			}
+			
+			
+			
 			  $lead->created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
 			  $lead->jain_thela_admin_id=$jain_thela_admin_id;
              if ($this->Leads->save($lead)) {

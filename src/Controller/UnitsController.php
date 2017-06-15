@@ -30,7 +30,6 @@ class UnitsController extends AppController
 			]);
 		}
 		
-		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $unit = $this->Units->patchEntity($unit, $this->request->getData());
 			$unit->jain_thela_admin_id=$jain_thela_admin_id;
