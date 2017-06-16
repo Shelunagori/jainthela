@@ -39,7 +39,7 @@ class PurchaseBookingsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $purchaseBooking = $this->PurchaseBookings->get($id, [
-	'contain' => ['Grns', 'Vendors','PurchaseBookingDetails'=>['Items']]
+	'contain' => ['Grns', 'Vendors','PurchaseBookingDetails'=>['Items'=>['Units']]]
         ]);
 			
         $this->set('purchaseBooking', $purchaseBooking);
@@ -101,7 +101,32 @@ class PurchaseBookingsController extends AppController
                     ->set(['purchase_booked' => 'Yes'])
                     ->where(['id' => $grn_id])
                     ->execute();
-					
+				$LedgerAccounts = $this->PurchaseBookings->LedgerAccounts->find('all')->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'vendor_id'=>$grn->vendor_id]);
+				
+				$query = $this->PurchaseBookings->Ledgers->query();
+					$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
+					->values([
+						'ledger_account_id' => 1,
+						'purchase_booking_id' => $purchaseBooking->id,
+						'debit' => $this->request->data['total_amount'],
+						'credit' => 0,
+						'transaction_date'=>$grn->transaction_date
+					]);
+					$query->execute();	
+				foreach($LedgerAccounts as $LedgerAccount)
+				{
+					$query = $this->PurchaseBookings->Ledgers->query();
+					$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
+					->values([
+						'ledger_account_id' => $LedgerAccount->id,
+						'purchase_booking_id' => $purchaseBooking->id,
+						'debit' => 0,
+						'credit' => $this->request->data['total_amount'],
+						'transaction_date'=>$grn->transaction_date
+					]);
+					$query->execute();	
+				}
+				
                 $this->Flash->success(__('The purchase booking has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

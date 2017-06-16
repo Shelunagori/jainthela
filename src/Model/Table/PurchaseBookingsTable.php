@@ -53,6 +53,8 @@ class PurchaseBookingsTable extends Table
             'foreignKey' => 'jain_thela_admin_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('LedgerAccounts');
+		$this->belongsTo('Ledgers');
         $this->hasMany('PurchaseBookingDetails', [
             'foreignKey' => 'purchase_booking_id'
         ]);
