@@ -18,30 +18,14 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['options' => $customers,'class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['options' => $customers,'class'=>'form-control input-sm select2me','label'=>false]); ?>
 					</div>
-					<div class="col-md-4">
-						<label class=" control-label">Amount From Wallet</label>
-						<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'form-control input-sm','label'=>false,'type'=>'text']); ?>
-					</div>
-					<div class="col-md-4">
-						<label class=" control-label">Amount From jain Cash</label>
-						<?php echo $this->Form->control('amount_from_jain_cash',['placeholder'=>'Amount From Jain Cash','class'=>'form-control input-sm','label'=>false,'type'=>'text']); ?>
-					</div>
+					
 				</div><br/>
-				<div class="row">
-					<div class="col-md-4">
-						<label class=" control-label">Amount From Promo Code</label>
-						<?php echo $this->Form->control('amount_from_promo_code',['placeholder'=>'Amount From Promo Code','class'=>'form-control input-sm','label'=>false,'type'=>'text']); ?>
-					</div>
-					<div class="col-md-4">
-						<label class=" control-label">Promo Code</label>
-						<?php echo $this->Form->control('promo_code_id',['options' => $promoCodes,'class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-				</div><br/>
+				
 				<div class="row">
 					<div class="col-md-1"></div>
-					<div class="col-md-8">
+					<div class="col-md-10">
 						<table id="main_table" class="table table-condensed table-bordered">
 							<thead>
 								<tr align="center">
@@ -60,7 +44,7 @@
 									<td>
 										<label>Amount<label>
 									</td>
-									<td><a class="btn btn-default input-sm add_row" href="#" role="button" ><i class="fa fa-plus"></i> Add Row</a></td>
+									<td></td>
 								</tr>
 							</thead>
 							<tbody id='main_tbody' class="tab">
@@ -68,12 +52,22 @@
 							</tbody>
 							<tfoot>
 								<tr>
-								<td colspan="4">
-								Total Amount
+									<td colspan="4" style="text-align:right;">
+									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
+									Amount From Wallet</td>
+									<td>
+									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+								<td colspan="4" style="text-align:right;">
+								Grand Total
 								</td>
 								<td>
 								<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
 								</td>
+								<td></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -82,7 +76,9 @@
 				</div>
 				 
 				<br/>
+				<center>
 				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				</center>
 				<?= $this->Form->end() ?>
 			</div>
 		</div>
@@ -154,13 +150,20 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	$('.delete-tr').live('click',function() 
 	{
+		var total_amount=0;
 		var rowCount = $('#main_table tbody#main_tbody tr').length; 
 		if(rowCount>1)
 		{
 			 $(this).closest('tr').remove();
 			 $("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+			 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
+			
 		});
+		alert(total_amount);
+		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
+		var grand_total=total_amount-amount_from_wallet;
+		$('input[name=total_amount]').val(grand_total);
 			 
 		}
 		
@@ -207,7 +210,9 @@ $(document).ready(function() {
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 		});
-		$('input[name=total_amount]').val(total_amount);
+		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
+		var grand_total=total_amount-amount_from_wallet;
+		$('input[name=total_amount]').val(grand_total);
 	});
 	
 });
@@ -220,13 +225,13 @@ $(document).ready(function() {
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Quantity']); ?>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Quantity','value'=>0]); ?>	
 					</td>
 					<td>
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Rate']); ?>	
+						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Rate','value'=>0]); ?>	
 					</td>
 					<td>
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly']); ?>	
+						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>

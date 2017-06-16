@@ -226,8 +226,23 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
 							</li>
+							
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
+								<a href="javascript:;">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<span class="title">
+								Order </span>
+								<span class="arrow ">
+								</span>
+								</a>
+								<ul class="sub-menu">
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
+									</li>
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
+									</li>
+								</ul>
 							</li>
 							<li>
 								<a href="javascript:;">
