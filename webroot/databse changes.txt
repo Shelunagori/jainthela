@@ -11,13 +11,9 @@ add field purchase_booked  varchare 10 as definde No
 add new field in customer table "bulk_booking_discount_percent" type- decimal
 
 
-----------GOPESH-----------------
-1. Ledger Account new Table sql file available.
-2. add one field in item_ledgers table name is `different_driver_id` type integer(10) 
-3. create field into ledgers table     walkin_sale_id int (10)
-4. DO Auto Increment `id` field in Ledger Table.
 
-15-06-2017
+
+                         15-06-2017
 ---------- Ashish ----------
 create field into item_ledgers table     grn_id int (10)
 create field into item_ledgers table     rate_updated varchare (10)
@@ -25,3 +21,12 @@ create field into item_ledgers table     purchase_booking_id int (10)
 create field into purchase_bookings table     total_amount decimal (10,2)
 create field into grn table     warehouse_id int (10)
 
+
+
+						16-06-2017
+						
+----------GOPESH-----------------
+1. Ledger Account new Table sql file available.
+2. add one field in item_ledgers table name is `different_driver_id` type integer(10) 
+3. create field into ledgers table     walkin_sale_id int (10)
+4. DO Auto Increment `id` field in Ledger Table.
