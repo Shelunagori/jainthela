@@ -77,10 +77,19 @@ class OrdersController extends AppController
        // $promoCodes = $this->Orders->PromoCodes->find('list');
         $items = $this->Orders->Items->find('list');
 		
-        $this->set(compact('order', 'customers', 'items'));
+        $this->set(compact('order', 'customers', 'items', 'order_type'));
         $this->set('_serialize', ['order']);
     }
-
+	/**
+     * Ajax method
+     **/
+	public function ajaxCustomerDiscount()
+    {
+		$this->viewBuilder()->layout('ajax');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$customer = $this->Orders->Customers->get($this->request->data['customer_id']);
+		$this->set(compact('customer'));
+	}
     /**
      * Edit method
      *
