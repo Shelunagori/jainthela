@@ -38,7 +38,19 @@ margin-bottom: 0;
 					<tr>
 						<td>Voucher No.</td>
 						<td width="20" align="center">:</td>
-						<td><?= $this->Number->format($purchaseBooking->id) ?></td>
+						<td><?= h('#'.str_pad($this->Number->format($purchaseBooking->voucher_no), 4, '0', STR_PAD_LEFT)) ?></td>
+					</tr>
+					<tr>
+						<td>G.R.N. No.</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h('#'.str_pad($this->Number->format($purchaseBooking->grn_id), 4, '0', STR_PAD_LEFT)) ?></td>
+						
+					</tr>
+					<tr>
+						<td>Vendor</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($purchaseBooking->vendor->name)  ?></td>
+						
 					</tr>
 				</table>
 			</td>
@@ -49,37 +61,28 @@ margin-bottom: 0;
 						<td width="20" align="center">:</td>
 						 <td><?= h($purchaseBooking->transaction_date) ?></td>
 					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	<table width="100%">
-		<tr>
-			<td width="50%" valign="top" align="right"></td>
-			<td width="50%" valign="top" align="right">
-				<table>
-					<tr>
-						<td>G.R.N. No.</td>
-						<td width="20" align="center">:</td>
-						<td ><?= h($purchaseBooking->grn_id) ?></td>
-						
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	<table width="100%">
-		<tr>
-			<td width="50%" valign="top" align="right"></td>
-			<td width="50%" valign="top" align="right">
-				<table>
+			
 					<tr>
 						<td>Created On</td>
 						<td width="20" align="center">:</td>
 						<td ><?= h($purchaseBooking->created_on) ?></td>
 						
 					</tr>
+			
 				</table>
+				
+			</td>
+			
+		</tr>
+	</table>
+	
+			
+	
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				
 			</td>
 		</tr>
 	</table>
@@ -89,24 +92,20 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right"></td>
 			<td width="50%" valign="top" align="right">
 				<table>
-					<tr>
-						<td>Vendor</td>
-						<td width="20" align="center">:</td>
-						<td ><?= h($purchaseBooking->vendor->name)  ?></td>
-						
-					</tr>
+					
 				</table>
 			</td>
 		</tr>
 	</table>
 	<br/>
-	<table width="100%" class="table" style="font-size:12px">
-		<tr>
-			<th><?= __('S.N.') ?></th>
-			<th><?= __('Item') ?></th>
-			<th><?= __('Quantity') ?></th>
-			<th><?= __('Rate') ?></th>
-			<th><?= __('Amount') ?></th>
+	<table width="100%" class="table" style="font-size:12px" align="center">
+		<tr >
+			<td ><strong><?= __('S.N.') ?></strong></td>
+			<td ><strong><?= __('Item') ?></strong></td>
+			<td ><strong><?= __('Unit') ?></strong></td>
+			<td ><strong><?= __('Quantity') ?></strong></td>
+			<td ><strong><?= __('Rate') ?></strong></td>
+			<td align="right"><strong><?= __('Amount') ?></strong></td>	
 		</tr>
 		
 		<?php 
@@ -114,14 +113,14 @@ margin-bottom: 0;
 	
 		foreach ($purchaseBooking->purchase_booking_details as $data){
 			?>
-		
 			
 			<tr>
-			<td><?=h(++$i)?></td>
-			<td><?= h($data->item->name) ?></td>
-			<td><?=h($data->quantity)?></td>
-			<td><?=h($data->rate)?></td>
-			<td><?=h($data->amount)?></td>
+			<td ><?=h(++$i)?></td>
+			<td ><?= h($data->item->name) ?></td>
+			<td ><?=h($data->item->unit->longname)?></td>
+			<td ><?=h($data->quantity)?></td>
+			<td ><?=h($data->rate)?></td>
+			<td align="right"><?=h($data->amount)?></td>
 			</tr>
 			
 		
@@ -134,33 +133,22 @@ margin-bottom: 0;
 	
 	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
-		<tr>
-			<td align="left" valign="top">
-				<table>
-					<tr>
-						<td style="font-size: 16px;font-weight: bold;">
-						</td>
-					</tr>
-					<tr>
-						
-					</tr>
-					<tr>
-						
-					</tr>
-				</table>
-			</td>
-		    <td align="right" valign="top" width="35%">
+		<tr align="right">
+			 <td align="right" valign="top" width="35%">
 				<table style="margin-top:3px;">
 					<tr>
-					   <td width="15%" align="center"> 
-						
-						 </hr>
-						
+					   <td width="15%" align="right"> 
+						<br>
+						<br>
+						 <span>Prepared By</span><br/>
+						 <span><b><?= __('Jain Thela') ?></b></span><br/>
 						</td>
 					</tr>
 				</table>
 			 </td>
+			
+		    
 		</tr>
 	</table>
 </div>
-
+</div>

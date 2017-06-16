@@ -49,8 +49,7 @@ class OrdersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('PromoCodes', [
-            'foreignKey' => 'promo_code_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'promo_code_id'
         ]);
 		$this->belongsTo('Items', [
             'foreignKey' => 'item_id',

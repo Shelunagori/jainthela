@@ -21,11 +21,9 @@ class OrdersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['Customers']
-        ];
-        $orders = $this->paginate($this->Orders);
-
+      
+		$orders = $this->Orders->find('all')->contain(['Customers']);
+		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);
     }
@@ -52,7 +50,7 @@ class OrdersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($order_type=Null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
@@ -65,22 +63,21 @@ class OrdersController extends AppController
 			}else{
 				$order->order_no=1;
 			}
-			$order->order_type='Offline';
+			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-			pr($order);
-			exit;
+			
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
         $customers = $this->Orders->Customers->find('list');
-        $promoCodes = $this->Orders->PromoCodes->find('list');
+       // $promoCodes = $this->Orders->PromoCodes->find('list');
         $items = $this->Orders->Items->find('list');
 		
-        $this->set(compact('order', 'customers', 'promoCodes', 'items'));
+        $this->set(compact('order', 'customers', 'items'));
         $this->set('_serialize', ['order']);
     }
 

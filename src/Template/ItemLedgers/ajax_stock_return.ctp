@@ -51,7 +51,7 @@
 		<div class="col-md-4"> </div>
 	</div>
 	<div align="center">
-		<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+		<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Stock Return'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 	</div>
 	<?php }else{ ?>
 	NO DATA FOUND

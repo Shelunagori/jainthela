@@ -66,7 +66,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create purchase order'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Stock Issue'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -194,10 +194,10 @@ $(document).ready(function() {
 				var i=0;
 				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
-					$(this).find("td:nth-child(2) select").select2().attr({name:"item_id[]", id:"item_id"}).rules('add', {
+					$(this).find("td:nth-child(2) select").select2().attr({name:"item_ledgers["+i+"][item_id]", id:"item_ledgers-"+i+"-item_id"}).rules('add', {
 								required: true
 							}); 
-					$(this).find("td:nth-child(3) input").attr({name:"quantity[]", id:"quantity"}).rules('add', {
+					$(this).find("td:nth-child(3) input").attr({name:"item_ledgers["+i+"][quantity]", id:"item_ledgers-"+i+"-quantity"}).rules('add', {
 								required: true
 							}); 
 					i++;
