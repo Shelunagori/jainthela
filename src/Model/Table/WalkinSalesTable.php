@@ -52,6 +52,8 @@ class WalkinSalesTable extends Table
             'foreignKey' => 'warehouse_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Ledgers');
+		$this->belongsTo('LedgersAccounts');
         $this->hasMany('WalkinSaleDetails', [
             'foreignKey' => 'walkin_sale_id'
         ]);

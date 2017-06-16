@@ -230,19 +230,34 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
+								<a href="javascript:;">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<span class="title">
+								Stock </span>
+								<span class="arrow ">
+								</span>
+								</a>
+								<ul class="sub-menu">
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
+									</li>
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
+									</li>
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
+									</li>
+								</ul>
 							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
-							</li>
+							
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads','/Leads/index/open',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Bulk Booking Leads','/BulkBookingLeads/index/open',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->

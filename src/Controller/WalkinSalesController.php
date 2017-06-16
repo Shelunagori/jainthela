@@ -59,21 +59,34 @@ class WalkinSalesController extends AppController
         $walkinSale = $this->WalkinSales->newEntity();
         if ($this->request->is('post')) {
             $walkinSale = $this->WalkinSales->patchEntity($walkinSale, $this->request->getData());
-            if ($this->WalkinSales->save($walkinSale)) {
-				
-				$query = $this->WalkinSales->Ledgers->query();
-				$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
-						->values([
-						'ledger_account_id' => 0,
-						'purchase_booking_id' => $warehouse_id,
-						'debit' => $transaction_date,
-						'credit' => $credit[$i],
-						'transaction_date' => $credit[$i]
-						])
-				->execute();
-				 
-                $this->Flash->success(__('The walkin sale has been saved.'));
-                return $this->redirect(['action' => 'index']);
+            if ($walkinsale_data=$this->WalkinSales->save($walkinSale)) {
+					$walkinsale_id=$walkinsale_data->id;
+					$walkinsale_total_amount=$walkinsale_data->total_amount;
+					$transaction_date=$walkinsale_data->transaction_date;
+					$query = $this->WalkinSales->Ledgers->query();
+					$query->insert(['ledger_account_id', 'walkin_sale_id', 'debit', 'credit', 'transaction_date'])
+							->values([
+							'ledger_account_id' => 2,
+							'walkin_sale_id' => $walkinsale_id,
+							'debit' => $walkinsale_total_amount,
+							'credit' => 0,
+							'transaction_date' => $transaction_date
+							])
+					->execute();
+					
+					$query = $this->WalkinSales->Ledgers->query();
+					$query->insert(['ledger_account_id', 'walkin_sale_id', 'debit', 'credit', 'transaction_date'])
+							->values([
+							'ledger_account_id' => 3,
+							'walkin_sale_id' => $walkinsale_id,
+							'debit' => 0,
+							'credit' => $walkinsale_total_amount,
+							'transaction_date' => $transaction_date
+							])
+					->execute();
+
+					$this->Flash->success(__('The walkin sale has been saved.'));
+					return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The walkin sale could not be saved. Please, try again.'));
         }

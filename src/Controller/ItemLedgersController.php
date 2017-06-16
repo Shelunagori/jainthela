@@ -58,39 +58,43 @@ class ItemLedgersController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		 
         if ($this->request->is('post')) {
-			$item_id=$this->request->data['item_id'];
-			$quantities=$this->request->data['quantity'];
+			$item_ledgers=$this->request->getData('item_ledgers');
+			pr($item_ledgers);
 			$driver_id=$this->request->data['driver_id'];
 			$warehouse_id=$this->request->data['warehouse_id'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			foreach($quantities as $value){
+			
+			foreach($item_ledgers as $item_ledger){
+				$item_ledger=(object)$item_ledger;
+				$quantity=$item_ledger->quantity;
+				$item_id=$item_ledger->item_id;
+				
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id'])
 						->values([
 						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
-						'item_id' => $item_id[$i],
-						'quantity' => $value,
+						'item_id' => $item_id,
+						'quantity' => $quantity,
 						'status' => 'out',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
 				->execute();
-
+			
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
 						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
-						'item_id' => $item_id[$i],
-						'quantity' => $value,
+						'item_id' => $item_id,
+						'quantity' => $quantity,
 						'status' => 'in',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
 				->execute();
-				$i++;
 			}
 			$this->Flash->success(__('The item ledger has been saved.'));
 			return $this->redirect(['action' => 'add']);
@@ -109,59 +113,59 @@ class ItemLedgersController extends AppController
         $itemLedger = $this->ItemLedgers->newEntity();
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         if ($this->request->is('post')) {
-			/* $item_ledgers=$this->request->getData('item_ledgers');
-			pr($item_ledgers);
-			  */
-			$item_id=$this->request->data['item_id'];
-			$quantities=$this->request->data['quantity'];
+			$item_ledgers=$this->request->getData('item_ledgers');
+			 
 			$driver_id=$this->request->data['driver_id'];
-			$warehouse_id=$this->request->data['warehouse_id'];
-			$waste=$this->request->data['waste'];
+			$warehouse_id=$this->request->data['warehouse_id'];			
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			foreach($quantities as $value){	
-			
-			$total_quantity=$value+$waste[$i];
-			
+			foreach($item_ledgers as $item_ledger){
+				$item_ledger=(object)$item_ledger;
+				$total_quantity=$item_ledger->quantity+$item_ledger->waste;
+				$item_id=$item_ledger->item_id;
+				$waste=$item_ledger->waste;
+				
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
 						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
-						'item_id' => $item_id[$i],
+						'item_id' => $item_id,
 						'quantity' => $total_quantity,
 						'status' => 'in',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
-				->execute();		
+				->execute();	
+				
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
 						->values([
 						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
 						'transaction_date' => $transaction_date,
-						'item_id' => $item_id[$i],
+						'item_id' => $item_id,
 						'quantity' => $total_quantity,
 						'status' => 'out',
 						'jain_thela_admin_id' => $jain_thela_admin_id
 						])
-				->execute();			
+				->execute();
+				
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id','different_driver_id'])
 						->values([
 						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $transaction_date,
-						'item_id' => $item_id[$i],
-						'quantity' => $waste[$i],
+						'item_id' => $item_id,
+						'quantity' => $waste,
 						'status' => 'in',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
 						'different_driver_id' => $driver_id
 						])
 				->execute();
-				$i++;
 			}
+			
 			$this->Flash->success(__('The item ledger has been saved.'));
 			return $this->redirect(['action' => 'stock_return']);         
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
