@@ -60,10 +60,10 @@ class VendorsController extends AppController
 		}
        if ($this->request->is(['post'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
-			
+			$vendor->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($vendors_data=$this->Vendors->save($vendor)) { 
-				echo $vendor_id=$vendors_data->id;
-				echo $vendor_name=$vendors_data->name;
+				  $vendor_id=$vendors_data->id;
+				  $vendor_name=$vendors_data->name;
 				
 				$query = $this->Vendors->LedgerAccounts->query();
 				$query->insert(['name', 'jain_thela_admin_id', 'vendor_id', 'account_group_id'])
@@ -74,10 +74,9 @@ class VendorsController extends AppController
 						'account_group_id' => 1
 						])
 				->execute();
-			exit;
+		 
                 $this->Flash->success(__('The vendor has been saved.'));
-exit;
-                return $this->redirect(['action' => 'index']);
+                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
