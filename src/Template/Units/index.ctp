@@ -59,7 +59,6 @@
 								<th><?=  h('Long Name') ?></th>
 								<th><?=  h('Short Name') ?></th>
 								<th class="actions"><?= __('Actions') ?></th>
-								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -74,15 +73,16 @@
 								<td><?= h($unit->shortname) ?></td>
 								<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'index', $unit->id],['escape'=>false,'class'=>'btn btn-xs blue']); ?>
-								</td>
-								<td class="actions">
+								
 								<?php echo $this->Form->PostLink('<i class="fa fa-trash"></i>',['action' => 'delete', $unit->id],[
 								'escape'=>false,
 								'class'=>'btn btn-xs red',
 								'confirm'=> __ ('Are yousue youwant to delete this unit?',$unit->id)]
 								)
 								?>
+								
 								</td>
+								
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
