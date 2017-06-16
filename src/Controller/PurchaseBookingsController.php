@@ -37,10 +37,11 @@ class PurchaseBookingsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $purchaseBooking = $this->PurchaseBookings->get($id, [
-            'contain' => ['Grns', 'Vendors', 'JainThelaAdmins', 'PurchaseBookingDetails']
+	'contain' => ['Grns', 'Vendors','PurchaseBookingDetails'=>['Items']]
         ]);
-
+			
         $this->set('purchaseBooking', $purchaseBooking);
         $this->set('_serialize', ['purchaseBooking']);
     }

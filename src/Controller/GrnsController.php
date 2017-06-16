@@ -46,12 +46,15 @@ class GrnsController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
         $grn = $this->Grns->get($id, [
-            'contain' => ['Vendors', 'Cities']
+            'contain' => ['Vendors','GrnDetails'=>['Items']]
         ]);
-
+		
+ 
         $this->set('grn', $grn);
+		
         $this->set('_serialize', ['grn']);
     }
 
