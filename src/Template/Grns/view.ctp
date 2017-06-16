@@ -38,7 +38,7 @@ margin-bottom: 0;
 					<tr>
 						<td>GRN No</td>
 						<td width="20" align="center">:</td>
-						<td><?= $this->Number->format($grn->id) ?></td>
+						<td><?= h('#'.str_pad($this->Number->format($grn->id), 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -49,32 +49,12 @@ margin-bottom: 0;
 						<td width="20" align="center">:</td>
 						 <td><?= h($grn->transaction_date) ?></td>
 					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
-	<table width="100%">
-		<tr>
-			<td width="50%" valign="top" align="right"></td>
-			<td width="50%" valign="top" align="right">
-				<table>
 					<tr>
 						<td>Created On</td>
 						<td width="20" align="center">:</td>
 						<td ><?= h($grn->created_on) ?></td>
 						
 					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
-	<table width="100%">
-		<tr>
-			<td width="50%" valign="top" align="right"></td>
-			<td width="50%" valign="top" align="right">
-				<table>
 					<tr>
 						<td>Vendor</td>
 						<td width="20" align="center">:</td>
@@ -85,11 +65,14 @@ margin-bottom: 0;
 			</td>
 		</tr>
 	</table>
+	
+	
 	<br/>
 	<table width="100%" class="table" style="font-size:12px">
 		<tr>
 			<th><?= __('S.N.') ?></th>
 			<th><?= __('Item') ?></th>
+			<th><?= __('Unit') ?></th>
 			<th><?= __('Quantity') ?></th>
 		</tr>
 		
@@ -102,7 +85,8 @@ margin-bottom: 0;
 			<tr>
 			<td><?=h(++$i)?></td>
 			<td><?= h($data->item->name) ?></td>
-			<td><?=h($data->quantity)?></td>
+			<td><?= h($data->item->unit->longname) ?></td>
+			<td ><?=h($data->quantity)?></td>
 			</tr>
 			
 		
@@ -113,35 +97,23 @@ margin-bottom: 0;
 	
 	
 	
-	<div style="border:solid 1px ;"></div>
+		<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
-		<tr>
-			<td align="left" valign="top">
-				<table>
-					<tr>
-						<td style="font-size: 16px;font-weight: bold;">
-						</td>
-					</tr>
-					<tr>
-						
-					</tr>
-					<tr>
-						
-					</tr>
-				</table>
-			</td>
-		    <td align="right" valign="top" width="35%">
+		<tr align="right">
+			 <td align="right" valign="top" width="35%">
 				<table style="margin-top:3px;">
 					<tr>
-					   <td width="15%" align="center"> 
-						
-						 </hr>
-						
+					   <td width="15%" align="right"> 
+						<br>
+						<br>
+						 <span>Prepared By</span><br/>
+						 <span><b><?= __('Jain Thela') ?></b></span><br/>
 						</td>
 					</tr>
 				</table>
 			 </td>
+			
+		    
 		</tr>
 	</table>
-</div>
-
+</div></div>

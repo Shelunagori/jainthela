@@ -49,7 +49,7 @@ class GrnsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
         $grn = $this->Grns->get($id, [
-            'contain' => ['Vendors','GrnDetails'=>['Items']]
+            'contain' => ['Vendors','GrnDetails'=>['Items'=>['Units']]]
         ]);
 		
  
