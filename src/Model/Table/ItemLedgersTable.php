@@ -45,7 +45,7 @@ class ItemLedgersTable extends Table
         ]);
         $this->belongsTo('Drivers', [
             'foreignKey' => 'driver_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
@@ -53,7 +53,7 @@ class ItemLedgersTable extends Table
         ]);
         $this->belongsTo('Warehouses', [
             'foreignKey' => 'warehouse_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
     }
 

@@ -234,6 +234,34 @@ class ItemLedgersController extends AppController
          $this->set(compact('itemLedgers'));
     }
 	
+	public function ajaxItemDetails($id = null)
+    {
+        $query =$this->ItemLedgers->find()->where(['item_id'=>$id]);
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->group(['driver_id','warehouse_id'])
+		->autoFields(true)
+		->contain(['Items', 'Drivers', 'Warehouses']);
+        $itemLedgers = ($query);
+         $this->set(compact('itemLedgers'));
+    }
+	
 	
 	
     /**
