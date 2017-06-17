@@ -47,9 +47,9 @@ class PromoCodesFixture extends TestFixture
             'discount_per' => 1.5,
             'item_category_id' => 1,
             'jain_thela_admin_id' => 1,
-            'valid_from' => 1497596318,
-            'valid_to' => 1497596318,
-            'created_on' => 1497596318
+            'valid_from' => 1497702470,
+            'valid_to' => 1497702470,
+            'created_on' => 1497702470
         ],
     ];
 }
