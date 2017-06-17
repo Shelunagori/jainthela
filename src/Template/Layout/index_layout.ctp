@@ -274,6 +274,9 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Feedback','/Feedbacks',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>

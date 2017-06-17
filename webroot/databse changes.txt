@@ -17,6 +17,10 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 3. create field into ledgers table     walkin_sale_id int (10).
 4. DO Auto Increment `id` field in Ledger Table.
 
+17-06-2017
+1. Feedbacks new Table sql file available in Webroot.
+
+
 15-06-2017
 ---------- Ashish ----------
 create field into item_ledgers table     grn_id int (10)
