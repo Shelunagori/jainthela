@@ -186,7 +186,7 @@ $(document).ready(function() {
 			add_row();
 	});
 		
-	//add_row();
+	add_row();
 	
 	function add_row(){
 			var tr=$("#sample_table tbody tr.main_tr").clone();
@@ -255,7 +255,7 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm select2me itm_chng','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm itm_chng','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td class="stock_available" align="center">
 						
