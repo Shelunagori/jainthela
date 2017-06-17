@@ -233,7 +233,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'=>['Units','itemCategories']]);
         $itemLedgers = ($query);
          $this->set(compact('itemLedgers'));
     }
@@ -261,7 +261,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group(['driver_id','warehouse_id'])
 		->autoFields(true)
-		->contain(['Items', 'Drivers', 'Warehouses']);
+		->contain(['Items'=>['Units'], 'Drivers', 'Warehouses']);
         $itemLedgers = ($query);
          $this->set(compact('itemLedgers'));
     }

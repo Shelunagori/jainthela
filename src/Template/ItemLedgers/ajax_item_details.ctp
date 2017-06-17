@@ -1,6 +1,6 @@
 <tr>
 	<td colspan="3">
-										<table id="main_tble" class="table table-condensed" border='0'>
+										<table id="main_tble" class="table table-condensed" border='0' style="background-color:#F3F3F3">
 											<thead>
 											<tr>
 													<th width="10%">
@@ -16,7 +16,6 @@
 											</thead>
 											<tbody id='main_tbody' class="tab">
 												<?php foreach($itemLedgers as $itemLedger){
-													
 												$total_in=$itemLedger->total_in;
 												$total_out=$itemLedger->total_out;
 												$remaining=$total_in-$total_out;
@@ -39,7 +38,7 @@
 														 <?= $name.$warehouse_name ?>
 														 </td>
 														<td>
-															<?= $remaining?>
+															<?= $remaining.' '.$itemLedger->item->unit->shortname;?>
 														</td>
 														
 													</tr>

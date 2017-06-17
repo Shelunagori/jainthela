@@ -43,7 +43,7 @@
 							<td><?= h($item->unit->shortname) ?></td>
 							<td><?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
 							<td><?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false]); ?></td>
+							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?></td>
 							<td>
 							<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
 							</td>
