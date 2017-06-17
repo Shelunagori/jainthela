@@ -72,7 +72,6 @@ Router::scope('/', function (RouteBuilder $routes) {
 });
 Router::prefix('api', function ($routes) {
     $routes->extensions(['json', 'xml']);
-    $routes->resources('Items');
 	$routes->resources('Items', [
 	   'map' => [
 		   'updateJainCash' => [
@@ -81,8 +80,6 @@ Router::prefix('api', function ($routes) {
 		   ]
 	   ]
 	]);
-	
-    //$routes->resources(['controller' => 'Items', 'action' => 'index']);
 });
 
 /**
