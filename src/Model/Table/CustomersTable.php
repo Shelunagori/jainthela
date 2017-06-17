@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
 class CustomersTable extends Table
 {
 
-    /**
+	 /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.

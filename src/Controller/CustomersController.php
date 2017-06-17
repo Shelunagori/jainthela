@@ -90,6 +90,25 @@ class CustomersController extends AppController
         $this->set('_serialize', ['customer']);
     }
 
+	public function customerDetail()
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+
+        $Customers = $this->Customers->find('list');
+        $this->set(compact('Customers'));
+        $this->set('_serialize', ['Customers']);
+    }
+
+
+	public function ajaxCustomerReport()
+    {
+		echo "hheeellllooooo";
+exit;
+		
+     }
+
+
     /**
      * Delete method
      *
