@@ -21,7 +21,7 @@
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false)) ?>
+											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false)) ?>
 										</div>
 										 
 									<div class="col-md-2">
@@ -42,6 +42,9 @@
 									</td>
 									<td width="40%">
 										<label>Item<label>
+									</td>
+									<td width="20%">
+										<label>Available Stock<label>
 									</td>
 									<td width="30%">
 										<label>Quantity<label>
@@ -173,51 +176,78 @@ $(document).ready(function() {
 		var rowCount = $('#main_table tbody#main_tbody tr').length; 
 		if(rowCount>1)
 		{
-			 $(this).closest('tr').remove();
+			$(this).closest('tr').remove();
 			 
 		}
 		
     });
 
-		$('.add').click(function(){
-				add_row();
-		});
+	$('.add').click(function(){
+			add_row();
+	});
 		
-	add_row();
-		function add_row(){
-				var tr=$("#sample_table tbody tr.main_tr").clone();
-				$("#main_table tbody#main_tbody").append(tr); 
-				rename_rows();
-			}
+	//add_row();
+	
+	function add_row(){
+			var tr=$("#sample_table tbody tr.main_tr").clone();
+			$("#main_table tbody#main_tbody").append(tr); 
+			rename_rows();
+		}
 
-		function rename_rows(){
-				var i=0;
-				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-					$(this).find('td:nth-child(1)').html(i+1);
-					$(this).find("td:nth-child(2) select").select2().attr({name:"item_ledgers["+i+"][item_id]", id:"item_ledgers-"+i+"-item_id"}).rules('add', {
-								required: true
-							}); 
-					$(this).find("td:nth-child(3) input").attr({name:"item_ledgers["+i+"][quantity]", id:"item_ledgers-"+i+"-quantity"}).rules('add', {
-								required: true
-							}); 
-					i++;
-				});
-			}	
+	function rename_rows(){
+		var i=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+			$(this).find('td:nth-child(1)').html(i+1);
+			$(this).find("td:nth-child(2) select").select2().attr({name:"item_ledgers["+i+"][item_id]", id:"item_ledgers-"+i+"-item_id"}).rules('add', {
+						required: true
+					});
+
+			$(this).find("td:nth-child(4) input").attr({name:"item_ledgers["+i+"][quantity]", id:"item_ledgers-"+i+"-quantity"}).rules('add', {
+						required: true
+					}); 
+			i++;
+		});
+	}	
 	  
 	$(document).on('keyup', '.number', function(e)
     { 
-            var mdl=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-    if(mdl.match(numbers))
-    {
-    }
-    else
-    {
-        $(this).val('');
-        return false;
-    }
+		var mdl=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(mdl.match(numbers))
+		{
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
     });
+	
+	$('.itm_chng').die().live('change',function() 
+	{ 
+		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
+		var update = $(this);
+		var itm_val = $(this).val();
+		var ware_house = $(".ware_house").val();
+ 		var m_data = new FormData();
+		m_data.append('itm_val',itm_val);
+		m_data.append('ware_house',ware_house);
+			
+		$.ajax({
+			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_stock_available"]); ?>",
+			data: m_data,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			dataType:'text',
+			success: function(data)   // A function to be called if request succeeds
+			{
+				$(update).closest('tr').find('.stock_available').html(data);
+				$(update).closest('tr').find('.valid').attr('max',data);
+			}
+		});	
 	});
+});
  
 </script>
 		<table id="sample_table" style="display:none;" cellpadding="5" cellspacing="5">
@@ -225,10 +255,13 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm select2me itm_chng','empty' => 'Select','label'=>false)) ?>
+					</td>
+					<td class="stock_available" align="center">
+						
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
+						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Quantity']); ?>	
 					</td>						  
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
@@ -236,4 +269,3 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
- 

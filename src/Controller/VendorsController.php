@@ -74,7 +74,7 @@ class VendorsController extends AppController
 						'account_group_id' => 1
 						])
 				->execute();
-		 
+
                 $this->Flash->success(__('The vendor has been saved.'));
                  return $this->redirect(['action' => 'index']);
             }
@@ -94,16 +94,22 @@ class VendorsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		$city_id=$this->Auth->User('city_id');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $vendor = $this->Vendors->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
-            $vendor->city_id=$city_id;
-			if ($this->Vendors->save($vendor)) {
+            $vendor->jain_thela_admin_id=$jain_thela_admin_id;
+			if ($vendors_data=$this->Vendors->save($vendor)) {
+				
+				$vendors_name=$vendors_data->name;
+				$query=$this->Vendors->LedgerAccounts->query();
+				$result = $query->update()
+                    ->set(['name' => $vendors_name])
+                    ->where(['vendor_id' => $id])
+                    ->execute();
                 $this->Flash->success(__('The vendor has been update.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));

@@ -18,7 +18,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['options' => $customers,'class'=>'form-control input-sm select2me','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
 					</div>
 					
 				</div><br/>
@@ -99,7 +99,9 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				
+				customer_id:{
+					required: true
+				},
 			},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -200,6 +202,32 @@ $(document).ready(function() {
 			i++;
 		});
 	}
+	<?php
+	if($order_type=='Bulkorder')
+	{
+	?>
+		$(document).on('change','#customer_id',function(){ 
+			var customer_id=$(this).val();
+			$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
+				var m_data = new FormData();
+				m_data.append('customer_id',customer_id);
+				$('#discount').remove();
+				$.ajax({
+					url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_customer_discount"]); ?>",
+					data: m_data,
+					processData: false,
+					contentType: false,
+					type: 'POST',
+					dataType:'text',
+					success: function(data)   // A function to be called if request succeeds
+					{
+						$('#main_table tfoot').prepend(data);
+					}	
+				});	
+		});
+	<?php
+	}
+	?>
 	$(document).on('keyup','.cal_amount',function(){ 
 		var obj=$(this).closest('tr');
 		var qty=obj.find('td:nth-child(3) input').val();
@@ -210,6 +238,12 @@ $(document).ready(function() {
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 		});
+		if($('input[name=discount_percent]').val())
+		{
+			var discount_percent=parseFloat($('input[name=discount_percent]').val());
+			var discount_amount=total_amount*(discount_percent/100);
+			total_amount-=discount_amount;
+		}
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
 		var grand_total=total_amount-amount_from_wallet;
 		$('input[name=total_amount]').val(grand_total);

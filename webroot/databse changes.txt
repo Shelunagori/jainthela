@@ -24,3 +24,6 @@ create field into item_ledgers table     rate_updated varchare (10)
 create field into item_ledgers table     purchase_booking_id int (10)
 create field into purchase_bookings table     total_amount decimal (10,2)
 create field into grn table     warehouse_id int (10)
+
+				16-06-2017
+create field into orders table     discount_percent decimal (10,2)

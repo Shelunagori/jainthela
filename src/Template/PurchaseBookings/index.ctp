@@ -26,6 +26,7 @@
 							
 							<th scope="col">Transaction Date</th>
 							<th scope="col">Vendor Name</th>
+							<th scope="col">Grand Total</th>
 							<th scope="col">Created On</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -38,6 +39,7 @@
                 <td><?= h('#'.str_pad($this->Number->format($purchaseBooking->grn->grn_no), 4, '0', STR_PAD_LEFT)) ?></td>
                 <td><?= h($purchaseBooking->transaction_date) ?></td>
                 <td><?= $purchaseBooking->vendor->name ?></td>
+                <td><?= $purchaseBooking->total_amount ?></td>
                 
                 <td><?= h($purchaseBooking->created_on) ?></td>
                 <td class="actions">
