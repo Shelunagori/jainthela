@@ -22,7 +22,7 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-        $items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['ItemCategories', 'Units']);
+        $items = $this->Items->find()->contain(['ItemCategories', 'Units']);
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
