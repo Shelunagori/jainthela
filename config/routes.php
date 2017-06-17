@@ -73,7 +73,12 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::prefix('api', function ($routes) {
     $routes->extensions(['json', 'xml']);
     $routes->resources('Items', [
-    'actions' => ['index' => 'get']
+   'map' => [
+       'view' => [
+           'action' => 'view',
+           'method' => 'GET'
+       ]
+   ]
 ]);
     //$routes->resources(['controller' => 'Items', 'action' => 'index']);
 });
