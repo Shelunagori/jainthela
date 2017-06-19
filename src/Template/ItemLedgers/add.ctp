@@ -248,7 +248,7 @@ $(document).ready(function() {
 		});	
 	});
 });
- 
+
 </script>
 		<table id="sample_table" style="display:none;" cellpadding="5" cellspacing="5">
 			<tbody>

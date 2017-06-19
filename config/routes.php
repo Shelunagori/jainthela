@@ -50,7 +50,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
      $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
-	
+		
 
     /**
      * Connect catchall routes for all controllers.
@@ -72,16 +72,17 @@ Router::scope('/', function (RouteBuilder $routes) {
 });
 Router::prefix('api', function ($routes) {
     $routes->extensions(['json', 'xml']);
-    $routes->resources('Items', [
-   'map' => [
-       'view' => [
-           'action' => 'view',
-           'method' => 'GET'
-       ]
-   ]
-]);
-    //$routes->resources(['controller' => 'Items', 'action' => 'index']);
+
+	$routes->resources('Items', [
+	   'map' => [
+		   'updateJainCash' => [
+			   'action' => 'updateJainCash',
+			   'method' => 'GET'
+		   ]
+	   ]
+	]);
 });
+
 /**
  * Load all plugin routes. See the Plugin documentation on
  * how to customize the loading of plugin routes.

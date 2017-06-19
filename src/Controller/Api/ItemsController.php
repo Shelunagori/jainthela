@@ -22,5 +22,30 @@ class ItemsController extends AppController
         $this->set('_serialize', ['status', 'error', 'item']);
     }
 	
+	public function add()
+    {
+		
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
+	
+	public function view()
+    {
+		
+		$status=true;
+		$error="view";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
+	public function updateJainCash()
+    {
+		
+		$status=true;
+		$error="updateJainCash";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
 	
 }

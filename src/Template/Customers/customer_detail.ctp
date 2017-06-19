@@ -42,42 +42,14 @@
 <script>
 $(document).ready(function() {
 	 
-	var $rows = $('#main_tble tbody tr');
-	$('#search3').on('keyup',function() {
 	
-			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    		var v = $(this).val();
-    		if(v){ 
-    			$rows.show().filter(function() {
-    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-		
-    				return !~text.indexOf(val);
-    			}).hide();
-    		}else{
-    			$rows.show();
-    		}
-    	});
- 
-	$(document).on('keyup', '.number', function(e)
-    { 
-            var mdl=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-    if(mdl.match(numbers))
-    {
-    }
-    else
-    {
-        $(this).val('');
-        return false;
-    }
-    });
 	
 	$('.go').die().live('click',function() 
 	{ 
 		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
 		var customer = $(this).val();
  		var m_data = new FormData();
-		m_data.append('customer',customer);
+		m_data.append('customer_id',customer);
 			
 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "Customers", "action" => "ajax_customer_report"]); ?>",
@@ -88,7 +60,7 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
-alert(data);
+a
 				$('#data').html(data);
 			}	
 		});	
