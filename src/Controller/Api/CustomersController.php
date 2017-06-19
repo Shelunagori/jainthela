@@ -1,30 +1,15 @@
 <?php
-namespace App\Controller;
-
-use App\Controller\AppController;
-
-/**
- * Customers Controller
- *
- * @property \App\Model\Table\CustomersTable $Customers
- *
- * @method \App\Model\Entity\Customer[] paginate($object = null, array $settings = [])
- */
+namespace App\Controller\Api;
+use App\Controller\Api\AppController;
 class CustomersController extends AppController
 {
-    public function add($id=null)
+    public function registration()
     {
-        $this->viewBuilder()->layout('index_layout');
-		$customer = $this->Customers->newEntity();
-		if ($this->request->is(['post'])) {
-            $customer= $this->Customers->patchEntity($customer, $this->request->getData());
-            if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('The customer has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
-        }
-        $this->set(compact('customer'));
-        $this->set('_serialize', ['customer']);
+		$mobile_no=$this->request->query('mobile_no');
+		$customerDetails = $this->Customers->find()->where(['mobile_no'=>$mobile_no]);
+		$status=true;
+		$error="";
+		$this->set(compact('status', 'error', 'customerDetails'));
+		$this->set('_serialize', ['status', 'error', 'customerDetails']);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 use App\Controller\Api\AppController;
-class ItemcategoriesController extends AppController
+class ItemCategoriesController extends AppController
 {
  
 	public function index()
@@ -17,19 +17,19 @@ class ItemcategoriesController extends AppController
 	public function registration()
     {
 		$mobile_no=$this->request->query('mobile_no');
-	    $customerDetails = $this->Items->Customers->find()->where(['mobile_no'=>$mobile_no]);
-		if(!empty($itemCategories))
+	    $customerDetails = $this->->Customers->find()->where(['mobile_no'=>$mobile_no]);
+		if($customerDetails)
 		{
-		$status=true;
-		$error="";
-        $this->set(compact('status', 'error', 'customerDetails'));
-        $this->set('_serialize', ['status', 'error', 'customerDetails']);
+			$status=true;
+			$error="";
+			$this->set(compact('status', 'error', 'customerDetails'));
+			$this->set('_serialize', ['status', 'error', 'customerDetails']);
 		}
 		else{
 			$status=true;
-		$error="";
-        $this->set(compact('status', 'error', 'customerDetails'));
-        $this->set('_serialize', ['status', 'error', 'customerDetails']);
+			$error="";
+			$this->set(compact('status', 'error', 'customerDetails'));
+			$this->set('_serialize', ['status', 'error', 'customerDetails']);
 		}
     }
 	
