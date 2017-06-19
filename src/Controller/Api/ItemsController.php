@@ -42,35 +42,7 @@ class ItemsController extends AppController
     }
 	
 	
-	
-	/* public function view()
-    {
-		$id=$this->request->query('id');
-        $item = $this->Items->get($id);
-		$status=true;
-		$error="";
-		$this->set(compact('status', 'error', 'item'));
-        $this->set('_serialize', ['status', 'error', 'item']);
-    } */
-	
-	/* public function add()
-    {
-		
-		$status=true;
-		$error="";
-        $this->set(compact('status', 'error'));
-        $this->set('_serialize', ['status', 'error']);
-    }
-	 */
-	/* public function view()
-    {
-		
-		$status=true;
-		$error="view";
-        $this->set(compact('status', 'error'));
-        $this->set('_serialize', ['status', 'error']);
-    } */
-	/* public function updateJainCash()
+	public function updateJainCash()
     {
 		
 		$status=true;
@@ -78,5 +50,4 @@ class ItemsController extends AppController
         $this->set(compact('status', 'error'));
         $this->set('_serialize', ['status', 'error']);
     }
-	 */
 }
