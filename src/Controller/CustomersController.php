@@ -96,21 +96,7 @@ class CustomersController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
 		
-		$customer = $this->Customers->get(1, [
-            'contain' => ['JainCashPoints'=>function($query){
-				return $query->select([
-					'total_point' => $query->func()->sum('point'),
-					'total_used_point' => $query->func()->sum('used_point'),'customer_id'
-				]);
-			},'Wallets'=>function($query){
-				return $query->select([
-					'total_advance' => $query->func()->sum('advance'),
-					'total_consumed' => $query->func()->sum('consumed'),'customer_id'
-				]);
-			},'Orders']
-        ]);
-		pr($customer->toArray());
-		exit;
+		
 		
 		
 		
@@ -126,10 +112,20 @@ class CustomersController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
 		$customer = $this->Customers->get($this->request->data['customer_id'], [
-            'contain' => ['JainCashPoints']
+            'contain' => ['JainCashPoints'=>function($query){
+				return $query->select([
+					'total_point' => $query->func()->sum('point'),
+					'total_used_point' => $query->func()->sum('used_point'),'customer_id'
+				]);
+			},'Wallets'=>function($query){
+				return $query->select([
+					'total_advance' => $query->func()->sum('advance'),
+					'total_consumed' => $query->func()->sum('consumed'),'customer_id'
+				]);
+			},'Orders']
         ]);
 		pr($customer->toArray());
-		exit;
+		
 		$this->set(compact('customer'));
     }
 
