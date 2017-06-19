@@ -90,12 +90,25 @@ class CustomersController extends AppController
         $this->set('_serialize', ['customer']);
     }
 
-	public function customerDetail()
+	public function customerDetail($id=Null)
     {
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		
+		$customer = $this->Customers->get($id, [
+            'contain' => ['JainCashPoints'=>function($query){
+				return $query->select([
+					'total_point' => $query->func()->sum('point'),
+					'total_used_point' => $query->func()->sum('used_point'),'customer_id'
+				]);
+			},'Wallets'=>function($query){
+				return $query->select([
+					'total_advance' => $query->func()->sum('advance'),
+					'total_consumed' => $query->func()->sum('consumed'),'customer_id'
+				]);
+			},'Orders']
+        ]);
+		pr($customer->toArray());
 		
 		
 		
