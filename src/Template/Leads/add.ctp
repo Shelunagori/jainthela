@@ -21,16 +21,14 @@
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Mobile No <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me','label'=>false)) ?>
+											<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me number','label'=>false)) ?>
 										</div>
 										 
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
 										
 										<?php echo $this->Form->control('created_on',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
-										
-										
-										
+																
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
@@ -70,13 +68,12 @@ $(document).ready(function() {
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
 	form3.validate({
-		
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 				name:{
-					required: true			
+					required: true
 				},
 				mobile:{
 					required: true
@@ -137,19 +134,20 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
- 
+	
 	$(document).on('keyup', '.number', function(e)
     { 
-            var mdl=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-    if(mdl.match(numbers))
-    {
-    }
-    else
-    {
-        $(this).val('');
-        return false;
-    }
+		var mdl=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(mdl.match(numbers))
+		{
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
     });
+	
 });
 </script>

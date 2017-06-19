@@ -285,7 +285,7 @@ public function DriverReport()
 		$count=$itemLedgers->count();
         $this->set(compact('itemLedgers','count'));
      }
-	 
+
 
 	public function ajaxStockAvailable()
     {
