@@ -1,65 +1,212 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\PromoCode[]|\Cake\Collection\CollectionInterface $promoCodes
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Promo Code'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Item Categories'), ['controller' => 'ItemCategories', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Item Category'), ['controller' => 'ItemCategories', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Jain Thela Admins'), ['controller' => 'JainThelaAdmins', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Jain Thela Admin'), ['controller' => 'JainThelaAdmins', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Orders'), ['controller' => 'Orders', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Order'), ['controller' => 'Orders', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="promoCodes index large-9 medium-8 columns content">
-    <h3><?= __('Promo Codes') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('code') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('discount_per') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('item_category_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('jain_thela_admin_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('valid_from') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('valid_to') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($promoCodes as $promoCode): ?>
-            <tr>
-                <td><?= $this->Number->format($promoCode->id) ?></td>
-                <td><?= h($promoCode->code) ?></td>
-                <td><?= $this->Number->format($promoCode->discount_per) ?></td>
-                <td><?= $promoCode->has('item_category') ? $this->Html->link($promoCode->item_category->name, ['controller' => 'ItemCategories', 'action' => 'view', $promoCode->item_category->id]) : '' ?></td>
-                <td><?= $promoCode->has('jain_thela_admin') ? $this->Html->link($promoCode->jain_thela_admin->name, ['controller' => 'JainThelaAdmins', 'action' => 'view', $promoCode->jain_thela_admin->id]) : '' ?></td>
-                <td><?= h($promoCode->valid_from) ?></td>
-                <td><?= h($promoCode->valid_to) ?></td>
-                <td><?= h($promoCode->created_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $promoCode->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $promoCode->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $promoCode->id], ['confirm' => __('Are you sure you want to delete # {0}?', $promoCode->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<div class="row">
+	<div class="col-md-5 col-sm-5">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="font-purple-intense"></i>
+					<span class="caption-subject font-purple-intense ">
+							<i class="fa fa-plus"></i> Add Promo Code
+					</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<?= $this->Form->create($promoCode,['id'=>'form_sample_3']) ?>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Promo Code Name <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('code',['placeholder'=>'Promo Code Name','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+					</div>
+					<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Discount</label>
+						<?php echo $this->Form->control('discount_per',['placeholder'=>'Discount','class'=>'form-control input-sm','label'=>false]); ?>
+					</div></div>
+					<div class="row">
+					<div class="col-md-8">
+						<?php echo $this->Form->control('item_category_id', ['empty'=>'-- select --','options' => $itemCategories,'class'=>'form-control input-sm select select2me select2','required']); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Valid From</label>
+						<?php echo $this->Form->control('valid_from',['readonly','placeholder'=>'Valid From','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Valid To</label>
+						<?php echo $this->Form->control('valid_to',['readonly','placeholder'=>'Valid To','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<br/>
+				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-7 col-sm-7">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class=" fa fa-gift"></i>
+					<span class="caption-subject">Codes</span>
+				</div>
+				<div class="actions">
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div style="overflow-y: scroll;height: 400px;">
+					<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Code Name</th>
+							<th>Discount</th>
+							<th>Item Category</th>
+							<th>Valid From</th>
+							<th>Valid To</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$i=0;
+						foreach ($promoCodes as $promoCode):
+						$i++;
+
+						?>
+						<tr>
+							<td><?= $i ?></td>
+							<td><?= h($promoCode->code) ?></td>
+							<td><?= h($promoCode->discount_per) ?></td>
+							<td><?= h($promoCode->ItemCategories->item_category_id) ?></td>
+							<td><?= h($promoCode->valid_from) ?>
+							<td><?= h($promoCode->valid_to) ?>
+							<span id="status_id" style="display:none;"><?php echo $promoCode->id; ?></span>
+							</td>
+							<td>
+							<?php echo  $this->Form->control('status',['class'=>'form-control input-sm input-small status','options'=>['Active'=>'Active','Deactive'=>'Deactive'], 'value'=>$promoCode->status,'label'=>false]); ?>
+							</td>
+							
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	
+  //--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+				code:{
+					required: true,					 
+				},
+				discount_per:{
+					required: true,
+				},
+				valid_from:{
+					required: true,
+				},
+				valid_to:{
+					required: true,
+				}
+
+			},
+
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+		},
+
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
+
+		submitHandler: function (form) {
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
+		}
+
+	});
+	//--	 END OF VALIDATION
+	
+	var $rows = $('#main_tble tbody tr');
+	$('#search3').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
+	});
+});
+</script>
+<script>
+$(document).ready(function(){
+	$('.status').change(function(){
+		var status = $(this).val();
+		var status_id = $(this).closest('tr').find('td span#status_id').text();
+		var url="<?php echo $this->Url->build(['controller'=>'PromoCodes','action'=>'ajaxStatusPromoCode']);
+		?>";
+		url=url+'/'+status+'/'+status_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			alert('Update Successfully');
+
+		});		
+    });
+	
+});
+</script>
+
