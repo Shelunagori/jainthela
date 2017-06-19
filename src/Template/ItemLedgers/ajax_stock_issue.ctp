@@ -1,29 +1,29 @@
 
 		<table id="main_table" class="table table-condensed table-bordered">
-							<thead>
-								<tr align="center">
-									<td width="12%">
-										<label>Sr<label>
-									</td>
-									<td width="40%">
-										<label>Item<label>
-									</td>
-									<td width="30%">
-										<label>Quantity<label>
-									</td>
-									<td></td>
-								</tr>
-							</thead>
-							<tbody id='main_tbody' class="tab">
-								
-							</tbody>
-							<tfoot>
-								<tr>
-									<td>
-										<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
-									</td>
-								</tr>
-							</tfoot>
+			<thead>
+				<tr align="center">
+					<td width="12%">
+						<label>Sr<label>
+					</td>
+					<td width="40%">
+						<label>Item<label>
+					</td>
+					<td width="30%">
+						<label>Quantity<label>
+					</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody id='main_tbody' class="tab">
+				
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>
+						<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+					</td>
+				</tr>
+			</tfoot>
 		</table>
 		<div class="row" style="padding-top:5px;">
 			<div class="col-md-4"></div>
@@ -31,11 +31,9 @@
 			<div class="col-md-4"> </div>
 		</div>
 		<div align="center">
-			<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Stock Return'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+			<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Stock Return'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 		</div>
 		
-		
-
 		<table id="sample_table" style="display:none;">
 			<tbody>
 				<tr class="main_tr" class="tab">

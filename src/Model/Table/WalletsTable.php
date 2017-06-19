@@ -44,11 +44,11 @@ class WalletsTable extends Table
         ]);
         $this->belongsTo('Plans', [
             'foreignKey' => 'plan_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Orders', [
             'foreignKey' => 'order_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
     }
 

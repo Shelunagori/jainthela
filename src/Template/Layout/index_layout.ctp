@@ -226,7 +226,23 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
 							</li>
-							
+							<li>
+								<a href="javascript:;">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<span class="title">
+								Purchase Outward</span>
+								<span class="arrow ">
+								</span>
+								</a>
+								<ul class="sub-menu">
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Create','/PurchaseOutwards/add',['escape'=>false]) ?>
+									</li>
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> View','/PurchaseOutwards/',['escape'=>false]) ?>
+									</li>
+								</ul>
+							</li>
 							<li>
 								<a href="javascript:;">
 								<i class="glyphicon glyphicon-list-alt"></i>
@@ -261,6 +277,9 @@
 									</li>
 									<li>
 										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
+									</li>
+									<li>
+										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
 									</li>
 								</ul>
 							</li>

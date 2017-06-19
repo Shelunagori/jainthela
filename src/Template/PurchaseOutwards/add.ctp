@@ -2,12 +2,12 @@
 		<div class="col-md-12">
 			<div class="portlet">
 		<div class="portlet-body"> 
-			<?= $this->Form->create($itemLedger,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($purchaseOutward,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
 							<span>
-							<B>Stock Issue</B>
+							<B>Purchase Order Outward</B>
 							</span>
 						</div>
 					</div>
@@ -16,14 +16,10 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="col-md-4">
-										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+										<label class="col-md-6 control-label">Vendors <span class="required" 	aria-required="true">*</span></label>
+										<?= $this->Form->input('vendor_id',array('options' => $vendors,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 									</div>
-									<div class="col-md-4">
-											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false)) ?>
-										</div>
-										 
+									
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
 										
@@ -37,17 +33,23 @@
 						<table id="main_table" class="table table-condensed table-bordered">
 							<thead>
 								<tr align="center">
-									<td width="12%">
+									<td width="7%">
 										<label>Sr<label>
 									</td>
-									<td width="40%">
+									<td width="27%">
 										<label>Item<label>
 									</td>
-									<td width="20%">
+									<td width="10%">
 										<label>Available Stock<label>
 									</td>
-									<td width="30%">
+									<td width="20%">
 										<label>Quantity<label>
+									</td>
+									<td width="20%">
+										<label>Rate<label>
+									</td>
+									<td width="20%">
+										<label>Amount<label>
 									</td>
 									<td></td>
 								</tr>
@@ -60,6 +62,15 @@
 									<td>
 										<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 									</td>
+									<td colspan="4" style="text-align:right !important;">
+										<label class="control-label" >Grand Total</label>
+									</td>
+									<td>
+										<div class="form-group">
+											<?= $this->Form->input('total_amount',['class'=>'form-control input-sm grnd_ttl','label'=>false,'placeholder'=>'Grand Total','value'=>0]) ?>
+										</div>
+									</td>
+									<td></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -69,7 +80,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Stock Issue'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-minus']) . __(' Purchase Outward'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -154,7 +165,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
+
 	var $rows = $('#main_tble tbody tr');
 	$('#search3').on('keyup',function() {
 	
@@ -198,17 +209,42 @@ $(document).ready(function() {
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			$(this).find('td:nth-child(1)').html(i+1);
-			$(this).find("td:nth-child(2) select").select2().attr({name:"item_ledgers["+i+"][item_id]", id:"item_ledgers-"+i+"-item_id"}).rules('add', {
+			$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_outward_details["+i+"][item_id]", id:"purchase_outward_details-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-
-			$(this).find("td:nth-child(4) input").attr({name:"item_ledgers["+i+"][quantity]", id:"item_ledgers-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(4) input").attr({name:"purchase_outward_details["+i+"][quantity]", id:"purchase_outward_details-"+i+"-quantity"}).rules('add', {
 						required: true
 					}); 
+			$(this).find("td:nth-child(5) input").attr({name:"purchase_outward_details["+i+"][rate]", id:"purchase_outward_details-"+i+"-rate"}).rules('add', {
+						required: true
+					}); 
+			$(this).find("td:nth-child(6) input").attr({name:"purchase_outward_details["+i+"][amount]", id:"purchase_outward_details-"+i+"-amount"}).rules('add', {
+						required: true
+					}); 			
 			i++;
 		});
-	}	
-	  
+	}
+	
+	$(".calculation_amount").die().live('keyup',function(){
+		calculation();				
+	});	
+	
+	function calculation(){
+		var grand_total = 0;		
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			var amount =0;
+			var quantity = parseFloat($(this).find("td:nth-child(4) input").val());
+			if(!quantity){ quantity=0; }
+			var price = parseFloat($(this).find("td:nth-child(5) input").val());
+			if(!price){ price=0; }
+			amount = quantity*price;
+			grand_total=grand_total+amount;
+			$(this).find("td:nth-child(6) input").val(amount.toFixed(2));
+			var total_amount = $(this).find("td:nth-child(6) input").val();
+		}); 
+		$(".grnd_ttl").val(grand_total.toFixed(2));
+	}
+
 	$(document).on('keyup', '.number', function(e)
     { 
 		var mdl=$(this).val();
@@ -261,8 +297,14 @@ $(document).ready(function() {
 						
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Quantity']); ?>	
-					</td>						  
+						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Quantity','value'=>0]); ?>	
+					</td>
+					<td>
+						<?php echo $this->Form->input('rate[]', ['label' => false,'class' => 'calculation_amount form-control input-sm number valid','placeholder'=>'Rate','value'=>0]); ?>	
+					</td>
+					<td>
+						<?php echo $this->Form->input('amount[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Amount','value'=>0]); ?>	
+					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 					</td>

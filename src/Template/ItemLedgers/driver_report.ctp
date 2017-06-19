@@ -25,7 +25,7 @@
 									</div>									
 									<div class="col-md-2" style="padding-top:17px;">
 										<label class="control-label">&nbsp;</label>
-										<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-search']) . __(' Go'),['class'=>'btn btn-success go','type'=>'button']); ?>
+										<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-search']) . __(' Go'),['class'=>'btn btn-success go','type'=>'button']); ?>
 									</div>								
 								 </div>
 								 <div class="col-md-12"><br></div>

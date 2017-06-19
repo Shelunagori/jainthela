@@ -33,14 +33,42 @@ class CustomersController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($id,$status)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => ['Franchises']
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$status;
+		$id;
+		$Customers = $this->Customers->get($id, [
+            'contain' => ['JainCashPoints'=>function($query){
+				return $query->select([
+					'total_point' => $query->func()->sum('point'),
+					'total_used_point' => $query->func()->sum('used_point'),'customer_id'
+				]);
+			},'Wallets'=>function($query){
+				return $query->select([
+					'total_advance' => $query->func()->sum('advance'),
+					'total_consumed' => $query->func()->sum('consumed'),'customer_id',
+				]);
+			},'Orders'=>function($query){
+				return $query->select([
+					
+					'total_order' => $query->func()->count('customer_id'),'customer_id',
+				]);
+			}
+				]
         ]);
-
-        $this->set('customer', $customer);
-        $this->set('_serialize', ['customer']);
+		
+		$jain_cash_gains=$this->Customers->ReferralDetails->find()->where(['from_customer_id'=>$id])->contain(['fromCustomer']);
+		$jain_cash_uses=$this->Customers->JainCashPoints->find()->where(['JainCashPoints.customer_id'=>$id, 'order_id !='=>0])->contain(['Customers', 'Orders']);
+		
+		$wallet_advance=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.order_id ='=>0])->contain(['Customers', 'Orders']);
+		
+		$wallet_consumes=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.plan_id ='=> 0])->contain(['Customers', 'Orders']);
+		pr($wallet_advance->toArray());
+		$Orders=$this->Customers->Orders->find()->where(['orders.customer_id'=>$id]);
+        $this->set(compact('Customers', 'status', 'id', 'jain_cash_gains', 'jain_cash_uses','wallet_consumes', 'Orders'));
+        $this->set('_serialize', ['Customers', 'jain_cash_gains', 'jain_cash_uses', 'wallet_consumes', 'Orders']);
     }
 
     /**
@@ -95,7 +123,7 @@ class CustomersController extends AppController
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$customer = $this->Customers->get($id, [
+		$customers = $this->Customers->get($id, [
             'contain' => ['JainCashPoints'=>function($query){
 				return $query->select([
 					'total_point' => $query->func()->sum('point'),
@@ -108,14 +136,11 @@ class CustomersController extends AppController
 				]);
 			},'Orders']
         ]);
-		pr($customer->toArray());
+		pr($customers->toArray());
 		
 		
-		
-		
-        $Customers = $this->Customers->find('list');
-        $this->set(compact('Customers'));
-        $this->set('_serialize', ['Customers']);
+        $this->set(compact('customers'));
+        $this->set('_serialize', ['customers']);
     }
 
 

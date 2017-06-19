@@ -35,13 +35,13 @@
 					<?= $itemLedger->item->name ?>
 					<?php echo $item_id; ?>			
 				</td>	
-				<td>
+				<td align="center">
 					<?php echo $total_in; ?>
 				</td>
-				<td>
+				<td align="center">
 					<?php echo $total_out; ?>
 				</td>
-				<td>
+				<td align="center">
 					<?php echo $remaining; ?>
 				</td>
 			</tr>

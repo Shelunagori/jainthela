@@ -1,50 +1,318 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Customer $customer
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Customers'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Customer'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Franchises'), ['controller' => 'Franchises', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Franchise'), ['controller' => 'Franchises', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="customers view large-9 medium-8 columns content">
-    <h3><?= h($customer->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($customer->name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Mobile') ?></th>
-            <td><?= h($customer->mobile) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Email') ?></th>
-            <td><?= h($customer->email) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Franchise') ?></th>
-            <td><?= $customer->has('franchise') ? $this->Html->link($customer->franchise->name, ['controller' => 'Franchises', 'action' => 'view', $customer->franchise->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($customer->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Freeze') ?></th>
-            <td><?= $customer->freeze ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Address') ?></h4>
-        <?= $this->Text->autoParagraph(h($customer->address)); ?>
-    </div>
+<div class="row">
+<div class="col-md-12">
+<div class="portlet">
+<div class="portlet-body"> 
+
+	<div class="portlet light bordered">
+		<div class="portlet-title">
+			<div class="caption">
+				<span>
+					<B>Customer Detail Report</B>
+				</span>
+			</div>
+		</div>
+		<div class="portlet-body form"><br>
+		<!-- BEGIN FORM-->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="col-md-4">
+							<label class="col-md-6 control-label">Customer</label>
+							<?= $Customers->name ?>
+						</div>
+						<div class="col-md-4">
+							<label class="col-md-6 control-label">Mobile</label>
+							<?= $Customers->mobile ?>
+						</div>
+						<div class="col-md-4">
+							<label class="col-md-6 control-label">Email</label>
+							<?= $Customers->email ?>
+						</div>
+					 </div>
+					 <div class="col-md-12"><br></div>
+					 <div class="col-md-12">
+						<div class="actions">
+							<?php
+							foreach($Customers->jain_cash_points as $jain_cash_data){
+								
+								$jain_cash_total_point=$jain_cash_data->total_point;
+								$jain_cash_total_used_point=$jain_cash_data->total_used_point;
+								$jain_cash_remaining_point=$jain_cash_total_point-$jain_cash_total_used_point;
+							}
+							foreach($Customers->wallets as $wallet_data){
+								
+								$wallet_total_advance=$wallet_data->total_advance;
+								$wallet_total_consumed=$wallet_data->total_consumed;
+								$wallet_remaining_amount=$wallet_total_advance-$wallet_total_consumed;
+							}
+							foreach($Customers->orders as $order_data){
+								$total_order_data=$order_data->total_order;
+							}
+							 ?>
+							 <table>
+								<tr>
+									<td align="center">
+										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:17px;padding:4px;">
+										JAIN CASH<br><?= $jain_cash_remaining_point ?>
+										</div>
+									</td>
+									<td align="center">
+										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
+										WALLET<br><?= $wallet_remaining_amount ?>
+										</div>
+									</td>
+									<td align="center">
+										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
+										ORDERS<br><?= $total_order_data ?>
+										</div>
+									</td>
+								</tr>
+							</table>
+	<div class="col-md-12">
+		<h3 align="center">Jain Cash Details</h3>
+	<div>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<caption style="text-align:center;font-size:20px;">Earned Points</caption>
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Customer</th>
+							<th>Point</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						foreach($jain_cash_gains as $jain_cash_gain){
+						@$i++;
+							?>
+							<tr>
+								<td><?= $i ?></td>
+								<td>
+									<?= h($jain_cash_gain->from_customer->name) ?>
+								</td>
+								<td>
+									<?= h($jain_cash_gain->points) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime($jain_cash_gain->created_on))) ?>
+								</td>
+						<?php } ?>														 
+					</tbody>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble2">
+					<caption style="text-align:center;font-size:20px;">Used Points</caption>
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Order</th>
+							<th>Point</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						foreach($jain_cash_uses as $jain_cash_use){
+						@$j++;
+							?>
+							<tr>
+								<td><?= $j ?></td>
+								<td>
+									<?= h($jain_cash_use->order->order_no) ?>
+								</td>
+								<td>
+									<?= h($jain_cash_use->customer->name) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime($jain_cash_gain->updated_on))) ?>
+								</td>
+						<?php } ?>
+						 
+					</tbody>
+				</table>	
+			</td>
+		</tr>
+	</table>
+	 
+<!-------------------------------------!---------------------------------------->
+	<div class="col-md-12">
+		<h3 align="center">Wallet</h3>
+	<div>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<caption style="text-align:center;font-size:20px;">Advance</caption>
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Customer</th>
+							<th>Point</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						foreach($jain_cash_gains as $jain_cash_gain){
+						@$i++;
+							?>
+							<tr>
+								<td><?= $i ?></td>
+								<td>
+									<?= h($jain_cash_gain->from_customer->name) ?>
+								</td>
+								<td>
+									<?= h($jain_cash_gain->points) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime($jain_cash_gain->created_on))) ?>
+								</td>
+						<?php } ?>														 
+					</tbody>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble2">
+					<caption style="text-align:center;font-size:20px;">Consumed</caption>
+					<thead>
+						<tr>
+							<th>Sr</th>
+							<th>Order</th>
+							<th>Consumed</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php 
+						foreach($wallet_consumes as $wallet_consume){
+						@$s++;
+							?>
+							<tr>
+								<td><?= $s ?></td>
+								<td>
+									<?= h($wallet_consume->order->order_no) ?>
+								</td>
+								<td>
+									<?= h($wallet_consume->consumed) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime($wallet_consume->updated_on))) ?>
+								</td>
+						<?php } ?>
+						 
+					</tbody>
+				</table>	
+			</td>
+		</tr>
+	</table>
+<!------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------->
+<div class="col-md-12">
+		<h3 align="center">Order Details</h3>
+	<div>
+		<table class="table table-condensed table-hover table-bordered" id="main_tble">
+				<thead>
+					<tr>
+						<th>Sr</th>
+						<th>Order</th>
+						<th>Date</th>
+						<th>Total</th>
+						<th>Action</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+					foreach($Orders as $Order){
+					@$t++;
+						?>
+						<tr>
+							<td><?= $t ?></td>
+							<td>
+								<?= h($Order->order_no) ?>
+							</td>
+							<td>
+								<?= h(date('d-M-Y', strtotime($Order->order_date))) ?>
+							</td>
+							<td>
+								<?= h($Order->total_amount) ?>
+							</td>
+							<td>
+								View
+							</td>
+							<td>
+								<?= h($Order->status) ?>
+							</td>
+							
+					<?php } ?>														 
+				</tbody>
+			</table>
+<!------------------------------------------------------------------------------------------->
+								
+								
+						</div>
+					 </div>
+				</div>
+			<!-- END FORM-->
+			<div id="data"> </div>						
+		</div>
+	</div>
 </div>
+	</div>
+</div>
+    <div class="col-md-1">
+	</div>
+</div>	
+		
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	
+	var $rows = $('#main_tble tbody tr');
+	$('#search').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
+	});
+	
+	var $rows2 = $('#main_tble2 tbody tr');
+	$('#search2').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			$rows2.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows2.show();
+		}
+	});
+	
+	var $rows3 = $('#main_tble3 tbody tr');
+	$('#search3').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			$rows3.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows3.show();
+		}
+	});
+	
+});
+</script>
