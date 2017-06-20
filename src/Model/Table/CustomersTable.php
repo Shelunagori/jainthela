@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * Customers Model
@@ -84,7 +86,13 @@ class CustomersTable extends Table
 
         return $validator;
     }
-
+	function beforeFind(Event $event, Query $query, $options, $primary) {
+		
+		foreach($query as $data)
+		{
+			//return   $options[$data->name.' '.$data->mobile];
+		}
+	}
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.

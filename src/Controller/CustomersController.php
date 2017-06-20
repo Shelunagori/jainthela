@@ -22,6 +22,9 @@ class CustomersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$customers = $this->Customers->find();  
+		//pr($customers->toArray());
+		
+		//exit;
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
