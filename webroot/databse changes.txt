@@ -27,6 +27,9 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 1. purchase_outwards new Table sql file available in Webroot.
 2. purchase_outward_details new Table sql file available in Webroot.
 
+20-06-2017
+1. Create field into `item_ledger` table  `created_on` TIMESTAMP.
+2. Create field into `item_ledger` table  `inventory_transfer` varchar (20).
 
 15-06-2017
 ---------- Ashish ----------

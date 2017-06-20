@@ -206,7 +206,7 @@ $(document).ready(function() {
 	add_row();
 		function add_row(){
 				var tr=$("#sample_table tbody tr.main_tr").clone();
-				//$("#main_table tbody#main_tbody").append(tr); 
+				$("#main_table tbody#main_tbody").append(tr); 
 				rename_rows();
 			}
 

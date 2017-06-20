@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-			<?= $this->Form->create($item,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($item,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="row">
 					<div class="col-md-3">
 						<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name']); ?>
@@ -38,6 +38,7 @@
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
 					<div class="col-md-3">
+						 <?= $this->Form->input('image',['class'=>'form-control','type'=>'File']) ?>								
 					</div>
 				</div>
 			<?= $this->Form->button(__('Create new item'),['class'=>'btn btn-success']) ?>
@@ -65,6 +66,9 @@ $(document).ready(function() {
 				},
 				unit_id:{
 					required: true,
+				},
+				image:{
+					required: false,
 				}
 			},
 

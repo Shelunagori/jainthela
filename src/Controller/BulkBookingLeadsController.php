@@ -97,7 +97,7 @@ class BulkBookingLeadsController extends AppController
 			 
 			   if (in_array($ext, $arr_ext)) {
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/bulkbookingimages/'.$img_name);
-				}   
+				}
                 $this->Flash->success(__('The bulk booking lead has been saved.'));
                  return $this->redirect(['action' => 'index']);
             }
@@ -149,9 +149,6 @@ class BulkBookingLeadsController extends AppController
 					}   
 				}
                 $this->Flash->success(__('The bulk booking lead has been saved.'));
-			pr($bulkBookingLead);
-
-				exit;
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The bulk booking lead could not be saved. Please, try again.'));

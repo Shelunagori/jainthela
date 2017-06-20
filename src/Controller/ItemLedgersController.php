@@ -71,7 +71,7 @@ class ItemLedgersController extends AppController
 				$item_id=$item_ledger->item_id;
 				
 				$query = $this->ItemLedgers->query();
-				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer'])
 						->values([
 						'driver_id' => 0,
 						'warehouse_id' => $warehouse_id,
@@ -79,12 +79,13 @@ class ItemLedgersController extends AppController
 						'item_id' => $item_id,
 						'quantity' => $quantity,
 						'status' => 'out',
-						'jain_thela_admin_id' => $jain_thela_admin_id
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'inventory_transfer' => 'yes'
 						])
 				->execute();
 			
 				$query = $this->ItemLedgers->query();
-				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id', 'inventory_transfer'])
 						->values([
 						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
@@ -92,7 +93,8 @@ class ItemLedgersController extends AppController
 						'item_id' => $item_id,
 						'quantity' => $quantity,
 						'status' => 'in',
-						'jain_thela_admin_id' => $jain_thela_admin_id
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'inventory_transfer' => 'yes'
 						])
 				->execute();
 			}

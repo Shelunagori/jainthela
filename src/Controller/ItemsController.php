@@ -86,11 +86,21 @@ class ItemsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
+			$file = $this->request->data['image'];		 
+			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+            $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
+            $setNewFileName = uniqid();
+            $img_name= $setNewFileName.'.'.$ext;
+			$this->request->data['image']=$img_name;
+			
             $item = $this->Items->patchEntity($item, $this->request->getData());
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
-
+		
+				  if (in_array($ext, $arr_ext)) {
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/item_images/'.$img_name);
+				  }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
@@ -115,12 +125,27 @@ class ItemsController extends AppController
         $item = $this->Items->get($id, [
             'contain' => []
         ]);
+		$old_image_name=$item->image;
         if ($this->request->is(['patch', 'post', 'put'])) {
+			$file = $this->request->data['image'];		 
+			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+            $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
+            $setNewFileName = uniqid();		
+            $img_name= $setNewFileName.'.'.$ext;
+			if(!empty($img_name)){
+			$this->request->data['image']=$img_name;
+			}else{
+				$this->request->data['image']=$old_image_name;
+			}
             $item = $this->Items->patchEntity($item, $this->request->getData());
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($this->Items->save($item)) {
+				if(!empty($img_name)){
+					if (in_array($ext, $arr_ext)) {
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/item_images/'.$img_name);
+					}   
+				}
                 $this->Flash->success(__('The item has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
