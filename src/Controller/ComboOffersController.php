@@ -1,0 +1,118 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+
+/**
+ * ComboOffers Controller
+ *
+ * @property \App\Model\Table\ComboOffersTable $ComboOffers
+ *
+ * @method \App\Model\Entity\ComboOffer[] paginate($object = null, array $settings = [])
+ */
+class ComboOffersController extends AppController
+{
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function index()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+        $comboOffers = $this->paginate($this->ComboOffers);
+        $this->set(compact('comboOffers'));
+        $this->set('_serialize', ['comboOffers']);
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Combo Offer id.
+     * @return \Cake\Http\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $comboOffer = $this->ComboOffers->get($id, [
+            'contain' => ['ComboOfferDetails']
+        ]);
+
+        $this->set('comboOffer', $comboOffer);
+        $this->set('_serialize', ['comboOffer']);
+    }
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+        $comboOffer = $this->ComboOffers->newEntity();
+        if ($this->request->is('post')) {
+            $comboOffer = $this->ComboOffers->patchEntity($comboOffer, $this->request->getData());
+			$comboOffer->jain_thela_admin_id=$jain_thela_admin_id;
+            if ($this->ComboOffers->save($comboOffer)) {
+                $this->Flash->success(__('The combo offer has been saved.'));
+ 
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The combo offer could not be saved. Please, try again.'));
+        }
+		$items = $this->ComboOffers->ComboOfferDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);		
+
+        $this->set(compact('comboOffer', 'items'));
+        $this->set('_serialize', ['comboOffer', 'items']);
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Combo Offer id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $comboOffer = $this->ComboOffers->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $comboOffer = $this->ComboOffers->patchEntity($comboOffer, $this->request->getData());
+            if ($this->ComboOffers->save($comboOffer)) {
+                $this->Flash->success(__('The combo offer has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The combo offer could not be saved. Please, try again.'));
+        }
+        $this->set(compact('comboOffer'));
+        $this->set('_serialize', ['comboOffer']);
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Combo Offer id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $comboOffer = $this->ComboOffers->get($id);
+        if ($this->ComboOffers->delete($comboOffer)) {
+            $this->Flash->success(__('The combo offer has been deleted.'));
+        } else {
+            $this->Flash->error(__('The combo offer could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+}

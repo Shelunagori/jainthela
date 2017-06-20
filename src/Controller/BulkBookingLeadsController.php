@@ -136,7 +136,6 @@ class BulkBookingLeadsController extends AppController
 			}else{
 				$this->request->data['image']=$old_image_name;
 			}
-			
             $bulkBookingLead = $this->BulkBookingLeads->patchEntity($bulkBookingLead, $this->request->getData());
 			$bulkBookingLead->created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
 

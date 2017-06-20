@@ -34,9 +34,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($items as $item): ?>
+						<?php foreach ($items as $item): 
+							@$i++;
+							?>
 						<tr>
-							<td><?= $this->Number->format($item->id) ?></td>
+							<td><?= h($i) ?></td>
 							<td><?= h($item->name) ?></td>
 							<td><?= h($item->alias_name) ?></td>
 							<td><?= h($item->unit->shortname) ?></td>

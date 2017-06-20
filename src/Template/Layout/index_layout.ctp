@@ -227,6 +227,9 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
+							</li>
+							<li>
 								<a href="javascript:;">
 								<i class="glyphicon glyphicon-list-alt"></i>
 								<span class="title">
