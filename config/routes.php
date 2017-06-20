@@ -79,6 +79,10 @@ Router::prefix('api', function ($routes) {
 			   'item' => [
 				   'action' => 'item',
 				   'method' => 'GET'
+			   ],
+			   'item_description' => [
+				   'action' => 'item_description',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -113,7 +117,16 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
-	
+	$routes->resources(
+		'ComboOffers', [
+		   'map' => [
+			   'combo_offers' => [
+				   'action' => 'combo_offers',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
 });
 
 /**
