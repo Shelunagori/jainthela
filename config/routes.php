@@ -73,27 +73,41 @@ Router::scope('/', function (RouteBuilder $routes) {
 Router::prefix('api', function ($routes) {
     $routes->extensions(['json', 'xml']);
 
-	$routes->resources('Items', [
-	   'map' => [
-		   'updateJainCash' => [
-			   'action' => 'updateJainCash',
-			   'method' => 'GET'
-		   ],
-		   'home' => [
-			   'action' => 'home',
-			   'method' => 'GET'
+	$routes->resources(
+		'Items', [
+		   'map' => [
+			   'updateJainCash' => [
+				   'action' => 'updateJainCash',
+				   'method' => 'GET'
+			   ],
+			   'home' => [
+				   'action' => 'home',
+				   'method' => 'GET'
+			   ]
 		   ]
-	   ]
-	]);
-	$routes->resources('Itemcategories', [
-	   'map' => [
-		   'updateJainCash' => [
-			   'action' => 'updateJainCash',
-			   'method' => 'GET'
+		]
+	);
+	$routes->resources(
+		'Customers', [
+		   'map' => [
+			   'registration' => [
+				   'action' => 'registration',
+				   'method' => 'GET'
+			   ]
 		   ]
-		   
-	   ]
-	]);
+		]
+	);
+	$routes->resources(
+		'Users', [
+		   'map' => [
+			   'flash' => [
+				   'action' => 'flash',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	
 });
 
 /**

@@ -38,11 +38,12 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->setTable('users');
-		 $this->belongsTo('TermConditions');
-		  $this->belongsTo('CompanyDetails');
+		$this->belongsTo('TermConditions');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
         $this->addBehavior('Timestamp');
+
         $this->belongsTo('Franchises', [
             'foreignKey' => 'franchise_id',
             'joinType' => 'INNER'

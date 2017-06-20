@@ -68,7 +68,13 @@ class CustomersTable extends Table
 
         $validator
             ->requirePresence('mobile', 'create')
-            ->notEmpty('mobile');
+            ->notEmpty('mobile')
+			->add('mobile', [
+				'length' => [
+					'rule' => ['minLength', 10],
+					'message' => 'mobile need to be at least 10 digit long',
+				]
+			]);
 
 
         $validator
@@ -88,8 +94,7 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['franchise_id'], 'Franchises'));
+        $rules->add($rules->isUnique(['mobile']));
 
         return $rules;
     }
