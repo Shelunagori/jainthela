@@ -125,12 +125,13 @@ class BulkBookingLeadsController extends AppController
         ]);
 		$old_image_name=$bulkBookingLead->image;
         if ($this->request->is(['patch', 'post', 'put'])) {
-			$file = $this->request->data['image'];		 
+			$file = $this->request->data['image'];
+			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();		
             $img_name= $setNewFileName.'.'.$ext;
-			if(!empty($img_name)){
+			if(!empty($file_name)){
 			$this->request->data['image']=$img_name;
 			}else{
 				$this->request->data['image']=$old_image_name;
@@ -143,7 +144,7 @@ class BulkBookingLeadsController extends AppController
 				
 				$bulkBookingLead->created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
 				$bulkBookingLead->jain_thela_admin_id=$jain_thela_admin_id;
-				if(!empty($img_name)){
+				if(!empty($file_name)){
 					if (in_array($ext, $arr_ext)) {
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/bulkbookingimages/'.$img_name);
 					}   

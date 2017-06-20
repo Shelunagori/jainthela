@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-			<?= $this->Form->create($item,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($item,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="row">
 					<div class="col-md-3">
 						<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name']); ?>
