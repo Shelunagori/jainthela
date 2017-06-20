@@ -76,12 +76,8 @@ Router::prefix('api', function ($routes) {
 	$routes->resources(
 		'Items', [
 		   'map' => [
-			   'updateJainCash' => [
-				   'action' => 'updateJainCash',
-				   'method' => 'GET'
-			   ],
-			   'home' => [
-				   'action' => 'home',
+			   'item' => [
+				   'action' => 'item',
 				   'method' => 'GET'
 			   ]
 		   ]
@@ -102,6 +98,16 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'flash' => [
 				   'action' => 'flash',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'ItemCategories', [
+		   'map' => [
+			   'home' => [
+				   'action' => 'home',
 				   'method' => 'GET'
 			   ]
 		   ]

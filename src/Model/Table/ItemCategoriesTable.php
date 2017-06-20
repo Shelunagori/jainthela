@@ -39,6 +39,9 @@ class ItemCategoriesTable extends Table
         $this->hasMany('Items', [
             'foreignKey' => 'item_category_id'
         ]);
+		
+		$this->belongsTo('banners');
+		//$this->belongsTo('ItemLedgers');
     }
 
     /**

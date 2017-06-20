@@ -50,6 +50,10 @@ class ItemsTable extends Table
             'foreignKey' => 'franchise_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'item_id'
+        ]);
     }
 
     /**
