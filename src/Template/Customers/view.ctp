@@ -5,41 +5,33 @@
 
 	<div class="portlet light bordered">
 		<div class="portlet-title">
-			<div class="caption">
-				<span>
-					<B>Customer Detail Report</B>
-				</span>
-			</div>
+		<h3 align="center"><b>Customer Details Report</b></h3>
 		</div>
 		<div class="portlet-body form"><br>
 		<!-- BEGIN FORM-->
 				<div class="row">
 					<div class="col-md-12">
-						<div class="col-md-4">
-							<label class="col-md-6 control-label">Customer</label>
-							<?= $Customers->name ?>
-						</div>
-						<div class="col-md-4">
-							<label class="col-md-6 control-label">Mobile</label>
-							<?= $Customers->mobile ?>
-						</div>
-						<div class="col-md-4">
-							<label class="col-md-6 control-label">Email</label>
-							<?= $Customers->email ?>
-						</div>
+						<table width="100%">
+							<tr>
+								<td width="50%">
+									<h4>Customer: <?= $Customers->name ?></h4>
+								</td>
+								<td width="50%">
+									<h4>Mobile: <?= $Customers->mobile ?></h4>
+								</td>
+							</tr>
+						</table>
 					 </div>
 					 <div class="col-md-12"><br></div>
 					 <div class="col-md-12">
 						<div class="actions">
 							<?php
 							foreach($Customers->jain_cash_points as $jain_cash_data){
-								
 								$jain_cash_total_point=$jain_cash_data->total_point;
 								$jain_cash_total_used_point=$jain_cash_data->total_used_point;
 								$jain_cash_remaining_point=$jain_cash_total_point-$jain_cash_total_used_point;
 							}
 							foreach($Customers->wallets as $wallet_data){
-								
 								$wallet_total_advance=$wallet_data->total_advance;
 								$wallet_total_consumed=$wallet_data->total_consumed;
 								$wallet_remaining_amount=$wallet_total_advance-$wallet_total_consumed;
@@ -51,7 +43,7 @@
 							 <table>
 								<tr>
 									<td align="center">
-										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:17px;padding:4px;">
+										<div style="border:1px solid black;height:70px;width:100px;margin-left:100px;font-size:17px;padding:4px;">
 										JAIN CASH<br><?= $jain_cash_remaining_point ?>
 										</div>
 									</td>
@@ -70,7 +62,7 @@
 	<div class="col-md-12">
 		<h3 align="center">Jain Cash Details</h3>
 	<div>
-	<table width="100%">
+	<table width="100%" border="1">
 		<tr>
 			<td width="50%" valign="top" align="left">
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
@@ -122,13 +114,13 @@
 							<tr>
 								<td><?= $j ?></td>
 								<td>
-									<?= h($jain_cash_use->order->order_no) ?>
+									<?= h('#'.str_pad($this->Number->format($jain_cash_use->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
 								</td>
 								<td>
-									<?= h($jain_cash_use->customer->name) ?>
+									<?= h($jain_cash_use->used_point) ?>
 								</td>
 								<td>
-									<?= h(date('d-M-Y', strtotime($jain_cash_gain->updated_on))) ?>
+									<?= h(date('d-M-Y', strtotime($jain_cash_use->updated_on))) ?>
 								</td>
 						<?php } ?>
 						 
@@ -142,7 +134,7 @@
 	<div class="col-md-12">
 		<h3 align="center">Wallet</h3>
 	<div>
-	<table width="100%">
+	<table width="100%" border="1">
 		<tr>
 			<td width="50%" valign="top" align="left">
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
@@ -150,23 +142,23 @@
 					<thead>
 						<tr>
 							<th>Sr</th>
-							<th>Customer</th>
-							<th>Point</th>
+							<th>Plan</th>
+							<th>Advance</th>
 							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php 
-						foreach($jain_cash_gains as $jain_cash_gain){
-						@$i++;
+						foreach($wallet_advances as $wallet_advance){
+						@$m++;
 							?>
 							<tr>
-								<td><?= $i ?></td>
+								<td><?= $m ?></td>
 								<td>
-									<?= h($jain_cash_gain->from_customer->name) ?>
+									<?= h($wallet_advance->plan->name) ?>
 								</td>
 								<td>
-									<?= h($jain_cash_gain->points) ?>
+									<?= h($wallet_advance->advance) ?>
 								</td>
 								<td>
 									<?= h(date('d-M-Y', strtotime($jain_cash_gain->created_on))) ?>
@@ -194,7 +186,7 @@
 							<tr>
 								<td><?= $s ?></td>
 								<td>
-									<?= h($wallet_consume->order->order_no) ?>
+									<?= h('#'.str_pad($this->Number->format($wallet_consume->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
 								</td>
 								<td>
 									<?= h($wallet_consume->consumed) ?>
@@ -214,43 +206,49 @@
 <div class="col-md-12">
 		<h3 align="center">Order Details</h3>
 	<div>
-		<table class="table table-condensed table-hover table-bordered" id="main_tble">
-				<thead>
+<table width="100%" border="1">
+<tr>
+	<td width="100%" valign="top">	
+		<table class="table table-condensed table-hover table-bordered" id="main_tble" >
+			<thead>
+				<tr>
+					<th>Sr</th>
+					<th>Order</th>
+					<th>Date</th>
+					<th>Total</th>
+					<th>Action</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach($Orders as $Order){
+				@$t++;
+					?>
 					<tr>
-						<th>Sr</th>
-						<th>Order</th>
-						<th>Date</th>
-						<th>Total</th>
-						<th>Action</th>
-						<th>Status</th>
+						<td><?= $t ?></td>
+						<td>
+							<?= h('#'.str_pad($this->Number->format($Order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+						</td>
+						<td>
+							<?= h(date('d-M-Y', strtotime($Order->order_date))) ?>
+						</td>
+						<td>
+							<?= h($Order->total_amount) ?>
+						</td>
+						<td>
+							<?= $this->Html->link(__('View'), ['action' => 'view', $Order->id]) ?>
+						</td>
+						<td>
+							<?= h($Order->status) ?>
+						</td>
 					</tr>
-				</thead>
-				<tbody>
-					<?php 
-					foreach($Orders as $Order){
-					@$t++;
-						?>
-						<tr>
-							<td><?= $t ?></td>
-							<td>
-								<?= h($Order->order_no) ?>
-							</td>
-							<td>
-								<?= h(date('d-M-Y', strtotime($Order->order_date))) ?>
-							</td>
-							<td>
-								<?= h($Order->total_amount) ?>
-							</td>
-							<td>
-								View
-							</td>
-							<td>
-								<?= h($Order->status) ?>
-							</td>
-							
-					<?php } ?>														 
-				</tbody>
+				<?php } ?>														 
+			</tbody>
 			</table>
+		</td>
+	</tr>
+</table>			
 <!------------------------------------------------------------------------------------------->
 								
 								

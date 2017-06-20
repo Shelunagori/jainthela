@@ -296,6 +296,12 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Feedback','/Feedbacks',['escape'=>false]) ?>
 							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Plans','/Plans',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>

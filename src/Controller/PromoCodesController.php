@@ -20,13 +20,33 @@ class PromoCodesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['ItemCategories', 'JainThelaAdmins']
-        ];
-        $promoCodes = $this->paginate($this->PromoCodes);
-
-        $this->set(compact('promoCodes'));
+       $this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$promoCode = $this->PromoCodes->newEntity();
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $promoCode = $this->PromoCodes->patchEntity($promoCode, $this->request->getData());
+			$promoCode->jain_thela_admin_id=$jain_thela_admin_id;
+			$promoCode->status='Active';
+            if ($this->PromoCodes->save($promoCode)) {
+                $this->Flash->success(__('The promo code has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The promo code could not be saved. Please, try again.'));
+        }
+        $promoCodes = $this->PromoCodes->find()->where(['PromoCodes.jain_thela_admin_id'=>$jain_thela_admin_id]);
+        $itemCategories = $this->PromoCodes->ItemCategories->find('list', ['limit' => 200])->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
+        $this->set(compact('promoCode', 'promoCodes', 'itemCategories'));
+		$this->set('_serialize', ['promoCode']);
         $this->set('_serialize', ['promoCodes']);
+    }
+	
+	public function ajaxStatusPromoCode($status,$status_id)
+    {
+		        $query=$this->PromoCodes->query();
+				$result = $query->update()
+                    ->set(['status' => $status])
+                    ->where(['id' => $status_id])
+                    ->execute();
     }
 
     /**

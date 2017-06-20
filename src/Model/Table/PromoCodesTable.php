@@ -82,10 +82,10 @@ class PromoCodesTable extends Table
             ->requirePresence('valid_to', 'create')
             ->notEmpty('valid_to');
 
-        $validator
+        /* $validator
             ->dateTime('created_on')
             ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
+            ->notEmpty('created_on'); */
 
         return $validator;
     }

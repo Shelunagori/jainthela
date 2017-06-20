@@ -33,11 +33,10 @@ class CustomersController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id,$status)
+    public function view($id)
     {
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		$status;
 		$id;
 		$Customers = $this->Customers->get($id, [
             'contain' => ['JainCashPoints'=>function($query){
@@ -58,17 +57,14 @@ class CustomersController extends AppController
 			}
 				]
         ]);
-		
 		$jain_cash_gains=$this->Customers->ReferralDetails->find()->where(['from_customer_id'=>$id])->contain(['fromCustomer']);
 		$jain_cash_uses=$this->Customers->JainCashPoints->find()->where(['JainCashPoints.customer_id'=>$id, 'order_id !='=>0])->contain(['Customers', 'Orders']);
 		
-		$wallet_advance=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.order_id ='=>0])->contain(['Customers', 'Orders']);
-		
+		$wallet_advances=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.order_id ='=>0])->contain(['Customers', 'Orders', 'Plans']);
 		$wallet_consumes=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.plan_id ='=> 0])->contain(['Customers', 'Orders']);
-		pr($wallet_advance->toArray());
 		$Orders=$this->Customers->Orders->find()->where(['orders.customer_id'=>$id]);
-        $this->set(compact('Customers', 'status', 'id', 'jain_cash_gains', 'jain_cash_uses','wallet_consumes', 'Orders'));
-        $this->set('_serialize', ['Customers', 'jain_cash_gains', 'jain_cash_uses', 'wallet_consumes', 'Orders']);
+        $this->set(compact('Customers', 'status', 'id', 'jain_cash_gains', 'jain_cash_uses', 'wallet_advances', 'wallet_consumes', 'Orders'));
+        $this->set('_serialize', ['Customers', 'jain_cash_gains', 'jain_cash_uses', 'wallet_advances', 'wallet_consumes', 'Orders']);
     }
 
     /**

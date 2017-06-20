@@ -78,7 +78,20 @@ Router::prefix('api', function ($routes) {
 		   'updateJainCash' => [
 			   'action' => 'updateJainCash',
 			   'method' => 'GET'
+		   ],
+		   'home' => [
+			   'action' => 'home',
+			   'method' => 'GET'
 		   ]
+	   ]
+	]);
+	$routes->resources('Itemcategories', [
+	   'map' => [
+		   'updateJainCash' => [
+			   'action' => 'updateJainCash',
+			   'method' => 'GET'
+		   ]
+		   
 	   ]
 	]);
 });
