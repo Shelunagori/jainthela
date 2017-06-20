@@ -35,7 +35,7 @@ class CustomersTable extends Table
         $this->setTable('customers');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-
+		$this->belongsTo('ReferralDetails');
 		$this->hasMany('JainCashPoints', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'

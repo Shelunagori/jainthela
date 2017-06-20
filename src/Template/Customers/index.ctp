@@ -45,6 +45,7 @@
 							<td><?= h($customer->bulk_booking_discount_percent) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+								<?= $this->Html->link(__('View'), ['action' => 'view', $customer->id ]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

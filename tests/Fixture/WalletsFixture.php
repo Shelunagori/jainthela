@@ -47,7 +47,7 @@ class WalletsFixture extends TestFixture
             'consumed' => 1.5,
             'plan_id' => 1,
             'order_id' => 1,
-            'updated_on' => 1497692139
+            'updated_on' => 1497701153
         ],
     ];
 }

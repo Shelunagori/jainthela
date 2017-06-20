@@ -14,6 +14,8 @@
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
+<<<<<<< HEAD
+=======
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Name <span class="required" 	aria-required="true">*</span></label>
@@ -32,6 +34,7 @@
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
+>>>>>>> origin/master
 								 <div class="col-md-12">
 									 <div class="col-md-4">
 										<label class="col-md-6 control-label">Description <span class="required" 	aria-required="true">*</span></label>
@@ -48,7 +51,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -59,6 +62,8 @@
     <div class="col-md-1">
 	</div>
 </div>
+<<<<<<< HEAD
+=======
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
@@ -148,6 +153,7 @@ $(document).ready(function() {
 			return false;
 		}
     });
-	
+
 });
 </script>
+>>>>>>> origin/master

@@ -76,8 +76,8 @@
 					</div>
 				</div>
 				<br/>				
-				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'']) . __('Close'),['class'=>'btn btn-danger','data-dismiss'=>'modal']); ?>
-				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'']) . __('Close'),['class'=>'btn btn-danger','data-dismiss'=>'modal']); ?>
+				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'']) . __(' Submit'),['class'=>'btn btn-success']); ?>
 				<?= $this->Form->end() ?>
 			</div>
 						</div>
@@ -114,4 +114,3 @@ $(document).ready(function() {
 	});
 });
 </script>
-

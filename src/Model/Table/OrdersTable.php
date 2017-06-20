@@ -61,6 +61,9 @@ class OrdersTable extends Table
         $this->hasMany('Wallets', [
             'foreignKey' => 'order_id'
         ]);
+		 $this->belongsTo('JainCashPoints', [
+            'foreignKey' => 'order_id'
+        ]);
     }
 
     /**

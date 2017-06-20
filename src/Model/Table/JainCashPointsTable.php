@@ -40,6 +40,7 @@ class JainCashPointsTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		 $this->belongsTo('Orders');
     }
 
     /**
