@@ -10,7 +10,13 @@
 							<B>Walk In Sales</B>
 							</span>
 						</div>
-					</div>
+						<div class="actions">
+					
+					
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
+					
+				</div>
+					</div><?php /* echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default'])  */?>
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">

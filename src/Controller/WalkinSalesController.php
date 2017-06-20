@@ -20,12 +20,12 @@ class WalkinSalesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Drivers', 'JainThelaAdmins', 'Warehouses']
-        ];
-        $walkinSales = $this->paginate($this->WalkinSales);
-
-        $this->set(compact('walkinSales'));
+		$this->viewBuilder()->layout('index_layout');
+        
+       $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+	  $walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
+		
+	   $this->set(compact('walkinSales'));
         $this->set('_serialize', ['walkinSales']);
     }
 
@@ -38,12 +38,13 @@ class WalkinSalesController extends AppController
      */
     public function view($id = null)
     {
-        $walkinSale = $this->WalkinSales->get($id, [
-            'contain' => ['Drivers', 'JainThelaAdmins', 'Warehouses', 'WalkinSaleDetails']
+		$this->viewBuilder()->layout('index_layout');
+        $walkinSales = $this->WalkinSales->get($id, [
+            'contain' => ['Drivers', 'Warehouses', 'WalkinSaleDetails'=>['Items'=>['Units']]]
         ]);
 
-        $this->set('walkinSale', $walkinSale);
-        $this->set('_serialize', ['walkinSale']);
+        $this->set('walkinSales', $walkinSales);
+        $this->set('_serialize', ['walkinSales']);
     }
 
     /**
@@ -107,7 +108,8 @@ class WalkinSalesController extends AppController
      */
     public function edit($id = null)
     {
-        $walkinSale = $this->WalkinSales->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$walkinSale = $this->WalkinSales->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
