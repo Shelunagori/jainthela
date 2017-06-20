@@ -30,6 +30,7 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 20-06-2017
 1. Create field into `item_ledger` table  `created_on` TIMESTAMP.
 2. Create field into `item_ledger` table  `inventory_transfer` varchar (20).
+3. Create FOlder in webroot/img/item_images for images Uploade.
 
 15-06-2017
 ---------- Ashish ----------
