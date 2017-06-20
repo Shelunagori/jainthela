@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-			<?= $this->Form->create($item,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($item,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="row">
 					<div class="col-md-3">
 						<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name']); ?>
@@ -38,6 +38,10 @@
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
 					<div class="col-md-3">
+						<label class="col-md-6 control-label">Image</label>
+						<?php $img_view=$item->image; ?>
+						<?php echo $this->Html->image('/img/item_images/'.$img_view.'', ['height' => '80px','width' => '120px']); ?>
+						<?= $this->Form->input('image',['class'=>'form-control','type'=>'File','label'=>false]) ?>
 					</div>
 				</div>
 			<?= $this->Form->button(__('Edit item'),['class'=>'btn btn-success']) ?>
@@ -49,13 +53,11 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
   //--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
 	form3.validate({
-		
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
@@ -65,6 +67,9 @@ $(document).ready(function() {
 				},
 				unit_id:{
 					required: true,
+				},
+				image:{
+					required: false,
 				}
 			},
 
@@ -116,4 +121,3 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 });
 </script>
-

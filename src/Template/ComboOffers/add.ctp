@@ -2,41 +2,25 @@
 		<div class="col-md-12">
 			<div class="portlet">
 		<div class="portlet-body"> 
-			<?= $this->Form->create($walkinSale,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($comboOffer,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
 							<span>
-							<B>Walk In Sales</B>
+							<B>Combo Offer</B>
 							</span>
 						</div>
 						<div class="actions">
-					
-					
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
-					
-				</div>
-					</div><?php /* echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default'])  */?>
+							<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/ComboOffers/index',['escape'=>false,'class'=>'btn btn-default']) ?>
+						</div>
+					</div>
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
 								<div class="col-md-12">
 									<div class="col-md-3">
-										<label class="col-md-6 control-label">Customer Name <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('name',array('class'=>'form-control input-sm select2me','placeholder'=>'Customer Name','label'=>false)) ?>
-									</div>
-									<div class="col-md-3">
-										<label class="col-md-8 control-label">Customer Mobile No <span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me number','placeholder'=>'Customer Mobile No','label'=>false)) ?>
-									</div>
-									<div class="col-md-3">
-											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false)) ?>
-										</div>
-										 
-									<div class="col-md-3">
-										<label class="control-label">Date <span class="required" aria-require>*</span></label>
-										<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+										<label class="col-md-6 control-label">Offer Name <span class="required" aria-required="true">*</span></label>
+										<?= $this->Form->input('name',array('class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false)) ?>
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
@@ -48,17 +32,11 @@
 									<td width="12%">
 										<label>Sr<label>
 									</td>
-									<td width="30%">
+									<td width="35%">
 										<label>Item<label>
 									</td>
-									<td width="15%">
+									<td width="35%">
 										<label>Quantity<label>
-									</td>
-									<td width="15%">
-										<label>Rate<label>
-									</td>
-									<td width="20%">
-										<label>Amount<label>
 									</td>
 									<td></td>
 								</tr>
@@ -71,15 +49,34 @@
 									<td>
 										<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 									</td>
-									<td colspan="3" style="text-align:right !important;">
+									<td colspan="2" style="text-align:right !important;">
 										<label class="control-label" >Grand Total</label>
 									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('total_amount',['class'=>'form-control input-sm grnd_ttl','label'=>false,'placeholder'=>'Grand Total']) ?>
+											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl','label'=>false,'placeholder'=>'Grand Total']) ?>
 										</div>
 									</td>
-									<td></td>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align:right !important;">
+										<label class="control-label" >Discount (%)</label>
+									</td>
+									<td>
+										<div class="form-group">
+											<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt','label'=>false,'placeholder'=>'Discount']) ?>
+										</div>
+									</td>
+								</tr>
+								<tr> 
+									<td colspan="3" style="text-align:right !important;">
+										<label class="control-label" >Sales Rate</label>
+									</td>
+									<td>
+										<div class="form-group">
+											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat','label'=>false,'placeholder'=>'Sales Rate']) ?>
+										</div>
+									</td>
 								</tr>
 							</tfoot>
 						</table>
@@ -89,7 +86,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Walk In Sales'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Combo Offer'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -214,22 +211,30 @@ $(document).ready(function() {
 				var i=0;
 				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
-					$(this).find("td:nth-child(2) select").select2().attr({name:"walkin_sale_details["+i+"][item_id]", id:"walkin_sale_details-"+i+"-item_id"}).rules('add', {
+					$(this).find("td:nth-child(2) select").select2().attr({name:"combo_offer_details["+i+"][item_id]", id:"combo_offer_details-"+i+"-item_id"}).rules('add', {
 								required: true
 							});
-					$(this).find("td:nth-child(3) input").attr({name:"walkin_sale_details["+i+"][quantity]", id:"walkin_sale_details-"+i+"-quantity"}).rules('add', {
-								required: true
-							}); 
-					$(this).find("td:nth-child(4) input").attr({name:"walkin_sale_details["+i+"][rate]", id:"walkin_sale_details-"+i+"-rate"}).rules('add', {
+					$(this).find("td:nth-child(3) input").attr({name:"combo_offer_details["+i+"][quantity]", id:"combo_offer_details-"+i+"-quantity"}).rules('add', {
 								required: true
 							});
-					$(this).find("td:nth-child(5) input").attr({name:"walkin_sale_details["+i+"][amount]", id:"walkin_sale_details-"+i+"-amount"}).rules('add', {
-								required: true
-							}); 
 					i++;
 				});
 			}
 
+
+
+	$(".grnd_ttl").die().live('keyup',function(){
+		var total=$(this).val();
+		$(".sls_rat").val(total);
+	});	
+	
+$(".dscnt").die().live('keyup',function(){
+		var total=$(".grnd_ttl").val();
+		var discount=$(this).val();
+		var final_amount=((total*discount)/100);
+		var sales_amount=total-final_amount;
+		$(".sls_rat").val(sales_amount);
+	});
 
 	$(".calculation_amount").die().live('keyup',function(){
 		calculation();				
@@ -276,16 +281,11 @@ $(document).ready(function() {
 					</td>
 					<td>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
-					</td>
-					<td>
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation_amount number','placeholder'=>'Price']); ?>
-					</td>
-                    <td>
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Total Amount']); ?>
-					</td>						  
+					</td>				  
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		
