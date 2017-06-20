@@ -40,6 +40,7 @@ class WalletsTable extends Table
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
+<<<<<<< HEAD
             
         ]);
         $this->belongsTo('Plans', [
@@ -49,6 +50,17 @@ class WalletsTable extends Table
         $this->belongsTo('Orders', [
             'foreignKey' => 'order_id',
     
+=======
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Plans', [
+            'foreignKey' => 'plan_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Orders', [
+            'foreignKey' => 'order_id',
+            'joinType' => 'INNER'
+>>>>>>> origin/master
         ]);
     }
 

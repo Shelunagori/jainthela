@@ -30,7 +30,26 @@ class PushNotificationsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $pushNotification = $this->PushNotifications->newEntity();
 		$customers = $this->PushNotifications->Customers->find();
-		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>1])->first();
+		$page = $this->request->getQuery('page');
+		if($page=="home")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>1])->first();}
+		if($page=="bulkbooking")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>2])->first();}
+		if($page=="referfriend")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>3])->first();}
+		if($page=="addmoney")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>4])->first();}
+		if($page=="viewcart")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>5])->first();}
+		if($page=="specialoffers")
+		{
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>6])->first();}
+		
         if ($this->request->is('post'))
 			{
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
@@ -59,8 +78,10 @@ class PushNotificationsController extends AppController
 				$this->Flash->error(__('The push notification could not be saved. Please, try again.'));
 				}
 			}
+			$this->set('page', $page);
 		$this->set('pushNotification', $pushNotification);
         $this->set('_serialize', ['pushNotification']);
+		
 	}
     /**
      * View method

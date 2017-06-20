@@ -209,6 +209,52 @@ class ItemLedgersController extends AppController
         $this->set(compact('itemLedgers','count'));
      }
 
+public function DriverReport()
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+        $itemLedger = $this->ItemLedgers->newEntity();
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+
+        $items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
+        $this->set('_serialize', ['itemLedger']);
+    }
+
+	public function ajaxDriverReport()
+    {
+		  $driver_id=$this->request->data['driver'];
+		  $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		  
+ 			$query = $this->ItemLedgers->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+		])
+		->where(['ItemLedgers.driver_id' => $driver_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items']);
+        $itemLedgers = ($query);
+		$count=$itemLedgers->count();
+		
+        $this->set(compact('itemLedgers','count'));
+     }
+
+
 	 public function ajaxStockIssue()
     {
 		  $warehouse_id=$this->request->data['warehouse_id'];
@@ -239,7 +285,7 @@ class ItemLedgersController extends AppController
 		$count=$itemLedgers->count();
         $this->set(compact('itemLedgers','count'));
      }
-	 
+
 
 	public function ajaxStockAvailable()
     {

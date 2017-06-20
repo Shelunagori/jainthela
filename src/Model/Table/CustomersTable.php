@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
 class CustomersTable extends Table
 {
 
-    /**
+	 /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -36,8 +36,16 @@ class CustomersTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Franchises', [
-            'foreignKey' => 'franchise_id',
+		$this->hasMany('JainCashPoints', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->hasMany('Wallets', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->hasMany('Orders', [
+            'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
     }

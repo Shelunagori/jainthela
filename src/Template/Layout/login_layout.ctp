@@ -53,7 +53,8 @@ select
 <body class="login" style="background-color:#364150 !important;">
 <!-- BEGIN LOGO -->
 <div class="logo">
-</span><span class="title-main" style="color:#0ECCEE !important;"><img src="<?php echo $this->Html->script ?>img/jainthela.png" width="225px" height="75px"  alt=""  rel='tab' style="color:#578EBE; padding-bottom:5px;"></a>
+</span><span class="title-main" style="color:#0ECCEE !important;">
+<?php echo $this->Html->image('/img/jainthela.png', ['height' => '75px', 'width' => '225px']); ?>
 </span>
 </div>
 <!-- END LOGO -->

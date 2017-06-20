@@ -11,7 +11,7 @@
 						</div>
 						</div>
 					</div>
-				</div>','/PushNotifications/home',['escape'=>false]) ?>
+				</div>','/PushNotifications/home?page=home',['escape'=>false]) ?>
 				
 				
 				<?php echo $this->Html->link('
@@ -26,7 +26,7 @@
 						</div>
 						</div>
 					</div>
-				</div>','/PushNotifications/home',['escape'=>false]) ?>
+				</div>','/PushNotifications/home?page=bulkbooking',['escape'=>false]) ?>
 				<?php echo $this->Html->link('
 				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 					<div class="dashboard-stat  red-intense">
@@ -41,7 +41,7 @@
 					</div>
 				</div>
 				</a>
-				</div>','/PushNotifications/home',['escape'=>false]) ?>
+				</div>','/PushNotifications/home?page=referfriend',['escape'=>false]) ?>
 				
 				
 				<div class="row">
@@ -57,7 +57,7 @@
 						</div>
 						</div>
 					</div>
-				</div>','/PushNotifications/home',['escape'=>false]) ?>
+				</div>','/PushNotifications/home?page=addmoney',['escape'=>false]) ?>
 				
 				
 				
@@ -74,7 +74,7 @@
 						</div>
 						</div>
 					</div>
-				</div>	','/PushNotifications/home',['escape'=>false]) ?>
+				</div>	','/PushNotifications/home?page=viewcart',['escape'=>false]) ?>
 				<?php echo $this->Html->link('
 				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 					<div class="dashboard-stat purple-plum">
@@ -87,7 +87,7 @@
 						</div>
 						</div>
 					</div>
-				</div>	','/PushNotifications/home?page=home',['escape'=>false]) ?>
+				</div>	','/PushNotifications/home?page=specialoffers',['escape'=>false]) ?>
 				</div>
 				
 				<div class="row">
@@ -103,5 +103,5 @@
 						</div>
 						</div>
 					</div>
-				</div>','/PushNotifications/home',['escape'=>false]) ?>
+				</div>','/PushNotifications/home?page=product',['escape'=>false]) ?>
 				

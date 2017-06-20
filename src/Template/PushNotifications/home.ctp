@@ -7,7 +7,28 @@
 					<div class="portlet-title">
 						<div class="caption">
 							<span>
-							<h3><B>Home </B></h3>
+							<?php
+							
+							if($page=="home")
+								{
+								echo "<h3><B>Home </B></h3>";
+								}
+								if($page=="bulkbooking")
+								{
+								echo "<h3><B>Bulk Booking Notifications </B></h3>";}
+								if($page=="referfriend")
+								{
+								echo "<h3><B>Refer a Friend Notifications </B></h3>";}
+								if($page=="addmoney")
+								{
+								echo "<h3><B>Add Money Notifications </B></h3>";}
+								if($page=="viewcart")
+								{
+								echo "<h3><B>View Cart Notifications </B></h3>";}
+								if($page=="specialoffers")
+								{
+								echo "<h3><B>Special Offers Notification </B></h3>";}
+							?>
 							</span>
 						</div>
 					</div>
