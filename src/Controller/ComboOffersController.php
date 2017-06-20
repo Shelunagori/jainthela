@@ -58,9 +58,20 @@ class ComboOffersController extends AppController
         if ($this->request->is('post')) {
             $comboOffer = $this->ComboOffers->patchEntity($comboOffer, $this->request->getData());
 			$comboOffer->jain_thela_admin_id=$jain_thela_admin_id;
-            if ($this->ComboOffers->save($comboOffer)) {
+            if ($ComboOffers_data=$this->ComboOffers->save($comboOffer)) {
+				$ComboOffers_name=$ComboOffers_data->name;
+				$ComboOffers_sales_rate=$ComboOffers_data->sales_rate;
+				
+					$query = $this->ComboOffers->ComboOfferDetails->Items->query();
+					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate'])
+							->values([
+							'name' => $ComboOffers_name,
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'sales_rate' => $ComboOffers_sales_rate,
+							'combo' => 'yes'
+							])
+					->execute();
                 $this->Flash->success(__('The combo offer has been saved.'));
- 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The combo offer could not be saved. Please, try again.'));
