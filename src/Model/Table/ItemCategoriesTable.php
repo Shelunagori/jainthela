@@ -40,7 +40,8 @@ class ItemCategoriesTable extends Table
             'foreignKey' => 'item_category_id'
         ]);
 		
-		$this->belongsTo('banners');
+		$this->belongsTo('Banners');
+		$this->belongsTo('Carts');
 		//$this->belongsTo('ItemLedgers');
     }
 
@@ -62,4 +63,6 @@ class ItemCategoriesTable extends Table
 
         return $validator;
     }
+	
+
 }

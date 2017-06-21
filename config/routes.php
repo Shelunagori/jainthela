@@ -80,8 +80,8 @@ Router::prefix('api', function ($routes) {
 				   'action' => 'item',
 				   'method' => 'GET'
 			   ],
-			   'item_description' => [
-				   'action' => 'item_description',
+			   'itemDescription' => [
+				   'action' => 'itemDescription',
 				   'method' => 'GET'
 			   ]
 		   ]
@@ -120,8 +120,18 @@ Router::prefix('api', function ($routes) {
 	$routes->resources(
 		'ComboOffers', [
 		   'map' => [
-			   'combo_offers' => [
+			   'itemDescription' => [
 				   'action' => 'combo_offers',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'PromoCodes', [
+		   'map' => [
+			   'varifyPromoCodes' => [
+				   'action' => 'varifyPromoCodes',
 				   'method' => 'GET'
 			   ]
 		   ]

@@ -10,10 +10,12 @@ class UsersController extends AppController
 		$tcs = $this->Users->TermConditions->find()->where(['TermConditions.term_name'=>'tcs'])->first();
 		$aboutus = $this->Users->TermConditions->find()->where(['TermConditions.term_name'=>'aboutus'])->first();
 		$company_details = $this->Users->CompanyDetails->find()->first();
+		$supplier_areas = $this->Users->SupplierAreas->find();
+		
 		$status=true;
 		$error="";
-		$this->set(compact('status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details'));
-		$this->set('_serialize', ['status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details']);
+		$this->set(compact('status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas'));
+		$this->set('_serialize', ['status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas']);
 	}
 }
 

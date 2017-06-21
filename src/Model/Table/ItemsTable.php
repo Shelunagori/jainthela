@@ -54,6 +54,14 @@ class ItemsTable extends Table
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'item_id'
         ]);
+		$this->hasOne('Carts', [
+            'foreignKey' => 'item_id'
+        ]);
+		
+		/* $this->belongsTo('Carts', [
+            'foreignKey' => 'item_id',
+            'joinType' => 'INNER'
+        ]); */
     }
 
     /**

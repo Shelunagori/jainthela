@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Api;
 use App\Controller\Api\AppController;
-class ItemsController extends AppController
+class ComboOffersController extends AppController
 {
-    public function combo_offers()
+    public function index()
     {
-		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
-		
+		echo $jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		exit;
         $items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['ItemCategories', 'Units']);
 		$status=true;
 		$error="";
