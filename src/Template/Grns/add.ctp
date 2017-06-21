@@ -27,7 +27,7 @@
 					</div>
 					<div class="col-md-4">
 						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm select2me','label'=>false]); ?>
 					</div>
 				</div><br/>
 				<div class="row">
