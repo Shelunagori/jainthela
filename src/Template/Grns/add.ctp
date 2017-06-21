@@ -62,7 +62,7 @@
 				</div>
 				 
 				<br/>
-				<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
 				<?= $this->Form->end() ?>
 			</div>
 		</div>

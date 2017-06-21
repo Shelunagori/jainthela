@@ -121,7 +121,7 @@ Router::prefix('api', function ($routes) {
 		'ComboOffers', [
 		   'map' => [
 			   'combo_offers' => [
-				   'action' => 'combo_offers',
+				   'action' => 'offer',
 				   'method' => 'GET'
 			   ]
 		   ]

@@ -2,7 +2,7 @@
 		<div class="col-md-12">
 			<div class="portlet">
 		<div class="portlet-body"> 
-			<?= $this->Form->create($comboOffer,['id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($comboOffer,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
@@ -21,6 +21,10 @@
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Offer Name <span class="required" aria-required="true">*</span></label>
 										<?= $this->Form->input('name',array('class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false)) ?>
+									</div>
+									<div class="col-md-3">
+										<label class="col-md-6 control-label">Image</label>
+										<?= $this->Form->input('image',['class'=>'form-control','type'=>'File','label'=>false]) ?>
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
