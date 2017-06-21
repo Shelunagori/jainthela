@@ -117,11 +117,12 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	
 	$routes->resources(
-		'ComboOffers', [
+		'Carts', [
 		   'map' => [
-			   'itemDescription' => [
-				   'action' => 'combo_offers',
+			   'plus_add_to_cart' => [
+				   'action' => 'plus_add_to_cart',
 				   'method' => 'GET'
 			   ]
 		   ]

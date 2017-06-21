@@ -27,7 +27,10 @@
             echo $this->Form->control('customer_id', ['options' => $customers]);
             echo $this->Form->control('item_id', ['options' => $items]);
             echo $this->Form->control('quantity');
+<<<<<<< HEAD
             echo $this->Form->control('cart_count');
+=======
+>>>>>>> 8ad41ceb2ec85f2b846b3156a3e5d37a6c786214
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

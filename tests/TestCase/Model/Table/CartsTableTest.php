@@ -42,7 +42,10 @@ class CartsTableTest extends TestCase
         'app.users',
         'app.term_conditions',
         'app.company_details',
+<<<<<<< HEAD
         'app.supplier_areas',
+=======
+>>>>>>> 8ad41ceb2ec85f2b846b3156a3e5d37a6c786214
         'app.item_ledgers',
         'app.drivers',
         'app.warehouses',

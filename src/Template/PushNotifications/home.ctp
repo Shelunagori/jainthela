@@ -11,20 +11,20 @@
 							
 							if($page=="home")
 								{
-								echo "<h3><B>Home </B></h3>";
+								echo "<h3><B>Send Push Notifications </B></h3>";
 								}
 								if($page=="bulkbooking")
 								{
-								echo "<h3><B>Bulk Booking Notifications </B></h3>";}
+								echo "<h3><B>Bulk Booking Notifications to Customers </B></h3>";}
 								if($page=="referfriend")
 								{
-								echo "<h3><B>Refer a Friend Notifications </B></h3>";}
+								echo "<h3><B>Refer a Friend Notifications to Customers </B></h3>";}
 								if($page=="addmoney")
 								{
-								echo "<h3><B>Add Money Notifications </B></h3>";}
+								echo "<h3><B>Add Money Notifications to Customers</B></h3>";}
 								if($page=="viewcart")
 								{
-								echo "<h3><B>View Cart Notifications </B></h3>";}
+								echo "<h3><B>View Cart Notifications to Customers </B></h3>";}
 								if($page=="specialoffers")
 								{
 								echo "<h3><B>Special Offers Notification </B></h3>";}
@@ -59,7 +59,7 @@
 					 
 						
 						<div align="center">
-							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>

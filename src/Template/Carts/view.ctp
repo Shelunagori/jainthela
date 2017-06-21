@@ -29,10 +29,13 @@
             <td><?= $cart->has('item') ? $this->Html->link($cart->item->name, ['controller' => 'Items', 'action' => 'view', $cart->item->id]) : '' ?></td>
         </tr>
         <tr>
+<<<<<<< HEAD
             <th scope="row"><?= __('Cart Count') ?></th>
             <td><?= h($cart->cart_count) ?></td>
         </tr>
         <tr>
+=======
+>>>>>>> 8ad41ceb2ec85f2b846b3156a3e5d37a6c786214
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($cart->id) ?></td>
         </tr>

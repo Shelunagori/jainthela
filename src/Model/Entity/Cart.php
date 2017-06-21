@@ -10,7 +10,10 @@ use Cake\ORM\Entity;
  * @property int $customer_id
  * @property int $item_id
  * @property float $quantity
+<<<<<<< HEAD
  * @property string $cart_count
+=======
+>>>>>>> 8ad41ceb2ec85f2b846b3156a3e5d37a6c786214
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Item $item

@@ -21,9 +21,8 @@ class WalkinSalesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        
-       $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-	  $walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
 		
 	   $this->set(compact('walkinSales'));
         $this->set('_serialize', ['walkinSales']);
@@ -64,6 +63,7 @@ class WalkinSalesController extends AppController
 					$walkinsale_id=$walkinsale_data->id;
 					$walkinsale_total_amount=$walkinsale_data->total_amount;
 					$transaction_date=$walkinsale_data->transaction_date;
+					
 					$query = $this->WalkinSales->Ledgers->query();
 					$query->insert(['ledger_account_id', 'walkin_sale_id', 'debit', 'credit', 'transaction_date'])
 							->values([

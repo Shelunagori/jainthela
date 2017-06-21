@@ -38,7 +38,7 @@
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
 					<div class="col-md-3">
-						 <?= $this->Form->input('image',['class'=>'form-control','type'=>'File']) ?>								
+						 <?= $this->Form->input('image',['class'=>'form-control','type'=>'File']) ?>
 					</div>
 				</div>
 			<?= $this->Form->button(__('Create new item'),['class'=>'btn btn-success']) ?>

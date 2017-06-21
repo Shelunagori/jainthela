@@ -56,14 +56,25 @@ class ComboOffersController extends AppController
 		
         $comboOffer = $this->ComboOffers->newEntity();
         if ($this->request->is('post')) {
+			$file = $this->request->data['image'];		 
+			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+            $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
+            $setNewFileName = uniqid();
+            $img_name= $setNewFileName.'.'.$ext;
+			$this->request->data['image']=$img_name;
+			
             $comboOffer = $this->ComboOffers->patchEntity($comboOffer, $this->request->getData());
 			$comboOffer->jain_thela_admin_id=$jain_thela_admin_id;
             if ($ComboOffers_data=$this->ComboOffers->save($comboOffer)) {
 				$ComboOffers_name=$ComboOffers_data->name;
 				$ComboOffers_sales_rate=$ComboOffers_data->sales_rate;
 				
+				if (in_array($ext, $arr_ext)) {
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/item_images/'.$img_name);
+				  }
+				  
 					$query = $this->ComboOffers->ComboOfferDetails->Items->query();
-					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate'])
+					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate', 'combo'])
 							->values([
 							'name' => $ComboOffers_name,
 							'jain_thela_admin_id' => $jain_thela_admin_id,
@@ -76,7 +87,7 @@ class ComboOffersController extends AppController
             }
             $this->Flash->error(__('The combo offer could not be saved. Please, try again.'));
         }
-		$items = $this->ComboOffers->ComboOfferDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);		
+		$items = $this->ComboOffers->ComboOfferDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id, 'combo =' => 'no']);		
 
         $this->set(compact('comboOffer', 'items'));
         $this->set('_serialize', ['comboOffer', 'items']);
