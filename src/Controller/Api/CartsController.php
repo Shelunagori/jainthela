@@ -9,44 +9,39 @@ class CartsController extends AppController
 		$item_id=$this->request->query('item_id');
 		$quantity=$this->request->query('quantity');
 		$customer_id=$this->request->query('customer_id');
-		$action_status=$this->request->query('action_status');
+
 		$items = $this->Carts->Items->get($item_id);
 		$item_add_quantity=$items->minimum_quantity_factor;
 		$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
 		foreach($fetchs as $fetch){
 			$update_id=$fetch->id;
-			$old_quantity=$fetch->quantity;
 		}
-		if($action_status=='inc'){
-			$update_quantity=$old_quantity+$item_add_quantity;
-		}
-		if($action_status=='dec'){
-			$update_quantity=$old_quantity-$item_add_quantity;
-		}
+		$update_quantity=$item_add_quantity*$quantity;
+		
 		if(empty($fetchs->toArray()))
 		{
 			$query = $this->Carts->query();
-					$query->insert(['customer_id', 'item_id', 'quantity'])
+					$query->insert(['customer_id', 'item_id', 'quantity', 'cart_count'])
 							->values([
 							'customer_id' => $customer_id,
 							'item_id' => $item_id,
-							'quantity' => $quantity
+							'quantity' => $update_quantity,
+							'cart_count' => $quantity
 							])
 					->execute();
 		}else{
-			
+			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
-                    ->set(['quantity' => $update_quantity])
+                    ->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
                     ->where(['id' => $update_id])
-                    ->execute();			
+                    ->execute();
 		}
-		pr($fetchs->toArray());
-		exit;
+		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items']);
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'items'));
-        $this->set('_serialize', ['status', 'error', 'items']);
+        $this->set(compact('status', 'error','carts'));
+        $this->set('_serialize', ['status', 'error', 'carts']);
     }
 
 	 public function item_description()

@@ -35,6 +35,11 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 5. combo_offer_details new Table sql file available in Webroot.
 6. Create field into `items` table  `combo` varchar (50) bydefault no.
 
+21-06-2017
+1. carts new Table sql file available in Webroot.
+2. customer_addresses new Table sql file available in Webroot.
+
+
 15-06-2017
 ---------- Ashish ----------
 create field into item_ledgers table     grn_id int (10)
