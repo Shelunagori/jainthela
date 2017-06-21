@@ -60,7 +60,7 @@ class PushNotificationsController extends AppController
             $pushNotification->image = $setNewFileName . '.' . $ext;
 			if (in_array($ext, $arr_ext))
 				{
-					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/PushNotifications/' . $setNewFileName . '.' . $ext);
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/Notify_images/' . $setNewFileName . '.' . $ext);
 				}
 			$pushNotification->link_url = $deepLinks->link_url;
 			if ($this->PushNotifications->save($pushNotification))
@@ -89,12 +89,8 @@ class PushNotificationsController extends AppController
 	public function sendProgress($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-      $this->set('id', $id);
-	   
+		$this->set('id', $id);   
     }
-	
-	
-	
 	public function checkNotify($id)
     {
 		

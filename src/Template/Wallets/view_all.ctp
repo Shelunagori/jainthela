@@ -29,8 +29,7 @@
 							<tr>Plan : <?= h($wallet->plan_id) ?></tr>
 							<tr>Order : <?= h($wallet->order_id) ?></tr></td>
 						</tr>
-					<?php endforeach; pr($wallets->toArray());
-						exit;?>
+					<?php endforeach; ?>
 				</table>
 			</div>
 		</div>

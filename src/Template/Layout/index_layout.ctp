@@ -305,6 +305,9 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
 							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Push Notifications','/PushNotifications/',['escape'=>false]) ?>
+							</li>
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>

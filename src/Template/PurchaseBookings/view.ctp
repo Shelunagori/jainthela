@@ -110,7 +110,7 @@ margin-bottom: 0;
 		
 		<?php 
 		$i=0;
-	
+		$total=0;
 		foreach ($purchaseBooking->purchase_booking_details as $data){
 			?>
 			
@@ -122,18 +122,20 @@ margin-bottom: 0;
 			<td ><?=h($data->rate)?></td>
 			<td align="right"><?=h($data->amount)?></td>
 			</tr>
-			
-		
-		
-		
-		<?php } ?>
+		<?php
+		$total=$total+$data->amount;
+		} ?>
 	</table>
 	
 	
 	
 	<div style="border:solid 1px ;"></div>
-	<table width="100%" class="divFooter">
+	<table width="100%" >
 		<tr align="right">
+				<td><b>Total</b></td><td width="10%"><?=h($total)?></td></tr></table>
+	<table width="100%" class="divFooter">
+		
+			 <tr align="right">
 			 <td align="right" valign="top" width="35%">
 				<table style="margin-top:3px;">
 					<tr>

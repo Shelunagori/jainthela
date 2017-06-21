@@ -31,17 +31,14 @@ class WalletsController extends AppController
 	 public function wallet()
     {
         $this->viewBuilder()->layout('index_layout');
-
-	  $wallets = $this->Wallets->find()->where(['Wallets.plan_id != '=>0])->contain(['Customers', 'Plans', 'Orders']);
-		
-		$this->set(compact('wallets'));
+		$wallets = $this->Wallets->find()->where(['Wallets.plan_id != '=>0])->contain(['Customers', 'Plans', 'Orders']);
         $this->set('_serialize', ['wallets']);
     }
 	 public function viewAll()
     {
         $this->viewBuilder()->layout('index_layout');
-
-	  $wallets = $this->Wallets->find()->contain(['Customers', 'Plans', 'Orders']);
+		$wallets = $this->Wallets->find()->contain(['Customers', 'Plans', 'Orders'])->group('customer_id');
+		pr($wallets->toArray());exit;
 		$this->set(compact('wallets'));
         $this->set('_serialize', ['wallets']);
     }
