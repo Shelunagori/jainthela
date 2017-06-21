@@ -127,6 +127,16 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	$routes->resources(
+		'Carts', [
+		   'map' => [
+			   'plus_add_to_cart' => [
+				   'action' => 'plus_add_to_cart',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
 });
 
 /**
