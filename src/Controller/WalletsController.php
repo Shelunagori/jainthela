@@ -33,6 +33,7 @@ class WalletsController extends AppController
         $this->viewBuilder()->layout('index_layout');
 
 	  $wallets = $this->Wallets->find()->where(['Wallets.plan_id != '=>0])->contain(['Customers', 'Plans', 'Orders']);
+		
 		$this->set(compact('wallets'));
         $this->set('_serialize', ['wallets']);
     }

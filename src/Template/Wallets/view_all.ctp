@@ -22,20 +22,15 @@
 						$i=0;
 						
 						foreach ($wallets as $wallet): ?>
-						
-						
-							<tr>
+						<tr>
 							<td rowspan="3" >Name <?= h($wallet->customer->name) ?></td>
 							<td>
 							<tr>Advance : <?= h($wallet->advance) ?></tr>
-							<tr>Plan : <?= h($wallet->plan->name) ?></tr>
-							<tr>Order : <?= h($wallet->order->name) ?></tr></td>
-							
-							
+							<tr>Plan : <?= h($wallet->plan_id) ?></tr>
+							<tr>Order : <?= h($wallet->order_id) ?></tr></td>
 						</tr>
-						<?php endforeach; ?>
-					
-										
+					<?php endforeach; pr($wallets->toArray());
+						exit;?>
 				</table>
 			</div>
 		</div>

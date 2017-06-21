@@ -72,7 +72,9 @@ class PushNotificationsController extends AppController
 					$pushNotificationCustomer->push_notification_id =$pushNotification->id;
 					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
 				}
+				$id=$pushNotification->id;
 				$this->Flash->success(__('The push notification saved.'));
+			 $this->redirect(['action' => 'sendProgress/' . $id]);
 			} 
 			else {
 				$this->Flash->error(__('The push notification could not be saved. Please, try again.'));
@@ -83,6 +85,80 @@ class PushNotificationsController extends AppController
         $this->set('_serialize', ['pushNotification']);
 		
 	}
+	
+	public function sendProgress($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+      $this->set('id', $id);
+	   
+    }
+	
+	
+	
+	public function checkNotify($id)
+    {
+		
+		$this->viewBuilder()->layout(null);
+		$pushNotifications = $this->PushNotifications->PushNotificationCustomers->find()->where(['sent'=>0,'push_notification_id'=>$id])->contain(['Customers'])->limit(1);
+		$pushNotifications_data = $this->PushNotifications->find()->where(['id'=>$id])->first();;
+		foreach($pushNotifications as $pushNotification)
+		{
+			    $API_ACCESS_KEY=$pushNotification->customer->notification_key;
+				$device_token=$pushNotification->customer->device_token;
+				  $device_token1=rtrim($device_token);
+                if(!empty($device_token))
+					$msg = array
+							(
+							'message'     =>$pushNotifications_data->message,
+							'link'    => $pushNotifications_data->link_url,
+							'notification_id'    => 1,
+							);
+							
+						$url = 'https://fcm.googleapis.com/fcm/send';
+						$fields = array
+						(
+							'registration_ids'     => array($device_token),
+							'data'            => @$msg,
+						);
+						$headers = array
+						(
+							'Authorization: key=' .$API_ACCESS_KEY,
+							'Content-Type: application/json'
+						);
+
+						  json_encode($fields);
+						  $ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+						$result = curl_exec($ch);
+						if ($result === FALSE) {
+							//die('FCM Send Error: ' . curl_error($ch));
+						}
+						curl_close($ch);
+						$l[]=$result;
+						//return $l;  
+						
+						$query = $this->PushNotifications->PushNotificationCustomers->query();
+						$query->update()
+							->set(['sent'=>1])
+							->where(['id' => $pushNotification->id])
+							->execute();
+		}
+		$total_records = $this->PushNotifications->PushNotificationCustomers->find()->where(['push_notification_id'=>$id])->count();
+		$total_converted_records = $this->PushNotifications->PushNotificationCustomers->find()->where(['sent'=>1,'push_notification_id'=>$id])->count();
+		$converted_per=($total_converted_records*100)/$total_records;
+		    if($converted_per==100){ $again_call_ajax="NO";
+                                   }
+									else{$again_call_ajax="YES";}
+			die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
+ 
+   } 
+
     /**
      * View method
      *
