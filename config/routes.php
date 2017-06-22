@@ -182,7 +182,12 @@ Router::prefix('api', function ($routes) {
 			   ],
 			   'view_my_track_order' => [
 				   'action' => 'view_my_track_order',
-				  ]
+				   'method' => 'GET'
+				  ],
+			   'my_order' => [
+				   'action' => 'my_order',
+				   'method' => 'GET'
+			   ]
 			 ]
 		]);
 				   
