@@ -39,6 +39,8 @@ add new field in customer table "bulk_booking_discount_percent" type- decimal
 1. carts new Table sql file available in Webroot.
 2. customer_addresses new Table sql file available in Webroot.
 
+22-06-2017
+1. Create field into `orders` table  `delivery_date` TIMESTAMP.
 
 15-06-2017
 ---------- Ashish ----------
