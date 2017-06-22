@@ -12,7 +12,7 @@ class ItemCategoriesController extends AppController
 		$itemCategories->select(['image_url' => $itemCategories->func()->concat(['http://13.126.58.104'.$this->request->webroot.'itemcategories/','image' => 'identifier' ])])
                                 ->autoFields(true);
 		
-	    $banners = $this->ItemCategories->Banners->find('All')->where(['link_name'=>'offer', 'Banners.status'=>'active']);
+	    $banners = $this->ItemCategories->Banners->find('All')->where(['link_name'=>'offer', 'Banners.status'=>'Active']);
 		$banners->select(['image_url' => $banners->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])->autoFields(true);
 		
 		$query=$this->ItemCategories->Items->ItemLedgers->find();

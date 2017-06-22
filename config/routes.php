@@ -80,8 +80,8 @@ Router::prefix('api', function ($routes) {
 				   'action' => 'item',
 				   'method' => 'GET'
 			   ],
-			   'itemDescription' => [
-				   'action' => 'itemDescription',
+			   'itemdescription' => [
+				   'action' => 'itemdescription',
 				   'method' => 'GET'
 			   ]
 		   ]

@@ -2,13 +2,14 @@
 namespace App\Controller\Api;
 use App\Controller\Api\AppController;
 use Cake\I18n\Time;
+use Cake\ORM\Behavior\TimestampBehavior;
 class PromoCodesController extends AppController
 {
     public function varifyPromoCodes()
     {
-		echo $today=date('Y-m-d H:i:s');
-		echo $time = Time::now();
-
+		//echo $today=date('Y-m-d H:i:s');
+		echo $time = new Time('2014-01-10 11:11');
+	
 		/* $jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$promo_code=$this->request->query('promo_code');
 		$customer_id=$this->request->query('customer_id');
