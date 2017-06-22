@@ -234,7 +234,9 @@ $(document).ready(function() {
 	$(".calculation_amount").die().live('keyup',function(){
 		calculation();				
 	});	
-	
+	$(".del_click").die().live('click',function(){
+		calculation();				
+	});	
 	function calculation(){
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
@@ -275,7 +277,7 @@ $(document).ready(function() {
 						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>	
 					</td>
 					<td>
 						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation_amount number','placeholder'=>'Price']); ?>
@@ -284,7 +286,7 @@ $(document).ready(function() {
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Total Amount']); ?>
 					</td>						  
                     <td>
-						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
+						<a class="btn btn-default delete-tr input-sm del_click" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 			</tbody>

@@ -138,6 +138,16 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	$routes->resources(
+		'CustomerAddresses', [
+		   'map' => [
+			   'add_address' => [
+				   'action' => 'add_address',
+				   'method' => 'POST'
+			   ]
+		   ]
+		]
+	);
 });
 
 /**
