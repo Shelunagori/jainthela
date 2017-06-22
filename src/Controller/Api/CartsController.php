@@ -125,5 +125,23 @@ class CartsController extends AppController
         $this->set(compact('status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts'));
         $this->set('_serialize', ['status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts']);
     }
+	
+	 public function reviewOrder()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$customer_id=$this->request->query('customer_id');
+		$cart_details=$this->Carts->find()->where(['customer_id' => $customer_id])
+		->contain(['Items'=>['Units']]);
+		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+                                ->autoFields(true);
+		
+	
+		$customer_addresses=$this->Carts->CustomerAddresses->find()->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1']);
+
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','customer_addresses', 'cart_details'));
+        $this->set('_serialize', ['status', 'error', 'customer_addresses', 'cart_details']);
+    }
 
 }

@@ -132,6 +132,10 @@ Router::prefix('api', function ($routes) {
 			   'fetch_add_to_cart' => [
 				   'action' => 'fetch_add_to_cart',
 				   'method' => 'POST'
+			   ],
+			   'reviewOrder' => [
+				   'action' => 'reviewOrder',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
