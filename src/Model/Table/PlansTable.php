@@ -44,6 +44,8 @@ class PlansTable extends Table
         $this->hasMany('Wallets', [
             'foreignKey' => 'plan_id'
         ]);
+		$this->belongsTo('Banners');
+		$this->belongsTo('Wallets');
     }
 
     /**

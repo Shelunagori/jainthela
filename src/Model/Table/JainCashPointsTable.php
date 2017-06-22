@@ -41,6 +41,7 @@ class JainCashPointsTable extends Table
             'joinType' => 'INNER'
         ]);
 		 $this->belongsTo('Orders');
+		 $this->belongsTo('Banners');
     }
 
     /**

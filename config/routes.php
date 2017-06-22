@@ -93,7 +93,11 @@ Router::prefix('api', function ($routes) {
 			   'registration' => [
 				   'action' => 'registration',
 				   'method' => 'GET'
-			   ]
+			   ],
+			   'profile_edit' => [
+				   'action' => 'profile_edit',
+				   'method' => 'POST'
+				   ]
 		   ]
 		]
 	);
@@ -123,7 +127,7 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'plus_add_to_cart' => [
 				   'action' => 'plus_add_to_cart',
-				   'method' => 'POST'
+ 				   'method' => 'POST'
 			   ],
 			   'fetch_add_to_cart' => [
 				   'action' => 'fetch_add_to_cart',
@@ -152,12 +156,14 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
-	$routes->resources(
-		'Customers', [
+	
+		
+		$routes->resources(
+		'Plans', [
 		   'map' => [
-			   'profile_edit' => [
-				   'action' => 'profile_edit',
-				   'method' => 'POST'
+			   'plan' => [
+				   'action' => 'plan',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -172,6 +178,16 @@ Router::prefix('api', function ($routes) {
 			   ],
 			   'view_my_track_order' => [
 				   'action' => 'view_my_track_order',
+				  ]
+			 ]
+		]);
+				   
+				   
+	$routes->resources(
+		'JainCashPoints', [
+		   'map' => [
+			   'referral' => [
+				   'action' => 'referral',
 				   'method' => 'GET'
 			   ]
 		   ]

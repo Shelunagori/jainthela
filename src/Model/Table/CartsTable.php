@@ -68,6 +68,7 @@ class CartsTable extends Table
             ->requirePresence('cart_count', 'create')
             ->notEmpty('cart_count');
         return $validator;
+        
     }
 
     /**

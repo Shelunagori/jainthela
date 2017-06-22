@@ -24,18 +24,11 @@ class WalkinSaleDetailsController extends AppController
             'contain' => ['WalkinSales', 'Items']
         ];
         $walkinSaleDetails = $this->paginate($this->WalkinSaleDetails);
-
-        $this->set(compact('walkinSaleDetails'));
+		$this->set(compact('walkinSaleDetails'));
         $this->set('_serialize', ['walkinSaleDetails']);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Walkin Sale Detail id.
-     * @return \Cake\Http\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+   
     public function view($id = null)
     {
         $walkinSaleDetail = $this->WalkinSaleDetails->get($id, [
@@ -46,11 +39,7 @@ class WalkinSaleDetailsController extends AppController
         $this->set('_serialize', ['walkinSaleDetail']);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
+    
     public function add()
     {
         $walkinSaleDetail = $this->WalkinSaleDetails->newEntity();

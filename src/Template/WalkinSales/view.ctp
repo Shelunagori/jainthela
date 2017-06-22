@@ -58,12 +58,7 @@ margin-bottom: 0;
 					</tr>
 			
 					<tr>
-						<td>Driver</td>
-						<td width="20" align="center">:</td>
-						<td ><?= h($walkinSales->driver->name) ?></td>
-						
-					</tr><tr>
-						<td>Driver</td>
+						<td>Warehouse</td>
 						<td width="20" align="center">:</td>
 						<td><?= h($walkinSales->warehouse->name)?></td>
 						

@@ -28,7 +28,7 @@ class ItemCategoriesController extends AppController
 										return $q->select(['longname','shortname']);
 									}]);
 						}]);
-						$popular_items->select(['image_url' => $popular_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'itemcategories/','image' => 'identifier' ])]);
+						$popular_items->select(['image_url' => $popular_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 						
 							
 				$querys=$this->ItemCategories->Items->ItemLedgers->find();
@@ -44,7 +44,7 @@ class ItemCategoriesController extends AppController
 						return $q->select(['longname','shortname']);
 						}]);
 						}]);
-						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'itemcategories/','image' => 'identifier' ])]);
+						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
 						$cart_count = $this->ItemCategories->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 						
