@@ -43,8 +43,7 @@ class ItemsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Units', [
-            'foreignKey' => 'unit_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'unit_id'
         ]);
         $this->belongsTo('Franchises', [
             'foreignKey' => 'franchise_id',

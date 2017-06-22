@@ -123,7 +123,11 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'plus_add_to_cart' => [
 				   'action' => 'plus_add_to_cart',
-				   'method' => 'GET'
+				   'method' => 'POST'
+			   ],
+			   'fetch_add_to_cart' => [
+				   'action' => 'fetch_add_to_cart',
+				   'method' => 'POST'
 			   ]
 		   ]
 		]
@@ -144,6 +148,31 @@ Router::prefix('api', function ($routes) {
 			   'add_address' => [
 				   'action' => 'add_address',
 				   'method' => 'POST'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'Customers', [
+		   'map' => [
+			   'profile_edit' => [
+				   'action' => 'profile_edit',
+				   'method' => 'POST'
+			   ]
+		   ]
+		]
+	);
+	
+	$routes->resources(
+		'Orders', [
+		   'map' => [
+			   'track_order' => [
+				   'action' => 'track_order',
+				   'method' => 'GET'
+			   ],
+			   'view_my_track_order' => [
+				   'action' => 'view_my_track_order',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]

@@ -133,4 +133,34 @@ class CustomersController extends AppController
 			
 		}
     }
+	
+	public function profileEdit()
+    {
+		$customer_id=$this->request->data('customer_id');
+		$name=$this->request->data('name');
+		$mobile=$this->request->data('mobile');
+		$email=$this->request->data('email');
+		$fetchs=$this->Customers->find()->where(['Customers.id !=' => $customer_id, 'Customers.mobile' =>$mobile])->count();
+		if(empty($fetchs)){
+			$query = $this->Customers->query();
+				$result = $query->update()
+                    ->set([ 'name' => $name,
+							'mobile' => $mobile,
+							'email' => $email
+							])
+					->where(['id' => $customer_id])
+					->execute();
+		$profiles=$this->Customers->find()->where(['id' => $customer_id]);
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','profiles'));
+        $this->set('_serialize', ['status', 'error', 'profiles']);
+		}
+		else if(!empty($fetchs)){
+			$status=false;
+			$error="Please Try Another Number";
+			$this->set(compact('status', 'error'));
+			$this->set('_serialize', ['status', 'error']);
+		}
+    }
 }

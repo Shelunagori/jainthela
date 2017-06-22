@@ -132,9 +132,7 @@ class CustomersController extends AppController
 					'total_consumed' => $query->func()->sum('consumed'),'customer_id'
 				]);
 			},'Orders']
-        ]);
-		pr($customers->toArray());
-		
+        ]);		
 		
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
@@ -159,7 +157,6 @@ class CustomersController extends AppController
 				]);
 			},'Orders']
         ]);
-		pr($customer->toArray());
 		
 		$this->set(compact('customer'));
     }

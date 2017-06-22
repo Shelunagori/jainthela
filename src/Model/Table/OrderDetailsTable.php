@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Carts Model
+ * OrderDetails Model
  *
- * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\OrdersTable|\Cake\ORM\Association\BelongsTo $Orders
  * @property \App\Model\Table\ItemsTable|\Cake\ORM\Association\BelongsTo $Items
  *
- * @method \App\Model\Entity\Cart get($primaryKey, $options = [])
- * @method \App\Model\Entity\Cart newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Cart[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Cart|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Cart patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Cart[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Cart findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\OrderDetail get($primaryKey, $options = [])
+ * @method \App\Model\Entity\OrderDetail newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\OrderDetail[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\OrderDetail|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\OrderDetail patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\OrderDetail[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\OrderDetail findOrCreate($search, callable $callback = null, $options = [])
  */
-class CartsTable extends Table
+class OrderDetailsTable extends Table
 {
 
     /**
@@ -33,12 +33,12 @@ class CartsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('carts');
+        $this->setTable('order_details');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Customers', [
-            'foreignKey' => 'customer_id',
+        $this->belongsTo('Orders', [
+            'foreignKey' => 'order_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Items', [
@@ -65,8 +65,15 @@ class CartsTable extends Table
             ->notEmpty('quantity');
 
         $validator
-            ->requirePresence('cart_count', 'create')
-            ->notEmpty('cart_count');
+            ->decimal('rate')
+            ->requirePresence('rate', 'create')
+            ->notEmpty('rate');
+
+        $validator
+            ->decimal('amount')
+            ->requirePresence('amount', 'create')
+            ->notEmpty('amount');
+
         return $validator;
     }
 
@@ -79,7 +86,7 @@ class CartsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'));
+        $rules->add($rules->existsIn(['order_id'], 'Orders'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
 
         return $rules;
