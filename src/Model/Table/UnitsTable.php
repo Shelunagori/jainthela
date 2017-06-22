@@ -39,6 +39,7 @@ class UnitsTable extends Table
         $this->hasMany('Items', [
             'foreignKey' => 'unit_id'
         ]);
+		
     }
 
     /**

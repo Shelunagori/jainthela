@@ -124,6 +124,10 @@ Router::prefix('api', function ($routes) {
 			   'plus_add_to_cart' => [
 				   'action' => 'plus_add_to_cart',
 				   'method' => 'GET'
+			   ],
+			   'fetchCart' => [
+				   'action' => 'fetchCart',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -144,6 +148,26 @@ Router::prefix('api', function ($routes) {
 			   'add_address' => [
 				   'action' => 'add_address',
 				   'method' => 'POST'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'Plans', [
+		   'map' => [
+			   'plan' => [
+				   'action' => 'plan',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'JainCashPoints', [
+		   'map' => [
+			   'referral' => [
+				   'action' => 'referral',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]

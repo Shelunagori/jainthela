@@ -64,14 +64,11 @@ class CartsTable extends Table
             ->requirePresence('quantity', 'create')
             ->notEmpty('quantity');
 
-<<<<<<< HEAD
         $validator
             ->requirePresence('cart_count', 'create')
             ->notEmpty('cart_count');
-
-=======
->>>>>>> 8ad41ceb2ec85f2b846b3156a3e5d37a6c786214
-        return $validator;
+        
+		return $validator;
     }
 
     /**
