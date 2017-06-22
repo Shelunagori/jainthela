@@ -27,7 +27,6 @@
 									<th>Transaction Date</th>
 									<th>Name</th>
 									 <th>Mobile</th>
-									<th>Driver</th>
 									<th >Warehouse </th>
 									<th >Total Amount</th>
 									<th class="actions"><?= __('Actions') ?></th>
@@ -41,7 +40,6 @@
                 <td><?= h($walkinSale->transaction_date) ?></td>
                 <td><?= h($walkinSale->name) ?></td>
                 <td><?= h($walkinSale->mobile) ?></td>
-                <td><?=  h($walkinSale->driver->name)?></td>
                 <td><?= h($walkinSale->warehouse->name)?></td>
                 <td><?= $this->Number->format($walkinSale->total_amount) ?></td>
                 <td class="actions">

@@ -37,11 +37,27 @@ class WalletsController extends AppController
 	 public function viewAll()
     {
         $this->viewBuilder()->layout('index_layout');
-		$wallets = $this->Wallets->find()->contain(['Customers', 'Plans', 'Orders'])->group('customer_id');
-		pr($wallets->toArray());exit;
+		$wallets = $this->Wallets->find()->contain(['Customers', 'Plans', 'Orders'])->distinct(['Wallets.customer_id']);
+		$final_output1=[];
+		$final_output2=[];
+		foreach($wallets as $wallet)
+		{
+			
+			$wallets_datas=$this->Wallets->find()->where(['Wallets.customer_id'=>$wallet->customer_id])->contain(['Customers', 'Plans', 'Orders']);
+			
+			 foreach($wallets_datas as $wallets_data )
+			{
+				$final_output1[$wallets_data->customer_id]=$wallets_data->plan->name;
+	
+			} 
+		}
+		pr($final_output1);
+		pr($final_output2);
+		exit;
+		
 		$this->set(compact('wallets'));
-        $this->set('_serialize', ['wallets']);
-    }
+			$this->set('_serialize', ['wallets']);
+	}
 	 public function consumed()
     {
         $this->viewBuilder()->layout('index_layout');
