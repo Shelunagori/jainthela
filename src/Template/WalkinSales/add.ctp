@@ -76,7 +76,7 @@
 									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('total_amount',['class'=>'form-control input-sm grnd_ttl','label'=>false,'placeholder'=>'Grand Total']) ?>
+											<?= $this->Form->input('total_amount',['class'=>'form-control input-sm grnd_ttl','label'=>false,'placeholder'=>'Grand Total','label'=>false]) ?>
 										</div>
 									</td>
 									<td></td>
@@ -89,7 +89,7 @@
 							<div class="col-md-4"> </div>
 						</div>
 						<div align="center">
-							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Walk In Sales'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+							<?= $this->Form->button($this->html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Create Walk In Sales'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
 					</div>
 				</div>
@@ -103,7 +103,6 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
  	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -195,12 +194,15 @@ $(document).ready(function() {
 		if(rowCount>1)
 		{
 			 $(this).closest('tr').remove();
-			 rename_rows();		 
-		}	
+			 rename_rows();
+			 
+		}
+		
     });
 
 		$('.add').click(function(){
-				add_row();	
+				add_row();
+				
 		});
 		
 	add_row();
@@ -274,7 +276,7 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>	

@@ -36,11 +36,12 @@ class ComboOffersController extends AppController
      */
     public function view($id = null)
     {
-        $comboOffer = $this->ComboOffers->get($id, [
-            'contain' => ['ComboOfferDetails']
+		$this->viewBuilder()->layout('index_layout');
+	   $comboOffers = $this->ComboOffers->get($id, [
+            'contain' => ['ComboOfferDetails'=>['Items'=>['Units']]]
         ]);
 
-        $this->set('comboOffer', $comboOffer);
+        $this->set('comboOffers', $comboOffers);
         $this->set('_serialize', ['comboOffer']);
     }
 

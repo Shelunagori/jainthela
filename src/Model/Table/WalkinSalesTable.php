@@ -40,18 +40,9 @@ class WalkinSalesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Drivers', [
-            'foreignKey' => 'driver_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('JainThelaAdmins', [
-            'foreignKey' => 'jain_thela_admin_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Warehouses', [
-            'foreignKey' => 'warehouse_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('Drivers');
+        $this->belongsTo('JainThelaAdmins');
+        $this->belongsTo('Warehouses');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('LedgersAccounts');
         $this->hasMany('WalkinSaleDetails', [
