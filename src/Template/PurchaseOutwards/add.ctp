@@ -226,9 +226,9 @@ $(document).ready(function() {
 	}
 	
 	$(".calculation_amount").die().live('keyup',function(){
-		calculation();				
-	});	
-	
+		calculation();
+	});
+
 	function calculation(){
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
@@ -297,13 +297,13 @@ $(document).ready(function() {
 						
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Quantity','value'=>0]); ?>	
+						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>	
 					</td>
 					<td>
 						<?php echo $this->Form->input('rate[]', ['label' => false,'class' => 'calculation_amount form-control input-sm number valid','placeholder'=>'Rate','value'=>0]); ?>	
 					</td>
 					<td>
-						<?php echo $this->Form->input('amount[]', ['label' => false,'class' => 'form-control input-sm number valid','placeholder'=>'Amount','value'=>0]); ?>	
+						<?php echo $this->Form->input('amount[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Amount','value'=>0]); ?>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
