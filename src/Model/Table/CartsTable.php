@@ -46,6 +46,7 @@ class CartsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('CustomerAddresses');
+		$this->belongsTo('DeliveryTimes');
     }
 
     /**

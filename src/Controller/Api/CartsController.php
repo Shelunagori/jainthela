@@ -87,6 +87,9 @@ class CartsController extends AppController
 		}
 		else if($tag=='cart'){
 			$carts=$this->Carts->find()->where(['customer_id' => $customer_id])->contain(['Items'=>['Units']]);
+			
+			$this->loadModel('DeliveryCharges');
+			$delivery_data=$this->DeliveryCharges->find();
 
 		}
 		
@@ -122,8 +125,8 @@ class CartsController extends AppController
 		}
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts'));
-        $this->set('_serialize', ['status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts']);
+        $this->set(compact('status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data'));
+        $this->set('_serialize', ['status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data']);
     }
 	
 	 public function reviewOrder()
@@ -138,10 +141,12 @@ class CartsController extends AppController
 	
 		$customer_addresses=$this->Carts->CustomerAddresses->find()->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1']);
 
+		$delivery_time=$this->Carts->DeliveryTimes->find();
+
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','customer_addresses', 'cart_details'));
-        $this->set('_serialize', ['status', 'error', 'customer_addresses', 'cart_details']);
+        $this->set(compact('status', 'error','customer_addresses', 'cart_details', 'delivery_time'));
+        $this->set('_serialize', ['status', 'error', 'customer_addresses', 'cart_details', 'delivery_time']);
     }
 
 }

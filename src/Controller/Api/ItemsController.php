@@ -27,7 +27,7 @@ class ItemsController extends AppController
 		     ->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.id'=>$item_id])
 		     ->contain(['Units', 'Carts']);
 		$item_description->select(['image_url' => $item_description->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
-             ->autoFields(true);		
+             ->autoFields(true);
 		$status=true;
 		$error="";
         $this->set(compact('status', 'error', 'item_description'));
