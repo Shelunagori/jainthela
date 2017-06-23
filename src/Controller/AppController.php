@@ -46,7 +46,8 @@ class AppController extends Controller
 		
 		FrozenTime::setToStringFormat('dd-MM-yyyy hh:mm a');  // For any immutable DateTime
 		FrozenDate::setToStringFormat('dd-MM-yyyy');  // For any immutable Date
-		
+		//FrozenTime::setJsonEncodeFormat('yyyy-MM-dd HH:mm:ss'); 
+		//FrozenDate::setJsonEncodeFormat('yyyy-MM-dd');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
 		$this->loadComponent('Auth', [
