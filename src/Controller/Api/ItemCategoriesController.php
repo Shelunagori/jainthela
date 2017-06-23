@@ -25,7 +25,7 @@ class ItemCategoriesController extends AppController
 						->contain(['Items'=>function($q){
 							return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 									->contain(['Units'=>function($q){
-										return $q->select(['longname','shortname']);
+										return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
 									}]);
 						}]);
 						$popular_items->select(['image_url' => $popular_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
@@ -39,10 +39,10 @@ class ItemCategoriesController extends AppController
 						->order(['total_rows'=>'DESC'])
 						->limit(5)
 						->contain(['Items'=>function($q){
-						return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
-						->contain(['Units'=>function($q){
-						return $q->select(['longname','shortname']);
-						}]);
+							return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
+							->contain(['Units'=>function($q){
+								return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
+							}]);
 						}]);
 						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
