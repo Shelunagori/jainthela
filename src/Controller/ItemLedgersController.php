@@ -322,7 +322,7 @@ public function DriverReport()
 		  }
 		  exit;
      }
-	 	 	 	 
+
 	public function reportShow()
     {
 		$this->viewBuilder()->layout('index_layout'); 
@@ -349,6 +349,52 @@ public function DriverReport()
 		->autoFields(true)
 		->contain(['Items'=>['Units','itemCategories']]);
         $itemLedgers = ($query);
+         $this->set(compact('itemLedgers'));
+    }
+	
+	public function itemStockUpdate()
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+ 				$query = $this->ItemLedgers->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units','itemCategories']]);
+        $itemLedgers = ($query);	
+		foreach($itemLedgers as $itemLedger){
+			$item_id=$itemLedger->item_id;
+			$total_in=$itemLedger->total_in;
+			$total_out=$itemLedger->total_out;
+			$remaining_stock=$total_in-$total_out;
+			$item_data = $this->ItemLedgers->Items->find()->where(['id'=>$item_id]);
+				foreach($item_data as $item_data_fetch){
+					$minimum_stock=$item_data_fetch->minimum_stock;
+					if($remaining_stock<$minimum_stock){			
+						$query=$this->ItemLedgers->Items->query();
+						$result = $query->update()
+							->set(['out_of_stock' => 1])
+							->where(['id' => $item_id])
+							->execute();
+					}
+				}
+			} 
          $this->set(compact('itemLedgers'));
     }
 	

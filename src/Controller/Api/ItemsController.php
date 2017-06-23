@@ -28,6 +28,7 @@ class ItemsController extends AppController
 		     ->contain(['Units', 'Carts']);
 		$item_description->select(['image_url' => $item_description->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
              ->autoFields(true);
+<<<<<<< HEAD
 
 
 $querys=$this->Items->ItemLedgers->find();
@@ -48,6 +49,8 @@ $querys=$this->Items->ItemLedgers->find();
 						$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 
 			 
+=======
+>>>>>>> 2df3b17bf7e692481fe0aeffddccf6a001567b40
 		$status=true;
 		$error="";
         $this->set(compact('status', 'error', 'item_description', 'customer_also_bought'));

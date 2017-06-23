@@ -86,13 +86,17 @@ class ItemsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
-			$file = $this->request->data['image'];		 
+			$file = $this->request->data['image'];
+			$file_name=$file['name'];			
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();
             $img_name= $setNewFileName.'.'.$ext;
+			if(!empty($file_name)){
 			$this->request->data['image']=$img_name;
-			
+			}if(empty($file_name)){
+				
+			}
             $item = $this->Items->patchEntity($item, $this->request->getData());
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if ($this->Items->save($item)) {

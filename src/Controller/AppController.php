@@ -16,6 +16,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 
 /**
  * Application Controller
@@ -41,7 +43,10 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-
+		
+		FrozenTime::setToStringFormat('dd-MM-yyyy hh:mm a');  // For any immutable DateTime
+		FrozenDate::setToStringFormat('dd-MM-yyyy');  // For any immutable Date
+		
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
 		$this->loadComponent('Auth', [

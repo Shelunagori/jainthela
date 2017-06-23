@@ -41,7 +41,9 @@ class OrdersController extends AppController
 		 
 		foreach($orders_data as $orders_data_fetch){
 			 $order_id=$orders_data_fetch->id;
-			 
+			echo $delivery_date=date('D M j, Y H:i a', strtotime($orders_data_fetch->delivery_date));
+			$orders_data->orders_delivery_date=$delivery_date;
+
 		$orders_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
                return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);

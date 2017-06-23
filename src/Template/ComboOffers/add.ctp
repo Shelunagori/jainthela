@@ -58,7 +58,7 @@
 									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl','label'=>false,'placeholder'=>'Grand Total']) ?>
+											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Grand Total']) ?>
 										</div>
 									</td>
 								</tr>
@@ -68,7 +68,7 @@
 									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt','label'=>false,'placeholder'=>'Discount']) ?>
+											<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt calc','label'=>false,'placeholder'=>'Discount']) ?>
 										</div>
 									</td>
 								</tr>
@@ -78,7 +78,7 @@
 									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat','label'=>false,'placeholder'=>'Sales Rate']) ?>
+											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate']) ?>
 										</div>
 									</td>
 								</tr>
@@ -227,9 +227,13 @@ $(document).ready(function() {
 
 
 
-	$(".grnd_ttl").die().live('keyup',function(){
-		var total=$(this).val();
-		$(".sls_rat").val(total);
+	$(".calc").die().live('keyup',function(){
+		var total=$(".grnd_ttl").val();
+		var discount=$(".dscnt").val();
+		var final_amount=((total*discount)/100);
+		var sales_amount=total-final_amount;
+		$(".sls_rat").val(sales_amount);
+		
 	});	
 	
 $(".dscnt").die().live('keyup',function(){

@@ -78,12 +78,14 @@ class BulkBookingLeadsController extends AppController
 		
         $bulkBookingLead = $this->BulkBookingLeads->newEntity();
         if ($this->request->is('post')) {
+			
 			$file = $this->request->data['image'];		 
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();		
             $img_name= $setNewFileName.'.'.$ext;
 			$this->request->data['image']=$img_name;
+			
             $bulkBookingLead = $this->BulkBookingLeads->patchEntity($bulkBookingLead, $this->request->getData());		
 			$last_lead_no = $this->BulkBookingLeads->find()->select(['lead_no'])->where(['jain_thela_admin_id' => $jain_thela_admin_id])->order(['lead_no'=>'DESC'])->first();
 			if($last_lead_no){

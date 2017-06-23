@@ -202,6 +202,33 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+
+	$routes->resources(
+		'ComboOffers', [
+		   'map' => [
+			   'combo_offer_list' => [
+				   'action' => 'combo_offer_list',
+				   'method' => 'GET'
+			   ],
+			   'combo_offer_view' => [
+				   'action' => 'combo_offer_view',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+
+	$routes->resources(
+		'BulkBookingLeads', [
+		   'map' => [
+			   'add_bulk_order' => [
+				   'action' => 'add_bulk_order',
+				   'method' => 'POST'
+			   ]
+		   ]
+		]
+	);
+
 });
 
 /**

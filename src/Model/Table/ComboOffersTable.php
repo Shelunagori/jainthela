@@ -39,6 +39,12 @@ class ComboOffersTable extends Table
         $this->hasMany('ComboOfferDetails', [
             'foreignKey' => 'combo_offer_id'
         ]);
+		
+		 $this->hasMany('Orders', [
+            'foreignKey' => 'combo_offer_id'
+        ]);
+		
+		 $this->belongsTo('Items');
     }
 
     /**
