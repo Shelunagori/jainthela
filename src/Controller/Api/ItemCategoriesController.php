@@ -23,7 +23,7 @@ class ItemCategoriesController extends AppController
 						->order(['total_rows'=>'DESC'])
 						->limit(5)
 						->contain(['Items'=>function($q){
-							return $q->select(['name', 'image', 'sales_rate'])
+							return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 									->contain(['Units'=>function($q){
 										return $q->select(['longname','shortname']);
 									}]);
@@ -39,7 +39,7 @@ class ItemCategoriesController extends AppController
 						->order(['total_rows'=>'DESC'])
 						->limit(5)
 						->contain(['Items'=>function($q){
-						return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale'])
+						return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 						->contain(['Units'=>function($q){
 						return $q->select(['longname','shortname']);
 						}]);

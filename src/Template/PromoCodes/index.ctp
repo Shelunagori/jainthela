@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-md-8">
 						<label class=" control-label">Valid From</label>
-						<?php echo $this->Form->control('valid_from',['readonly','placeholder'=>'Valid From','class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->control('valid_from',['readonly','placeholder'=>'Valid From','class'=>'form-control input-sm date-time-range-picker','label'=>false]); ?>
 					</div>
 				</div>
 				<div class="row">

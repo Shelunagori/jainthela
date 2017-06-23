@@ -27,11 +27,31 @@ class ItemsController extends AppController
 		     ->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.id'=>$item_id])
 		     ->contain(['Units', 'Carts']);
 		$item_description->select(['image_url' => $item_description->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
-             ->autoFields(true);		
+             ->autoFields(true);
+
+
+$querys=$this->Items->ItemLedgers->find();
+				$customer_also_bought=$querys
+						->select(['total_rows' => $querys->func()->count('ItemLedgers.id'),'item_id',])
+						->where(['inventory_transfer'=>'no','status'=>'out'])
+						->group(['ItemLedgers.item_id'])
+						->order(['total_rows'=>'DESC'])
+						->limit(5)
+						->contain(['Items'=>function($q){
+						return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
+						->contain(['Units'=>function($q){
+						return $q->select(['longname','shortname']);
+						}]);
+						}]);
+						$customer_also_bought->select(['image_url' => $customer_also_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+		
+						$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+
+			 
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'item_description'));
-        $this->set('_serialize', ['status', 'error', 'item_description']);
+        $this->set(compact('status', 'error', 'item_description', 'customer_also_bought'));
+        $this->set('_serialize', ['status', 'error', 'item_description', 'customer_also_bought']);
     }
 	
 }
