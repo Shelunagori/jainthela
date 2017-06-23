@@ -19,7 +19,6 @@ use Cake\Event\Event;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 
-ini_set('intl.default_locale', 'Asia/Kolkata');
 /**
  * Application Controller
  *
@@ -45,7 +44,7 @@ class AppController extends Controller
     {
         parent::initialize();
 		
-		FrozenTime::setToStringFormat('dd-MM-yyyy HH:mm:ss');  // For any immutable DateTime
+		FrozenTime::setToStringFormat('dd-MM-yyyy hh:mm a');  // For any immutable DateTime
 		FrozenDate::setToStringFormat('dd-MM-yyyy');  // For any immutable Date
 		
         $this->loadComponent('RequestHandler');

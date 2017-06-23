@@ -24,7 +24,7 @@ class PurchaseBookingsController extends AppController
 		
        
         $purchaseBookings = $this->PurchaseBookings->find()->contain(['Grns', 'Vendors', 'JainThelaAdmins']);
-
+		
         $this->set(compact('purchaseBookings'));
         $this->set('_serialize', ['purchaseBookings']);
     }
