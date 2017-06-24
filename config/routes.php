@@ -187,6 +187,10 @@ Router::prefix('api', function ($routes) {
 			   'my_order' => [
 				   'action' => 'my_order',
 				   'method' => 'GET'
+			   ],
+			   'place_order' => [
+				   'action' => 'place_order',
+				   'method' => 'POST'
 			   ]
 			 ]
 		]);
