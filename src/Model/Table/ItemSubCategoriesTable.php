@@ -44,6 +44,7 @@ class ItemSubCategoriesTable extends Table
         $this->hasMany('Items', [
             'foreignKey' => 'item_sub_category_id'
         ]);
+		$this->belongsTo('Carts');
     }
 
     /**

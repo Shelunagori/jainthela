@@ -228,6 +228,17 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	
+	$routes->resources(
+		'ItemSubCategories', [
+		   'map' => [
+			   'itemsubcategory' => [
+				   'action' => 'itemsubcategory',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
 
 });
 
