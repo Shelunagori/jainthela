@@ -44,17 +44,17 @@
 								<tr>
 									<td align="center">
 										<div style="border:1px solid black;height:70px;width:100px;margin-left:100px;font-size:17px;padding:4px;">
-										JAIN CASH<br><?= $jain_cash_remaining_point ?>
+										JAIN CASH<br><?= @$jain_cash_remaining_point ?>
 										</div>
 									</td>
 									<td align="center">
 										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
-										WALLET<br><?= $wallet_remaining_amount ?>
+										WALLET<br><?= @$wallet_remaining_amount ?>
 										</div>
 									</td>
 									<td align="center">
 										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
-										ORDERS<br><?= $total_order_data ?>
+										ORDERS<br><?= @$total_order_data ?>
 										</div>
 									</td>
 								</tr>
@@ -130,7 +130,7 @@
 		</tr>
 	</table>
 	 
-<!-------------------------------------!---------------------------------------->
+<!-------------------------------------!-Wallet----START----------------------------------->
 	<div class="col-md-12">
 		<h3 align="center">Wallet</h3>
 	<div>
@@ -201,8 +201,8 @@
 			</td>
 		</tr>
 	</table>
-<!------------------------------------------------------------------------------------------->
-<!------------------------------------------------------------------------------------------->
+<!-----------------------------------Wallet----END------------------------------------------->
+<!-------------------------------Order---Details---START------------------------------------->
 <div class="col-md-12">
 		<h3 align="center">Order Details</h3>
 	<div>
@@ -248,10 +248,8 @@
 			</table>
 		</td>
 	</tr>
-</table>			
-<!------------------------------------------------------------------------------------------->
-								
-								
+</table>
+<!----------------------------------Order---Details---END--------------------------------------->
 						</div>
 					 </div>
 				</div>

@@ -183,7 +183,6 @@ class BulkBookingLeadsController extends AppController
         } else {
             $this->Flash->error(__('The bulk booking lead could not be deleted. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 }
