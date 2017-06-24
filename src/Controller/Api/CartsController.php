@@ -84,21 +84,33 @@ class CartsController extends AppController
 						->where(['id' => $update_id])
 						->execute();
 			}
-			$carts=$this->Carts->find()->where(['customer_id' => $customer_id])->contain(['Items'=>['Units']]);
+			
+			
 		}
 		else if($tag=='remove'){
 			$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['item_id' => $item_id, 'customer_id' => $customer_id])
 					->execute();
-					$carts=$this->Carts->find()->where(['customer_id' => $customer_id])->contain(['Items'=>['Units']]);
+					
 		}
 		else if($tag=='cart'){
-			$carts=$this->Carts->find()->where(['customer_id' => $customer_id])->contain(['Items'=>['Units']]);
 			
 			$this->loadModel('DeliveryCharges');
 			$delivery_data=$this->DeliveryCharges->find();
 
+		}
+		
+		$carts=$this->Carts->find()
+				->where(['customer_id' => $customer_id])
+				->contain(['Items'=>['Units']])
+				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
+				->group('Carts.item_id')
+				->autoFields(true);
+		$grand_total=0;
+		foreach($carts as $cart_data)
+		{
+			$grand_total+=$cart_data->total;
 		}
 		
 		$Customers = $this->Carts->Customers->get($customer_id, [
@@ -133,8 +145,8 @@ class CartsController extends AppController
 		}
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data'));
-        $this->set('_serialize', ['status', 'error', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data']);
+        $this->set(compact('status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data'));
+        $this->set('_serialize', ['status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data']);
     }
 	
 	public function reviewOrder()
