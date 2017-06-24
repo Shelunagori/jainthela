@@ -46,6 +46,7 @@ class PlansTable extends Table
         ]);
 		$this->belongsTo('Banners');
 		$this->belongsTo('Wallets');
+		$this->belongsTo('Carts');
     }
 
     /**

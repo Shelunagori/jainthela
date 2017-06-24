@@ -8,13 +8,11 @@ class JainCashPointsController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 		
-		$referral_image = $this->JainCashPoints->Banners->find()->where(['Banners.status'=>'Active','Banners.name'=>'referral']);
-		$referral_image->select(['image_url' => $referral_image->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
-                                ->autoFields(true);
+		$referral_image = $this->JainCashPoints->Banners->find()
+		->select(['image_url' => $this->JainCashPoints->Banners->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
+		->where(['Banners.status'=>'Active','Banners.name'=>'referral'])
+        ->autoFields(true)->first();
 								
-		
-
-
 		$query = $this->JainCashPoints->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
@@ -41,11 +39,12 @@ class JainCashPointsController extends AppController
 			$used_points=$fetch_query->total_out;
 			$jain_cash_points=$points-$used_points;
 		}
-		
+				$cart_count = $this->JainCashPoints->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'jain_cash_points', 'referral_image'));
-        $this->set('_serialize', ['status', 'error', 'jain_cash_points', 'referral_image']);
+        $this->set(compact('status', 'error', 'jain_cash_points','cart_count','referral_image'));
+        $this->set('_serialize', ['status', 'error', 'jain_cash_points','cart_count','referral_image']);
     }
 
 }

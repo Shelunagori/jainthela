@@ -9,12 +9,12 @@ class PlansController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
         $plan_details = $this->Plans->find()->where(['Plans.status'=>'Active']);
-		$plan_image = $this->Plans->Banners->find()->where(['Banners.status'=>'Active','Banners.name'=>'plan']);
-		$plan_image->select(['image_url' => $plan_image->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
-                                ->autoFields(true);
-								
+	    
+		$plan_image = $this->Plans->Banners->find()
+		->select(['image_url' => $this->Plans->Banners->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
+		->where(['Banners.status'=>'Active','Banners.name'=>'plan'])
+        ->autoFields(true)->first();
 		
-
 
 		$query = $this->Plans->Wallets->find();
 		$totalInCase = $query->newExpr()
@@ -43,10 +43,12 @@ class PlansController extends AppController
 			$wallet_balance=$advance-$consumed;
 		}
 		
+		$cart_count = $this->Plans->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+		
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'wallet_balance', 'plan_image', 'plan_details'));
-        $this->set('_serialize', ['status', 'error', 'wallet_balance', 'plan_image', 'plan_details']);
+        $this->set(compact('status', 'error', 'wallet_balance','cart_count', 'plan_image', 'plan_details'));
+        $this->set('_serialize', ['status', 'error', 'wallet_balance','cart_count', 'plan_image', 'plan_details']);
     }
 
 }
