@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api;
 use App\Controller\Api\AppController;
+use Cake\ORM\TableRegistry;
 class OrdersController extends AppController
 {
     public function trackOrder()
@@ -78,63 +79,48 @@ class OrdersController extends AppController
 		$promo_code_id=$this->request->data('promo_code_id');
 		$address_id=$this->request->data('address_id');
 		$order_type=$this->request->data('order_type');
+		$order = $this->Orders->newEntity();
+		
+		
+		
 		
 		if($place_order=='yes'){
 			
 		$payable_amount=$total_amount-($wallet_amount+$jain_cash_amount);
-		$this->loadModel('Carts');
-		$carts_data=$this->Carts->find()->where(['customer_id'=>$customer_id]);
+		
 			$last_order_no = $this->Orders->find()->select(['order_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
 			if(!empty($last_order_no)){
 				$order_no = $last_order_no->order_no+1;
 			}else{
 				$order_no=1;
 			}
-				$query = $this->Orders->query();
-					$query->insert(['order_no', 'jain_thela_admin_id', 'customer_id', 'amount_from_wallet', 'amount_from_jain_cash', 'amount_from_promo_code', 'total_amount', 'online_amount', 'promo_code_id', 'pay_amount', 'customer_address_id', 'order_type'])
-							->values([
-							'order_no' => $order_no,
-							'jain_thela_admin_id' => $jain_thela_admin_id,
-							'customer_id' => $customer_id,
-							'amount_from_wallet' => $wallet_amount,
-							'amount_from_jain_cash' => $jain_cash_amount,
-							'amount_from_promo_code' => $promo_code_amount,
-							'total_amount' => $total_amount,
-							'online_amount' => $online_amount,
-							'promo_code_id' => $promo_code_id,
-							'pay_amount' => $payable_amount,
-							'customer_address_id' => $address_id,
-							'order_type' => $order_type
-							])
-					->execute();
-
-					echo $order_id=$query->lastInsertId('Orders');
-					exit;
-			foreach($carts_data as $carts_data_fetch){
+			$this->loadModel('Carts');
+		$carts_data=$this->Carts->find()->where(['customer_id'=>$customer_id])->contain(['Items']);
+		
+		$i=0;
+			foreach($carts_data as $carts_data_fetch)
+			{
 				
-				$item_id=$carts_data_fetch->item_id;
-				$quantity=$carts_data_fetch->quantity;
-				$rate=$carts_data_fetch->rate;
-				$amount=$carts_data_fetch->amount;
+				$amount=$carts_data_fetch->quantity*$carts_data_fetch->item->sales_rate;
 				
-				$query = $this->Orders->OrderDetails->query();
-					$query->insert(['order_id', 'item_id', 'quantity', 'rate', 'amount'])
-							->values([
-							'order_id' => @$order_id,
-							'item_id' => $item_id,
-							'quantity' => $quantity,
-							'rate' => $rate,
-							'amount' => $amount
-							])
-					->execute();
-					 	 
+				$this->request->data['order_details'][$i]['item_id']=$carts_data_fetch->item_id;
+				$this->request->data['order_details'][$i]['quantity']=$carts_data_fetch->quantity;
+				$this->request->data['order_details'][$i]['rate']=$carts_data_fetch->item->sales_rate;
+				$this->request->data['order_details'][$i]['amount']=$amount;
+				$i++;
 			}
+			$order = $this->Orders->patchEntity($order, $this->request->data());
+			
+			$order->order_no=$order_no;
+			$this->Orders->save($order);
+			
+			
 				$this->loadModel('Carts');
 				$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['customer_id' => $customer_id])
 					->execute();
-			exit;
+			
 		}
 	
 		$status=true;
