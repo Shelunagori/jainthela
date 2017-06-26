@@ -12,9 +12,9 @@ class CustomerAddressesController extends AppController
 		$house_no=$this->request->data('house_no');
 		$address=$this->request->data('address');
 		$locality=$this->request->data('mobile');
-		$default_address=$this->request->data('default_address');
 		$tag=$this->request->data('tag');
 		$customer_address_id=$this->request->data('customer_address_id');
+		$city='1';
 		
 		if($tag=='add'){
 		  $query = $this->CustomerAddresses->query();
@@ -35,6 +35,8 @@ class CustomerAddressesController extends AppController
 							'default_address' => 1
 							])
 					->execute();
+					
+					
 		}
 		if($tag=='edit'){
 			$query = $this->CustomerAddresses->query();

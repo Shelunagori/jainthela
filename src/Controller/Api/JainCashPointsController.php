@@ -39,12 +39,15 @@ class JainCashPointsController extends AppController
 			$used_points=$fetch_query->total_out;
 			$jain_cash_points=$points-$used_points;
 		}
-				$cart_count = $this->JainCashPoints->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
-
+		$cart_count = $this->JainCashPoints->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+		
+		$referral_array = $this->JainCashPoints->Customers->find()->where(['Customers.id'=>$customer_id])->first();
+		$referral_code=$referral_array->referral_code;
+		
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'jain_cash_points','cart_count','referral_image'));
-        $this->set('_serialize', ['status', 'error', 'jain_cash_points','cart_count','referral_image']);
+        $this->set(compact('status', 'error', 'jain_cash_points','cart_count','referral_code','referral_image'));
+        $this->set('_serialize', ['status', 'error', 'jain_cash_points','cart_count','referral_code','referral_image']);
     }
 
 }

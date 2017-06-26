@@ -8,7 +8,6 @@ class CartsController extends AppController
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
 		$item_id=$this->request->data('item_id');
 		$quantity=$this->request->data('quantity');
-		$rate=$this->request->data('rate');
 		$customer_id=$this->request->data('customer_id');
 		$items = $this->Carts->Items->get($item_id);
 		$item_add_quantity=$items->minimum_quantity_factor;
@@ -17,25 +16,22 @@ class CartsController extends AppController
 			$update_id=$fetch->id;
 		}
 		$update_quantity=$item_add_quantity*$quantity;
-		$amount=$update_quantity*$rate;
 		if(empty($fetchs->toArray()))
 		{
 			$query = $this->Carts->query();
-					$query->insert(['customer_id', 'item_id', 'quantity', 'cart_count', 'rate', 'amount'])
+					$query->insert(['customer_id', 'item_id', 'quantity', 'cart_count'])
 							->values([
 							'customer_id' => $customer_id,
 							'item_id' => $item_id,
 							'quantity' => $update_quantity,
-							'cart_count' => $quantity,
-							'rate' => $rate,
-							'amount' => $amount
+							'cart_count' => $quantity
 							])
 					->execute();
 		}else{
 			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
-                    ->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity, 'Carts.rate' => $rate, 'Carts.amount' => $amount])
+                    ->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
                     ->where(['id' => $update_id])
                     ->execute();
 		}
@@ -62,25 +58,22 @@ class CartsController extends AppController
 				$update_id=$fetch->id;
 			}
 			$update_quantity=$item_add_quantity*$quantity;
-			$amount=$update_quantity*$rate;
 			if(empty($fetchs->toArray()))
 			{
 				$query = $this->Carts->query();
-						$query->insert(['customer_id', 'item_id', 'quantity', 'cart_count', 'rate', 'amount'])
+						$query->insert(['customer_id', 'item_id', 'quantity', 'cart_count'])
 								->values([
 								'customer_id' => $customer_id,
 								'item_id' => $item_id,
 								'quantity' => $update_quantity,
-								'cart_count' => $quantity,
-								'rate' => $rate,
-								'amount' => $amount
+								'cart_count' => $quantity
 								])
 						->execute();
 			}else{
 				$cart=$this->Carts->get($update_id);
 				$query = $this->Carts->query();
 					$result = $query->update()
-						->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity, 'Carts.rate' => $rate, 'Carts.amount' => $amount])
+						->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
 						->where(['id' => $update_id])
 						->execute();
 			}

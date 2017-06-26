@@ -45,6 +45,7 @@ class ComboOffersTable extends Table
         ]);
 		
 		 $this->belongsTo('Items');
+		  $this->belongsTo('Carts');
     }
 
     /**

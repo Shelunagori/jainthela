@@ -44,11 +44,14 @@ class PlansController extends AppController
 		}
 		
 		$cart_count = $this->Plans->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+		$random=(string)mt_rand(100000,999999);
+		$extra=1;
+		$wallet_order_id=$customer_id.$extra.$random;
 		
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'wallet_balance','cart_count', 'plan_image', 'plan_details'));
-        $this->set('_serialize', ['status', 'error', 'wallet_balance','cart_count', 'plan_image', 'plan_details']);
+        $this->set(compact('status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details'));
+        $this->set('_serialize', ['status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details']);
     }
 
 }
