@@ -83,6 +83,14 @@ Router::prefix('api', function ($routes) {
 			   'itemdescription' => [
 				   'action' => 'itemdescription',
 				   'method' => 'GET'
+			   ],
+			   'view_all' => [
+				   'action' => 'view_all',
+				   'method' => 'GET'
+			   ],
+			   'search_item' => [
+				   'action' => 'search_item',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -97,6 +105,14 @@ Router::prefix('api', function ($routes) {
 			   'profile_edit' => [
 				   'action' => 'profile_edit',
 				   'method' => 'POST'
+				   ],
+				   'my_account' => [
+				   'action' => 'my_account',
+				   'method' => 'GET'
+				   ],
+				   'push_token_update' => [
+				   'action' => 'push_token_update',
+				   'method' => 'POST'
 				   ]
 		   ]
 		]
@@ -106,6 +122,10 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'flash' => [
 				   'action' => 'flash',
+				   'method' => 'GET'
+			   ],
+			   'current_api_version' => [
+				   'action' => 'current_api_version',
 				   'method' => 'GET'
 			   ]
 		   ]
@@ -202,6 +222,10 @@ Router::prefix('api', function ($routes) {
 			   'referral' => [
 				   'action' => 'referral',
 				   'method' => 'GET'
+			   ],
+			   'referral_update' => [
+				   'action' => 'referral_update',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -239,6 +263,16 @@ Router::prefix('api', function ($routes) {
 			   'itemsubcategory' => [
 				   'action' => 'itemsubcategory',
 				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'Feedbacks', [
+		   'map' => [
+			   'feedback_form' => [
+				   'action' => 'feedback_form',
+				   'method' => 'POST'
 			   ]
 		   ]
 		]

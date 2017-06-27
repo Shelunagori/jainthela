@@ -17,6 +17,23 @@ class UsersController extends AppController
 		$this->set(compact('status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas'));
 		$this->set('_serialize', ['status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas']);
 	}
+	public function currentApiVersion()
+	{
+		$api_version=$this->request->query('api_version');
+		$version = $this->Users->ApiVersions->find()->first();
+		$curent_version=$version->version;
+		if($api_version==$curent_version)
+		{
+		$status=true;
+		$error="Yes";
+		}
+		else{
+		$status=false;
+		$error="Please Update Api Version";
+		}
+		$this->set(compact('status', 'error'));
+		$this->set('_serialize', ['status', 'error']);
+	}
 }
 
 

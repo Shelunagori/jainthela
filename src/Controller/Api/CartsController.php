@@ -31,15 +31,18 @@ class CartsController extends AppController
 			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
-                    ->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
+                    ->set(['quantity' => $update_quantity, 'cart_count' => $quantity])
                     ->where(['id' => $update_id])
                     ->execute();
 		}
-		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items']);
+		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items'])->first();
+        
+		$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','carts'));
-        $this->set('_serialize', ['status', 'error', 'carts']);
+        $this->set(compact('status', 'error','carts','cart_count'));
+        $this->set('_serialize', ['status', 'error', 'carts','cart_count']);
     }
 	
 	public function fetchAddToCart()
@@ -151,7 +154,6 @@ class CartsController extends AppController
 		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
 		
-	
 		$customer_addresses=$this->Carts->CustomerAddresses->find()->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1']);
 
 		$delivery_time=$this->Carts->DeliveryTimes->find();

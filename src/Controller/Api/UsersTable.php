@@ -49,7 +49,6 @@ class UsersTable extends Table
 		  $this->belongsTo('TermConditions');
 		  $this->belongsTo('CompanyDetails');
 		  $this->belongsTo('SupplierAreas');
-		  $this->belongsTo('ApiVersions');
     }
 
     /**
