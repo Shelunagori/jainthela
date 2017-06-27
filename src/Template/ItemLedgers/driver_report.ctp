@@ -64,16 +64,16 @@ $(document).ready(function() {
  
 	$(document).on('keyup', '.number', function(e)
     { 
-            var mdl=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-    if(mdl.match(numbers))
-    {
-    }
-    else
-    {
-        $(this).val('');
-        return false;
-    }
+		var mdl=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(mdl.match(numbers))
+		{
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
     });
 	
 	$('.go').die().live('click',function() 

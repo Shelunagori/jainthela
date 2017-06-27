@@ -340,15 +340,30 @@ public function DriverReport()
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
+		$totalDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'in', 'warehouse_id'=>0]),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);	
+		$totalWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'in', 'driver_id'=>0]),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);	
 		$query->select([
 			'total_in' => $query->func()->sum($totalInCase),
-			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+			'total_out' => $query->func()->sum($totalOutCase),
+			'total_driver_in' => $query->func()->sum($totalDriverCase),
+			'total_warehouse_in' => $query->func()->sum($totalWarehouseCase),'id','item_id'
 		])
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units','itemCategories']]);
         $itemLedgers = ($query);
+		 
          $this->set(compact('itemLedgers'));
     }
 	
@@ -400,8 +415,8 @@ public function DriverReport()
 	
 	public function ajaxItemDetails($id = null)
     {
-        $query =$this->ItemLedgers->find()->where(['item_id'=>$id]);
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		   $query =$this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'in']),
@@ -423,6 +438,7 @@ public function DriverReport()
 		->autoFields(true)
 		->contain(['Items'=>['Units'], 'Drivers', 'Warehouses']);
         $itemLedgers = ($query);
+		
          $this->set(compact('itemLedgers'));
     }
 	

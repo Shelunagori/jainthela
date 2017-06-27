@@ -13,7 +13,7 @@ class BulkBookingLeadsController extends AppController
 		$created_on=$this->request->data('created_on');
 		 
 			$file = $this->request->data['image'];
-			$file_name=$file['name'];			
+			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();

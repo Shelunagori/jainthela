@@ -23,17 +23,15 @@ class ItemsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $items = $this->Items->find()->contain(['ItemCategories', 'Units']);
-
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
     }
-	
+
 	public function defineSaleRate()
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$items = $this->Items->newEntity();
-		
 		if ($this->request->is(['post', 'put'])) {
 			$items=$this->request->getData('items');
 			foreach($items as $item){
@@ -45,18 +43,17 @@ class ItemsController extends AppController
                             'print_rate' => $item->print_rate,
                             'ready_to_sale' => $item->ready_to_sale,
                             'discount_per' => $item->discount_per,
-                            'sales_rate' => $item->sales_rate
+                            'sales_rate' => $item->sales_rate,
+                            'offline_sales_rate' => $item->offline_sales_rate
                             ])
                             ->where(['id'=>$item->item_id])
                     ->execute();
 			}
 			$this->Flash->success(__('Item rates have updated successfully.'));
 		 }
-	
-		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['ItemCategories', 'Units']);
+		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0])->contain(['ItemCategories', 'Units']);
 		$this->set(compact('items', 'itemCategories', 'units'));
         $this->set('_serialize', ['items']);
-		
     }
 
     /**
@@ -97,8 +94,29 @@ class ItemsController extends AppController
 			}if(empty($file_name)){
 				
 			}
+			$unit_id=$this->request->data['unit_id'];
+			$units_fetch_datas = $this->Items->Units->find()->where(['id'=>$unit_id]);
+			foreach($units_fetch_datas as $units_fetch_data){
+				$unit_shortname=$units_fetch_data->shortname;
+				$unit_name=$units_fetch_data->unit_name;	
+			}
+			$minimum_quantity_factor=$this->request->data['minimum_quantity_factor'];
+			
             $item = $this->Items->patchEntity($item, $this->request->getData());
             $item->jain_thela_admin_id=$jain_thela_admin_id;
+			if($unit_name=='kg'){
+				if($minimum_quantity_factor==0.25){	
+					$item->print_quantity='250 gm';
+				}
+				if($minimum_quantity_factor==0.50){	
+					$item->print_quantity='500 gm';
+				}
+				if($minimum_quantity_factor==1){
+					$item->print_quantity='1 '.$unit_shortname;
+				}
+			}else{		
+					$item->print_quantity=$minimum_quantity_factor.' '.$unit_shortname;
+			}
 			if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
 		
@@ -109,9 +127,14 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
+		
         $itemCategories = $this->Items->ItemCategories->find('list')->where(['is_deleted'=>0,'jain_thela_admin_id'=>$jain_thela_admin_id]);
-        $units = $this->Items->Units->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
-        $this->set(compact('item', 'itemCategories', 'units'));
+        $units = $this->Items->Units->find()->where(['is_deleted'=>0]);
+		foreach($units as $unit_data){
+			$unit_name=$unit_data->unit_name;
+			$unit_option[]= ['value'=>$unit_data->id,'text'=>$unit_data->shortname,'unit_name'=>$unit_name];
+		}
+        $this->set(compact('item', 'itemCategories', 'units', 'unit_option'));
         $this->set('_serialize', ['item']);
     }
 
@@ -130,9 +153,7 @@ class ItemsController extends AppController
             'contain' => []
         ]);
 		$old_image_name=$item->image;
-		
         if ($this->request->is(['patch', 'post', 'put'])) {
-			
 			$file = $this->request->data['image'];	
 			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
