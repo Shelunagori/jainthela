@@ -109,11 +109,31 @@ class PurchaseBookingsController extends AppController
 					->values([
 						'ledger_account_id' => 1,
 						'purchase_booking_id' => $purchaseBooking->id,
-						'debit' => $this->request->data['total_amount'],
+						'debit' => $this->request->data['grand_total'],
 						'credit' => 0,
 						'transaction_date'=>$grn->transaction_date
 					]);
 					$query->execute();	
+					$query = $this->PurchaseBookings->Ledgers->query();
+					$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
+					->values([
+						'ledger_account_id' => 4,
+						'purchase_booking_id' => $purchaseBooking->id,
+						'debit' => $this->request->data['frieght_amount'],
+						'credit' => 0,
+						'transaction_date'=>$grn->transaction_date
+					]);
+					$query->execute();
+					$query = $this->PurchaseBookings->Ledgers->query();
+					$query->insert(['ledger_account_id', 'purchase_booking_id', 'debit', 'credit', 'transaction_date'])
+					->values([
+						'ledger_account_id' => 5,
+						'purchase_booking_id' => $purchaseBooking->id,
+						'debit' => $this->request->data['gst_amount'],
+						'credit' => 0,
+						'transaction_date'=>$grn->transaction_date
+					]);
+					$query->execute();
 				foreach($LedgerAccounts as $LedgerAccount)
 				{
 					$query = $this->PurchaseBookings->Ledgers->query();
@@ -122,7 +142,7 @@ class PurchaseBookingsController extends AppController
 						'ledger_account_id' => $LedgerAccount->id,
 						'purchase_booking_id' => $purchaseBooking->id,
 						'debit' => 0,
-						'credit' => $this->request->data['total_amount'],
+						'credit' => $this->request->data['grand_total'],
 						'transaction_date'=>$grn->transaction_date
 					]);
 					$query->execute();	

@@ -21,7 +21,7 @@
 						<?php echo $this->Form->control('alias_name',['class'=>'form-control input-sm','placeholder'=>'Alias Name']); ?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $units,'class'=>'form-control input-sm']); ?>
+						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $unit_option,'class'=>'form-control input-sm attribute']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm','required']); ?>
@@ -31,8 +31,8 @@
 					<div class="col-md-3">
 						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
 					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('minimum_quantity_factor',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Factor']); ?>
+					<div class="col-md-3 set">
+						<?php echo $this->Form->control('minimum_quantity_factor',['class'=>'form-control input-sm add','placeholder'=>'Minimum Quantity Factor']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
@@ -118,6 +118,23 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+	$(".attribute").die().live('change',function(){
+		var unt_attr_name = $('option:selected', this).attr('unit_name');			
+			if(unt_attr_name=='kg'){
+				var data=$("#data_fetch").html();
+				$(".set").html(data);
+			}else{
+				
+			}
+ 	});
 });
 </script>
-
+<?php 
+	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
+	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
+	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
+?>
+<div id="data_fetch" style="display:none;">
+	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm']); ?>
+</div>

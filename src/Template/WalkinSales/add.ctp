@@ -268,6 +268,12 @@ $(document).ready(function() {
 			return false;
 		}
     });
+		
+	$(".attribute").die().live('change',function(){
+		var offline_rate = $('option:selected', this).attr('offline_sales_rate');			
+		$(this).closest('tr').find("td:nth-child(4) input").val(offline_rate);
+	});
+
 });
  
 </script>
@@ -276,7 +282,7 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm select2me attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>	

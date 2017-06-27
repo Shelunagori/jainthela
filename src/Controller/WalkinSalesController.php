@@ -55,8 +55,7 @@ class WalkinSalesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		
-        $walkinSale = $this->WalkinSales->newEntity();
+		$walkinSale=$this->WalkinSales->newEntity();
         if ($this->request->is('post')) {
             $walkinSale = $this->WalkinSales->patchEntity($walkinSale, $this->request->getData());
 			  $walkinSale->jain_thela_admin_id=$jain_thela_admin_id;
@@ -74,7 +73,7 @@ class WalkinSalesController extends AppController
 							'transaction_date' => $transaction_date
 							])
 					->execute();
-					
+
 					$query = $this->WalkinSales->Ledgers->query();
 					$query->insert(['ledger_account_id', 'walkin_sale_id', 'debit', 'credit', 'transaction_date'])
 							->values([
@@ -91,7 +90,13 @@ class WalkinSalesController extends AppController
             }
             $this->Flash->error(__('The walkin sale could not be saved. Please, try again.'));
         }
-        $items = $this->WalkinSales->WalkinSaleDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);		
+      //  $items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0]);
+		$items=[];
+		foreach($items_fetchs as $items_fetch){
+			$offline_sales_rate=$items_fetch->offline_sales_rate;
+			$items[]= ['value'=>$items_fetch->id,'text'=>$items_fetch->name,'offline_sales_rate'=>$offline_sales_rate];
+		}
         $drivers = $this->WalkinSales->Drivers->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->WalkinSales->JainThelaAdmins->find('list');
 		$warehouses = $this->WalkinSales->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);

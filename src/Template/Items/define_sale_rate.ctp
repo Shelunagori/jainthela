@@ -28,6 +28,7 @@
 							<th>Print Rate</th>
 							<th>Item Discount %</th>
 							<th>Sale Rate</th>
+							<th>Offline Sale Rate</th>
 							<th>Ready to Sale</th>
 						</tr>
 					</thead>
@@ -40,19 +41,28 @@
 								<?= h($item->name) ?>
 								<?php echo  $this->Form->control('items['.$i.'][item_id]',['type'=>'hidden','class'=>'form-control input-sm input-small', 'value'=>$item->id]); ?>
 							</td>
-							<td><?= h($item->unit->shortname) ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
-							<td><?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?></td>
 							<td>
-							<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
+								<?= h($item->unit->shortname) ?>
+							</td>
+							<td>
+								<?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
+							<td>
+								<?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
+							<td>
+								<?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?>
+							</td>
+							<td>
+								<?php echo  $this->Form->control('items['.$i.'][offline_sales_rate]',['class'=>'form-control input-sm input-small offline_sales_rate','placeholder'=>'offline Print Rate', 'value'=>$item->offline_sales_rate,'label'=>false]); ?>
+							</td>
+							<td>
+								<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
 							</td>
 						</tr>
 						<?php $i++; endforeach; ?>
 						
 						
 						<tr>
-						<td colspan="8">
+						<td colspan="9">
 						<div align="center">
 							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Update Sales Rate'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
 						</div>
@@ -103,6 +113,7 @@ $(document).ready(function(){
 		  t_amount=print_rate*discount_per/100;
 		 sale_amt=print_rate-t_amount;
 		 $(this).closest('tr').find('.sales_rate').val((sale_amt).toFixed(2));
+		 $(this).closest('tr').find('.offline_sales_rate').val((sale_amt).toFixed(2));
 	});
 });
 </script>
