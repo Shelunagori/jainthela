@@ -174,11 +174,18 @@ class CustomersController extends AppController
 		->where(['JainCashPoints.customer_id' => $customer_id])
 		->group('customer_id')
 		->autoFields(true);
+		if(empty($query->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
 		foreach($query as $fetch_query)
 		{
 			$points=$fetch_query->total_in;
 			$used_points=$fetch_query->total_out;
 			$jain_cash_points=$points-$used_points;
+		}
 		}
 		
 		
@@ -202,11 +209,18 @@ class CustomersController extends AppController
 		->where(['Wallets.customer_id' => $customer_id])
 		->group('customer_id')
 		->autoFields(true);
+		if(empty($queryw->toArray()))
+		{
+			$wallet_balance=0;
+		}
+		else
+		{
 		foreach($queryw as $fetch_query)
 		{
 			$advance=$fetch_query->total_in;
 			$consumed=$fetch_query->total_out;
 			$wallet_balance=$advance-$consumed;
+		}
 		}
 		
 		$status=true;
@@ -247,14 +261,20 @@ class CustomersController extends AppController
 		->where(['JainCashPoints.customer_id' => $customer_id])
 		->group('customer_id')
 		->autoFields(true);
+		if(empty($query->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
 		foreach($query as $fetch_query)
 		{
 			$points=$fetch_query->total_in;
 			$used_points=$fetch_query->total_out;
 			$jain_cash_points=$points-$used_points;
 		}
-		
-		
+		}
+
 		$queryw = $this->Customers->Wallets->find();
 		$totalInCasew = $queryw->newExpr()
 			->addCase(
@@ -275,13 +295,19 @@ class CustomersController extends AppController
 		->where(['Wallets.customer_id' => $customer_id])
 		->group('customer_id')
 		->autoFields(true);
+		if(empty($queryw->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
 		foreach($queryw as $fetch_query)
 		{
 			$advance=$fetch_query->total_in;
 			$consumed=$fetch_query->total_out;
 			$wallet_balance=$advance-$consumed;
 		}
-		
+		}
 		$status=true;
 		$error="";
         $this->set(compact('status', 'error','jain_cash_points','wallet_balance','profiles'));

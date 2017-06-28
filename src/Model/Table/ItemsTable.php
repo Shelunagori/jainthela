@@ -57,10 +57,10 @@ class ItemsTable extends Table
             'foreignKey' => 'item_id'
         ]);
 		
-		/* $this->belongsTo('Carts', [
-            'foreignKey' => 'item_id',
-            'joinType' => 'INNER'
-        ]); */
+		/* $this->hasOne('Carts', [
+            'foreignKey' => 'item_id',			
+			
+        ]);  */
     }
 
     /**

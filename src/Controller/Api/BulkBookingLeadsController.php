@@ -10,9 +10,10 @@ class BulkBookingLeadsController extends AppController
 		$name=$this->request->data('name');
 		$mobile=$this->request->data('mobile');
 		$lead_description=$this->request->data('lead_description');
-		$created_on=$this->request->data('created_on');
-		 
+		$delivery_date=$this->request->data('delivery_date');
+		$delivery_time=$this->request->data('delivery_time');
 			$file = $this->request->data['image'];
+			
 			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
@@ -20,7 +21,7 @@ class BulkBookingLeadsController extends AppController
             $image_name= $setNewFileName.'.'.$ext;
 			if(!empty($file_name)){
 				$img_name=$image_name;
-			}if(empty($file_name)){
+			}else if(empty($file_name)){
 				$img_name='';
 			}
 			 if (in_array($ext, $arr_ext)) {
@@ -33,28 +34,28 @@ class BulkBookingLeadsController extends AppController
 			}else{
 				$lead_no=1;
 			}
-			$created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
 
 			$query = $this->BulkBookingLeads->query();
-					$query->insert(['name', 'mobile', 'lead_description', 'created_on', 'status', 'jain_thela_admin_id', 'lead_no', 'customer_id', 'image'])
+					$query->insert(['name', 'mobile', 'lead_description','status', 'jain_thela_admin_id', 'lead_no', 'customer_id','delivery_date','delivery_time','image'])
 							->values([
 							'name' => $name,
 							'mobile' => $mobile,
 							'lead_description' => $lead_description,
-							'created_on' => $created_on,
 							'status' => 'Open',
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'lead_no' => $lead_no,
 							'customer_id' => $customer_id,
+							'delivery_date' => $delivery_date,
+							'delivery_time' => $delivery_time,
 							'image' => $img_name
 							])
 					->execute();
 
-		$Bulk_Booking_data=$this->BulkBookingLeads->find()->where(['customer_id' => $customer_id])->order(['lead_no'=>'DESC'])->first();
+		/* $Bulk_Booking_data=$this->BulkBookingLeads->find()->where(['customer_id' => $customer_id])->order(['lead_no'=>'DESC'])->first(); */
 		$status=true;
-		$error="";
-        $this->set(compact('status', 'error','Bulk_Booking_data'));
-        $this->set('_serialize', ['status', 'error', 'Bulk_Booking_data']);
+		$error="Thank You, your bulk order submitted.";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
     }
 
 }

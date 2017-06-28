@@ -55,6 +55,7 @@ class ItemLedgersTable extends Table
             'foreignKey' => 'warehouse_id',
             'joinType' => 'LEFT'
         ]);
+		 $this->belongsTo('Carts');
     }
 
     /**

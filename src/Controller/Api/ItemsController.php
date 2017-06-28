@@ -12,13 +12,12 @@ class ItemsController extends AppController
 
 		if($item_sub_category_id=='0')
 		{
-			$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id])->contain(['Units','Carts']);
-		$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+			$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id])->contain(['Units','Carts'=>function($q) use($customer_id){
+				return $q->where(['customer_id'=>$customer_id]);
+			}]);
+			$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
-								
-								
-								
-								
+
 		}
 		else{
 			
@@ -88,7 +87,9 @@ $querys=$this->Items->ItemLedgers->find();
 							return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 									->contain(['Units'=>function($q){
 										return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
-									}]);
+									},'Carts'=>function($q){
+										return $q->select(['cart_count']);
+						}]);
 						}]);
 						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 						
@@ -106,13 +107,14 @@ $querys=$this->Items->ItemLedgers->find();
 							return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 							->contain(['Units'=>function($q){
 								return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
-							}]);
+							},'Carts'=>function($q){
+										return $q->select(['cart_count']);
+						}]);
 						}]);
 						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		}
 		else if($type='bought')
 		{
-				
         $querys=$this->Items->ItemLedgers->find();
 				$view_items=$querys
 						->select(['total_rows' => $querys->func()->count('ItemLedgers.id'),'item_id',])
@@ -123,10 +125,13 @@ $querys=$this->Items->ItemLedgers->find();
 						->contain(['Items'=>function($q){
 						return $q->select(['name', 'image', 'sales_rate','minimum_quantity_factor','ready_to_sale', 'out_of_stock', 'print_rate', 'print_quantity', 'discount_per'])
 						->contain(['Units'=>function($q){
-						return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
+						                return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
+						},'Carts'=>function($q){
+										return $q->select(['cart_count']);
 						}]);
 						}]);
 						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						
 		}
         
 		$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();

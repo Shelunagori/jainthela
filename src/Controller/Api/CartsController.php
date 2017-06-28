@@ -50,7 +50,6 @@ class CartsController extends AppController
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
 		$item_id=$this->request->data('item_id');
 		$quantity=$this->request->data('quantity');
-		$rate=$this->request->data('rate');
 		$customer_id=$this->request->data('customer_id');
 		$tag=$this->request->data('tag');
 		if($tag=='add'){
@@ -80,23 +79,36 @@ class CartsController extends AppController
 						->where(['id' => $update_id])
 						->execute();
 			}
-			
-			
+			$this->loadModel('DeliveryCharges');
+			$delivery_charges=$this->DeliveryCharges->find();
 		}
 		else if($tag=='remove'){
 			$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['item_id' => $item_id, 'customer_id' => $customer_id])
 					->execute();
-					
+					$this->loadModel('DeliveryCharges');
+			$delivery_charges=$this->DeliveryCharges->find();
 		}
 		else if($tag=='cart'){
 			
 			$this->loadModel('DeliveryCharges');
-			$delivery_data=$this->DeliveryCharges->find();
+			$delivery_charges=$this->DeliveryCharges->find();
 
 		}
 		
+		$address_availablity = $this->Carts->CustomerAddresses->find()
+			->where(['CustomerAddresses.customer_id'=>$customer_id]);
+			
+			if(sizeof($address_availablity)>0)
+			{
+				$address_available=true;
+			}
+			else
+			{
+				$address_available=false;
+			}
+			
 		$carts=$this->Carts->find()
 				->where(['customer_id' => $customer_id])
 				->contain(['Items'=>['Units']])
@@ -137,12 +149,11 @@ class CartsController extends AppController
 		  $jain_cash_total_point=$Customer_data_jain_cash->total_point;
 		  $jain_cash_total_used_point=$Customer_data_jain_cash->total_consumed;
 		  $remaining_jain_cash_point=$jain_cash_total_point-$jain_cash_total_used_point;
-
 		}
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data'));
-        $this->set('_serialize', ['status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data']);
+        $this->set(compact('status', 'error','address_available','grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_charges'));
+        $this->set('_serialize', ['status', 'error','address_available','grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_charges']);
     }
 	
 	public function reviewOrder()
@@ -153,15 +164,31 @@ class CartsController extends AppController
 		->contain(['Items'=>['Units']]);
 		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
+								
+								
+		$carts=$this->Carts->find()
+				->where(['customer_id' => $customer_id])
+				->contain(['Items'=>['Units']])
+				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
+				->group('Carts.item_id')
+				->autoFields(true);
+		$grand_total=0;
+		foreach($carts as $cart_data)
+		{
+			$grand_total+=$cart_data->total;
+		}
 		
-		$customer_addresses=$this->Carts->CustomerAddresses->find()->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1']);
+		$customer_addresses=$this->Carts->CustomerAddresses->find()
+		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1'])->first();
 
-		$delivery_time=$this->Carts->DeliveryTimes->find();
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		 ->autoFields(true);
 
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','customer_addresses', 'cart_details', 'delivery_time'));
-        $this->set('_serialize', ['status', 'error', 'customer_addresses', 'cart_details', 'delivery_time']);
+        $this->set(compact('status', 'error','grand_total','customer_addresses','delivery_time','cart_details'));
+        $this->set('_serialize', ['status', 'error','grand_total','customer_addresses','delivery_time','cart_details']);
     }
 
 }
