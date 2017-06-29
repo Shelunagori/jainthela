@@ -74,6 +74,10 @@ class CartsTable extends Table
         
     }
 
+	public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        $data['is_combo'] = 'abhilash- '.$data['is_combo'];
+    }
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.

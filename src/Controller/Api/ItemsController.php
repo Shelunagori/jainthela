@@ -10,21 +10,27 @@ class ItemsController extends AppController
 		$item_sub_category_id=$this->request->query('item_sub_category_id');
 		$customer_id=$this->request->query('customer_id');
 
-		if($item_sub_category_id=='0')
-		{
-			$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id])->contain(['Units','Carts'=>function($q) use($customer_id){
-				return $q->where(['customer_id'=>$customer_id]);
-			}]);
-			$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
-                                ->autoFields(true);
-
+		if($item_sub_category_id=='0'){
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id];
 		}
 		else{
-			
-			$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id])->contain(['Units','Carts']);
-		$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
-                                ->autoFields(true);
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id];
 		}
+		
+		$items = $this->Items->find()
+					->where($where)
+					->contain(['Units','Carts'=>function($q) use($customer_id){
+						return $q->where(['customer_id'=>$customer_id]);
+					}]);
+					$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+                    ->autoFields(true);
+					
+		foreach($items as $item){
+			if(!$item->cart){
+				$item->cart=(object)[];
+			}
+		} 
+		
         
 		$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 		$status=true;
