@@ -14,8 +14,11 @@ class CartsController extends AppController
 		$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
 		foreach($fetchs as $fetch){
 			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
 		}
-		$update_quantity=$item_add_quantity*$quantity;
+		$update_quantity=$item_add_quantity+$exist_quantity;
+		$update_count=$exist_count+1;
 		if(empty($fetchs->toArray()))
 		{
 			$query = $this->Carts->query();
@@ -23,15 +26,15 @@ class CartsController extends AppController
 							->values([
 							'customer_id' => $customer_id,
 							'item_id' => $item_id,
-							'quantity' => $update_quantity,
-							'cart_count' => $quantity
+							'quantity' => $quantity,
+							'cart_count' => 1
 							])
 					->execute();
 		}else{
 			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
-                    ->set(['quantity' => $update_quantity, 'cart_count' => $quantity])
+                    ->set(['quantity' => $update_quantity, 'cart_count' => $update_count])
                     ->where(['id' => $update_id])
                     ->execute();
 		}
@@ -57,9 +60,13 @@ class CartsController extends AppController
 			$item_add_quantity=$items->minimum_quantity_factor;
 			$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
 			foreach($fetchs as $fetch){
-				$update_id=$fetch->id;
-			}
-			$update_quantity=$item_add_quantity*$quantity;
+			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
+		}
+		$update_quantity=$item_add_quantity+$exist_quantity;
+		$update_count=$exist_count+1;
+		
 			if(empty($fetchs->toArray()))
 			{
 				$query = $this->Carts->query();
@@ -67,15 +74,15 @@ class CartsController extends AppController
 								->values([
 								'customer_id' => $customer_id,
 								'item_id' => $item_id,
-								'quantity' => $update_quantity,
-								'cart_count' => $quantity
+								'quantity' => $quantity,
+								'cart_count' => 1
 								])
 						->execute();
 			}else{
 				$cart=$this->Carts->get($update_id);
 				$query = $this->Carts->query();
 					$result = $query->update()
-						->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
+						->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $update_count])
 						->where(['id' => $update_id])
 						->execute();
 			}

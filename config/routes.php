@@ -277,6 +277,16 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	$routes->resources(
+		'Drivers', [
+		   'map' => [
+			   'supplier_locations' => [
+				   'action' => 'supplier_locations',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
 
 });
 
