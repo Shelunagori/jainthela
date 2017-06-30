@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Carts Model
+ * TransferInventoryVoucherRows Model
  *
- * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\TransferInventoryVouchersTable|\Cake\ORM\Association\BelongsTo $TransferInventoryVouchers
  * @property \App\Model\Table\ItemsTable|\Cake\ORM\Association\BelongsTo $Items
  *
- * @method \App\Model\Entity\Cart get($primaryKey, $options = [])
- * @method \App\Model\Entity\Cart newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Cart[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Cart|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Cart patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Cart[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Cart findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow get($primaryKey, $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\TransferInventoryVoucherRow findOrCreate($search, callable $callback = null, $options = [])
  */
-class CartsTable extends Table
+class TransferInventoryVoucherRowsTable extends Table
 {
 
     /**
@@ -33,21 +33,18 @@ class CartsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('carts');
+        $this->setTable('transfer_inventory_voucher_rows');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Customers', [
-            'foreignKey' => 'customer_id',
+        $this->belongsTo('TransferInventoryVouchers', [
+            'foreignKey' => 'transfer_inventory_voucher_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('CustomerAddresses');
-		$this->belongsTo('DeliveryTimes');
-		$this->belongsTo('Users');
     }
 
     /**
@@ -66,18 +63,15 @@ class CartsTable extends Table
             ->decimal('quantity')
             ->requirePresence('quantity', 'create')
             ->notEmpty('quantity');
-
+/* 
         $validator
-            ->requirePresence('cart_count', 'create')
-            ->notEmpty('cart_count');
+            ->decimal('waste_quantity')
+            ->requirePresence('waste_quantity', 'create')
+            ->notEmpty('waste_quantity');
+ */
         return $validator;
-        
     }
 
-	public function beforeMarshal(Event $event, ArrayObject $data)
-    {
-        $data['is_combo'] = 'abhilash- '.$data['is_combo'];
-    }
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -87,7 +81,7 @@ class CartsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'));
+        $rules->add($rules->existsIn(['transfer_inventory_voucher_id'], 'TransferInventoryVouchers'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
 
         return $rules;

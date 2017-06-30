@@ -21,7 +21,7 @@
 						<?php echo $this->Form->control('alias_name',['class'=>'form-control input-sm','placeholder'=>'Alias Name']); ?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $units,'class'=>'form-control input-sm']); ?>
+						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $unit_option,'class'=>'attribute form-control input-sm']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm','required']); ?>
@@ -31,8 +31,21 @@
 					<div class="col-md-3">
 						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
 					</div>
-					<div class="col-md-3">
-						<?php echo $this->Form->control('minimum_quantity_factor',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Factor']); ?>
+					<div class="col-md-3 set">
+						<?php 
+							$minimum_quantity_factor=$item->minimum_quantity_factor;
+							$unit_id=$item->unit_id;
+							$unit_name=$item->unit->unit_name;
+							$parent_item_id=$item->parent_item_id;
+							$is_virtual=$item->is_virtual;
+							if($unit_name=='kg'){
+								$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
+								$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
+								$factor_select[]= ['value'=>1,'text'=>'1 kg'];
+							?>
+							<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm', 'value' =>$minimum_quantity_factor]); 
+							}
+						?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
@@ -43,6 +56,31 @@
 						<?php echo $this->Html->image('/img/item_images/'.$img_view.'', ['height' => '80px','width' => '120px']); ?>
 						<?= $this->Form->input('image',['class'=>'form-control','type'=>'File','label'=>false]) ?>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label">Type<span class="required" aria-required="true">*</span></label>
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'is_virtual',
+											[
+												['value' => 'no', 'text' => 'Real','class' => 'radio-task virt'],
+												['value' => 'yes', 'text' => 'Virtual','class' => 'radio-task virt']
+											]
+											); ?>
+										</div>
+                                    </div>
+								</div>
+							</div>
+							<div class="col-md-6 set2">
+								<?php if($is_virtual=='yes'){ ?>
+									<div id="fetch">
+										<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs,'class'=>'form-control input-sm', 'value'=>$parent_item_id]); ?>
+									</div>
+								<?php } ?>
+							</div>	
 				</div>
 			<?= $this->Form->button(__('Edit item'),['class'=>'btn btn-success']) ?>
 			<?= $this->Form->end() ?>
@@ -119,5 +157,36 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+	$(".attribute").die().live('change',function(){
+		var unt_attr_name = $('option:selected', this).attr('unit_name');
+			if(unt_attr_name=='kg'){
+				var data=$("#data_fetch").html();
+				$(".set").html(data);
+			}else{
+				$(".set").html('');
+			}
+ 	});
+	$(".virt").die().live('click',function(){
+		var virtual = $(this).val();
+			if(virtual=='yes'){
+				var data=$("#fetch").html();
+				$(".set2").html(data);
+			}else{
+				$(".set2").html('');
+			}
+ 	});
 });
 </script>
+<?php 
+	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
+	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
+	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
+?>
+<div id="data_fetch" style="display:none;">
+	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm']); ?>
+</div>
+
+<div id="fetch" style="display:none;">
+	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs,'class'=>'form-control input-sm']); ?>
+</div>

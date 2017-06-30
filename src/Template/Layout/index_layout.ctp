@@ -28,6 +28,8 @@
 		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
+		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css'); ?>
+		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>
 		<!-- BEGIN THEME STYLES -->
 		<!-- BEGIN THEME STYLES -->
 		<?php echo $this->Html->css('/assets/global/css/components.css'); ?>
@@ -214,6 +216,9 @@
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Transfer Inventory','/TransferInventoryVouchers/',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
 							</li>
 							<li>
@@ -357,6 +362,10 @@
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>
+		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js'); ?>
+		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js'); ?>
+		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>
+		
 		<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/additional-methods.min.js'); ?>
 		<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>

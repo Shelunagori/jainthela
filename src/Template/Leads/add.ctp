@@ -20,15 +20,12 @@
 										<?= $this->Form->input('name',array('class'=>'form-control input-sm select2me','label'=>false)) ?>
 									</div>
 									<div class="col-md-4">
-											<label class="col-md-6 control-label">Mobile No <span class="required" 	aria-required="true">*</span></label>
-											<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me number','label'=>false)) ?>
-										</div>
-										 
+										<label class="col-md-6 control-label">Mobile No <span class="required" 	aria-required="true">*</span></label>
+										<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me number','label'=>false)) ?>
+									</div>
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
-										
-										<?php echo $this->Form->control('created_on',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
-																
+										<?php echo $this->Form->control('created_on',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>				
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
@@ -36,7 +33,6 @@
 									 <div class="col-md-4">
 										<label class="col-md-6 control-label">Description <span class="required" 	aria-required="true">*</span></label>
 										 <?= $this->Form->input('order_description',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Order Description','rows'=>'3','style'=>'resize: none;']) ?>
-										 
 									 </div>
 								 <br></div>
 							</div>
@@ -152,4 +148,3 @@ $(document).ready(function() {
 
 });
 </script>
-

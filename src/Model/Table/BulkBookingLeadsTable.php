@@ -70,12 +70,12 @@ class BulkBookingLeadsTable extends Table
         $validator
             ->requirePresence('lead_description', 'create')
             ->notEmpty('lead_description');
-
+/* 
         $validator
             ->dateTime('created_on')
             ->requirePresence('created_on', 'create')
             ->notEmpty('created_on');
-/* 
+
         $validator
             ->requirePresence('status', 'create')
             ->notEmpty('status');

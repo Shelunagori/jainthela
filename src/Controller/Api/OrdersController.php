@@ -9,11 +9,19 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 		$orders_data = $this->Orders->find()
-		->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
-		->select(['image_url' => $this->Orders->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/no_image.png'])])
+						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
+						->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status NOT IN' => array('Cancel','Delivered') ])
+						->order(['order_date' => 'DESC'])
+						->contain(['OrderDetails'=>function($q){
+							return $q->contain(['Items'])->limit(1);
+						}])
+						->autoFields(true);
+						
+		foreach($orders_data as $order){
+			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			unset($order->order_details);
+		}
 		
-		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status NOT IN' => array('Cancel','Delivered') ])->order(['order_date' => 'DESC'])
-		->autoFields(true);
 		$status=true;
 		$error="";
         $this->set(compact('status', 'error','orders_data'));

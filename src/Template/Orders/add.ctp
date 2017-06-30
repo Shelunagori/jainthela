@@ -15,33 +15,51 @@
 			</div>
 			<div class="portlet-body">
 				<?= $this->Form->create($order,['id'=>'form_sample_3']) ?>
+				<?php 
+				if(!empty($bulkorder_id)){
+					foreach($bulk_Details as $bulk_Detail){
+						$bulk_image=$bulk_Detail->image;
+						$bulk_delivery_date=date('d-M-Y', strtotime($bulk_Detail->delivery_date));
+						$bulk_delivery_time=$bulk_Detail->delivery_time;
+					}
+				}
+					?>
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
 					</div>
-					
+				<?php if(!empty($bulkorder_id)){ ?>
+					<div class="col-md-4" align="center">
+						<label class=" control-label">Delivery Date</label><br>
+						<?php echo $bulk_delivery_date; ?>
+					</div>
+						<div class="col-md-4" align="center">
+						<label class=" control-label">Delivery Time</label><br>
+						<?php echo $bulk_delivery_time; ?>
+					</div>
+				<?php } ?>
 				</div><br/>
 				
 				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-10">
+					
+					<div class="col-md-8">
 						<table id="main_table" class="table table-condensed table-bordered">
 							<thead>
 								<tr align="center">
-									<td>
+									<td width="5%">
 										<label>Sr<label>
 									</td>
-									<td>
+									<td width="30%">
 										<label>item<label>
 									</td>
-									<td>
+									<td width="20%">
 										<label>Quantity<label>
 									</td>
-									<td>
+									<td width="20%">
 										<label>Rate<label>
 									</td>
-									<td>
+									<td width="20%">
 										<label>Amount<label>
 									</td>
 									<td></td>
@@ -72,7 +90,11 @@
 							</tfoot>
 						</table>
 					</div>
-					<div class="col-md-1"></div>
+					<div class="col-md-4">	
+						<?php if(!empty($bulkorder_id)){ ?>
+						<?php echo $this->Html->image('/img/bulkbookingimages/'.$bulk_image.'', ['height' => '200px','width' => '320px']); ?>
+						<?php } ?>
+					</div>
 				</div>
 				 
 				<br/>

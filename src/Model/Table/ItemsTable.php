@@ -57,10 +57,6 @@ class ItemsTable extends Table
             'foreignKey' => 'item_id'
         ]);
 		
-		/* $this->hasOne('Carts', [
-            'foreignKey' => 'item_id',			
-			
-        ]);  */
     }
 
     /**
@@ -111,7 +107,6 @@ class ItemsTable extends Table
     {
         $rules->add($rules->existsIn(['item_category_id'], 'ItemCategories'));
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        $rules->add($rules->existsIn(['franchise_id'], 'Franchises'));
 
         return $rules;
     }
