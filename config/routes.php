@@ -149,6 +149,10 @@ Router::prefix('api', function ($routes) {
 				   'action' => 'plus_add_to_cart',
  				   'method' => 'POST'
 			   ],
+			   'minus_add_to_cart' => [
+				   'action' => 'minus_add_to_cart',
+ 				   'method' => 'POST'
+			   ],
 			   'fetch_add_to_cart' => [
 				   'action' => 'fetch_add_to_cart',
 				   'method' => 'POST'
@@ -282,6 +286,16 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'supplier_locations' => [
 				   'action' => 'supplier_locations',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	$routes->resources(
+		'Wallets', [
+		   'map' => [
+			   'wallet_details' => [
+				   'action' => 'wallet_details',
 				   'method' => 'GET'
 			   ]
 		   ]
