@@ -14,17 +14,21 @@ class PromoCodesController extends AppController
 		$promo_code=$this->request->query('promo_code');
 		$customer_id=$this->request->query('customer_id');
 
-        $promo_codes = $this->PromoCodes->find()->where(['PromoCodes.jain_thela_admin_id'=>$jain_thela_admin_id, 'PromoCodes.valid_from <' =>$current_timestamp, 'PromoCodes.valid_to >' =>$current_timestamp, 'PromoCodes.code'=>$promo_code]);
+        $promo_codes = $this->PromoCodes->find()
+		->where(['PromoCodes.jain_thela_admin_id'=>$jain_thela_admin_id, 'PromoCodes.valid_from <' =>$current_timestamp, 'PromoCodes.valid_to >' =>$current_timestamp, 'PromoCodes.code'=>$promo_code])->first();
 		if(empty($promo_codes))
+		{
+		$status=false;
+		$error="Invalid Promo Code";
+		$this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']); 
+        }
+		else
 		{
 		$status=true;
 		$error="";
-		}
-		else{
-		$status=false;
-		$error="Invalid Promo Code";
-		}
-        $this->set(compact('status', 'error', 'promo_codes'));
+		$this->set(compact('status', 'error', 'promo_codes'));
         $this->set('_serialize', ['status', 'error', 'promo_codes']); 
+        }
     }
 }

@@ -49,5 +49,46 @@ class JainCashPointsController extends AppController
         $this->set(compact('status', 'error', 'jain_cash_points','cart_count','referral_code','referral_image'));
         $this->set('_serialize', ['status', 'error', 'jain_cash_points','cart_count','referral_code','referral_image']);
     }
+	
+	public function referralUpdate()
+    {
+		$customer_id=$this->request->query('customer_id');
+		$referral_code=$this->request->query('referral_code');
+		$referral_code_exist = $this->JainCashPoints->Customers->find()
+		->where(['Customers.referral_code'=>$referral_code])
+        ->first();
+		
+		if($referral_code_exist)
+		{
+			$gain_customer=$referral_code_exist->id;
+			$points='100';
+			$queryj = $this->JainCashPoints->query();
+					$queryj->insert(['customer_id', 'point'])
+							->values([
+							'customer_id' => $gain_customer,
+							'point' => $points
+							])
+					->execute();
+			
+		$queryr = $this->JainCashPoints->ReferralDetails->query();
+					$queryr->insert(['from_customer_id', 'to_customer_id','points'])
+							->values([
+							'from_customer_id' => $customer_id,
+							'to_customer_id' => $gain_customer,
+							'points' => $points
+							])
+					->execute();
+					
+		$status=true;
+		$error="Thank You";
+						
+		}
+		else{
+		$status=false;
+		$error="Sorry, you entered wrong referral code";
+		}
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
 
 }

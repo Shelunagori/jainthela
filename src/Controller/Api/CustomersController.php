@@ -104,6 +104,7 @@ class CustomersController extends AppController
 				{
 					$customerDetails = $this->Customers->get($customerDetails->id);
 				    $customerDetails->status='completed';
+					$customerDetails->notification_key='AAAAXmNqxY4:APA91bG0X6RHVhwJKXUQGNSSCas44hruFdR6_CFd6WHPwx9abUr-WsrfEzsFInJawElgrp24QzaE4ksfmXu6kmIL6JG3yP487fierMys5byv-I1agRtMPIoSqdgCZf8R0iqsnds-u4CU';
 					$customerDetails->referral_code=$customerDetails->id;
 					$this->Customers->save($customerDetails);
 					$customerDetails->already_login=false;
@@ -150,11 +151,82 @@ class CustomersController extends AppController
 							])
 					->where(['id' => $customer_id])
 					->execute();
-		$profiles=$this->Customers->find()->where(['id' => $customer_id]);
+		$profiles=$this->Customers->find()->where(['id' => $customer_id])->first();
+		
+		
+		$query = $this->Customers->JainCashPoints->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['point']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['used_point']),
+				'integer'
+			);
+			$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','customer_id'
+		])
+		->where(['JainCashPoints.customer_id' => $customer_id])
+		->group('customer_id')
+		->autoFields(true);
+		if(empty($query->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
+		foreach($query as $fetch_query)
+		{
+			$points=$fetch_query->total_in;
+			$used_points=$fetch_query->total_out;
+			$jain_cash_points=$points-$used_points;
+		}
+		}
+		
+		
+		$queryw = $this->Customers->Wallets->find();
+		$totalInCasew = $queryw->newExpr()
+			->addCase(
+				$queryw->newExpr()->add(['order_id' => '0']),
+				$queryw->newExpr()->add(['advance']),
+				'integer'
+			);
+		$totalOutCasew = $queryw->newExpr()
+			->addCase(
+				$queryw->newExpr()->add(['plan_id' => '0']),
+				$queryw->newExpr()->add(['consumed']),
+				'integer'
+			);
+			$queryw->select([
+			'total_in' => $queryw->func()->sum($totalInCasew),
+			'total_out' => $queryw->func()->sum($totalOutCasew),'id','customer_id'
+		])
+		->where(['Wallets.customer_id' => $customer_id])
+		->group('customer_id')
+		->autoFields(true);
+		if(empty($queryw->toArray()))
+		{
+			$wallet_balance=0;
+		}
+		else
+		{
+		foreach($queryw as $fetch_query)
+		{
+			$advance=$fetch_query->total_in;
+			$consumed=$fetch_query->total_out;
+			$wallet_balance=$advance-$consumed;
+		}
+		}
+		
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','profiles'));
-        $this->set('_serialize', ['status', 'error', 'profiles']);
+        $this->set(compact('status', 'error','jain_cash_points','wallet_balance','profiles'));
+        $this->set('_serialize', ['status', 'error','jain_cash_points','wallet_balance','profiles']);
 		}
 		else if(!empty($fetchs)){
 			$status=false;
@@ -163,4 +235,100 @@ class CustomersController extends AppController
 			$this->set('_serialize', ['status', 'error']);
 		}
     }
+	
+	public function MyAccount()
+    {
+		$customer_id=$this->request->query('customer_id');
+		$profiles=$this->Customers->find()->where(['id' => $customer_id])->first();
+	    
+		$query = $this->Customers->JainCashPoints->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['point']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['used_point']),
+				'integer'
+			);
+			$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','customer_id'
+		])
+		->where(['JainCashPoints.customer_id' => $customer_id])
+		->group('customer_id')
+		->autoFields(true);
+		if(empty($query->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
+		foreach($query as $fetch_query)
+		{
+			$points=$fetch_query->total_in;
+			$used_points=$fetch_query->total_out;
+			$jain_cash_points=$points-$used_points;
+		}
+		}
+
+		$queryw = $this->Customers->Wallets->find();
+		$totalInCasew = $queryw->newExpr()
+			->addCase(
+				$queryw->newExpr()->add(['order_id' => '0']),
+				$queryw->newExpr()->add(['advance']),
+				'integer'
+			);
+		$totalOutCasew = $queryw->newExpr()
+			->addCase(
+				$queryw->newExpr()->add(['plan_id' => '0']),
+				$queryw->newExpr()->add(['consumed']),
+				'integer'
+			);
+			$queryw->select([
+			'total_in' => $queryw->func()->sum($totalInCasew),
+			'total_out' => $queryw->func()->sum($totalOutCasew),'id','customer_id'
+		])
+		->where(['Wallets.customer_id' => $customer_id])
+		->group('customer_id')
+		->autoFields(true);
+		if(empty($queryw->toArray()))
+		{
+			$jain_cash_points=0;
+		}
+		else
+		{
+		foreach($queryw as $fetch_query)
+		{
+			$advance=$fetch_query->total_in;
+			$consumed=$fetch_query->total_out;
+			$wallet_balance=$advance-$consumed;
+		}
+		}
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','jain_cash_points','wallet_balance','profiles'));
+        $this->set('_serialize', ['status', 'error','jain_cash_points','wallet_balance','profiles']);
+    }
+	public function PushTokenUpdate()
+    {
+		$customer_id=$this->request->data('customer_id');
+		$device_token=$this->request->data('device_token');
+		
+		$query = $this->Customers->query();
+				$result = $query->update()
+                    ->set([ 'device_token' => $device_token
+							])
+					->where(['id' => $customer_id])
+					->execute();
+		
+		$status=true;
+		$error="Token Updated Successfully";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
+	
 }

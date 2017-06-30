@@ -43,6 +43,7 @@ class JainCashPointsTable extends Table
 		 $this->belongsTo('Orders');
 		 $this->belongsTo('Banners');
 		 $this->belongsTo('Carts');
+		 $this->belongsTo('ReferralDetails');
     }
 
     /**

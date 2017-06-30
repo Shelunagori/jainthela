@@ -7,15 +7,17 @@ class CartsController extends AppController
     {
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
 		$item_id=$this->request->data('item_id');
-		$quantity=$this->request->data('quantity');
 		$customer_id=$this->request->data('customer_id');
 		$items = $this->Carts->Items->get($item_id);
 		$item_add_quantity=$items->minimum_quantity_factor;
 		$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
 		foreach($fetchs as $fetch){
 			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
 		}
-		$update_quantity=$item_add_quantity*$quantity;
+		$update_quantity=$item_add_quantity+$exist_quantity;
+		$update_count=$exist_count+1;
 		if(empty($fetchs->toArray()))
 		{
 			$query = $this->Carts->query();
@@ -23,31 +25,97 @@ class CartsController extends AppController
 							->values([
 							'customer_id' => $customer_id,
 							'item_id' => $item_id,
-							'quantity' => $update_quantity,
-							'cart_count' => $quantity
+							'quantity' => $item_add_quantity,
+							'cart_count' => 1
 							])
 					->execute();
 		}else{
 			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
-                    ->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
+                    ->set(['quantity' => $update_quantity, 'cart_count' => $update_count])
                     ->where(['id' => $update_id])
                     ->execute();
 		}
-		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items']);
+		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items'])->first();
+        
+		$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','carts'));
-        $this->set('_serialize', ['status', 'error', 'carts']);
+        $this->set(compact('status', 'error','carts','cart_count'));
+        $this->set('_serialize', ['status', 'error', 'carts','cart_count']);
     }
-	
+	public function minusAddToCart()
+    {
+		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
+		$item_id=$this->request->data('item_id');
+		$customer_id=$this->request->data('customer_id');
+		$items = $this->Carts->Items->get($item_id);
+		$item_add_quantity=$items->minimum_quantity_factor;
+		$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
+		
+		if(empty($fetchs->toArray()))
+		{
+		$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items'])->first();
+		
+		if($carts==null)
+		{
+			$carts=[];
+		}
+		else{
+			$carts=$carts;
+		}
+		$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+		}
+		else
+		{
+		foreach($fetchs as $fetch){
+			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
+		}
+		$update_quantity=$exist_quantity-$item_add_quantity;
+		$update_count=$exist_count-1;
+		
+			if($exist_count==1)
+			{
+				$cart=$this->Carts->get($update_id);	
+				$query = $this->Carts->query();
+				$result = $query->delete()
+				->where(['id' => $update_id])
+				->execute();
+				$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items'])->first();
+				if($carts==null)
+				{
+				$carts=[];
+				}
+				else{
+				$carts=$carts;
+				}
+				$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+			}
+			else if($exist_count>1){
+				$cart=$this->Carts->get($update_id);	
+				$query = $this->Carts->query();
+				$result = $query->update()
+				->set(['quantity' => $update_quantity, 'cart_count' => $update_count])
+				->where(['id' => $update_id])
+				->execute();
+				$carts=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id])->contain(['Items'])->first();				
+				$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+			}
+		}
+		
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','carts','cart_count'));
+        $this->set('_serialize', ['status', 'error', 'carts','cart_count']);
+    }
 	public function fetchAddToCart()
     {
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
 		$item_id=$this->request->data('item_id');
-		$quantity=$this->request->data('quantity');
-		$rate=$this->request->data('rate');
 		$customer_id=$this->request->data('customer_id');
 		$tag=$this->request->data('tag');
 		if($tag=='add'){
@@ -55,9 +123,13 @@ class CartsController extends AppController
 			$item_add_quantity=$items->minimum_quantity_factor;
 			$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
 			foreach($fetchs as $fetch){
-				$update_id=$fetch->id;
-			}
-			$update_quantity=$item_add_quantity*$quantity;
+			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
+		}
+		$update_quantity=$item_add_quantity+$exist_quantity;
+		$update_count=$exist_count+1;
+		
 			if(empty($fetchs->toArray()))
 			{
 				$query = $this->Carts->query();
@@ -65,46 +137,110 @@ class CartsController extends AppController
 								->values([
 								'customer_id' => $customer_id,
 								'item_id' => $item_id,
-								'quantity' => $update_quantity,
-								'cart_count' => $quantity
+								'quantity' => $item_add_quantity,
+								'cart_count' => 1
 								])
 						->execute();
 			}else{
 				$cart=$this->Carts->get($update_id);
 				$query = $this->Carts->query();
 					$result = $query->update()
-						->set(['Carts.quantity' => $update_quantity, 'Carts.cart_count' => $quantity])
+						->set(['quantity' => $update_quantity, 'cart_count' => $update_count])
 						->where(['id' => $update_id])
 						->execute();
 			}
+				}
+		else if($tag=='minus')
+		{
+			$items = $this->Carts->Items->get($item_id);
+			$item_add_quantity=$items->minimum_quantity_factor;
+			$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
+		if(empty($fetchs->toArray()))
+		{
+		$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+		}
+		else
+		{
+		foreach($fetchs as $fetch){
+			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
+		}
+		$update_quantity=$exist_quantity-$item_add_quantity;
+		$update_count=$exist_count-1;
+		
+			if($exist_count==1)
+			{
+				$cart=$this->Carts->get($update_id);	
+				$query = $this->Carts->query();
+				$result = $query->delete()
+				->where(['id' => $update_id])
+				->execute();
+				$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 			
-			
+			}
+			else if($exist_count>1){
+				$cart=$this->Carts->get($update_id);	
+				$query = $this->Carts->query();
+				$result = $query->update()
+				->set(['quantity' => $update_quantity, 'cart_count' => $update_count])
+				->where(['id' => $update_id])
+				->execute();
+				$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
+			}
+		}
 		}
 		else if($tag=='remove'){
 			$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['item_id' => $item_id, 'customer_id' => $customer_id])
 					->execute();
-					
+			$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 		}
 		else if($tag=='cart'){
 			
-			$this->loadModel('DeliveryCharges');
-			$delivery_data=$this->DeliveryCharges->find();
+			$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 
 		}
 		
+		$address_availablity = $this->Carts->CustomerAddresses->find()
+			->where(['CustomerAddresses.customer_id'=>$customer_id]);
+			
+			if(sizeof($address_availablity)>0)
+			{
+				$address_available=true;
+			}
+			else
+			{
+				$address_available=false;
+			}
+			
 		$carts=$this->Carts->find()
 				->where(['customer_id' => $customer_id])
-				->contain(['Items'=>['Units']])
+				->contain(['Items'])
+				->select(['image_url' => $this->Carts->Items->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
 				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
 				->group('Carts.item_id')
 				->autoFields(true);
-		$grand_total=0;
+				
+				if($carts==null)
+				{
+				$carts=[];
+				}
+				else{
+				$carts=$carts;
+				}
+		
+$this->loadModel('DeliveryCharges');
+			$delivery_charges=$this->DeliveryCharges->find();
+			
+		$grand_total1=0;
 		foreach($carts as $cart_data)
 		{
-			$grand_total+=$cart_data->total;
+			$grand_total1+=$cart_data->total;
 		}
+		$grand_total=round($grand_total1);
+		
 		
 		$Customers = $this->Carts->Customers->get($customer_id, [
             'contain' => ['JainCashPoints'=>function($query){
@@ -125,21 +261,37 @@ class CartsController extends AppController
 			}
 				]
         ]);
+		if(empty($Customers->wallets))
+		{
+			$remaining_wallet_amount=0;
+		}
+		else{
 		foreach($Customers->wallets as $Customer_data_wallet){
 		  $wallet_total_advance=$Customer_data_wallet->total_advance;
 		  $wallet_total_consumed=$Customer_data_wallet->total_consumed;
-		  $remaining_wallet_amount=$wallet_total_advance-$wallet_total_consumed;
+		  $remaining_wallet_amount=round($wallet_total_advance-$wallet_total_consumed);
 		}
+		}
+		 
+		 if(empty($Customers->jain_cash_points))
+		{
+			$remaining_jain_cash_point=0;
+		}
+		else{
 		foreach($Customers->jain_cash_points as $Customer_data_jain_cash){
 		  $jain_cash_total_point=$Customer_data_jain_cash->total_point;
 		  $jain_cash_total_used_point=$Customer_data_jain_cash->total_consumed;
-		  $remaining_jain_cash_point=$jain_cash_total_point-$jain_cash_total_used_point;
-
+		  $remaining_jain_cash_point=round($jain_cash_total_point-$jain_cash_total_used_point);
 		}
+		}
+		
+		 $cash_limit=$this->Carts->Users->get($jain_thela_admin_id);
+		 $jain_cash_limit=$cash_limit->jain_cash_limit;
+
 		$status=true;
-		$error="";
-        $this->set(compact('status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data'));
-        $this->set('_serialize', ['status', 'error', 'grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_data']);
+		$error='';
+        $this->set(compact('status', 'error','jain_cash_limit','address_available','grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_charges'));
+        $this->set('_serialize', ['status', 'error','jain_cash_limit','address_available','grand_total', 'remaining_wallet_amount', 'remaining_jain_cash_point', 'carts', 'delivery_charges']);
     }
 	
 	public function reviewOrder()
@@ -150,16 +302,31 @@ class CartsController extends AppController
 		->contain(['Items'=>['Units']]);
 		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
+								
+								
+		$carts=$this->Carts->find()
+				->where(['customer_id' => $customer_id])
+				->contain(['Items'=>['Units']])
+				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
+				->group('Carts.item_id')
+				->autoFields(true);
+		$grand_total=0;
+		foreach($carts as $cart_data)
+		{
+			$grand_total+=$cart_data->total;
+		}
 		
-	
-		$customer_addresses=$this->Carts->CustomerAddresses->find()->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1']);
+		$customer_addresses=$this->Carts->CustomerAddresses->find()
+		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1'])->first();
 
-		$delivery_time=$this->Carts->DeliveryTimes->find();
-
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		 ->autoFields(true);
+		 
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','customer_addresses', 'cart_details', 'delivery_time'));
-        $this->set('_serialize', ['status', 'error', 'customer_addresses', 'cart_details', 'delivery_time']);
+        $this->set(compact('status', 'error','grand_total','customer_addresses','delivery_time','cart_details'));
+        $this->set('_serialize', ['status', 'error','grand_total','customer_addresses','delivery_time','cart_details']);
     }
 
 }

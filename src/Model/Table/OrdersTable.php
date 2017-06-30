@@ -64,6 +64,8 @@ class OrdersTable extends Table
 		 $this->belongsTo('JainCashPoints', [
             'foreignKey' => 'order_id'
         ]);
+		$this->belongsTo('CustomerAddresses');
+		$this->belongsTo('CancelReasons');
     }
 
     /**

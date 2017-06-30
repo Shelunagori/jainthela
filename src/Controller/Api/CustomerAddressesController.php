@@ -11,7 +11,8 @@ class CustomerAddressesController extends AppController
 		$mobile=$this->request->data('mobile');
 		$house_no=$this->request->data('house_no');
 		$address=$this->request->data('address');
-		$locality=$this->request->data('mobile');
+		$locality=$this->request->data('locality');
+		$landmark=$this->request->data('landmark');
 		$tag=$this->request->data('tag');
 		$customer_address_id=$this->request->data('customer_address_id');
 		$city='1';
@@ -24,7 +25,7 @@ class CustomerAddressesController extends AppController
                     ->execute();
 					 
 			$query = $this->CustomerAddresses->query();
-					$query->insert(['customer_id', 'name', 'mobile', 'house_no', 'address', 'locality', 'default_address'])
+					$query->insert(['customer_id', 'name', 'mobile', 'house_no', 'address', 'locality', 'default_address','landmark'])
 							->values([
 							'customer_id' => $customer_id,
 							'name' => $name,
@@ -32,10 +33,10 @@ class CustomerAddressesController extends AppController
 							'house_no' => $house_no,
 							'address' => $address,
 							'locality' => $locality,
+							'landmark'=>$landmark,
 							'default_address' => 1
 							])
 					->execute();
-					
 					
 		}
 		if($tag=='edit'){
@@ -53,6 +54,7 @@ class CustomerAddressesController extends AppController
 							'house_no' => $house_no,
 							'address' => $address,
 							'locality' => $locality,
+							'landmark'=>$landmark,
 							'default_address' => 1
 							])
 					->where(['id' => $customer_address_id])
@@ -79,7 +81,11 @@ class CustomerAddressesController extends AppController
 					->execute();
 		}
 		
-		$customer_addresses=$this->CustomerAddresses->find()->where(['customer_id' => $customer_id])->contain(['Customers']);
+		$customer_addresses=$this->CustomerAddresses->find()
+		->where(['customer_id' => $customer_id])
+		->order(['default_address' => 'DESC']);
+		
+		
 		$status=true;
 		$error="";
         $this->set(compact('status', 'error','customer_addresses'));

@@ -36,13 +36,20 @@ class PlansController extends AppController
 		->where(['Wallets.customer_id' => $customer_id])
 		->group('customer_id')
 		->autoFields(true);
-		foreach($query as $fetch_query)
+	
+		if(empty($query->toArray()))
 		{
+			$wallet_balance=0;
+		}
+		else
+		{
+			foreach($query as $fetch_query)
+		      {
 			$advance=$fetch_query->total_in;
 			$consumed=$fetch_query->total_out;
 			$wallet_balance=$advance-$consumed;
+		      }
 		}
-		
 		$cart_count = $this->Plans->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 		$random=(string)mt_rand(100000,999999);
 		$extra=1;
