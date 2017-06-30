@@ -32,7 +32,7 @@
 						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
 					</div>
 					<div class="col-md-3 set">
-						<?php echo $this->Form->control('minimum_quantity_factor',['class'=>'form-control input-sm add','placeholder'=>'Minimum Quantity Factor']); ?>
+						
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
@@ -40,6 +40,26 @@
 					<div class="col-md-3">
 						 <?= $this->Form->input('image',['class'=>'form-control','type'=>'File']) ?>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label">Type<span class="required" aria-required="true">*</span></label>
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'is_virtual',
+											[
+												['value' => 'no', 'text' => 'Real','class' => 'radio-task virt','checked' => 'checked'],
+												['value' => 'yes', 'text' => 'Virtual','class' => 'radio-task virt']
+											]
+											); ?>
+										</div>
+                                    </div>
+								</div>
+							</div>
+							<div class="col-md-6 set2">
+							</div>	
 				</div>
 			<?= $this->Form->button(__('Create new item'),['class'=>'btn btn-success']) ?>
 			<?= $this->Form->end() ?>
@@ -125,7 +145,16 @@ $(document).ready(function() {
 				var data=$("#data_fetch").html();
 				$(".set").html(data);
 			}else{
-				
+				$(".set").html('');
+			}
+ 	});
+	$(".virt").die().live('click',function(){
+		var virtual = $(this).val();
+			if(virtual=='yes'){
+				var data=$("#fetch").html();
+				$(".set2").html(data);
+			}else{
+				$(".set2").html('');
 			}
  	});
 });
@@ -137,4 +166,8 @@ $(document).ready(function() {
 ?>
 <div id="data_fetch" style="display:none;">
 	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm']); ?>
+</div>
+
+<div id="fetch" style="display:none;">
+	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs,'class'=>'form-control input-sm']); ?>
 </div>

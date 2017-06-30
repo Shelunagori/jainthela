@@ -43,16 +43,22 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($bulkBookingLeads as $bulkBookingLead): 
+					<?php 
+					foreach ($bulkBookingLeads as $bulkBookingLead){
 						@$k++;
 					?>
 					<tr>
 						<td><?= $k ?></td>
 						<td>
-					<?= h('#'.str_pad($bulkBookingLead->lead_no, 4, '0', STR_PAD_LEFT)) ?>
+							<?= h('#'.str_pad($bulkBookingLead->lead_no, 4, '0', STR_PAD_LEFT)) ?>
 						</td>
-						<td><?= $bulkBookingLead->name ?></td>
-						<td><?= $bulkBookingLead->mobile ?></td>
+						<td>
+							<?= $bulkBookingLead->name ?>
+						</td>
+						<td>
+							<?= $bulkBookingLead->mobile ?>
+						</td>
+						
 						<?php if($status=='close'){ ?><td><?= $bulkBookingLead->reason ?></td><?php } ?>
 						<?php if($status=='open'){ ?>
 							<td class="actions">
@@ -84,12 +90,15 @@
 					</div>
 				</div>
 			</div>
-								<?= $this->Html->link(__('Create Order'), ['action' => 'Orders/add/', $bulkBookingLead->id]) ?>
-							
-							</td>
-						<?php } ?>
-					</tr>
-					<?php endforeach; ?>
+						<?php //$this->Html->link(__('Create Order'), ['action' => 'Orders/add/Bulkorder/', $bulkBookingLead->id]) ?>
+						
+						<?php echo $this->Html->link('Create Order','/Orders/add/Bulkorder/'.$bulkBookingLead->id, ['escape'=>false]) ?>
+					
+					</td>
+				<?php } ?>
+			</tr>
+			<?php if($k==5){ exit; } ?>
+			<?php } ?>
 				</tbody>
 			</table>
 		   </div>

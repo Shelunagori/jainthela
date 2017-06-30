@@ -99,7 +99,8 @@ class BulkBookingLeadsController extends AppController
 			}else{
 				$bulkBookingLead->lead_no=1;
 			}
-			$bulkBookingLead->created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
+			$bulkBookingLead->created_on=date('Y-m-d');
+			$bulkBookingLead->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			$bulkBookingLead->jain_thela_admin_id=$jain_thela_admin_id;
              if ($this->BulkBookingLeads->save($bulkBookingLead)) {	 
 			 
