@@ -51,9 +51,18 @@ class PlansController extends AppController
 		      }
 		}
 		$cart_count = $this->Plans->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
-		$random=(string)mt_rand(100000,999999);
-		$extra=1;
-		$wallet_order_id=$customer_id.$extra.$random;
+		$auto_order_no = $this->Plans->AutoOrderNos->find();
+		foreach($auto_order_no as $fetch_auto_order_no)
+		{
+            $wallet_order_id=$fetch_auto_order_no->no;
+		}
+		
+		        $new_order_no=$wallet_order_id+1;
+		        $query = $this->Plans->AutoOrderNos->query();
+					$result = $query->update()
+						->set(['no' => $new_order_no])
+						->where(['id' => 1])
+						->execute();
 		
 		$status=true;
 		$error="";
