@@ -269,10 +269,17 @@ $(document).ready(function() {
 		}
     });
 		
-	$(".attribute").die().live('change',function(){
+/* 	$(".attribute").die().live('change',function(){
 		var offline_rate = $('option:selected', this).attr('offline_sales_rate');			
 		$(this).closest('tr').find("td:nth-child(4) input").val(offline_rate);
-	});
+	}); */
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var raw_attr_rates = $('option:selected', this).attr('rates');
+		var raw_attr_unit_name = $('option:selected', this).attr('unit_name');
+		$(this).closest('tr').find('.msg_shw').html(raw_attr_unit_name+ " / per quantity");
+		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
+	});	
 
 });
  
@@ -285,10 +292,11 @@ $(document).ready(function() {
 						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm select2me attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 					</td>
 					<td>
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation_amount number','placeholder'=>'Price']); ?>
+						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'rat_value form-control input-sm calculation_amount number','placeholder'=>'Price']); ?>
 					</td>
                     <td>
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Total Amount']); ?>

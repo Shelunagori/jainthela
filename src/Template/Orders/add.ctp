@@ -195,7 +195,7 @@ $(document).ready(function() {
 	$('.add_row').click(function(){
 		add_row();
 	});
-		
+
 	add_row();
 	function add_row(){
 		var tr=$("#sample_table tbody tr.main_tr").clone();
