@@ -90,7 +90,7 @@
 							</tfoot>
 						</table>
 					</div>
-					<div class="col-md-4">	
+					<div class="col-md-4">
 						<?php if(!empty($bulkorder_id)){ ?>
 						<?php echo $this->Html->image('/img/bulkbookingimages/'.$bulk_image.'', ['height' => '200px','width' => '320px']); ?>
 						<?php } ?>
@@ -184,13 +184,12 @@ $(document).ready(function() {
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 			
 		});
-		alert(total_amount);
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
 		var grand_total=total_amount-amount_from_wallet;
 		$('input[name=total_amount]').val(grand_total);
 			 
 		}
-		
+		rename_rows();
     });
 
 	$('.add_row').click(function(){
@@ -271,6 +270,13 @@ $(document).ready(function() {
 		$('input[name=total_amount]').val(grand_total);
 	});
 	
+		$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var raw_attr_rates = $('option:selected', this).attr('rates');
+		$(this).closest('tr').find('.msg_shw').html("per quantity in "+raw_attr_name);
+		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
+	});	
+
 });
 </script>
 <table id="sample_table" style="display:none;" >
@@ -281,10 +287,11 @@ $(document).ready(function() {
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Quantity','value'=>0]); ?>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 					</td>
 					<td>
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Rate','value'=>0]); ?>	
+						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount rat_value','placeholder'=>'Rate','value'=>0]); ?>	
 					</td>
 					<td>
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>0]); ?>	

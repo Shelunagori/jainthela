@@ -74,7 +74,13 @@ class PurchaseOutwardsController extends AppController
         }
         $vendors = $this->PurchaseOutwards->Vendors->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->PurchaseOutwards->JainThelaAdmins->find('list', ['limit' => 200]);
-		$items = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		
+		$item_fetchs = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id, 'is_combo'=>'no', 'is_virtual'=>'no']);
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")"];
+		}
         $this->set(compact('purchaseOutward', 'vendors', 'jainThelaAdmins', 'items'));
         $this->set('_serialize', ['purchaseOutward', 'items']);
     }

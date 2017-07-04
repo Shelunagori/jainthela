@@ -30,6 +30,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
+						<span id="msg"></span>
 					</div>
 					<div class="col-md-3 set">
 						<?php 
@@ -48,17 +49,20 @@
 						?>
 					</div>
 					<div class="col-md-3">
+						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Purchase']); ?>
+					</div>
+					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
+				</div>
+				<div class="row"><br>
 					<div class="col-md-3">
 						<label class="col-md-6 control-label">Image</label>
 						<?php $img_view=$item->image; ?>
 						<?php echo $this->Html->image('/img/item_images/'.$img_view.'', ['height' => '80px','width' => '120px']); ?>
 						<?= $this->Form->input('image',['class'=>'form-control','type'=>'File','label'=>false]) ?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Type<span class="required" aria-required="true">*</span></label>
 									<div class="radio-list">
@@ -74,14 +78,14 @@
                                     </div>
 								</div>
 							</div>
-							<div class="col-md-6 set2">
+							<div class="col-md-3 set2">
 								<?php if($is_virtual=='yes'){ ?>
 									<div id="fetch">
 										<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs,'class'=>'form-control input-sm', 'value'=>$parent_item_id]); ?>
 									</div>
 								<?php } ?>
 							</div>	
-				</div>
+				</div><br>
 			<?= $this->Form->button(__('Edit item'),['class'=>'btn btn-success']) ?>
 			<?= $this->Form->end() ?>
 			</div>
@@ -160,6 +164,7 @@ $(document).ready(function() {
 	
 	$(".attribute").die().live('change',function(){
 		var unt_attr_name = $('option:selected', this).attr('unit_name');
+			$("#msg").html('Minimum Stock in '+ unt_attr_name);
 			if(unt_attr_name=='kg'){
 				var data=$("#data_fetch").html();
 				$(".set").html(data);

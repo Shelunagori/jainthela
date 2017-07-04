@@ -51,7 +51,7 @@ class ItemsController extends AppController
 			}
 			$this->Flash->success(__('Item rates have updated successfully.'));
 		 }
-		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0])->contain(['ItemCategories', 'Units']);
+		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.freeze'=>0])->contain(['ItemCategories', 'Units']);
 		$this->set(compact('items', 'itemCategories', 'units'));
         $this->set('_serialize', ['items']);
     }

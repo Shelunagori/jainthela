@@ -162,12 +162,11 @@ class OrdersController extends AppController
 				$this->request->data['order_details'][$i]['quantity']=$carts_data_fetch->quantity;
 				$this->request->data['order_details'][$i]['rate']=$carts_data_fetch->item->sales_rate;
 				$this->request->data['order_details'][$i]['amount']=$amount;
+				$this->request->data['order_details'][$i]['is_combo']=$carts_data_fetch->is_combo;
 				$i++;
 			}
 			
 			$order = $this->Orders->patchEntity($order, $this->request->getData());
-			
-			
 			$order->transaction_order_no=$order_no;
 			$order->order_no=$exact_order_no;
 			$order->customer_id=$customer_id;

@@ -49,7 +49,7 @@
 											<?= $i ?>.
 										</td>
 										<td>
-											<a href="#" role="button" class="stock_show"><?= $itemLedger->item->name ?></a>	
+											<a href="#" role="button" class="stock_show" itm="<?= $item_id ?>"><?= $itemLedger->item->name ?></a>	
 										</td>
 										<td>
 											<?= $itemLedger->total_driver_in ?></a>
@@ -110,15 +110,14 @@ $(document).ready(function(){
 		$(this).closest('td').append('<span class="loading_span">Loading...</span>');
 		$(this).closest('td').find(".stock_hide").show();
 		var entity=$(this).closest('tr');
-		var item_id=$(this).val();
+		var item_id=$(".stock_show").attr("itm");
 		var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'ajaxItemDetails']);
 		?>";
 		url=url+'/'+item_id,
-		
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			
+			alert(response);
 			current_entity.removeClass("stock_show").addClass("stock_hide");
 			entity.after(response);
 			current_entity.closest('td').find('span.loading_span').remove();

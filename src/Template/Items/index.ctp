@@ -41,7 +41,7 @@
 							<td><?= h($i) ?></td>
 							<td><?= h($item->name) ?></td>
 							<td><?= h($item->alias_name) ?></td>
-							<td><?= h($item->unit->shortname) ?></td>
+							<td><?= h($item->print_quantity) ?></td>
 							<td><?= h($item->item_category->name) ?></td>
 							<td><?= $this->Number->format($item->minimum_stock) ?></td>
 							<td><?= $this->Number->format($item->minimum_quantity_factor) ?></td>

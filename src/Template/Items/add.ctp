@@ -30,19 +30,23 @@
 				<div class="row">
 					<div class="col-md-3">
 						<?php echo $this->Form->control('minimum_stock',['class'=>'form-control input-sm','placeholder'=>'Minimum Stock']); ?>
+						<span id="msg"></span>
 					</div>
 					<div class="col-md-3 set">
 						
 					</div>
 					<div class="col-md-3">
+						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Purchase']); ?>
+					</div>
+					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
 					</div>
+				</div>
+				<div class="row"><br>
 					<div class="col-md-3">
 						 <?= $this->Form->input('image',['class'=>'form-control','type'=>'File']) ?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Type<span class="required" aria-required="true">*</span></label>
 									<div class="radio-list">
@@ -58,7 +62,7 @@
                                     </div>
 								</div>
 							</div>
-							<div class="col-md-6 set2">
+							<div class="col-md-3 set2">
 							</div>	
 				</div>
 			<?= $this->Form->button(__('Create new item'),['class'=>'btn btn-success']) ?>
@@ -140,7 +144,8 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
 	$(".attribute").die().live('change',function(){
-		var unt_attr_name = $('option:selected', this).attr('unit_name');			
+		var unt_attr_name = $('option:selected', this).attr('unit_name');	
+			$("#msg").html('Minimum Stock in '+ unt_attr_name);
 			if(unt_attr_name=='kg'){
 				var data=$("#data_fetch").html();
 				$(".set").html(data);

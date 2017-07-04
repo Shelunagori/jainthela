@@ -321,6 +321,21 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
+	$routes->resources(
+		'CashBacks', [
+		   'map' => [
+			   'cash_back_details' => [
+				   'action' => 'cash_back_details',
+				   'method' => 'GET'
+			   ],
+			   'claim_on_cash_back' => [
+				   'action' => 'claim_on_cash_back',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	
 
 });
 

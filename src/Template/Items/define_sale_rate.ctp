@@ -24,38 +24,61 @@
 							<th>Sr</th>
 							<th>Category</th>
 							<th>Name</th>
-							<th>Unit</th>
+							<th>Type</th>
+							<th width="100">Unit</th>
 							<th>Print Rate</th>
 							<th>Item Discount %</th>
 							<th>Sale Rate</th>
 							<th>Offline Sale Rate</th>
-							<th>Ready to Sale</th>
+							<th width="100">
+								Ready to Sale
+								<?php echo  $this->Form->control('rts',['class'=>'form-control input-sm all','options'=>['empty'=>'--All--', 'Yes'=>'Yes','No'=>'No'], 'label'=>false]); ?>
+							</th>
+							
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="main_tbody">
 						<?php $i=0; foreach ($items as $item): ?>	
-						<tr>
+						<tr class="main_tr">
 							<td><?php echo ++$i; $i--; ?></td>
 							<td><?= h($item->item_category->name) ?></td>
                             <td>
-								<?= h($item->name) ?>
+								<?php
+								$item_name=$item->name;
+								$alias_name=$item->alias_name;
+								?>
+								<?= h($item_name. ' ('.$alias_name.')') ?>
+								
 								<?php echo  $this->Form->control('items['.$i.'][item_id]',['type'=>'hidden','class'=>'form-control input-sm input-small', 'value'=>$item->id]); ?>
 							</td>
 							<td>
-								<?= h($item->unit->shortname) ?>
+								<?php
+								if($item->is_virtual=="yes"){
+									echo '<span class="badge badge-warning tooltips" data-original-title="Virtule Item">V</span>';
+								}
+								else if($item->is_combo=="yes"){
+									echo '<span class="badge badge-success tooltips" data-original-title="Combo Item">C</span>';
+								}
+								else{
+									echo '<span class="badge badge-primary tooltips" data-original-title="Real Item">R</span>';
+								}
+								?>
+							</td>
+							<td style="font-size:10px;">
+								Rate per <b style="font-size:12px;"><?= h($item->print_quantity) ?></b>
 							</td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm input-small print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
+								<?php echo  $this->Form->control('items['.$i.'][print_rate]',['class'=>'form-control input-sm  print_rate','placeholder'=>'Print Rate', 'value'=>$item->print_rate,'label'=>false]); ?></td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm input-small discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
+								<?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm  discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm input-small sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?>
+								<?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm  sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?>
 							</td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][offline_sales_rate]',['class'=>'form-control input-sm input-small offline_sales_rate','placeholder'=>'offline Print Rate', 'value'=>$item->offline_sales_rate,'label'=>false]); ?>
+								<?php echo  $this->Form->control('items['.$i.'][offline_sales_rate]',['class'=>'form-control input-sm  offline_sales_rate','placeholder'=>'offline Print Rate', 'value'=>$item->offline_sales_rate,'label'=>false]); ?>
 							</td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm input-small','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
+								<?php echo  $this->Form->control('items['.$i.'][ready_to_sale]',['class'=>'form-control input-sm single','options'=>['Yes'=>'Yes','No'=>'No'], 'value'=>$item->ready_to_sale,'label'=>false]); ?>
 							</td>
 						</tr>
 						<?php $i++; endforeach; ?>
@@ -115,5 +138,12 @@ $(document).ready(function(){
 		 $(this).closest('tr').find('.sales_rate').val((sale_amt).toFixed(2));
 		 $(this).closest('tr').find('.offline_sales_rate').val((sale_amt).toFixed(2));
 	});
+
+	$(".all").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).val();
+		$(".single option[value="+raw_attr_name+"]").attr('selected','selected');
+	});
+		
+		
 });
 </script>

@@ -59,7 +59,7 @@ class ItemLedgersController extends AppController
 		 
         if ($this->request->is('post')) {
 			$item_ledgers=$this->request->getData('item_ledgers');
-			pr($item_ledgers);
+			
 			$driver_id=$this->request->data['driver_id'];
 			$warehouse_id=$this->request->data['warehouse_id'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
@@ -102,7 +102,15 @@ class ItemLedgersController extends AppController
 			return $this->redirect(['action' => 'add']);
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-		$items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no'])->contain(['Units']);
+			foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$unit_name=$item_fetch->unit->unit_name;
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name];
+		}
         $drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
 		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
         $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
@@ -204,10 +212,9 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.driver_id' => $driver_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'=>['Units']]);
         $itemLedgers = ($query);
 		$count=$itemLedgers->count();
-		
         $this->set(compact('itemLedgers','count'));
      }
 
@@ -256,6 +263,18 @@ public function DriverReport()
         $this->set(compact('itemLedgers','count'));
      }
 
+	 public function productReport()
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+        $itemLedger = $this->ItemLedgers->newEntity();
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+
+        $items = $this->ItemLedgers->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('itemLedger', 'items', 'drivers', 'warehouses'));
+        $this->set('_serialize', ['itemLedger']);
+    }
 
 	 public function ajaxStockIssue()
     {
@@ -433,7 +452,7 @@ public function DriverReport()
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id, 'item_id'=>$id])
 		->group(['driver_id','warehouse_id'])
 		->autoFields(true)
 		->contain(['Items'=>['Units'], 'Drivers', 'Warehouses']);
@@ -442,7 +461,7 @@ public function DriverReport()
          $this->set(compact('itemLedgers'));
     }
 	
-	
+
 	
     /**
      * Edit method

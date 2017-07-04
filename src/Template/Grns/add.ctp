@@ -27,7 +27,7 @@
 					</div>
 					<div class="col-md-4">
 						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm select2me','label'=>false]); ?>
+						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
 				</div><br/>
 				<div class="row">
@@ -140,18 +140,18 @@ $(document).ready(function() {
 			 $(this).closest('tr').remove();
 			 
 		}
-		
+		rename_rows();
     });
 
 	$('.add_row').click(function(){
 		add_row();
 	});
-		
+
 	add_row();
 	function add_row(){
 		var tr=$("#sample_table tbody tr.main_tr").clone();
 		$("#main_table tbody#main_tbody").append(tr);
-		
+
 		rename_rows();
 	}
 
@@ -168,8 +168,12 @@ $(document).ready(function() {
 			i++;
 		});
 	}
-	
-	
+
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('unit_name');
+		$(this).closest('tr').find('.msg_shw').html("per quantity in "+raw_attr_name);
+	});
+
 });
 </script>
 <table id="sample_table" style="display:none;" >
@@ -180,7 +184,8 @@ $(document).ready(function() {
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>

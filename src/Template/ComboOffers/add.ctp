@@ -20,7 +20,7 @@
 								<div class="col-md-12">
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Offer Name <span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('name',array('class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false)) ?>
+										<?= $this->Form->input('name',array('class'=>'form-control input-sm','placeholder'=>'Offer Name','label'=>false)) ?>
 									</div>
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Image</label>
@@ -53,32 +53,32 @@
 									<td>
 										<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 									</td>
-									<td colspan="2" style="text-align:right !important;">
-										<label class="control-label" >Grand Total</label>
+									
+								</tr>
+								<tr>
+									<td></td>
+									<td style="text-align:center !important;">Print Rate
 									</td>
-									<td>
-										<div class="form-group">
-											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Grand Total']) ?>
-										</div>
+									<td style="text-align:center !important;">Discount (%)
+									</td>
+									<td style="text-align:center !important;">Sales Rate
 									</td>
 								</tr>
 								<tr>
-									<td colspan="3" style="text-align:right !important;">
-										<label class="control-label" >Discount (%)</label>
+									<td></td>
+									<td>
+										<div class="form-group">
+											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate']) ?>
+										</div>
 									</td>
 									<td>
 										<div class="form-group">
 											<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt calc','label'=>false,'placeholder'=>'Discount']) ?>
 										</div>
 									</td>
-								</tr>
-								<tr> 
-									<td colspan="3" style="text-align:right !important;">
-										<label class="control-label" >Sales Rate</label>
-									</td>
 									<td>
 										<div class="form-group">
-											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate']) ?>
+											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate','Readonly'=>'Readonly']) ?>
 										</div>
 									</td>
 								</tr>
@@ -277,23 +277,30 @@ $(".dscnt").die().live('keyup',function(){
 			return false;
 		}
     });
+	
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');			
+		//alert(raw_attr_name);
+		$(this).closest('tr').find('.msg_shw').html("per quantity in "+raw_attr_name);
+	});	
+
 });
- 
+
 </script>
-		<table id="sample_table" style="display:none;" cellpadding="5" cellspacing="5">
-			<tbody>
-				<tr class="main_tr" class="tab">
-					<td align="center" width="1px"></td>
-				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm','empty' => 'Select','label'=>false)) ?>
-					</td>
-					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>	
-					</td>				  
-                    <td>
-						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		
+	<table id="sample_table" style="display:none;" cellpadding="5" cellspacing="5">
+		<tbody>
+			<tr class="main_tr" class="tab">
+				<td align="center" width="1px"></td>
+				<td>
+					<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
+				</td>
+				<td>
+					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>
+					<span class="msg_shw" style="color:blue;"></span>
+				</td>
+				<td>
+					<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>

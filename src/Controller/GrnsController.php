@@ -105,7 +105,13 @@ class GrnsController extends AppController
         }
         $vendors = $this->Grns->Vendors->find('list');
         $warehouses = $this->Grns->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
-        $items = $this->Grns->GrnDetails->Items->find('list');
+			$item_fetchs = $this->Grns->GrnDetails->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no'])->contain(['Units']);
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$unit_name=$item_fetch->unit->unit_name;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'unit_name'=>$unit_name];
+		}
         $this->set(compact('grn', 'vendors', 'items', 'warehouses'));
         $this->set('_serialize', ['grn']);
     }

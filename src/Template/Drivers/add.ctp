@@ -16,7 +16,7 @@
 				<?= $this->Form->create($driver,['id'=>'form_sample_3']) ?>
 				<div class="row">
 					<div class="col-md-4">
-						<label class=" control-label">Name <span class="required" aria-required="true">*</span></label>
+						<label class=" control-label">Driver Name <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('name',['placeholder'=>'Driver Name','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
 				</div>
