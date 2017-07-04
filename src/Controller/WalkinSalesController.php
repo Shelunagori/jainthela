@@ -91,13 +91,15 @@ class WalkinSalesController extends AppController
             $this->Flash->error(__('The walkin sale could not be saved. Please, try again.'));
         }
       //  $items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
-		$items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'is_virtual'=>'no']);
+		$item_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.is_virtual'=>'no'])->contain(['Units']);
 		$items=[];
-		foreach($items_fetchs as $items_fetch){
-			$offline_sales_rate=$items_fetch->offline_sales_rate;
-			$item_name=$items_fetch->name;
-			$alias_name=$items_fetch->alias_name;
-			$items[]= ['value'=>$items_fetch->id,'text'=>$item_name."(".$alias_name.")",'offline_sales_rate'=>$offline_sales_rate];
+		foreach($item_fetchs as $item_fetch){
+			$unit_name=$item_fetch->unit->unit_name;
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$rates=$item_fetch->offline_sales_rate;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'unit_name'=>$unit_name];
 		}
         $drivers = $this->WalkinSales->Drivers->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->WalkinSales->JainThelaAdmins->find('list');

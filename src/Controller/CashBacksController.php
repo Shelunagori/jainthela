@@ -81,13 +81,16 @@ class CashBacksController extends AppController
 			}
 			 
 		 $query = $this->CashBacks->query();
-				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'ready_to_win'])
+				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'ready_to_win', 'cash_back_percentage', 'cash_back_limit', 'flag'])
 						->values([
 						'cash_back_no' => $cash_back_no,
 						'customer_id' => $customer_id,
 						'order_no' => $order_no,
 						'amount' => $cash_back_amount,
-						'ready_to_win' => 'yes'
+						'ready_to_win' => 'yes',
+						'cash_back_percentage' => $cash_back_percentage,
+						'cash_back_limit' => $cash_back_limit,
+						'flag' => 1
 						])
 				->execute();
          $grand_total=$remaining;
@@ -110,7 +113,7 @@ class CashBacksController extends AppController
 		   else{
 			   $query = $this->CashBacks->query();
 				$result = $query->update()
-                    ->set(['amount' => $updated_amount, 'ready_to_win' => 'yes'])
+                    ->set(['amount' => $updated_amount, 'ready_to_win' => 'yes', 'flag'=>1])
                     ->where(['id' => $updated_id])
                     ->execute();
 			   
@@ -126,12 +129,14 @@ class CashBacksController extends AppController
 				$cash_back_no=1;
 			}
 		 $query = $this->CashBacks->query();
-				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount'])
+				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'cash_back_percentage', 'cash_back_limit'])
 						->values([
 						'cash_back_no' => $cash_back_no,
 						'customer_id' => $customer_id,
 						'order_no' => $order_no,
-						'amount' => $grand_total
+						'amount' => $grand_total,
+						'cash_back_percentage' => $cash_back_percentage,
+						'cash_back_limit' => $cash_back_limit
 						])
 				->execute();
 		}
@@ -168,11 +173,10 @@ class CashBacksController extends AppController
      */
 	 
 	 
-	 public function updateWinners($id = null)
+	public function updateWinners($id = null)
     {
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		
  		$cash_back_fetchs=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no']);
 		$k=0;
  		 foreach($cash_back_fetchs as $cash_back_fetch){
@@ -180,56 +184,43 @@ class CashBacksController extends AppController
 			 $customer_id=$cash_back_fetch->customer_id;
 			 $cash_back_limit=$cash_back_fetch->cash_back_limit;
 			 $cash_back_percentage=$cash_back_fetch->cash_back_percentage;
-			 $update_id=$cash_back_fetch->id;
-			
-			 
+			 $update_id=$cash_back_fetch->id; 
 			 
 			 $cash_back_count_limit=$this->CashBacks->find()->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1])->count();
-			   
-			  if($cash_back_count_limit>=$cash_back_limit){
-				  
+			  if($cash_back_count_limit>=$cash_back_limit){ 
 				 $update_limit_datas=$this->CashBacks->find('all',['limit'=>$cash_back_limit])->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1]);
 				 $i=0;
 				$count_check=$update_limit_datas->count();
-			 if($count_check>=$cash_back_limit){
-				 
-				 
-				 foreach($update_limit_datas as $update_limit_data){
-					 $i++;
-					 $update_limit_id=$update_limit_data->id;
-					 $update_limits=$update_limit_data->cash_back_limit;
-					 if($cash_back_limit<$i){ 
-					break;
-						}
-						 echo $update_limit_id;
-					 echo "<br>";
+				
+				 if($count_check>=$cash_back_limit){ 
+					foreach($update_limit_datas as $update_limit_data){
+						 $i++;
+						 $update_limit_id=$update_limit_data->id;
+						 $update_limits=$update_limit_data->cash_back_limit;
+						 if($cash_back_limit<$i){ 
+							break;
+							}
+							   $update_limit_id; 
 							$query = $this->CashBacks->query();
-				$result = $query->update()
-                    ->set(['flag'=>2])
-                    ->where(['id' => $update_limit_id])
-                    ->execute();
-				
-					 
-				 }
+							$result = $query->update()
+								->set(['flag'=>2])
+								->where(['id' => $update_limit_id])
+								->execute();
+						}
 		 
-				  $query = $this->CashBacks->query();
-				$result = $query->update()
-                    ->set(['won' => 'yes', 'flag'=>2])
-                    ->where(['id' => $update_id])
-                    ->execute();
-			  }
-				
-				 
-			  }
-			  
+					$query = $this->CashBacks->query();
+					$result = $query->update()
+						->set(['won' => 'yes', 'flag'=>2])
+						->where(['id' => $update_id])
+						->execute();
+				} 
+			  }   
 		 }
+		 exit;
         $this->set('cashBack', $cashBack);
         $this->set('_serialize', ['cashBack']);
     }
-	
-	
-
-	
+	 
 	
     public function add()
     {
