@@ -13,10 +13,20 @@ class ComboOffersController extends AppController
 		->contain(['Carts'=>function($q) use($customer_id){
 				return $q->where(['customer_id'=>$customer_id]);
 			}]);
+			
 		
 		$combo_lists->select(['image_url' => $combo_lists->func()->concat(['http://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
         ->autoFields(true);
         
+		
+			foreach($combo_lists as $item){
+			if(!$item->cart){
+				$item->cart=(object)[];
+			}
+		} 
+		
+		
+		
 		$cart_count = $this->ComboOffers->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 
 		$status=true;
@@ -33,12 +43,30 @@ class ComboOffersController extends AppController
 		$combo_views->select(['image_url' => $combo_views->func()->concat(['http://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
         ->autoFields(true);
 		
+		$combo_cart = $this->ComboOffers->Items->find()->where(['Items.combo_offer_id' => $combo_offer_id]);
+		foreach($combo_cart as $combo_data)
+		{
+			$item_id=$combo_data->id;
+		}
+		$carts_data = $this->ComboOffers->Items->Carts->find()
+		->where(['Carts.item_id' => $item_id, 'Carts.customer_id' => $customer_id]);
 		
+		if(empty($carts_data->toArray()))
+		{
+			$cart=0;
+		}
+		else
+		{
+		foreach($carts_data as $fetch_cart)
+		{
+			$cart=$fetch_cart->cart_count;
+		}
+		}
 		$cart_count = $this->ComboOffers->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','cart_count','combo_views'));
-        $this->set('_serialize', ['status', 'error','cart_count','combo_views']);
+        $this->set(compact('status', 'error','cart_count','cart','combo_views'));
+        $this->set('_serialize', ['status', 'error','cart_count','cart','combo_views']);
     }
 }

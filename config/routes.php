@@ -113,6 +113,14 @@ Router::prefix('api', function ($routes) {
 				   'push_token_update' => [
 				   'action' => 'push_token_update',
 				   'method' => 'POST'
+				   ],
+				   'customer_location_update' => [
+				   'action' => 'customer_location_update',
+				   'method' => 'GET'
+				   ],
+				   'customer_tracker' => [
+				   'action' => 'customer_tracker',
+				   'method' => 'GET'
 				   ]
 		   ]
 		]
@@ -215,6 +223,10 @@ Router::prefix('api', function ($routes) {
 			   'place_order' => [
 				   'action' => 'place_order',
 				   'method' => 'POST'
+			   ],
+			   'cancel_order' => [
+				   'action' => 'cancel_order',
+				   'method' => 'GET'
 			   ]
 			 ]
 		]);
@@ -229,6 +241,10 @@ Router::prefix('api', function ($routes) {
 			   ],
 			   'referral_update' => [
 				   'action' => 'referral_update',
+				   'method' => 'GET'
+			   ],
+			   'jain_cash_details' => [
+				   'action' => 'jain_cash_details',
 				   'method' => 'GET'
 			   ]
 		   ]
@@ -297,6 +313,10 @@ Router::prefix('api', function ($routes) {
 			   'wallet_details' => [
 				   'action' => 'wallet_details',
 				   'method' => 'GET'
+			   ],
+			   'add_money' => [
+				   'action' => 'add_money',
+				   'method' => 'POST'
 			   ]
 		   ]
 		]

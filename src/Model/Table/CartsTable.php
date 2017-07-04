@@ -48,6 +48,8 @@ class CartsTable extends Table
 		$this->belongsTo('CustomerAddresses');
 		$this->belongsTo('DeliveryTimes');
 		$this->belongsTo('Users');
+		$this->belongsTo('Orders');
+		$this->belongsTo('Order_details');
     }
 
     /**

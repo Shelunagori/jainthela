@@ -48,6 +48,8 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('CustomerAddresses');
+		$this->belongsTo('Drivers');
     }
 
     /**

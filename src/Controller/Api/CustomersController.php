@@ -274,7 +274,8 @@ class CustomersController extends AppController
 			$jain_cash_points=$points-$used_points;
 		}
 		}
-
+		
+		
 		$queryw = $this->Customers->Wallets->find();
 		$totalInCasew = $queryw->newExpr()
 			->addCase(
@@ -329,6 +330,63 @@ class CustomersController extends AppController
 		$error="Token Updated Successfully";
         $this->set(compact('status', 'error'));
         $this->set('_serialize', ['status', 'error']);
+    }
+	public function customerLocationUpdate()
+    {
+		$customer_id=$this->request->data('customer_id');
+		$lattitude=$this->request->data('lattitude');
+		$longitude=$this->request->data('longitude');
+		
+		$query = $this->Customers->query();
+				$result = $query->update()
+                    ->set([ 'lattitude' => $lattitude,
+					'lattitude' => $lattitude
+							])
+					->where(['id' => $customer_id])
+					->execute();
+		
+		$status=true;
+		$error="Locations Updated Successfully";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
+	public function customerTracker()
+    {
+		$customer_id=$this->request->query('customer_id');
+		$order_id=$this->request->query('order_id');
+		
+		$customer_order_data=$this->Customers->Orders->find()
+		->where(['id' => $order_id, 'customer_id'=>$customer_id])->first();
+         $address_id=$customer_order_data->customer_address_id;
+		 $driver_id=$customer_order_data->driver_id;
+		
+         $driver_data=$this->Customers->Drivers->find()
+		->where(['id'=>$driver_id])->first();
+         $driver_name=$driver_data->name;
+		 $driver_mobile=$driver_data->mobile;
+		 $driver_lattitude=$driver_data->lattitude;
+		 $driver_longitude=$driver_data->longitude;
+		
+		
+		 $customer_address_data=$this->Customers->CustomerAddresses->find()
+		->where(['id'=>$address_id])->first();
+         $fetch_address=$customer_address_data->address;
+		 $locality=$customer_address_data->locality;
+		 $mobile=$customer_address_data->mobile;
+		 $house_no=$customer_address_data->house_no;
+		 
+				$address=$locality;
+				$formattedAddr = str_replace(' ','+',$address);
+				$geocodeFromAddr = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddr.'&sensor=false'); 
+				$output = json_decode($geocodeFromAddr);
+				
+				@$customer_lattitude=$data['latitude']  = $output->results[0]->geometry->location->lat;
+				@$customer_longitude=$data['longitude'] = $output->results[0]->geometry->location->lng;
+						
+		$status=true;
+		$error="Tracking Data";
+        $this->set(compact('status', 'error','customer_lattitude','customer_longitude','driver_name','driver_mobile','driver_lattitude','driver_longitude'));
+        $this->set('_serialize', ['status', 'error','customer_lattitude','customer_longitude','driver_name','driver_mobile','driver_lattitude','driver_longitude']);
     }
 	
 }

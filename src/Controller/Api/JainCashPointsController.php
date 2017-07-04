@@ -90,5 +90,71 @@ class JainCashPointsController extends AppController
         $this->set(compact('status', 'error'));
         $this->set('_serialize', ['status', 'error']);
     }
+	
+	public function jainCashDetails()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$customer_id=$this->request->query('customer_id');
+		$jain_cash_details = $this->JainCashPoints->find()
+		->where(['JainCashPoints.customer_id'=>$customer_id])
+		->order(['id'=>'DESC'])
+		->autoFields(true);
+		
+		foreach($jain_cash_details as $jaincash_data){
+			
+			if(empty($jaincash_data->order_id))
+			{
+				$jaincash_data->transaction_type='Added';
+            }
+			else if(!empty($jaincash_data->order_id)){
+				$jaincash_data->transaction_type='Deduct';
+			}
+        $jaincash_data->create_date=date('D M j, Y H:i a', strtotime($jaincash_data->updated_on));
+
+		} 
+		$query = $this->JainCashPoints->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['point']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['order_id' => '0']),
+				$query->newExpr()->add(['used_point']),
+				'integer'
+			);
+			$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','customer_id'
+		])
+		->where(['JainCashPoints.customer_id' => $customer_id])
+		->group('customer_id')
+		->autoFields(true);
+		foreach($query as $fetch_query)
+		{
+			$points=$fetch_query->total_in;
+			$used_points=$fetch_query->total_out;
+			$jain_cash_points=$points-$used_points;
+		}
+		
+		
+		if(empty($jain_cash_details->toArray()))
+		{
+			$status=false;
+			$error="No Transaction details";
+			$this->set(compact('status', 'error'));
+			$this->set('_serialize', ['status', 'error']);
+		}
+		else
+		{
+			$status=true;
+			$error="";
+			$this->set(compact('status', 'error','jain_cash_details', 'jain_cash_points'));
+			$this->set('_serialize', ['status', 'error','jain_cash_details','jain_cash_points']);
+		}
+		
+    }
 
 }

@@ -66,6 +66,7 @@ class OrdersTable extends Table
         ]);
 		$this->belongsTo('CustomerAddresses');
 		$this->belongsTo('CancelReasons');
+		$this->belongsTo('Carts');
     }
 
     /**
@@ -104,7 +105,7 @@ class OrdersTable extends Table
     {
         $rules->add($rules->existsIn(['jain_thela_admin_id'], 'JainThelaAdmins'));
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
-        $rules->add($rules->existsIn(['promo_code_id'], 'PromoCodes'));
+        //$rules->add($rules->existsIn(['promo_code_id'], 'PromoCodes'));
 
         return $rules;
     }

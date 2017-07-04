@@ -57,93 +57,186 @@ class OrdersController extends AppController
 		
 		$orders_data = $this->Orders->find()
 		->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
-		->select(['image_url' => $this->Orders->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/no_image.png'])])
-		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status' => 'Delivered' ])->order(['order_date' => 'DESC'])
-		->autoFields(true);
-		 
-		/* foreach($orders_data as $orders_data_fetch){
-			 $order_id=$orders_data_fetch->id;
-			echo $delivery_date=date('D M j, Y H:i a', strtotime($orders_data_fetch->delivery_date));
-			$orders_data->orders_delivery_date=$delivery_date;
-
-		       $orders_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
-               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
-			}]]]);
-			$order_fetch=$orders_details_data->order_details;
-			foreach($order_fetch as $order_fetch_data){
-				$image=$order_fetch_data->image_path;
-			}
-			$orders_data->image=$image;
-		} */
-		//echo $order_id=$orders_data->id;
+		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status' => 'Delivered' ])
+		->order(['order_date' => 'DESC'])
+		->contain(['OrderDetails'=>function($q){
+							return $q->contain(['Items'])->limit(1);
+						}])
+						->autoFields(true);
+						
+		foreach($orders_data as $order){
+			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			unset($order->order_details);
+		} 
+		
  		$status=true;
 		$error="";
         $this->set(compact('status', 'error','orders_data'));
         $this->set('_serialize', ['status', 'error', 'orders_data']);
     }
 	
+	public function cancelOrder()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$customer_id=$this->request->query('customer_id');
+		$order_id=$this->request->query('order_id');
+		$cancel_id=$this->request->query('cancel_id');
+				$order_cancel = $this->Orders->query();
+					$result = $order_cancel->update()
+						->set(['status' => 'Cancel',
+						'cancel_id' => $Cancel_id])
+						->where(['id' => $order_id])
+						->execute();
+		
+		$status=true;
+		$error="Thank you, your order has been cancelled.";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
 	 public function placeOrder()
     {
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
 		$customer_id=$this->request->data('customer_id');
-		$place_order=$this->request->data('place_order');
 		$wallet_amount=$this->request->data('wallet_amount');
 		$jain_cash_amount=$this->request->data('jain_cash_amount');
 		$customer_address_id=$this->request->data('customer_address_id');
-		$order_time=$this->request->data('order_time');
+		$delivery_time_id=$this->request->data('delivery_time_id');
 		$online_amount=$this->request->data('online_amount');
 		$total_amount=$this->request->data('total_amount');
+		$delivery_charge=$this->request->data('delivery_charge');
+		$delivery_charge_id=$this->request->data('delivery_charge_id');
 		$promo_code_amount=$this->request->data('promo_code_amount');
 		$promo_code_id=$this->request->data('promo_code_id');
-		$address_id=$this->request->data('address_id');
+        $discount_percent=$this->request->data('discount_percent');
 		$order_type=$this->request->data('order_type');
+		$payment_status=$this->request->data('payment_status');
+		$order_no=$this->request->data('order_no');
+		$order_from=$this->request->data('order_from');
 		$order = $this->Orders->newEntity();
+		$curent_date=date('Y-m-d');
 		
-		
-		
-		
-		if($place_order=='yes'){
+						
+		        $out_of_stock_data=$this->Orders->Carts->find()->where(['customer_id' => $customer_id]);
+        		$counts=0;
+				foreach($out_of_stock_data as $fetch_data)
+				{
+					$item_id=$fetch_data->item_id;
+					$out_data=$this->Orders->Carts->Items->get($item_id);
+					$d=$out_data->out_of_stock;
+					$counts+=$d;
+				}
+				
+		if($counts>0)
+		{
+		    $delivery_date=date('Y-m-d', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
+        }
+		else{
 			
-		$payable_amount=$total_amount-($wallet_amount+$jain_cash_amount);
+			$delivery_date=date('Y-m-d');//delivery_date///
+		}
 		
-			$last_order_no = $this->Orders->find()->select(['order_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
+		$last_order_no = $this->Orders->find()
+		->select(['get_auto_no'])
+		->order(['get_auto_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])
+		->first();
+		
 			if(!empty($last_order_no)){
-				$order_no = $last_order_no->order_no+1;
+			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
 			}else{
-				$order_no=1;
+		    $get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
 			}
-			$this->loadModel('Carts');
-		$carts_data=$this->Carts->find()->where(['customer_id'=>$customer_id])->contain(['Items']);
+			$get_date=str_replace('-','',$curent_date);
+			$exact_order_no=h('W'.$get_date.$get_auto_no);//orderno///
+			
 		
+		$grand_total=$total_amount+$delivery_charge;
+		$pay_amount=$grand_total-($wallet_amount+$jain_cash_amount+$online_amount+$promo_code_amount);
+			
+		$this->loadModel('Carts');
+		$carts_data=$this->Carts->find()->where(['customer_id'=>$customer_id])->contain(['Items']);
 		$i=0;
 			foreach($carts_data as $carts_data_fetch)
 			{
-				
-				$amount=$carts_data_fetch->quantity*$carts_data_fetch->item->sales_rate;
-				
+				$amount=$carts_data_fetch->quantity*$carts_data_fetch->item->sales_rate;				
 				$this->request->data['order_details'][$i]['item_id']=$carts_data_fetch->item_id;
 				$this->request->data['order_details'][$i]['quantity']=$carts_data_fetch->quantity;
 				$this->request->data['order_details'][$i]['rate']=$carts_data_fetch->item->sales_rate;
 				$this->request->data['order_details'][$i]['amount']=$amount;
 				$i++;
 			}
-			$order = $this->Orders->patchEntity($order, $this->request->data());
 			
-			$order->order_no=$order_no;
+			$order = $this->Orders->patchEntity($order, $this->request->getData());
+			
+			
+			$order->transaction_order_no=$order_no;
+			$order->order_no=$exact_order_no;
+			$order->customer_id=$customer_id;
+			$order->jain_thela_admin_id=$jain_thela_admin_id;
+			$order->amount_from_wallet=$wallet_amount;
+			$order->customer_address_id=$customer_address_id;
+			$order->amount_from_jain_cash=$jain_cash_amount;
+			$order->amount_from_promo_code=$promo_code_amount;
+			$order->total_amount=$total_amount;
+			
+			$order->grand_total=$grand_total;
+			$order->pay_amount=$pay_amount;
+			$order->online_amount=$online_amount;
+			$order->delivery_charge=$delivery_charge;
+			$order->delivery_charge_id=$delivery_charge_id;
+			$order->promo_code_id=$promo_code_id;
+			$order->order_type=$order_type;
+			$order->discount_percent=$discount_percent;
+			$order->status='In Process';
+			$order->curent_date=$curent_date;
+			$order->get_auto_no=$get_auto_no;
+			$order->delivery_date=$delivery_date;
+			$order->payment_status=$payment_status;
+			$order->order_from=$order_from;
 			$this->Orders->save($order);
+			
 			
 			
 				$this->loadModel('Carts');
 				$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['customer_id' => $customer_id])
-					->execute();
+					->execute(); 
 			
-		}
+             	
+	
+		$get_data = $this->Orders->find()
+		->order(['id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'customer_id'=>$customer_id])
+		->first();
+		    $delivery_day_date=date('D M j', strtotime($get_data->delivery_date));
+            $order_day_date=date('D M j, Y H:i a', strtotime($get_data->order_date));
+            $c_date=$curent_date;
+			$d_date=date('Y-m-d', strtotime($get_data->delivery_date));
+			
+			if($c_date==$d_date)
+			{
+				$isOrderType='Today';
+			}
+			else{
+				$isOrderType='Next day';
+			}
+			
+			$result=array('order_date'=>$order_day_date,
+			'delivery_date'=>$delivery_day_date,
+			'order_no'=>$get_data->order_no,
+			'pay_amount'=>$get_data->pay_amount,
+			'order_type'=>$get_data->order_type,
+			'grand_total'=>$get_data->grand_total,
+			'order_day'=>$isOrderType
+			);
+			
 	
 		$status=true;
-		$error="";
-        $this->set(compact('status', 'error','orders_data', 'order_type'));
-        $this->set('_serialize', ['status', 'error', 'orders_data', 'order_type']);
+		$error="Thank You, Your order has been placed.";
+        $this->set(compact('status', 'error','result'));
+        $this->set('_serialize', ['status', 'error', 'result']);
     }
+	
+	
+	
+	
 }
