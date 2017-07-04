@@ -66,6 +66,7 @@ class OrdersTable extends Table
         ]);
 		$this->belongsTo('CustomerAddresses');
 		$this->belongsTo('CancelReasons');
+		$this->hasMany('CashBacks');
     }
 
     /**

@@ -71,15 +71,22 @@ class OrdersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-			
+
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
         $customers = $this->Orders->Customers->find('list');
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-        $items = $this->Orders->Items->find('list');
+		$item_fetchs = $this->Orders->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$rates=$item_fetch->offline_sales_rate;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates];
+		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
- 
+
         $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id'));
         $this->set('_serialize', ['order']);
     }

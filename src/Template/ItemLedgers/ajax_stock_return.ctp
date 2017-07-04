@@ -24,6 +24,7 @@
 				$total_in=$itemLedger->total_in;
 				$total_out=$itemLedger->total_out;
 				$remaining=$total_in-$total_out;
+				$unit_name=$itemLedger->item->unit->unit_name;
 				@$i++;
 		?>
 			<tr class="main_tr" class="tab">
@@ -35,9 +36,15 @@
 				</td>	
 				<td>
 					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining]); ?>
+					<span class="msg_shw" style="color:green;font-size:10px;">
+						quantity in <?= $unit_name ?>
+					</span>
 				</td>
 				<td>
 					<?php echo $this->Form->input('item_ledgers['.$k.'][waste]', ['label' => false,'class' => 'form-control input-sm number','value'=>0]); ?>
+					<span class="msg_shw2" style="color:green;font-size:10px;">
+						quantity in <?= $unit_name ?>
+					</span>
 				</td>
 			</tr>
 		<?php 

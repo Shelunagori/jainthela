@@ -81,9 +81,8 @@ class ComboOffersController extends AppController
 				if(in_array($ext, $arr_ext)) {
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/item_images/'.$img_name);
 				  }
-				  
 					$query = $this->ComboOffers->ComboOfferDetails->Items->query();
-					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate', 'is_combo', 'combo_offer_id', 'print_rate', 'discount_per', 'image'])
+					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate', 'is_combo', 'combo_offer_id', 'print_rate', 'discount_per', 'image', 'item_category_id', 'unit_id'])
 							->values([
 							'name' => $ComboOffers_name,
 							'jain_thela_admin_id' => $jain_thela_admin_id,
@@ -92,7 +91,9 @@ class ComboOffersController extends AppController
 							'combo_offer_id' => $ComboOffers_id,
 							'print_rate' => $ComboOffers_print_rate,
 							'discount_per' => $ComboOffers_discount_per,
-							'image' => $ComboOffers_image
+							'image' => $ComboOffers_image,
+							'item_category_id' => 9,
+							'unit_id' => 8
 							])
 					->execute();
                 $this->Flash->success(__('The combo offer has been saved.'));
@@ -101,8 +102,14 @@ class ComboOffersController extends AppController
             }
             $this->Flash->error(__('The combo offer could not be saved. Please, try again.'));
         }
-		$items = $this->ComboOffers->ComboOfferDetails->Items->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id, 'is_combo =' => 'no']);		
-
+		$item_fetchs = $this->ComboOffers->ComboOfferDetails->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no']);
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$minimum_purchase_quantity=$item_fetch->minimum_purchase_quantity;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor];
+		}
         $this->set(compact('comboOffer', 'items'));
         $this->set('_serialize', ['comboOffer', 'items']);
     }

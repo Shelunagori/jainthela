@@ -18,7 +18,7 @@
 									<h4 align="center">OUT</h4>
 									<div class="col-md-12">
 										<label class="col-md-6 control-label">Warehouse <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false)) ?>
+										<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false)) ?>
 									</div>
 									<div class="col-md-12"><br></div>
 									<div class="col-md-6">
@@ -49,6 +49,9 @@
 												<td width="20%">
 													<label>Quantity<label>
 												</td>
+												<td width="20%">
+													<label>Actual<label>
+												</td>
 												<td></td>
 											</tr>
 										</thead>
@@ -75,7 +78,7 @@
 								 </div>
 								 <div class="col-md-12"><br></div>
 							</div>
-						
+
 						<div class="row" style="padding-top:5px;">
 							<div class="col-md-4"></div>
 							<div class="col-md-4"></div>
@@ -93,17 +96,17 @@
     <div class="col-md-1">
 	</div>
 </div>	
-		
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
 	form3.validate({
-		
+
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
@@ -192,15 +195,16 @@ $(document).ready(function() {
 			$(this).closest('tr').remove();
 			 
 		}
-		
+		rename_rows();
+		calculation();
     });
 
 	$('.add').click(function(){
 			add_row();
 	});
-		
+
 	add_row();
-	
+
 	function add_row(){
 			var tr=$("#sample_table tbody tr.main_tr").clone();
 			$("#main_table tbody#main_tbody").append(tr); 
@@ -214,13 +218,17 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"transfer_inventory_voucher_rows["+i+"][item_id]", id:"transfer_inventory_voucher_rows-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity_factor]", id:"transfer_inventory_voucher_rows-"+i+"-quantity_factor"}).rules('add', {
 						required: true
 					});
+			$(this).find("td:nth-child(4) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
+						required: true
+					});
+							
 			i++;
 		});
 	}
-	
+
 	$(".calculation_amount").die().live('keyup',function(){
 		calculation();
 	});
@@ -229,9 +237,12 @@ $(document).ready(function() {
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var quantity = parseFloat($(this).find("td:nth-child(3) input").val());
-			if(!quantity){ quantity=0; }
-			grand_total=grand_total+quantity;
-			
+			if(!quantity){ quantity=0; }			
+			var minimum_quantity_factor = parseFloat($(this).find("td:nth-child(3) input").attr("minimum_quantity_factor"));
+			if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+			var final_val=quantity*minimum_quantity_factor;
+			grand_total=grand_total+final_val;
+			$(this).find("td:nth-child(4) input").val(final_val.toFixed(2));
 		}); 
 	var main_quantity = parseFloat($(".main_quantity").val());
 			if(!main_quantity){ main_quantity=0; }
@@ -252,7 +263,7 @@ $(document).ready(function() {
 			return false;
 		}
     });
-	
+
 	$('.itm_chng').die().live('change',function() 
 	{ 
 		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
@@ -262,7 +273,7 @@ $(document).ready(function() {
  		var m_data = new FormData();
 		m_data.append('itm_val',itm_val);
 		m_data.append('ware_house',ware_house);
-			
+
 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_stock_available"]); ?>",
 			data: m_data,
@@ -280,6 +291,15 @@ $(document).ready(function() {
 			}
 		});	
 	});
+
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
+		var unit_name = $('option:selected', this).attr('unit_name');
+		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
+		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
+		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+	});
 });
 
 </script>
@@ -288,10 +308,15 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm itm_chng','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>	
+						<?php echo $this->Form->input('quantity_factor', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
+					</td>
+					<td>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>0, 'readonly'=>'readonly']); ?>
+						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
@@ -299,4 +324,3 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
-		

@@ -18,7 +18,7 @@
 									<h4 align="center">OUT</h4>
 									<div class="col-md-12">
 										<label class="col-md-6 control-label">Warehouse <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false, 'value'=>$transferInventoryVoucher->warehouse_id)) ?>
+										<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false, 'value'=>$transferInventoryVoucher->warehouse_id)) ?>
 									</div>
 									<div class="col-md-12"><br></div>
 									<div class="col-md-6">
@@ -64,10 +64,14 @@
 											<tr class="main_tr" class="tab">
 												<td align="center" width="1px"><?= $k ?></td>
 												<td>
-												<?= $this->Form->input('transfer_inventory_voucher_rows['.$i.'][item_id]',array('options' => $items,'class'=>'form-control input-sm itm_chng','empty' => 'Select','label'=>false, 'value'=>$transferInventoryVoucherRow->item_id)) ?>
+												<?= $this->Form->input('transfer_inventory_voucher_rows['.$i.'][item_id]',array('options' => $items,'class'=>'form-control input-sm itm_chng attribute','empty' => 'Select','label'=>false, 'value'=>$transferInventoryVoucherRow->item_id)) ?>
 												</td>
 												<td>
-												<?php echo $this->Form->input('transfer_inventory_voucher_rows['.$i.'][quantity]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity', 'value'=>$transferInventoryVoucherRow->quantity]); ?>	
+												<?php echo $this->Form->input('transfer_inventory_voucher_rows['.$i.'][quantity_factor]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity', 'value'=>$transferInventoryVoucherRow->quantity_factor]); ?>	
+												</td>
+												<td>
+													<?php echo $this->Form->input('transfer_inventory_voucher_rows['.$i.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>0, 'readonly'=>'readonly', 'value'=>$transferInventoryVoucherRow->quantity]); ?>
+												<span class="msg_shw2" style="color:blue;font-size:10px;"></span>
 												</td>
 												<td>
 												<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
@@ -93,7 +97,7 @@
 												<?php 
 												$remaining=$transferInventoryVoucher->quantity-$trnsfr_quntity;
 												?>
-													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'remaining form-control input-sm number valid','placeholder'=>'waste Quantity','value'=>$remaining]); ?>	
+													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' =>'remaining form-control input-sm number valid','placeholder'=>'waste Quantity','value'=>$remaining]); ?>	
 												</td>
 											</tr>
 										</tfoot>
@@ -218,6 +222,8 @@ $(document).ready(function() {
 			$(this).closest('tr').remove();
 			 
 		}
+		rename_rows();
+		calculation();
 		
     });
 
@@ -240,7 +246,10 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"transfer_inventory_voucher_rows["+i+"][item_id]", id:"transfer_inventory_voucher_rows-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity_factor]", id:"transfer_inventory_voucher_rows-"+i+"-quantity_factor"}).rules('add', {
+						required: true
+					});
+			$(this).find("td:nth-child(4) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
 						required: true
 					});
 			i++;
@@ -255,9 +264,12 @@ $(document).ready(function() {
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var quantity = parseFloat($(this).find("td:nth-child(3) input").val());
-			if(!quantity){ quantity=0; }
-			grand_total=grand_total+quantity;
-			
+			if(!quantity){ quantity=0; }			
+			var minimum_quantity_factor = parseFloat($(this).find("td:nth-child(3) input").attr("minimum_quantity_factor"));
+			if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+			var final_val=quantity*minimum_quantity_factor;
+			grand_total=grand_total+final_val;
+			$(this).find("td:nth-child(4) input").val(final_val.toFixed(2));
 		}); 
 	var main_quantity = parseFloat($(".main_quantity").val());
 			if(!main_quantity){ main_quantity=0; }
@@ -306,6 +318,14 @@ $(document).ready(function() {
 			}
 		});	
 	});
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
+		var unit_name = $('option:selected', this).attr('unit_name');
+		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
+		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
+		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+	});
 });
 
 </script>
@@ -314,10 +334,15 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm itm_chng','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>	
+						<?php echo $this->Form->input('quantity_factor', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
+					</td>
+					<td>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>0, 'readonly'=>'readonly']); ?>
+						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
@@ -325,43 +350,3 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
-		
-		
-		
-		
-		
-		<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $transferInventoryVoucher->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $transferInventoryVoucher->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Transfer Inventory Vouchers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Item'), ['controller' => 'Items', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Transfer Inventory Voucher Rows'), ['controller' => 'TransferInventoryVoucherRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Transfer Inventory Voucher Row'), ['controller' => 'TransferInventoryVoucherRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="transferInventoryVouchers form large-9 medium-8 columns content">
-    <?= $this->Form->create($transferInventoryVoucher) ?>
-    <fieldset>
-        <legend><?= __('Edit Transfer Inventory Voucher') ?></legend>
-        <?php
-            echo $this->Form->control('voucher_no');
-            echo $this->Form->control('item_id', ['options' => $items]);
-            echo $this->Form->control('quantity');
-            echo $this->Form->control('created_on');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
