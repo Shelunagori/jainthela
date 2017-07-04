@@ -81,12 +81,13 @@ class CashBacksController extends AppController
 			}
 			 
 		 $query = $this->CashBacks->query();
-				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount'])
+				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'ready_to_win'])
 						->values([
 						'cash_back_no' => $cash_back_no,
 						'customer_id' => $customer_id,
 						'order_no' => $order_no,
-						'amount' => $cash_back_amount
+						'amount' => $cash_back_amount,
+						'ready_to_win' => 'yes'
 						])
 				->execute();
          $grand_total=$remaining;
@@ -99,13 +100,21 @@ class CashBacksController extends AppController
 	   if($updated_id){
 		   $last_amount=$cash_back_claims->amount;
 		   $updated_amount=$grand_total+$last_amount;
-		   
+		   if($updated_amount<$cash_back_amount){
 			$query = $this->CashBacks->query();
 				$result = $query->update()
                     ->set(['amount' => $updated_amount])
                     ->where(['id' => $updated_id])
                     ->execute();
-					
+		   }
+		   else{
+			   $query = $this->CashBacks->query();
+				$result = $query->update()
+                    ->set(['amount' => $updated_amount, 'ready_to_win' => 'yes'])
+                    ->where(['id' => $updated_id])
+                    ->execute();
+			   
+		   }
 					
 	   }else{
 		   
@@ -157,6 +166,71 @@ class CashBacksController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+	 
+	 
+	 public function updateWinners($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+ 		$cash_back_fetchs=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no']);
+		$k=0;
+ 		 foreach($cash_back_fetchs as $cash_back_fetch){
+			 $k++;
+			 $customer_id=$cash_back_fetch->customer_id;
+			 $cash_back_limit=$cash_back_fetch->cash_back_limit;
+			 $cash_back_percentage=$cash_back_fetch->cash_back_percentage;
+			 $update_id=$cash_back_fetch->id;
+			
+			 
+			 
+			 $cash_back_count_limit=$this->CashBacks->find()->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1])->count();
+			   
+			  if($cash_back_count_limit>=$cash_back_limit){
+				  
+				 $update_limit_datas=$this->CashBacks->find('all',['limit'=>$cash_back_limit])->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1]);
+				 $i=0;
+				$count_check=$update_limit_datas->count();
+			 if($count_check>=$cash_back_limit){
+				 
+				 
+				 foreach($update_limit_datas as $update_limit_data){
+					 $i++;
+					 $update_limit_id=$update_limit_data->id;
+					 $update_limits=$update_limit_data->cash_back_limit;
+					 if($cash_back_limit<$i){ 
+					break;
+						}
+						 echo $update_limit_id;
+					 echo "<br>";
+							$query = $this->CashBacks->query();
+				$result = $query->update()
+                    ->set(['flag'=>2])
+                    ->where(['id' => $update_limit_id])
+                    ->execute();
+				
+					 
+				 }
+		 
+				  $query = $this->CashBacks->query();
+				$result = $query->update()
+                    ->set(['won' => 'yes', 'flag'=>2])
+                    ->where(['id' => $update_id])
+                    ->execute();
+			  }
+				
+				 
+			  }
+			  
+		 }
+        $this->set('cashBack', $cashBack);
+        $this->set('_serialize', ['cashBack']);
+    }
+	
+	
+
+	
+	
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout'); 
