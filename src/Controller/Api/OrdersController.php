@@ -235,7 +235,111 @@ class OrdersController extends AppController
         $this->set('_serialize', ['status', 'error', 'result']);
     }
 	
+	public function pendingOrderList()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$driver_id=$this->request->query('driver_id');
+		$pending_order_data = $this->Orders->find()
+						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
+						->where(['Orders.driver_id' => $driver_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
+						->order(['order_date' => 'DESC'])
+						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
+							return $q->contain(['Items'])->limit(1);
+						}])
+						->autoFields(true);
+						
+		foreach($pending_order_data as $order){
+			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			unset($order->order_details);
+		}
+		
+
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','pending_order_data'));
+        $this->set('_serialize', ['status', 'error','pending_order_data']);
+    }
 	
+	public function viewMyPendingOrder()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$customer_id=$this->request->query('customer_id');
+		$order_id=$this->request->query('order_id');
+		
+		$view_pending_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
+               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+			}]]]);
+		
+		$details=$view_pending_details_data->order_details;
+		$i=0;
+		$minimum_value=1;
+		foreach($details as $carts_data_fetch)
+			{
+			$exact_amount=$minimum_value/$carts_data_fetch->item->minimum_quantity_factor*$carts_data_fetch->rate;
+			$carts_data_fetch->exact_amount=$exact_amount;
+			}
+
+		 $c_a_id=$view_pending_details_data->customer_address_id;
+		 $customer_addresses=$this->Orders->CustomerAddresses->find()
+		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.id'=>$c_a_id])->first();
+		
+		 $customer_details=$this->Orders->Customers->find()
+		->where(['Customers.id' => $customer_id])->first();
+		
+		$cancellation_reasons=$this->Orders->CancelReasons->find();
+		
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error','view_pending_details_data','customer_details','customer_addresses','cancellation_reasons'));
+        $this->set('_serialize', ['status', 'error', 'view_pending_details_data','customer_details','customer_addresses','cancellation_reasons']);
+    }
 	
+	public function driverBilling()
+    {
+		//$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
+		//$item_id=$this->request->data('item_id');
+		$id=$this->request->data('id');//[]//
+		$quantity=$this->request->data('quantity');//[]//
+		$amount=$this->request->data('amount');//[]//
+		$total_amount=$this->request->data('total_amount');
+		$pay_amount=$this->request->data('pay_amount');
+		$delivery_charge=$this->request->data('delivery_charge');
+		$driver_id=$this->request->data('driver_id');
+		$order_id=$this->request->data('order_id');
+		
+		$total_ids=sizeof($id);
+		
+		
+		
+		$grand_total=$total_amount+$delivery_charge;
+		$fetchs=$this->Orders->find()->where(['id' =>$order_id])->first();
+			$query = $this->Orders->query();
+				$result = $query->update()
+                    ->set(['total_amount' => $total_amount, 'grand_total' => $grand_total, 'pay_amount' => $pay_amount])
+                    ->where(['id' => $order_id])
+                    ->execute();
+		
+		
+		for($i=0; $i<$total_ids; $i++)
+		{
+		       $order_details_id=$id[$i];
+               $item_quantity=$quantity[$i];
+               $item_amount=$amount[$i];			   
+			$querys = $this->Orders->OrderDetails->query();
+				$results = $querys->update()
+                    ->set(['actual_quantity' => $item_quantity, 'amount' => $item_amount])
+                    ->where(['id' => $order_details_id])
+                    ->execute();
+		}
 	
+		$Order_details = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
+               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+			}]]]);	
+			
+			
+		$status=true;
+		$error="Thank You";
+        $this->set(compact('status', 'error','Order_details'));
+        $this->set('_serialize', ['status', 'error','Order_details']);
+    }
 }

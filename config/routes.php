@@ -227,6 +227,18 @@ Router::prefix('api', function ($routes) {
 			   'cancel_order' => [
 				   'action' => 'cancel_order',
 				   'method' => 'GET'
+			   ],
+			   'pending_order_list' => [
+				   'action' => 'pending_order_list',
+				   'method' => 'GET'
+			   ],
+			   'view_my_pending_order' => [
+				   'action' => 'view_my_pending_order',
+				   'method' => 'GET'
+			   ],
+			   'driver_billing' => [
+				   'action' => 'driver_billing',
+				   'method' => 'POST'
 			   ]
 			 ]
 		]);
@@ -302,6 +314,10 @@ Router::prefix('api', function ($routes) {
 		   'map' => [
 			   'supplier_locations' => [
 				   'action' => 'supplier_locations',
+				   'method' => 'GET'
+			   ],
+			   'supplier_login' => [
+				   'action' => 'supplier_login',
 				   'method' => 'GET'
 			   ]
 		   ]
