@@ -75,11 +75,14 @@ class PurchaseOutwardsController extends AppController
         $vendors = $this->PurchaseOutwards->Vendors->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->PurchaseOutwards->JainThelaAdmins->find('list', ['limit' => 200]);
 		
-		$item_fetchs = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id, 'is_combo'=>'no', 'is_virtual'=>'no']);
+		$item_fetchs = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no'])->contain(['Units']);
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")"];
+			$print_quantity=$item_fetch->print_quantity;
+			$unit_name=$item_fetch->unit->unit_name;
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name];
 		}
         $this->set(compact('purchaseOutward', 'vendors', 'jainThelaAdmins', 'items'));
         $this->set('_serialize', ['purchaseOutward', 'items']);
