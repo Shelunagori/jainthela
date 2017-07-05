@@ -37,6 +37,7 @@ class BulkBookingLeadsController extends AppController
 		if($status==''){ $status='open'; }
 		if($status=='open')
 		{
+			 $where = $status;
 			 $bulkBookingLeads = $this->BulkBookingLeads->find()->where(['status' => 'Open','jain_thela_admin_id' => $jain_thela_admin_id ]);
 		} 
 		elseif($status=='close')

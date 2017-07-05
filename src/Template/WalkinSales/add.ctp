@@ -23,14 +23,14 @@
 								<div class="col-md-12">
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Customer Name <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('name',array('class'=>'form-control input-sm select2me','placeholder'=>'Customer Name','label'=>false)) ?>
+										<?= $this->Form->input('name',array('class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false)) ?>
 									</div>
 									<div class="col-md-3">
 										<label class="col-md-8 control-label">Customer Mobile No <span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('mobile',array('class'=>'form-control input-sm select2me number','placeholder'=>'Customer Mobile No','label'=>false)) ?>
+										<?= $this->Form->input('mobile',array('class'=>'form-control input-sm number','placeholder'=>'Customer Mobile No','label'=>false)) ?>
 									</div>
 									<div class="col-md-3">
-											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
+											<label class="col-md-6 control-label">Warehouses <span class="required" aria-required="true">*</span></label>
 											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'form-control input-sm','label'=>false)) ?>
 										</div>
 										 
@@ -231,13 +231,13 @@ $(document).ready(function() {
 					i++;
 				});
 			}
-
+ 
 
 	$(".calculation_amount").die().live('keyup',function(){
 		calculation();				
 	});	
 	$(".del_click").die().live('click',function(){
-		calculation();				
+		calculation();
 	});	
 	function calculation(){
 		var grand_total = 0;		
@@ -289,7 +289,7 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm select2me attribute','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Quantity']); ?>

@@ -188,9 +188,9 @@ $(document).ready(function() {
 		if(rowCount>1)
 		{
 			$(this).closest('tr').remove();
-			 
+			calculation();
 		}
-		
+		 
     });
 
 	$('.add').click(function(){
@@ -283,6 +283,16 @@ $(document).ready(function() {
 			}
 		});	
 	});
+	
+	$(".attribute").die().live('change',function(){
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
+		var unit_name = $('option:selected', this).attr('unit_name');
+		$(this).closest('tr').find('.msg_shw').html("Stock in "+unit_name);
+		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
+		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+	});
+	
 });
 
 </script>
@@ -291,19 +301,23 @@ $(document).ready(function() {
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
-						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm itm_chng','empty' => 'Select','label'=>false)) ?>
+						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm itm_chng attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
-					<td class="stock_available" align="center">
+					<td align="center">
+						<div class="stock_available"></div>
+						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
 						
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>	
+						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>						
 					</td>
 					<td>
-						<?php echo $this->Form->input('rate[]', ['label' => false,'class' => 'calculation_amount form-control input-sm number valid','placeholder'=>'Rate','value'=>0]); ?>	
+						<?php echo $this->Form->input('rate[]', ['label' => false,'class' => 'calculation_amount form-control input-sm number','placeholder'=>'Rate','value'=>0]); ?>	
+						
 					</td>
 					<td>
-						<?php echo $this->Form->input('amount[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Amount','value'=>0]); ?>	
+						<?php echo $this->Form->input('amount[]', ['label' => false,'class' => 'form-control input-sm number calculation_amount','placeholder'=>'Amount','value'=>0]); ?>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
