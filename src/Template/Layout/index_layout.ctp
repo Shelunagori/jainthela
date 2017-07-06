@@ -5,6 +5,11 @@
 	<!-- BEGIN HEAD -->
 	<head>
 		<meta charset="utf-8"/>
+		<?php echo $this->Html->meta(
+				'favicon.png',
+				'/img/favicon.png',
+				['type' => 'icon']
+			); ?>
 		<title><?= $this->fetch('title') ?></title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -111,7 +116,7 @@
 			}
 		</style>
 		<!-- END THEME STYLES -->
-		<!-- <link rel="shortcut icon" href="favicon.ico"/> -->
+		<!--<link rel="shortcut icon" href="/img/favicon.png"/>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->

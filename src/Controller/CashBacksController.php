@@ -114,9 +114,30 @@ class CashBacksController extends AppController
 		   else{
 			   $query = $this->CashBacks->query();
 				$result = $query->update()
-                    ->set(['amount' => $updated_amount, 'ready_to_win' => 'yes', 'flag'=>1])
+                    ->set(['amount' => $cash_back_amount, 'ready_to_win' => 'yes', 'flag'=>1])
                     ->where(['id' => $updated_id])
                     ->execute();
+					
+				$set_new_remaining_amount=$updated_amount-$cash_back_amount;
+				
+				 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
+					 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
+					 if($last_cash_back_no_data){
+							$cash_back_no = $last_cash_back_no_data+1;
+						}else{
+							$cash_back_no=1;
+						}
+					 $query = $this->CashBacks->query();
+							$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'cash_back_percentage', 'cash_back_limit'])
+									->values([
+									'cash_back_no' => $cash_back_no,
+									'customer_id' => $customer_id,
+									'order_no' => $order_no,
+									'amount' => $set_new_remaining_amount,
+									'cash_back_percentage' => $cash_back_percentage,
+									'cash_back_limit' => $cash_back_limit
+									])
+							->execute();
 			   
 		   }
 					
