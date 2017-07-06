@@ -93,7 +93,8 @@ class OrdersController extends AppController
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name];
+			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();

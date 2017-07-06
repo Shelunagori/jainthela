@@ -37,7 +37,8 @@
 					</div>
 					<div class="col-md-3">
 						<label class="control-label">Maximum Order Limit<span class="required" aria-required="true"></span></label>
-						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Purchase', 'label'=>false]); ?>
+						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm order_limit','placeholder'=>'Maximum Order Limit', 'label'=>false]); ?>
+						<span id="msg2"></span>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
@@ -154,6 +155,18 @@ $(document).ready(function() {
 				$(".set").html('');
 			}
  	});
+	$(".order_limit").die().live('keyup',function(){
+	var unt_attr_name = $('.attribute option:selected').attr('unit_name');
+	var limit = $(".order_limit").val();
+		if(unt_attr_name=='kg'){
+				var quantity_factor = $(".qunt_factor option:selected").val();
+				var total = quantity_factor*limit;
+				$("#msg2").html(total +' '+ unt_attr_name);
+			}else{
+				$("#msg2").html(limit +' '+ unt_attr_name);
+			}
+	});
+
 	$(".virt").die().live('click',function(){
 		var virtual = $(this).val();
 			if(virtual=='yes'){
@@ -171,7 +184,7 @@ $(document).ready(function() {
 	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
 ?>
 <div id="data_fetch" style="display:none;">
-	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm']); ?>
+	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm qunt_factor']); ?>
 </div>
 
 <div id="fetch" style="display:none;">

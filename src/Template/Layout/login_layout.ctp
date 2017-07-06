@@ -25,6 +25,13 @@ echo $this->fetch('meta');
 <?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 <!-- END THEME STYLES -->
 <!-- <link rel="shortcut icon" href="favicon.ico"/> -->
+<?php echo $this->Html->meta(
+	'favicon.png',
+	'/img/favicon.png',
+	['type' => 'icon']
+); ?>
+			
+			
 <?php
 ?>
 </head>
