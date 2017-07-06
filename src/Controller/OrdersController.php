@@ -64,8 +64,10 @@ class OrdersController extends AppController
 			}else{
 				$order->order_no=1;
 			}
+			
 			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
+			$order->grand_total=$this->request->data['total_amount'];
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
@@ -74,15 +76,24 @@ class OrdersController extends AppController
 
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
-        $customers = $this->Orders->Customers->find('list');
+        $customer_fetchs = $this->Orders->Customers->find('all');
+		foreach($customer_fetchs as $customer_fetch){
+			$customer_name=$customer_fetch->name;
+			$customer_mobile=$customer_fetch->mobile;
+			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
+		}
+		
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id])->contain(['Units']);
+		
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
+			$unit_name=$item_fetch->unit->unit_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates];
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name];
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();

@@ -109,7 +109,7 @@ class ComboOffersController extends AppController
 			$print_quantity=$item_fetch->print_quantity;
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
 			$minimum_purchase_quantity=$item_fetch->minimum_purchase_quantity;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor];
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor];
 		}
         $this->set(compact('comboOffer', 'items'));
         $this->set('_serialize', ['comboOffer', 'items']);

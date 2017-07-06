@@ -110,7 +110,7 @@ class GrnsController extends AppController
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
 			$unit_name=$item_fetch->unit->unit_name;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'unit_name'=>$unit_name];
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'unit_name'=>$unit_name];
 		}
         $this->set(compact('grn', 'vendors', 'items', 'warehouses'));
         $this->set('_serialize', ['grn']);

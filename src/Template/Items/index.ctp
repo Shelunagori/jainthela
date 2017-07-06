@@ -41,10 +41,23 @@
 							<td><?= h($i) ?></td>
 							<td><?= h($item->name) ?></td>
 							<td><?= h($item->alias_name) ?></td>
-							<td><?= h($item->print_quantity) ?></td>
+							<td>
+								<?php // h($item->print_quantity) ?>
+								<?= h($unit_name=$item->unit->unit_name) ?>
+							</td>
 							<td><?= h($item->item_category->name) ?></td>
-							<td><?= $this->Number->format($item->minimum_stock) ?></td>
-							<td><?= $this->Number->format($item->minimum_quantity_factor) ?></td>
+							<td>
+								<?php
+									$minimum_stock=$item->minimum_stock; 
+									$minimum_quantity_factor=$item->minimum_quantity_factor; 
+									$actual_stock=$minimum_stock*$minimum_quantity_factor;
+								?>
+								<?php echo $actual_stock.' '.$unit_name; ?>
+							</td>
+							<td>
+								<?php //$this->Number->format($item->minimum_quantity_factor) ?>
+								<?= h($item->print_quantity) ?>
+							</td>
 							<td><?= h($item->freeze) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>

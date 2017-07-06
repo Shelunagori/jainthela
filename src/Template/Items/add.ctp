@@ -36,7 +36,8 @@
 						
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Purchase']); ?>
+						<label class="control-label">Maximum Order Limit<span class="required" aria-required="true"></span></label>
+						<?php echo $this->Form->control('minimum_quantity_purchase',['class'=>'form-control input-sm','placeholder'=>'Minimum Quantity Purchase', 'label'=>false]); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('description', ['class'=>'form-control input-sm','placeholder'=>'Description']); ?>
