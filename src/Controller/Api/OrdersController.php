@@ -112,6 +112,7 @@ class OrdersController extends AppController
 		$payment_status=$this->request->data('payment_status');
 		$order_no=$this->request->data('order_no');
 		$order_from=$this->request->data('order_from');
+		$warehouse_id=1;
 		$order = $this->Orders->newEntity();
 		$curent_date=date('Y-m-d');
 		
@@ -191,6 +192,7 @@ class OrdersController extends AppController
 			$order->delivery_date=$delivery_date;
 			$order->payment_status=$payment_status;
 			$order->order_from=$order_from;
+			$order->warehouse_id=$warehouse_id;
 			$this->Orders->save($order);
 			
 			
@@ -201,8 +203,21 @@ class OrdersController extends AppController
 					->where(['customer_id' => $customer_id])
 					->execute(); 
 			
-             	
-	
+			if($wallet_amount>0)
+			{
+			$wallet_data=$this->Orders->find()->where(['customer_id'=>$customer_id,'transaction_order_no'=>$order_no])
+			->first();
+			$order_id=$wallet_data->id;
+			$wallet_query = $this->Orders->Wallets->query();
+					$wallet_query->insert(['order_id', 'consumed', 'customer_id'])
+							->values([
+							'order_id' => $order_id,
+							'consumed' => $wallet_amount,
+							'customer_id' => $customer_id
+							])
+					->execute();
+            }
+			
 		$get_data = $this->Orders->find()
 		->order(['id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'customer_id'=>$customer_id])
 		->first();
@@ -238,10 +253,16 @@ class OrdersController extends AppController
 	public function pendingOrderList()
     {
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
-		$driver_id=$this->request->query('driver_id');
+		$driver_warehouse_id=$this->request->query('driver_warehouse_id');
+		$is_login=$this->request->query('is_login');
+		
+		
+		if($is_login=='warehouse')
+		{
+		
 		$pending_order_data = $this->Orders->find()
 						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
-						->where(['Orders.driver_id' => $driver_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
+						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
 						->order(['order_date' => 'DESC'])
 						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
@@ -251,6 +272,24 @@ class OrdersController extends AppController
 		foreach($pending_order_data as $order){
 			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
 			unset($order->order_details);
+		}	
+		}
+		else if($is_login=='driver')
+		{
+		
+		$pending_order_data = $this->Orders->find()
+						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
+						->where(['Orders.driver_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
+						->order(['order_date' => 'DESC'])
+						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
+							return $q->contain(['Items'])->limit(1);
+						}])
+						->autoFields(true);
+						
+		foreach($pending_order_data as $order){
+			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			unset($order->order_details);
+		}	
 		}
 		
 
@@ -304,7 +343,7 @@ class OrdersController extends AppController
 		$total_amount=$this->request->data('total_amount');
 		$pay_amount=$this->request->data('pay_amount');
 		$delivery_charge=$this->request->data('delivery_charge');
-		$driver_id=$this->request->data('driver_id');
+		//$driver_id=$this->request->data('driver_id');
 		$order_id=$this->request->data('order_id');
 		
 		$total_ids=sizeof($id);

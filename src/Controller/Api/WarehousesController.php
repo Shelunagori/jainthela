@@ -3,18 +3,8 @@ namespace App\Controller\Api;
 use App\Controller\Api\AppController;
 class DriversController extends AppController
 {
-    public function supplierLocations()
-    {
-		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
-		$customer_id=$this->request->query('customer_id');
-		$Supplier_locations = $this->Drivers->find()->where(['Drivers.jain_thela_admin_id'=>$jain_thela_admin_id]);
-		$status=true;
-		$error="";
-        $this->set(compact('status', 'error', 'Supplier_locations'));
-        $this->set('_serialize', ['status', 'error', 'Supplier_locations']);
-    }
 	
-	public function supplierLogin()
+	public function warehouseLogin()
     {
 		$user_name=$this->request->query('user_name');
 	    $password=$this->request->query('password');
@@ -23,13 +13,13 @@ class DriversController extends AppController
 		if(!empty($user_name) && !empty($password))
 		{
 			
-		        $driverDetails = $this->Drivers->find()->where(['user_name'=>$user_name,'password'=>$pwd])->first();
-				if($driverDetails){
+		        $warehouseDetails = $this->Warehouses->find()->where(['user_name'=>$user_name,'password'=>$pwd])->first();
+				if($warehouseDetails){
 				    
 					$status=true;
 					$error='Successfully Login';
-					$this->set(compact('status', 'error', 'driverDetails'));
-					$this->set('_serialize', ['status', 'error', 'driverDetails']);
+					$this->set(compact('status', 'error', 'warehouseDetails'));
+					$this->set('_serialize', ['status', 'error', 'warehouseDetails']);
 				}
 				else
 				{
@@ -47,17 +37,16 @@ class DriversController extends AppController
 					$this->set('_serialize', ['status', 'error']);
 		}
 }
-
-public function PushTokenUpdate()
+public function warehousePushTokenUpdate()
     {
-		$driver_id=$this->request->data('driver_id');
+		$warehouse_id=$this->request->data('warehouse_id');
 		$device_token=$this->request->data('device_token');
 		
-		$query = $this->Drivers->query();
+		$query = $this->Warehouses->query();
 				$result = $query->update()
                     ->set([ 'device_token' => $device_token
 							])
-					->where(['id' => $driver_id])
+					->where(['id' => $warehouse_id])
 					->execute();
 		
 		$status=true;
@@ -65,18 +54,18 @@ public function PushTokenUpdate()
         $this->set(compact('status', 'error'));
         $this->set('_serialize', ['status', 'error']);
     }
-	public function driverLocationUpdate()
+	public function warehouseLocationUpdate()
     {
-		$driver_id=$this->request->query('driver_id');
+		$warehouse_id=$this->request->query('warehouse_id');
 		$lattitude=$this->request->query('lattitude');
 		$longitude=$this->request->query('longitude');
 		
-		$query = $this->Drivers->query();
+		$query = $this->Warehouses->query();
 				$result = $query->update()
                     ->set([ 'lattitude' => $lattitude,
 					'longitude' => $longitude
 					])
-					->where(['id' => $driver_id])
+					->where(['id' => $warehouse_id])
 					->execute();
 		
 		$status=true;

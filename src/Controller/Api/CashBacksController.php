@@ -7,6 +7,7 @@ class CashBacksController extends AppController
      public function cashBackDetails()
     {
 		$customer_id=$this->request->query('customer_id');
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$fetch_cashback_details = $this->CashBacks->find()
 		->where(['ready_to_win'=>'yes','customer_id'=>$customer_id])
 		->autoFields(true);
@@ -15,15 +16,15 @@ class CashBacksController extends AppController
 		 foreach($fetch_cashback_details as $cash)
 		{
 		
-			if($cash->won='yes' && $cash->flag=2 && $cash->claim='no')
+			if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='no')
 			{
 			$cash->is_claim='win';
 			}	
-			else if($cash->won='no' && $cash->flag=1 && $cash->claim='no')
+			else if($cash->won=='no' && $cash->flag==1 && $cash->claim=='no')
 			{
 			$cash->is_claim='wait';
 			}
-			else if($cash->won='yes' && $cash->flag=2 && $cash->claim='yes')
+			else if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='yes')
 			{
 				$cash->is_claim='claimed';
 			}
@@ -31,12 +32,18 @@ class CashBacksController extends AppController
           
 		 $fetch_cashback_win_details = $this->CashBacks->find()
 		->where(['customer_id'=>$customer_id, 'won'=>'yes', 'flag'=>2])
+		->contain(['Customers'])
 		->autoFields(true);
-			
+        
+		 $cashback_info = $this->CashBacks->Users->find()
+		->where(['Users.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->autoFields(true);
+		
+		
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error','fetch_cashback_details','fetch_cashback_win_details'));
-        $this->set('_serialize', ['status', 'error', 'fetch_cashback_details','fetch_cashback_win_details']);
+        $this->set(compact('status', 'error','message','cashback_info','fetch_cashback_details','fetch_cashback_win_details'));
+        $this->set('_serialize', ['status', 'error','message','cashback_info', 'fetch_cashback_details','fetch_cashback_win_details']);
    
     }
 	public function claimOnCashBack()

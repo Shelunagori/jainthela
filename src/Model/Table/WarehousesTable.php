@@ -10,7 +10,9 @@ use Cake\Validation\Validator;
  * Warehouses Model
  *
  * @property \App\Model\Table\JainThelaAdminsTable|\Cake\ORM\Association\BelongsTo $JainThelaAdmins
+ * @property |\Cake\ORM\Association\HasMany $Grns
  * @property \App\Model\Table\ItemLedgersTable|\Cake\ORM\Association\HasMany $ItemLedgers
+ * @property |\Cake\ORM\Association\HasMany $WalkinSales
  *
  * @method \App\Model\Entity\Warehouse get($primaryKey, $options = [])
  * @method \App\Model\Entity\Warehouse newEntity($data = null, array $options = [])
@@ -41,7 +43,13 @@ class WarehousesTable extends Table
             'foreignKey' => 'jain_thela_admin_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('Grns', [
+            'foreignKey' => 'warehouse_id'
+        ]);
         $this->hasMany('ItemLedgers', [
+            'foreignKey' => 'warehouse_id'
+        ]);
+        $this->hasMany('WalkinSales', [
             'foreignKey' => 'warehouse_id'
         ]);
     }

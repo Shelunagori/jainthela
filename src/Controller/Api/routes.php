@@ -359,25 +359,6 @@ Router::prefix('api', function ($routes) {
 		   ]
 		]
 	);
-	$routes->resources(
-		'Warehouses', [
-		   'map' => [
-			   'warehouse_login' => [
-				   'action' => 'warehouse_login',
-				   'method' => 'GET'
-			   ],
-			   'warehouse_push_token_update' => [
-				   'action' => 'warehouse_push_token_update',
-				   'method' => 'POST'
-			   ],
-			   'warehouse_location_update' => [
-				   'action' => 'warehouse_location_update',
-				   'method' => 'GET'
-			   ]
-		   ]
-		]
-	);
-
 	
 
 });

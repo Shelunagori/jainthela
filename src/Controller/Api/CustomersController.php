@@ -333,14 +333,14 @@ class CustomersController extends AppController
     }
 	public function customerLocationUpdate()
     {
-		$customer_id=$this->request->data('customer_id');
-		$lattitude=$this->request->data('lattitude');
-		$longitude=$this->request->data('longitude');
+		$customer_id=$this->request->query('customer_id');
+		$lattitude=$this->request->query('lattitude');
+		$longitude=$this->request->query('longitude');
 		
 		$query = $this->Customers->query();
 				$result = $query->update()
                     ->set([ 'lattitude' => $lattitude,
-					'lattitude' => $lattitude
+					'longitude' => $longitude
 							])
 					->where(['id' => $customer_id])
 					->execute();
