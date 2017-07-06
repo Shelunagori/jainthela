@@ -241,8 +241,6 @@ class CashBacksController extends AppController
 			  }   
 		 }
 		 exit;
-        $this->set('cashBack', $cashBack);
-        $this->set('_serialize', ['cashBack']);
     }
 	 
 	
