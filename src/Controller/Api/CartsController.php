@@ -228,7 +228,7 @@ class CartsController extends AppController
 				->where(['customer_id' => $customer_id])
 				->contain(['Items'])
 				->select(['image_url' => $this->Carts->Items->find()->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
-				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
+				->select(['total'=>'sum(Carts.cart_count * Items.sales_rate)'])
 				->group('Carts.item_id')
 				->autoFields(true);
 				
@@ -347,7 +347,7 @@ class CartsController extends AppController
 		$carts=$this->Carts->find()
 				->where(['customer_id' => $customer_id])
 				->contain(['Items'=>['Units']])
-				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
+				->select(['total'=>'sum(Carts.cart_count * Items.sales_rate)'])
 				->group('Carts.item_id')
 				->autoFields(true);
 		$grand_total=0;

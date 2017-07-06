@@ -9,13 +9,21 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 		$orders_data = $this->Orders->find()
-						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
 						->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status NOT IN' => array('Cancel','Delivered') ])
 						->order(['order_date' => 'DESC'])
 						->contain(['OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
 						}])
 						->autoFields(true);
+						
+						
+					foreach($orders_data as $data)
+					{
+						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
+						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
+                        $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 
+
+					}
 						
 		foreach($orders_data as $order){
 			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
@@ -34,9 +42,15 @@ class OrdersController extends AppController
 		$order_id=$this->request->query('order_id');
 		
 		$orders_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
-               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+               return $q->select(['image_path' => $q->func()->concat(['htp://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);
-			
+		
+		
+		
+		$orders_details_data->curent_date=date('D M j, Y H:i a', strtotime($orders_details_data->curent_date));
+	 	$orders_details_data->order_date=date('D M j, Y H:i a', strtotime($orders_details_data->order_date));
+	    $orders_details_data->delivery_date=date('D M j, Y H:i a', strtotime($orders_details_data->delivery_date));
+		
 		 $c_a_id=$orders_details_data->customer_address_id;
 		 $customer_addresses=$this->Orders->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.id'=>$c_a_id])->first();
@@ -56,13 +70,22 @@ class OrdersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
 		$orders_data = $this->Orders->find()
-		->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
 		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status' => 'Delivered' ])
 		->order(['order_date' => 'DESC'])
 		->contain(['OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
 						}])
 						->autoFields(true);
+						
+						
+					foreach($orders_data as $data)
+					{
+						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
+						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
+                        $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 
+					}
+						
+						
 						
 		foreach($orders_data as $order){
 			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
@@ -158,7 +181,7 @@ class OrdersController extends AppController
 		$i=0;
 			foreach($carts_data as $carts_data_fetch)
 			{
-				$amount=$carts_data_fetch->quantity*$carts_data_fetch->item->sales_rate;				
+				$amount=$carts_data_fetch->cart_count*$carts_data_fetch->item->sales_rate;				
 				$this->request->data['order_details'][$i]['item_id']=$carts_data_fetch->item_id;
 				$this->request->data['order_details'][$i]['quantity']=$carts_data_fetch->quantity;
 				$this->request->data['order_details'][$i]['rate']=$carts_data_fetch->item->sales_rate;
@@ -261,13 +284,23 @@ class OrdersController extends AppController
 		{
 		
 		$pending_order_data = $this->Orders->find()
-						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
 						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
 						->order(['order_date' => 'DESC'])
 						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
 						}])
 						->autoFields(true);
+						
+						
+						
+					foreach($pending_order_data as $data)
+					{
+						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
+						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
+                        $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 
+
+					}
+		
 						
 		foreach($pending_order_data as $order){
 			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
@@ -285,6 +318,15 @@ class OrdersController extends AppController
 							return $q->contain(['Items'])->limit(1);
 						}])
 						->autoFields(true);
+						
+					foreach($pending_order_data as $data)
+					{
+						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
+						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
+                        $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 
+
+					}
+						
 						
 		foreach($pending_order_data as $order){
 			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
@@ -306,9 +348,15 @@ class OrdersController extends AppController
 		$order_id=$this->request->query('order_id');
 		
 		$view_pending_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
-               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+               return $q->select(['image_path' => $q->func()->concat(['htp://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);
+			
+			
+		$view_pending_details_data->curent_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->curent_date));
+	 	$view_pending_details_data->order_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->order_date));
+	    $view_pending_details_data->delivery_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->delivery_date));
 		
+			
 		$details=$view_pending_details_data->order_details;
 		$i=0;
 		$minimum_value=1;
@@ -372,7 +420,7 @@ class OrdersController extends AppController
 		}
 	
 		$Order_details = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
-               return $q->select(['image_path' => $q->func()->concat(['htp://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+               return $q->select(['image_path' => $q->func()->concat(['htp://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);	
 			
 			
