@@ -37,7 +37,13 @@
             <tr>
                 <td><?= ++$sr_no ?></td>
 				<td><?= h('#'.str_pad($this->Number->format($order->order_no), 4, '0', STR_PAD_LEFT)) ?></td>
-                <td><?= $order->customer->name ?></td>
+                <td>
+					<?php 
+						$customer_name=$order->customer->name;
+						$customer_mobile=$order->customer->mobile;
+					?>
+					<?= h($customer_name.' ('.$customer_mobile.')') ?>
+				</td>
                 <td><?= $this->Number->format($order->amount_from_wallet) ?></td>
                 <td><?= $this->Number->format($order->total_amount) ?></td>
                 <td><?= h($order->order_type) ?></td>

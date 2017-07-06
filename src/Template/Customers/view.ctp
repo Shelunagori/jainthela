@@ -114,7 +114,8 @@
 							<tr>
 								<td><?= $j ?></td>
 								<td>
-									<?= h('#'.str_pad($this->Number->format($jain_cash_use->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+									<?php @$order_number_show=$jain_cash_use->order->order_no; ?>
+									<?= h('#'.str_pad($this->Number->format(@$order_number_show), 4, '0', STR_PAD_LEFT)) ?>
 								</td>
 								<td>
 									<?= h($jain_cash_use->used_point) ?>

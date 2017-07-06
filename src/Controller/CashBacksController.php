@@ -60,6 +60,7 @@ class CashBacksController extends AppController
 		}
 		
 		$orders_details=$this->CashBacks->Orders->find()->where(['status'=>'Delivered', 'cash_back_flag'=>'no']);
+		 
 	foreach($orders_details as $orders_detail){
 		
 		$order_no=$orders_detail->order_no;
@@ -150,18 +151,15 @@ class CashBacksController extends AppController
 					
 		
 	 } 
-	 exit;
+	
 			
 		 
 
 		}
 		
-        $cashBack = $this->CashBacks->get($id, [
-            'contain' => ['Customers']
-        ]);
-
-        $this->set('cashBack', $cashBack);
-        $this->set('_serialize', ['cashBack']);
+        
+ exit;
+       
     }
 	
 	

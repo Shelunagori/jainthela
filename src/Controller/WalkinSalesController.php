@@ -99,7 +99,7 @@ class WalkinSalesController extends AppController
 			$alias_name=$item_fetch->alias_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name."(".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'unit_name'=>$unit_name];
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'unit_name'=>$unit_name];
 		}
         $drivers = $this->WalkinSales->Drivers->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->WalkinSales->JainThelaAdmins->find('list');
