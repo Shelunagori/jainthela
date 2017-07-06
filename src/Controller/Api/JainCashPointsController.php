@@ -9,7 +9,7 @@ class JainCashPointsController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
 		$referral_image = $this->JainCashPoints->Banners->find()
-		->select(['image_url' => $this->JainCashPoints->Banners->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
+		->select(['image_url' => $this->JainCashPoints->Banners->find()->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'banners/','image' => 'identifier' ])])
 		->where(['Banners.status'=>'Active','Banners.name'=>'referral'])
         ->autoFields(true)->first();
 								

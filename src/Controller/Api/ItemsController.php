@@ -22,7 +22,7 @@ class ItemsController extends AppController
 					->contain(['Units','Carts'=>function($q) use($customer_id){
 						return $q->where(['customer_id'=>$customer_id]);
 					}]);
-					$items->select(['image_url' => $items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+					$items->select(['image_url' => $items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                     ->autoFields(true);
 			
 		foreach($items as $item){
@@ -45,7 +45,7 @@ class ItemsController extends AppController
 		$item_id=$this->request->query('item_id');
 		$customer_id=$this->request->query('customer_id');
 		$item_description = $this->Items->find()
-							->select(['image_url' => $this->Items->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+							->select(['image_url' => $this->Items->find()->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
 							->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.id'=>$item_id])
 							->contain(['Units', 'Carts'=>function($q) use($customer_id){
 						return $q->where(['customer_id'=>$customer_id]);
@@ -70,7 +70,7 @@ $querys=$this->Items->ItemLedgers->find();
 						return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
 						}]);
 						}]);
-						$customer_also_bought->select(['image_url' => $customer_also_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$customer_also_bought->select(['image_url' => $customer_also_bought->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
 						$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 			 
@@ -104,7 +104,7 @@ $querys=$this->Items->ItemLedgers->find();
 										->where(['customer_id'=>$customer_id]);
 						}]);
 						}]);
-						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$view_items->select(['image_url' => $view_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 						
 		foreach($view_items as $item){
 			if(!$item->item->cart){
@@ -130,7 +130,7 @@ $querys=$this->Items->ItemLedgers->find();
 										->where(['customer_id'=>$customer_id]);
 						}]);
 						}]);
-						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$view_items->select(['image_url' => $view_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
 		foreach($view_items as $item){
 			if(!$item->item->cart){
@@ -156,7 +156,7 @@ $querys=$this->Items->ItemLedgers->find();
 										->where(['Carts.customer_id'=>$customer_id]);
 						}]);
 						}]);
-						$view_items->select(['image_url' => $view_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$view_items->select(['image_url' => $view_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		foreach($view_items as $item){
 			if(!$item->item->cart){
 				$item->item->cart=(object)[];
@@ -180,14 +180,23 @@ $querys=$this->Items->ItemLedgers->find();
 
         $search_items = $this->Items->find()
 		->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.name LIKE' => '%'.$item_query.'%'])
-		->contain(['Units','Carts']);
-		$search_items->select(['image_url' => $search_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+		->contain(['Units','Carts'=>function($q) use($customer_id){
+						return $q->where(['customer_id'=>$customer_id]);
+					}]);
+		$search_items->select(['image_url' => $search_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
+		foreach($search_items as $item){
+			if(!$item->cart){
+				$item->cart=(object)[];
+			}
+		}
+		
+		$cart_count = $this->Items->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 		$status=true;
 		$error="";
-        $this->set(compact('status', 'error', 'search_items'));
-        $this->set('_serialize', ['status', 'error', 'search_items']);
-    }
+        $this->set(compact('status', 'error', 'cart_count', 'search_items'));
+        $this->set('_serialize', ['status', 'error', 'cart_count', 'search_items']);
+     }
 
 	
 }

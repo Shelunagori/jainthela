@@ -227,7 +227,7 @@ class CartsController extends AppController
 		$carts=$this->Carts->find()
 				->where(['customer_id' => $customer_id])
 				->contain(['Items'])
-				->select(['image_url' => $this->Carts->Items->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+				->select(['image_url' => $this->Carts->Items->find()->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
 				->select(['total'=>'sum(Carts.quantity * Items.sales_rate)'])
 				->group('Carts.item_id')
 				->autoFields(true);
@@ -321,7 +321,7 @@ class CartsController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		$cart_details=$this->Carts->find()->where(['customer_id' => $customer_id])
 		->contain(['Items'=>['Units']]);
-		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+		$cart_details->select(['image_url' => $cart_details->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                                 ->autoFields(true);
 								
 		        $out_of_stock_data=$this->Carts->find()->where(['customer_id' => $customer_id]);
@@ -353,7 +353,7 @@ class CartsController extends AppController
 		$grand_total=0;
 		foreach($carts as $cart_data)
 		{
-			$grand_total+=$cart_data->total;
+			$grand_total+=round($cart_data->total);
 		}
 		
 		$customer_addresses=$this->Carts->CustomerAddresses->find()

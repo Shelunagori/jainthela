@@ -18,7 +18,7 @@ class OrdersController extends AppController
 						->autoFields(true);
 						
 		foreach($orders_data as $order){
-			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
 			unset($order->order_details);
 		}
 		
@@ -65,7 +65,7 @@ class OrdersController extends AppController
 						->autoFields(true);
 						
 		foreach($orders_data as $order){
-			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
 			unset($order->order_details);
 		} 
 		
@@ -270,7 +270,7 @@ class OrdersController extends AppController
 						->autoFields(true);
 						
 		foreach($pending_order_data as $order){
-			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
 			unset($order->order_details);
 		}	
 		}
@@ -287,7 +287,7 @@ class OrdersController extends AppController
 						->autoFields(true);
 						
 		foreach($pending_order_data as $order){
-			$order->image_url='http://13.126.58.104'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
+			$order->image_url='http://app.jainthela.in'.$this->request->webroot.'img/item_images/'.@$order->order_details[0]->item->image;
 			unset($order->order_details);
 		}	
 		}

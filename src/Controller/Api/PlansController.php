@@ -11,7 +11,7 @@ class PlansController extends AppController
         $plan_details = $this->Plans->find()->where(['Plans.status'=>'Active']);
 	    
 		$plan_image = $this->Plans->Banners->find()
-		->select(['image_url' => $this->Plans->Banners->find()->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])
+		->select(['image_url' => $this->Plans->Banners->find()->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'banners/','image' => 'identifier' ])])
 		->where(['Banners.status'=>'Active','Banners.name'=>'plan'])
         ->autoFields(true)->first();
 		

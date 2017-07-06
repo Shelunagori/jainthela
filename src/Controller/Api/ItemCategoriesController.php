@@ -9,11 +9,11 @@ class ItemCategoriesController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 	    $itemCategories = $this->ItemCategories->find('All')->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
-		$itemCategories->select(['image_url' => $itemCategories->func()->concat(['http://13.126.58.104'.$this->request->webroot.'itemcategories/','image' => 'identifier' ])])
+		$itemCategories->select(['image_url' => $itemCategories->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'itemcategories/','image' => 'identifier' ])])
                                 ->autoFields(true);
 		
 	    $banners = $this->ItemCategories->Banners->find('All')->where(['link_name'=>'offer', 'Banners.status'=>'Active']);
-		$banners->select(['image_url' => $banners->func()->concat(['http://13.126.58.104'.$this->request->webroot.'banners/','image' => 'identifier' ])])->autoFields(true);
+		$banners->select(['image_url' => $banners->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'banners/','image' => 'identifier' ])])->autoFields(true);
 		
 		$query=$this->ItemCategories->Items->ItemLedgers->find();
 		$popular_items=$query
@@ -28,7 +28,7 @@ class ItemCategoriesController extends AppController
 										return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
 									}]);
 						}]);
-						$popular_items->select(['image_url' => $popular_items->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$popular_items->select(['image_url' => $popular_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 						
 							
 				$querys=$this->ItemCategories->Items->ItemLedgers->find();
@@ -44,7 +44,7 @@ class ItemCategoriesController extends AppController
 								return $q->select(['id','longname','shortname','is_deleted','jain_thela_admin_id']);
 							}]);
 						}]);
-						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://13.126.58.104'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
+						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
 						$cart_count = $this->ItemCategories->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 						
