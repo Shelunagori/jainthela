@@ -15,7 +15,9 @@
 						<i class="fa fa-plus"></i> Sales Rate Module
 					</span>
 				</div>
-				
+				<div class="actions">
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+				</div>
 			</div>
 			<div class="portlet-body">
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">

@@ -78,12 +78,6 @@ class CustomersTable extends Table
 				]
 			]);
 
-
-        $validator
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
-
-
         return $validator;
     }
 	

@@ -10,11 +10,9 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-search"></i> Feedbacks
-					</span>
+						<i class="fa fa-book"></i> Manage Order</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Feedbacks/Add',['escape'=>false,'class'=>'btn btn-default']) ?>&nbsp;
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>
@@ -22,39 +20,44 @@
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr>
-							<th>Sr</th>
-							<th>Customer Name</th>
-							<th>Comments</th>
-							<th>Date</th>
+							<th scope="col">Sr. No.</th>
+							<th scope="col">Order No.</th>
+							<th scope="col">Customer Name</th>
+							<th scope="col">wallet Amount</th>
+							<th scope="col">Grand Total</th>
+							<th scope="col">Order Type</th>
+							<th scope="col">Order Date</th>
+							<th scope="col">Status</th>
+							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						$i=0;
-						foreach ($feedbacks as $feedback):
-						$i++;
-							$created_date=date('d-M-Y', strtotime($feedback->created_on));
-						?>
+						<?php $sr_no=0; foreach ($orders as $order): ?>
 						<tr>
-							<td><?= $i ?></td>
+							<td><?= ++$sr_no ?></td>
+							<td><?= h($order->order_no) ?></td>
 							<td>
 								<?php 
-								$customer_name=$feedback->customer->name;
-								$customer_mobile=$feedback->customer->mobile;
-								if(!empty($customer_mobile)){
+									$customer_name=$order->customer->name;
+									$customer_mobile=$order->customer->mobile;
 								?>
-								<?= $customer_name.' ('.$customer_mobile.')' ?>
-								<?php }else{ ?>
-									<?= h($customer_name) ?>
-								<?php } ?>
+								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
-							<td><?= h($feedback->comments) ?></td>
-							<td><?= h($created_date) ?></td>
+							<td align="right"><?= $this->Number->format($order->amount_from_wallet) ?></td>
+							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
+							<td><?= h($order->order_type) ?></td>
+							<td><?= h($order->order_date) ?></td>
+							<td><?= h($order->status) ?></td>
+							<td class="actions">
+								<?= $this->Html->link(__('View'), ['action' => 'view', $order->id]) ?>
+							   <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $order->id]) ?>-->
+							</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
 			</div>
+			
 		</div>
 	</div>
 </div>

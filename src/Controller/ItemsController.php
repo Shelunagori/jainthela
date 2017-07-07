@@ -18,13 +18,23 @@ class ItemsController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index($status = Null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $items = $this->Items->find()->contain(['ItemCategories', 'Units']);
-        $this->set(compact('items'));
-        $this->set('_serialize', ['items']);
+		if($status==''){ $status='unfreeze'; }
+        if($status=='freeze')
+		{
+        $items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.freeze'=>1])->contain(['ItemCategories', 'Units']);
+		}
+		elseif($status=='unfreeze')
+		{
+			$where = $status;
+			$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.freeze'=>0])->contain(['ItemCategories', 'Units']);
+		}
+        $this->set(compact('items', 'status'));
+        $this->set('_serialize', ['items', 'status']);
     }
 
 	public function defineSaleRate()

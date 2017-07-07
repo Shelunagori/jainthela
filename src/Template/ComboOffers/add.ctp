@@ -28,6 +28,22 @@
 									</div>
 								 </div>
 								 <div class="col-md-12"><br></div>
+								 <div class="col-md-12">
+									<div class="col-md-3">
+										<label class="col-md-6 control-label">Print Rate<span class="required" aria-required="true">*</span></label>
+										<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate']) ?>
+									</div>
+									<div class="col-md-3">
+										<label class="col-md-6 control-label">Discount (%)<span class="required" aria-required="true">*</span></label>
+										<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt calc','label'=>false,'placeholder'=>'Discount']) ?>
+									</div>
+									<div class="col-md-3">
+										<label class="col-md-6 control-label">Sales Rate<span class="required" aria-required="true">*</span></label>
+										<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate','Readonly'=>'Readonly']) ?>
+									</div>
+								 
+								 </div>
+								 <div class="col-md-12"><br></div>
 							</div>
 						<!-- END FORM-->
 						<table id="main_table" class="table table-condensed table-bordered">
@@ -54,33 +70,6 @@
 										<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 									</td>
 									
-								</tr>
-								<tr>
-									<td></td>
-									<td style="text-align:center !important;">Print Rate
-									</td>
-									<td style="text-align:center !important;">Discount (%)
-									</td>
-									<td style="text-align:center !important;">Sales Rate
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>
-										<div class="form-group">
-											<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate']) ?>
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<?= $this->Form->input('discount_per',['class'=>'form-control input-sm number dscnt calc','label'=>false,'placeholder'=>'Discount']) ?>
-										</div>
-									</td>
-									<td>
-										<div class="form-group">
-											<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate','Readonly'=>'Readonly']) ?>
-										</div>
-									</td>
 								</tr>
 							</tfoot>
 						</table>
@@ -241,7 +230,7 @@ $(".dscnt").die().live('keyup',function(){
 		var discount=$(this).val();
 		var final_amount=((total*discount)/100);
 		var sales_amount=total-final_amount;
-		$(".sls_rat").val(sales_amount);
+		$(".sls_rat").val(sales_amount.toFixed(2));
 	});
 
 	$(".calculation_amount").die().live('keyup',function(){
@@ -279,11 +268,36 @@ $(".dscnt").die().live('keyup',function(){
     });
 	
 	$(".attribute").die().live('change',function(){
-		var raw_attr_name = $('option:selected', this).attr('print_quantity');			
-		//alert(raw_attr_name);
-		$(this).closest('tr').find('.msg_shw').html("per quantity in "+raw_attr_name);
-	});	
-
+		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
+		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');	
+		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');	
+		var raw_attr_rates = $('option:selected', this).attr('rates');		
+		//alert(raw_attr_rates);
+		$(this).closest('tr').find('.msg_shw').html("selling factor: "+raw_attr_name);
+		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
+		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
+		$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
+		$(this).closest('tr').find('.quant').attr('price', +raw_attr_rates);
+	});
+	
+	$(".quant").die().live('keyup',function(){
+		var quant = parseFloat($(this).val());
+		if(!quant){ quant=0; }
+		var minimum_quantity_factor = parseFloat($(this).attr('minimum_quantity_factor'));
+		if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+		var unit_name = $(this).attr('unit_name');
+		if(!unit_name){ unit_name=0; }
+		var price =  parseFloat($(this).attr('price'));
+		if(!price){ price=0; }
+		var g_total = quant*minimum_quantity_factor;
+		var rate = quant*price;
+		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
+		var g_total =  parseFloat($('.grnd_ttl').val());
+		if(!g_total){ g_total=0; }
+		var final_val = g_total+rate;
+		$('.grnd_ttl').val(final_val);
+	});
 });
 
 </script>
@@ -293,10 +307,11 @@ $(".dscnt").die().live('keyup',function(){
 				<td align="center" width="1px"></td>
 				<td>
 					<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
+					<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>
-					<span class="msg_shw" style="color:blue;"></span>
+					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number quant','placeholder'=>'Quantity']); ?>
+					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
 					<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>

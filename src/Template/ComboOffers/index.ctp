@@ -47,6 +47,7 @@
 							<td><?= h(date('d-M-Y', strtotime($comboOffer->created_on))) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $comboOffer->id]) ?>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $comboOffer->id]) ?>
 								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $comboOffer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $comboOffer->id)]) ?>
 							</td>
 						</tr>

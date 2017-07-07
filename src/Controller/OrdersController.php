@@ -21,13 +21,25 @@ class OrdersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-      
-		$orders = $this->Orders->find('all')->contain(['Customers']);
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$curent_date=date('Y-m-d');
+		$orders = $this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->contain(['Customers']);
 		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);
     }
 
+	public function manageOrder()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$curent_date=date('Y-m-d');
+		$orders = $this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
+		
+        $this->set(compact('orders'));
+        $this->set('_serialize', ['orders']);
+    }
+	
     /**
      * View method
      *
@@ -45,6 +57,18 @@ class OrdersController extends AppController
         $this->set('_serialize', ['order']);
     }
 
+	
+	public function ajaxOrderView()
+    {
+		$order_id=$this->request->data['odr_id'];
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		$order_details=$this->Orders->OrderDetails->find()->where(['order_id'=>$order_id])->contain(['Items'=>['Units']]);
+		pr($order_id->toArray());  exit;
+ 		$this->set('order_details', $order_details);
+ 		$this->set('order_id', $order_id);
+        $this->set('_serialize', ['order_details', 'order_id']);
+		  exit;
+	}	  
     /**
      * Add method
      *
@@ -58,17 +82,29 @@ class OrdersController extends AppController
         $order = $this->Orders->newEntity();
         if ($this->request->is('post')) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
-			$last_order_no = $this->Orders->find()->select(['order_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
-			if($last_order_no){
-				$order->order_no = $last_order_no->order_no+1;
-			}else{
-				$order->order_no=1;
-			}
+			$curent_date=date('Y-m-d');
 			
+			$last_order_no = $this->Orders->find()->select(['order_no', 'get_auto_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->first();
+			 
+			if(!empty($last_order_no)){
+			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
+			$next_get_auto_no=$last_order_no->get_auto_no+1;
+			}else{
+		    $get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
+			echo $next_get_auto_no=1;
+			}
+			$get_date=str_replace('-','',$curent_date);
+			$exact_order_no=h('W'.$get_date.$get_auto_no);//orderno///
+			
+			$order->order_no=$exact_order_no;
+ 			$order->curent_date=$curent_date;
+			$order->get_auto_no=$next_get_auto_no;
 			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
+		 
             if ($this->Orders->save($order)) {
+				 
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -84,12 +120,12 @@ class OrdersController extends AppController
 		}
 		
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id])->contain(['Units']);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
 		
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
-			$unit_name=$item_fetch->unit->unit_name;
+			@$unit_name=$item_fetch->unit->unit_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;

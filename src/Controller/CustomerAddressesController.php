@@ -18,15 +18,36 @@ class CustomerAddressesController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function index()
+    public function index($customer_id=null, $id=null)
     {
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		if(!$id){
+			$customerAddress = $this->CustomerAddresses->newEntity();
+		}else{
+				$customerAddress = $this->CustomerAddresses->get($id, [
+				'contain' => []
+			]);
+		}
+		
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            $customerAddress = $this->CustomerAddresses->patchEntity($customerAddress, $this->request->getData());
+			$customerAddress->customer_id=$customer_id;
+            if ($this->CustomerAddresses->save($customerAddress)) {
+                $this->Flash->success(__('The Address has been saved.'));
+                return $this->redirect(['action' => 'index/'.$customer_id]);
+            }
+            $this->Flash->error(__('The Address could not be saved. Please, try again.'));
+        }
+		
+		
         $this->paginate = [
             'contain' => ['Customers']
         ];
-        $customerAddresses = $this->paginate($this->CustomerAddresses);
+        $customerAddresses = $this->CustomerAddresses->find()->where(['customer_id'=>$customer_id])->contain(['Customers']);
 
-        $this->set(compact('customerAddresses'));
-        $this->set('_serialize', ['customerAddresses']);
+        $this->set(compact('customerAddresses', 'customerAddress', 'customer_id', 'id'));
+        $this->set('_serialize', ['customerAddresses', 'customerAddress', 'customer_id', 'id']);
     }
 
     /**
@@ -101,7 +122,7 @@ class CustomerAddressesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($customer_id=null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $customerAddress = $this->CustomerAddresses->get($id);
@@ -111,6 +132,6 @@ class CustomerAddressesController extends AppController
             $this->Flash->error(__('The customer address could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'index/'.$customer_id]);
     }
 }

@@ -66,7 +66,12 @@ class FeedbacksController extends AppController
             }
             $this->Flash->error(__('The feedback could not be saved. Please, try again.'));
         }
-        $customers = $this->Feedbacks->Customers->find('list');
+        $customer_fetchs = $this->Feedbacks->Customers->find('all');
+		foreach($customer_fetchs as $customer_fetch){
+			$customer_name=$customer_fetch->name;
+			$customer_mobile=$customer_fetch->mobile;
+			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
+		}
         $this->set(compact('feedback', 'customers'));
         $this->set('_serialize', ['feedback']);
     }

@@ -45,6 +45,7 @@ class ComboOfferDetailsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		
     }
 
     /**
