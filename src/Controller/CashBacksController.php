@@ -119,7 +119,11 @@ class CashBacksController extends AppController
                     ->execute();
 					
 				$set_new_remaining_amount=$updated_amount-$cash_back_amount;
-				
+				if($set_new_remaining_amount>=$cash_back_amount){ 
+					$flag=1;
+				}else{
+					$flag=0;
+				}
 				 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
 					 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
 					 if($last_cash_back_no_data){
@@ -128,14 +132,15 @@ class CashBacksController extends AppController
 							$cash_back_no=1;
 						}
 					 $query = $this->CashBacks->query();
-							$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'cash_back_percentage', 'cash_back_limit'])
+							$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'cash_back_percentage', 'cash_back_limit', 'flag'])
 									->values([
 									'cash_back_no' => $cash_back_no,
 									'customer_id' => $customer_id,
 									'order_no' => $order_no,
 									'amount' => $set_new_remaining_amount,
 									'cash_back_percentage' => $cash_back_percentage,
-									'cash_back_limit' => $cash_back_limit
+									'cash_back_limit' => $cash_back_limit,
+									'flag' => $flag
 									])
 							->execute();
 			   
@@ -236,8 +241,6 @@ class CashBacksController extends AppController
 			  }   
 		 }
 		 exit;
-        $this->set('cashBack', $cashBack);
-        $this->set('_serialize', ['cashBack']);
     }
 	 
 	

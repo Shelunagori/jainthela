@@ -14,8 +14,21 @@
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New','/Items/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New','/Items/Add',['escape'=>false,'class'=>'btn btn-default']) ?> 
+					
+					<?php if($status=='freeze' or $status==''){
+						$class1="btn btn-xs blue";
+						$class2="btn btn-default";
+					}elseif($status=='unfreeze' or $status==''){
+						$class1="btn btn-default";
+						$class2="btn btn-xs blue";
+					}
+					 ?>
+						<?php echo $this->Html->link('Unfreeze',['controller'=>'Items','action' => 'index/unfreeze'],['escape'=>false,'class'=>$class2]); ?>
+						<?php echo $this->Html->link('Freeze',['controller'=>'Items','action' => 'index/freeze'],['escape'=>false,'class'=>$class1]); ?>&nbsp;
+						 
+						<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+				
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -24,11 +37,12 @@
 						<tr>
 							<th>Sr</th>
 							<th>Name</th>
-							<th>Alias</th>
+							<th>Type</th>
 							<th>Unit</th>
 							<th>Item Category</th>
 							<th>Minimum Stock</th>
 							<th>Minimum Quantity Factor</th>
+							<th>Out Of Stock</th>
 							<th>Freeze</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -39,11 +53,30 @@
 							?>
 						<tr>
 							<td><?= h($i) ?></td>
-							<td><?= h($item->name) ?></td>
-							<td><?= h($item->alias_name) ?></td>
+							<?php 
+							$name=$item->name;
+							$alias_name=$item->alias_name;
+							if(!empty($alias_name)){ ?>
+								<td><?php echo $name.' ('.$alias_name.')'; ?></td>
+							<?php }else{ ?>
+								<td><?= h($name) ?></td>
+							<?php } ?>
+							<td>
+								<?php
+								if($item->is_virtual=="yes"){
+									echo '<span class="badge badge-warning tooltips" data-original-title="Virtule Item">V</span>';
+								}
+								else if($item->is_combo=="yes"){
+									echo '<span class="badge badge-success tooltips" data-original-title="Combo Item">C</span>';
+								}
+								else{
+									echo '<span class="badge badge-primary tooltips" data-original-title="Real Item">R</span>';
+								}
+								?>
+							</td>
 							<td>
 								<?php // h($item->print_quantity) ?>
-								<?= h($unit_name=$item->unit->unit_name) ?>
+								<?= h(@$unit_name=$item->unit->unit_name) ?>
 							</td>
 							<td><?= h($item->item_category->name) ?></td>
 							<td>
@@ -57,6 +90,17 @@
 							<td>
 								<?php //$this->Number->format($item->minimum_quantity_factor) ?>
 								<?= h($item->print_quantity) ?>
+							</td>
+							<td>
+								<?php 
+								$out_of_stock=$item->out_of_stock; 
+								if(!empty($out_of_stock)){
+									$stock_msg='Yes';
+								}else{
+									$stock_msg='No';
+								}
+								?>
+								<?= h($stock_msg) ?>
 							</td>
 							<td><?= h($item->freeze) ?></td>
 							<td class="actions">

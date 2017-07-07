@@ -32,13 +32,6 @@
 						<?php echo $this->Form->control('bulk_booking_discount_percent',['placeholder'=>'Discount %','class'=>'form-control input-sm','label'=>false]); ?>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<label class=" control-label">Address <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false, 'rows'=>'2']); ?>
-					</div>
-					
-				</div>
 				<br/>
 				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
 				<?= $this->Form->end() ?>

@@ -75,7 +75,7 @@ class PurchaseOutwardsController extends AppController
         $vendors = $this->PurchaseOutwards->Vendors->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->PurchaseOutwards->JainThelaAdmins->find('list', ['limit' => 200]);
 		
-		$item_fetchs = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no'])->contain(['Units']);
+		$item_fetchs = $this->PurchaseOutwards->PurchaseOutwardDetails->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no', 'Items.freeze'=>0])->contain(['Units']);
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;

@@ -37,7 +37,8 @@ class ComboOffersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('ComboOfferDetails', [
-            'foreignKey' => 'combo_offer_id'
+            'foreignKey' => 'combo_offer_id',
+			'saveStrategy'=>'replace'
         ]);
 		
 		 $this->hasMany('Orders', [

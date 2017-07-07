@@ -14,7 +14,7 @@
 					</span>
 				</div>
 				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Customers/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Customers/Add',['escape'=>false,'class'=>'btn btn-default']) ?>&nbsp;
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>
@@ -46,6 +46,7 @@
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
 								<?= $this->Html->link(__('View'), ['action' => 'view', $customer->id ]) ?>
+								<?= $this->Html->link(__('Address'), ['controller'=>'CustomerAddresses', 'action' => 'index', $customer->id ]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
