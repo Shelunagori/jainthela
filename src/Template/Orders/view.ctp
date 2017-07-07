@@ -1,9 +1,104 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Order $order
-  */
-?>
+<div style="">
+<table class=" table-striped table-condensed table-hover  scroll" width="100%" border="0">
+			<thead>
+			<tr style="background-color:#fff; color:#000;"><td align="left" colspan="5"><b>
+			Customer Order No.: <?= $order->order_no ?>
+			</b></td></tr>
+			
+			<tr style="background-color:#fff; color:#000;"><td align="left" colspan="5">
+			<b>Address: </b>RAMESHWAR PRASHAD GOUR,&nbsp;128<br><b>Mobile:</b> 7073657971<br>Near Pream Ice Cream,&nbsp;Shobhagpura<br>	
+			
+			</td></tr>
+			  <tr style="background-color:#F98630; color:#fff;">
+				<th style="text-align:center;"><label><strong>#</strong></label></th>
+				<th style="text-align:center;"><label><strong>Image</strong></label></th>
+					<th style="text-align:center;"><label><strong>Item Name</strong></label></th>
+					<th style="text-align:center;"><label><strong>QTY</strong></label></th>
+					<th style="text-align:center;"><label><strong>Amount</strong></label></th>
+			  </tr>
+			</thead>
+			<tbody>
+										  <tr style="background-color:#fff;"> <td>1</td>
+					  <td align="center"><img src="/jainthela/catimage/1478927461.png" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Kaddu(pumpkin)</td>
+			<td style="text-align:center;">1Kg</td>
+			<td style="text-align:center;">30.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>2</td>
+					  <td align="center"><img src="/jainthela/catimage/1478926470.png" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Aaloo(Potato)</td>
+			<td style="text-align:center;">2Kg</td>
+			<td style="text-align:center;">28.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>3</td>
+					  <td align="center"><img src="/jainthela/catimage/1495490421.jpeg" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Khira(Cucumber)</td>
+			<td style="text-align:center;">0.50Kg</td>
+			<td style="text-align:center;">35.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>4</td>
+					  <td align="center"><img src="/jainthela/catimage/1495229939.jpeg" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Lahsun(Chhili)</td>
+			<td style="text-align:center;">0.5Kg</td>
+			<td style="text-align:center;">70.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>5</td>
+					  <td align="center"><img src="/jainthela/catimage/1493529333.jpeg" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Onion (pyaj)</td>
+			<td style="text-align:center;">2Kg</td>
+			<td style="text-align:center;">32.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>6</td>
+					  <td align="center"><img src="/jainthela/catimage/1493445532.jpeg" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">kachi keri</td>
+			<td style="text-align:center;">0.50Kg</td>
+			<td style="text-align:center;">30.00</td>
+			</tr>
+												  <tr style="background-color:#fff;"> <td>7</td>
+					  <td align="center"><img src="/jainthela/catimage/1495489757.jpeg" class="img-rounded img-responsive" width="40px" height="40px" alt=""></td>
+			<td style="text-align:center;">Tindori</td>
+			<td style="text-align:center;">0.50Kg</td>
+			<td style="text-align:center;">30.00</td>
+			</tr>
+												   
+					   
+			
+			
+			
+			
+			
+			
+			<tr style="background-color:#fff; border-top:1px solid #000"><td colspan="3">&nbsp;</td><td align="right"><b>Amount</b></td>
+			<td align="center"><b>255.00</b></td></tr>
+			
+								<tr style="background-color:#fff;"><td colspan="3">&nbsp;</td><td align="right"><b>Promo code</b></td>
+			<td align="center"><b>-0</b></td></tr>
+			
+			<tr style="background-color:#fff;"><td colspan="3">&nbsp;</td><td align="right"><b>Delivery Charge</b></td>
+			<td align="center"><b>0.00</b></td></tr>
+			
+			<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000"><td colspan="3">&nbsp;</td><td align="right"><b>Total Amount</b></td>
+			<td align="center"><b>255.00</b></td></tr>
+			
+			
+			<tr style="background-color:#fff; border-top:1px solid #000"><td colspan="3">&nbsp;</td><td align="right"><b>Jain Cash</b></td>
+			<td align="center"><b>0.00</b></td></tr>
+			
+			<tr style="background-color:#fff;"><td colspan="3">&nbsp;</td><td align="right"><b>Online Payment</b></td>
+			<td align="center"><b>0.00</b></td></tr>
+			
+			<tr style="background-color:#fff;"><td colspan="3">&nbsp;</td><td align="right"><b>Wallet Payment</b></td>
+			<td align="center"><b>0.00</b></td></tr>
+			
+			<tr style="background-color:#fff;"><td colspan="3">&nbsp;</td><td align="right"><b>Cash Payment</b></td>
+			<td align="center"><b>0.00</b></td></tr>
+			
+			<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000"><td colspan="3">&nbsp;</td><td align="right"><b>Total Paid</b></td>
+			<td align="center"><b>0</b></td></tr>
+		</tbody>
+	</table>
+</div>
+
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>

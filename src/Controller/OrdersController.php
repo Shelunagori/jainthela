@@ -49,6 +49,7 @@ class OrdersController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('');
         $order = $this->Orders->get($id, [
             'contain' => ['Customers', 'PromoCodes', 'OrderDetails']
         ]);
@@ -63,12 +64,14 @@ class OrdersController extends AppController
 		$order_id=$this->request->data['odr_id'];
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		$order_details=$this->Orders->OrderDetails->find()->where(['order_id'=>$order_id])->contain(['Items'=>['Units']]);
+
 		pr($order_details->toArray());  
  		$this->set('order_details', $order_details);
  		$this->set('order_id', $order_id);
         $this->set('_serialize', ['order_details', 'order_id']);
 		 
 	}
+
     /**
      * Add method
      *

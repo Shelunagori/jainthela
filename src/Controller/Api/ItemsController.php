@@ -11,14 +11,15 @@ class ItemsController extends AppController
 		$customer_id=$this->request->query('customer_id');
 
 		if($item_sub_category_id=='0'){
-			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id];
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.is_combo'=>'no'];
 		}
 		else{
-			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id];
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id, 'Items.is_combo'=>'no'];
 		}
 		
 		$items = $this->Items->find()
 					->where($where)
+					->order(['name'=>'ASC'])
 					->contain(['Units','Carts'=>function($q) use($customer_id){
 						return $q->where(['customer_id'=>$customer_id]);
 					}]);
@@ -179,7 +180,7 @@ $querys=$this->Items->ItemLedgers->find();
 		$customer_id=$this->request->query('customer_id');
 
         $search_items = $this->Items->find()
-		->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.name LIKE' => '%'.$item_query.'%'])
+		->where(['Items.is_combo'=>'no', 'Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.name LIKE' => '%'.$item_query.'%'])
 		->contain(['Units','Carts'=>function($q) use($customer_id){
 						return $q->where(['customer_id'=>$customer_id]);
 					}]);

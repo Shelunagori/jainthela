@@ -15,7 +15,7 @@ class ComboOffersController extends AppController
 			}]);
 			
 		
-		$combo_lists->select(['image_url' => $combo_lists->func()->concat(['http://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+		$combo_lists->select(['image_url' => $combo_lists->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
         ->autoFields(true);
         
 		
@@ -40,7 +40,7 @@ class ComboOffersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		$combo_views = $this->ComboOffers->ComboOfferDetails->find()->where(['ComboOfferDetails.combo_offer_id' => $combo_offer_id])->contain(['Items']);
 		
-		$combo_views->select(['image_url' => $combo_views->func()->concat(['http://localhost'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+		$combo_views->select(['image_url' => $combo_views->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
         ->autoFields(true);
 		
 		$combo_cart = $this->ComboOffers->Items->find()->where(['Items.combo_offer_id' => $combo_offer_id]);

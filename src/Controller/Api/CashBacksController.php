@@ -31,7 +31,7 @@ class CashBacksController extends AppController
 		}
           
 		 $fetch_cashback_win_details = $this->CashBacks->find()
-		->where(['customer_id'=>$customer_id, 'won'=>'yes', 'flag'=>2])
+		->where(['won'=>'yes', 'flag'=>2])
 		->contain(['Customers'])
 		->autoFields(true);
         

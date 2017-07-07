@@ -239,6 +239,10 @@ Router::prefix('api', function ($routes) {
 			   'driver_billing' => [
 				   'action' => 'driver_billing',
 				   'method' => 'POST'
+			   ],
+			   'delivered_order' => [
+				   'action' => 'delivered_order',
+				   'method' => 'GET'
 			   ]
 			 ]
 		]);

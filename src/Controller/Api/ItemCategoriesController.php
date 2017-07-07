@@ -46,8 +46,7 @@ class ItemCategoriesController extends AppController
 						}]);
 						$recently_bought->select(['image_url' => $recently_bought->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])]);
 		
-						$cart_count = $this->ItemCategories->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
-						
+						$cart_count = $this->ItemCategories->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();						
 
 		$status=true;
 		$error="";
