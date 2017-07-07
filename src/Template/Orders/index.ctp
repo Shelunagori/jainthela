@@ -53,14 +53,8 @@
 							<td class="actions">
 							<?= $this->Html->link(__('View'), ['action' => 'view', $order->id]) ?>
 							   <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $order->id]) ?>-->
-							</td> 
-
-<!------------------------------------------------------------------------------------------->
-		<td class="actions"> 	 
-			<a class="btn red btn-xs goc" value="<?= $order->id ?>"  rel="tooltip" title="Delete" data-toggle="modal" href="#delete<?= $order->id ?>"><i class="fa fa-trash goc" value="<?= $order->id ?>"></i></a> 
-		</td>
-		 
-<!------------------------------------------------------------------------------------------->
+							   <a class="btn btn-xs view_order" order_id="<?php echo $order->id; ?>" >Details</a> 
+							</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
@@ -89,6 +83,23 @@ var $rows = $('#main_tble tbody tr');
 </script>
 <script>
 $(document).ready(function() {
+	$('.view_order').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+		$('#popup').find('div.modal-body').html('Loading...');
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "view"]); ?>";
+		url=url+'/'+order_id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});	
+	});
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
 	
 	$('.goc').die().live('click',function() 
 	{ 
@@ -114,3 +125,18 @@ $(document).ready(function() {
 	});
 });
 </script>
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;" id="popup">
+<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					 Body goes here...
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
