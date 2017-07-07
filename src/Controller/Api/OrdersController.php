@@ -109,13 +109,293 @@ class OrdersController extends AppController
 						->set(['status' => 'Cancel',
 						'cancel_id' => $Cancel_id])
 						->where(['id' => $order_id])
-						->execute();
+						->execute
+						
+			$customer_details=$this->Orders->Customers->find()
+			->where(['Customers.id' => $customer_id])->first();
+			$mobile=$customer_details->mobile;
+
+			$sms=str_replace(' ', '+', 'Your order has been cancelled.' );
+			$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+			$sms_sender='JAINTE';
+			$sms=str_replace(' ', '+', $sms);
+			file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
 		
 		$status=true;
 		$error="Thank you, your order has been cancelled.";
         $this->set(compact('status', 'error'));
         $this->set('_serialize', ['status', 'error']);
     }
+	public function deliveredOrder()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+		$order_id=$this->request->query('order_id');
+		$is_login=$this->request->query('is_login'); ///warehouse or driver///
+		$driver_warehouse_id=$this->request->query('driver_warehouse_id');
+		$transaction_date=date('Y-m-d');
+		if($is_login=='warehouse')
+		{
+			        $order_delivered = $this->Orders->query();
+					$result = $order_delivered->update()
+						->set(['status' => 'Delivered'])
+						->where(['id' => $order_id])
+						->execute();
+                    
+					$delivery_details=$this->Orders->OrderDetails->find()
+					->where(['order_id' => $order_id]);
+					foreach($delivery_details as $deliver_data)
+					{
+					 $item_type=$this->Orders->Items->find()
+					->where(['Items.id' => $deliver_data->item_id])->first();
+				      $is_virtual=$item_type->is_virtual;
+					  $is_id=$item_type->id;
+					  $parent_item_id=$item_type->parent_item_id;
+					  $is_combo=$item_type->is_combo;
+					  $combo_offer_id=$item_type->combo_offer_id;
+					  
+				  if($is_combo=='no')
+				  {
+					  if($is_virtual=='yes')
+					  {
+							$query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'warehouse_id' => $driver_warehouse_id,
+							'item_id' => $parent_item_id,
+							'rate' => $deliver_data->rate,
+							'quantity' => $deliver_data->actual_quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					  else if($is_virtual=='no'){
+						  $query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'warehouse_id' => $driver_warehouse_id,
+							'item_id' => $is_id,
+							'rate' => $deliver_data->rate,
+							'quantity' => $deliver_data->actual_quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					 
+					}
+					else{
+					  $combo_details=$this->Orders->ComboOfferDetails->find()
+					->where(['ComboOfferDetails.combo_offer_id' => $combo_offer_id]);
+					  foreach($combo_details as $combo_details_data)
+					  {
+					  $item_type=$this->Orders->Items->find()
+					->where(['Items.id' => $combo_details_data->item_id])->first();
+				      $is_virtual=$item_type->is_virtual;
+					  $is_id=$item_type->id;
+					  $parent_item_id=$item_type->parent_item_id;
+					  $is_combo=$item_type->is_combo;
+					  
+					  if($is_virtual=='yes')
+					  {
+							$query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'warehouse_id' => $driver_warehouse_id,
+							'item_id' => $parent_item_id,
+							//'rate' => $combo_details_data->rate,
+							'quantity' => $combo_details_data->quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					  else if($is_virtual=='no'){
+						  $query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'warehouse_id' => $driver_warehouse_id,
+							'item_id' => $is_id,
+							//'rate' => $combo_details_data->rate,
+							'quantity' => $combo_details_data->quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }  
+					 }
+					}
+					  
+				}
+		}
+		else if($is_login=='driver')
+		{
+			        
+			        $order_delivered = $this->Orders->query();
+					$result = $order_delivered->update()
+						->set(['status' => 'Delivered'])
+						->where(['id' => $order_id])
+						->execute();
+                    
+					$delivery_details=$this->Orders->OrderDetails->find()
+					->where(['order_id' => $order_id]);
+					foreach($delivery_details as $deliver_data)
+					{
+					 $item_type=$this->Orders->Items->find()
+					->where(['Items.id' => $deliver_data->item_id])->first();
+				      $is_virtual=$item_type->is_virtual;
+					  $is_id=$item_type->id;
+					  $parent_item_id=$item_type->parent_item_id;
+					  $is_combo=$item_type->is_combo;
+					  $combo_offer_id=$item_type->combo_offer_id;
+					  
+				  if($is_combo=='no')
+				  {
+					  if($is_virtual=='yes')
+					  {
+							$query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => $driver_warehouse_id,
+							'item_id' => $parent_item_id,
+							'rate' => $deliver_data->rate,
+							'quantity' => $deliver_data->actual_quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					  else if($is_virtual=='no'){
+						  $query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => $driver_warehouse_id,
+							'item_id' => $is_id,
+							'rate' => $deliver_data->rate,
+							'quantity' => $deliver_data->actual_quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					 
+					}
+					else{
+					  $combo_details=$this->Orders->ComboOfferDetails->find()
+					->where(['ComboOfferDetails.combo_offer_id' => $combo_offer_id]);
+					  foreach($combo_details as $combo_details_data)
+					  {
+					  $item_type=$this->Orders->Items->find()
+					->where(['Items.id' => $combo_details_data->item_id])->first();
+				      $is_virtual=$item_type->is_virtual;
+					  $is_id=$item_type->id;
+					  $parent_item_id=$item_type->parent_item_id;
+					  $is_combo=$item_type->is_combo;
+					  
+					  if($is_virtual=='yes')
+					  {
+							$query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => $driver_warehouse_id,
+							'item_id' => $parent_item_id,
+							//'rate' => $combo_details_data->rate,
+							'quantity' => $combo_details_data->quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }
+					  else if($is_virtual=='no'){
+						  $query = $this->Orders->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => $driver_warehouse_id,
+							'item_id' => $is_id,
+							//'rate' => $combo_details_data->rate,
+							'quantity' => $combo_details_data->quantity,
+							'inventory_transfer' => 'no',
+							'transaction_date'=>$transaction_date
+							])
+					        ->execute(); 
+					  }  
+					 }
+					}
+					  
+				}
+		}
+					$order_details=$this->Orders->find()
+					->where(['id' => $order_id])->first();
+					$order_no=$order_details->order_no;
+					$grand_total=$order_details->grand_total;
+					$customer_id=$order_details->customer_id;
+					$delivery_date=date('D M j, Y H:i a', strtotime($order_details->delivery_date));
+					
+					$customer_details=$this->Orders->Customers->find()
+					->where(['Customers.id' => $customer_id])->first();
+					$mobile=$customer_details->mobile;
+					$API_ACCESS_KEY=$customer_details->notification_key;
+					$device_token=$customer_details->device_token;
+					$device_token1=rtrim($device_token);
+                    $time1=date('Y-m-d G:i:s');
+                    $msg = array
+					(
+					'title' 	=> 'Jainthela',
+					'Message'	=> 'Hello customer your order delivered successfully.',
+					'order_no'	=> $order_no,
+					'delivery_date'	=> $delivery_date,
+					'supplier_name'	=> $grand_total,
+					'mobile_no'	=> '',
+					'session_id'	=> $customer_id,
+					'time'	=> $time1,
+					'vibrate'	=> 1,
+					'sound'		=> 1,
+					);
+
+					$fields = array
+					(
+					'registration_ids' 	=> array($device_token1),
+					'data'			=> array("msg" =>$msg)
+					);
+					$headers = array
+					(
+					'Authorization: key=' .$API_ACCESS_KEY,
+					'Content-Type: application/json'
+					);
+
+					$ch = curl_init();
+					curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
+					curl_setopt( $ch,CURLOPT_POST, true );
+					curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+					curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+					curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+					curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode($fields) );
+
+					$result121 = curl_exec($ch );
+					curl_close($ch);
+					/*....................................*/
+
+					$sms=str_replace(' ', '+', 'Thank You, Your order has been delivered successfully. your order no. is: '.$order_no.'' );
+					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+					$sms_sender='JAINTE';
+					$sms=str_replace(' ', '+', $sms);
+					file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
+					
+					
+		$status=true;
+		$error="Thank you, order delivered successfully.";
+        $this->set(compact('status', 'error'));
+        $this->set('_serialize', ['status', 'error']);
+    }
+	
 	 public function placeOrder()
     {
 		$jain_thela_admin_id=$this->request->data('jain_thela_admin_id');
@@ -139,8 +419,16 @@ class OrdersController extends AppController
 		$order = $this->Orders->newEntity();
 		$curent_date=date('Y-m-d');
 		
-						
-		        $out_of_stock_data=$this->Orders->Carts->find()->where(['customer_id' => $customer_id]);
+		
+				///////////////////////GET TIME/////////////////	
+				$delivery_time_data = $this->Orders->DeliveryTimes->find()
+				->where(['deliveryTimes.id'=>$delivery_time_id])->first();
+				$d_from=$delivery_time_data->time_from;
+				$d_to=$delivery_time_data->time_to;
+				$delivery_time=$d_from.$d_to;
+
+				///////////////////////GET DELIVERY DATE/////////////////				
+				$out_of_stock_data=$this->Orders->Carts->find()->where(['customer_id' => $customer_id]);
         		$counts=0;
 				foreach($out_of_stock_data as $fetch_data)
 				{
@@ -149,21 +437,20 @@ class OrdersController extends AppController
 					$d=$out_data->out_of_stock;
 					$counts+=$d;
 				}
-				
-		if($counts>0)
-		{
-		    $delivery_date=date('Y-m-d', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
-        }
-		else{
-			
-			$delivery_date=date('Y-m-d');//delivery_date///
-		}
+				if($counts>0)
+				{
+				    $delivery_date=date('Y-m-d', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
+				}
+				else{
+                     $delivery_date=date('Y-m-d');//delivery_date///
+				}
 		
-		$last_order_no = $this->Orders->find()
-		->select(['get_auto_no'])
-		->order(['get_auto_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])
-		->first();
-		
+			///////////////////////GET LAST ORDER NO/////////////////
+			$last_order_no = $this->Orders->find()
+			->select(['get_auto_no'])
+			->order(['get_auto_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])
+			->first();
+
 			if(!empty($last_order_no)){
 			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
 			}else{
@@ -171,8 +458,8 @@ class OrdersController extends AppController
 			}
 			$get_date=str_replace('-','',$curent_date);
 			$exact_order_no=h('W'.$get_date.$get_auto_no);//orderno///
-			
-		
+
+		///////////////////////INSERTION IN ORDER/////////////////
 		$grand_total=$total_amount+$delivery_charge;
 		$pay_amount=$grand_total-($wallet_amount+$jain_cash_amount+$online_amount+$promo_code_amount);
 			
@@ -189,7 +476,6 @@ class OrdersController extends AppController
 				$this->request->data['order_details'][$i]['is_combo']=$carts_data_fetch->is_combo;
 				$i++;
 			}
-			
 			$order = $this->Orders->patchEntity($order, $this->request->getData());
 			$order->transaction_order_no=$order_no;
 			$order->order_no=$exact_order_no;
@@ -200,7 +486,6 @@ class OrdersController extends AppController
 			$order->amount_from_jain_cash=$jain_cash_amount;
 			$order->amount_from_promo_code=$promo_code_amount;
 			$order->total_amount=$total_amount;
-			
 			$order->grand_total=$grand_total;
 			$order->pay_amount=$pay_amount;
 			$order->online_amount=$online_amount;
@@ -216,16 +501,21 @@ class OrdersController extends AppController
 			$order->payment_status=$payment_status;
 			$order->order_from=$order_from;
 			$order->warehouse_id=$warehouse_id;
+			$order->delivery_time=$delivery_time;
+			$order->delivery_time_id=$delivery_time_id;
 			$this->Orders->save($order);
 			
 			
 			
+			///////////////////////DELETED CART/////////////////
 				$this->loadModel('Carts');
 				$query = $this->Carts->query();
 				$result = $query->delete()
 					->where(['customer_id' => $customer_id])
 					->execute(); 
+			///////////////////////DELETED CART/////////////////
 			
+	        //////////WALLET UPDATION///////////////////
 			if($wallet_amount>0)
 			{
 			$wallet_data=$this->Orders->find()->where(['customer_id'=>$customer_id,'transaction_order_no'=>$order_no])
@@ -240,6 +530,10 @@ class OrdersController extends AppController
 							])
 					->execute();
             }
+			///////////////////////WALLET UPDATION/////////////////
+			
+			
+	    //////////SMS AND NOTIFICATIONS///////////////////
 			
 		$get_data = $this->Orders->find()
 		->order(['id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'customer_id'=>$customer_id])
@@ -266,7 +560,69 @@ class OrdersController extends AppController
 			'order_day'=>$isOrderType
 			);
 			
-	
+					$customer_details=$this->Orders->Customers->find()
+					->where(['Customers.id' => $customer_id])->first();
+					$mobile=$customer_details->mobile;
+					$API_ACCESS_KEY=$customer_details->notification_key;
+					$device_token=$customer_details->device_token;
+					$device_token1=rtrim($device_token);
+                    $time1=date('Y-m-d G:i:s');
+					
+					$customer_address_details=$this->Orders->CustomerAddresses->find()
+					->where(['CustomerAddresses.customer_id' => $get_data->customer_address_id])->first();
+					$mobile_no=$customer_address_details->mobile;
+					$billing_address=$customer_address_details->address;
+					$billing_name=$customer_address_details->name;
+					$billing_locality=$customer_address_details->locality;
+					$billing_house_no=$customer_address_details->house_no;
+						
+			$msg = array
+	(
+	'title' 	=> 'Jainthela',
+	'Message'	=> 'hello supplier',
+	'billing_address'	=> $billing_house_no.', '.$billing_address.', ' .$billing_locality,
+       'billing_name'	=> $billing_name,
+	'order_no'	=> $get_data->order_no,
+	'delivery_date'	=> $delivery_day_date,
+	'id'	=> $get_data->id,
+	'session_id'	=> $get_data->customer_id,
+	'time'	=> $time1,
+	'vibrate'	=> 1,
+	'sound'		=> 1,
+	);
+
+$fields = array
+(
+	'registration_ids' 	=> array($device_token1),
+	'data'			=> array("msg" =>$msg)
+);
+$headers = array
+(
+	'Authorization: key=' .$API_ACCESS_KEY,
+	'Content-Type: application/json'
+);
+
+$ch = curl_init();
+curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
+curl_setopt( $ch,CURLOPT_POST, true );
+curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode($fields) );
+$result121 = curl_exec($ch );
+curl_close($ch);
+
+				
+				$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$order_no.'. 
+				Your order will be delivered on '.$delivery_day_date.' at '.$get_data->delivery_time.'. Bill Amount '.$pay_amount.' Please note amount of order may vary depending on the actual quantity delivered to you.');
+				$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+				$sms_sender='JAINTE';
+				$sms=str_replace(' ', '+', $sms);
+				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
+				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+
+	//////////SMS AND NOTIFICATIONS///////////////////
+		
 		$status=true;
 		$error="Thank You, Your order has been placed.";
         $this->set(compact('status', 'error','result'));

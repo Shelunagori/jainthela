@@ -12,13 +12,6 @@ class CartsController extends AppController
 		$item_add_quantity=$items->minimum_quantity_factor;
 		$is_combo=$items->is_combo;
 		$fetchs=$this->Carts->find()->where(['customer_id' => $customer_id, 'item_id' =>$item_id]);
-		foreach($fetchs as $fetch){
-			$update_id=$fetch->id;
-			$exist_quantity=$fetch->quantity;
-			$exist_count=$fetch->cart_count;
-		}
-		$update_quantity=$item_add_quantity+$exist_quantity;
-		$update_count=$exist_count+1;
 		if(empty($fetchs->toArray()))
 		{
 			$query = $this->Carts->query();
@@ -32,6 +25,14 @@ class CartsController extends AppController
 							])
 					->execute();
 		}else{
+			foreach($fetchs as $fetch){
+			$update_id=$fetch->id;
+			$exist_quantity=$fetch->quantity;
+			$exist_count=$fetch->cart_count;
+		}
+		$update_quantity=$item_add_quantity+$exist_quantity;
+		$update_count=$exist_count+1;
+		
 			$cart=$this->Carts->get($update_id);	
 			$query = $this->Carts->query();
 				$result = $query->update()
@@ -211,17 +212,15 @@ class CartsController extends AppController
 			$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
 
 		}
-		
 		$address_availablity = $this->Carts->CustomerAddresses->find()
 			->where(['CustomerAddresses.customer_id'=>$customer_id]);
-			
-			if(sizeof($address_availablity)>0)
+			if(empty($address_availablity->toArray()))
 			{
-				$address_available=true;
+				$address_available=false;
 			}
 			else
 			{
-				$address_available=false;
+				$address_available=true;
 			}
 			
 		$carts=$this->Carts->find()
@@ -342,6 +341,13 @@ class CartsController extends AppController
 			
 			$isNextDayOrder=false;
 		}
+		
+		
+		
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		 ->autoFields(true);
+		 
 				
 				
 		$carts=$this->Carts->find()
@@ -360,10 +366,6 @@ class CartsController extends AppController
 		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.default_address'=>'1'])->first();
 
 		
-		$delivery_time=$this->Carts->DeliveryTimes->find()
-		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
-		 ->autoFields(true);
-		 
 		$generate_order_no=uniqid();
 		
 

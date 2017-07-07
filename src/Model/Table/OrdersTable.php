@@ -68,6 +68,8 @@ class OrdersTable extends Table
 		$this->belongsTo('CancelReasons');
 		$this->belongsTo('Carts');
 		$this->hasMany('CashBacks');
+		$this->hasMany('ItemLedgers');
+		$this->hasMany('ComboOfferDetails');
     }
 
     /**

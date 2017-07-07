@@ -359,14 +359,26 @@ class CustomersController extends AppController
 		->where(['id' => $order_id, 'customer_id'=>$customer_id])->first();
          $address_id=$customer_order_data->customer_address_id;
 		 $driver_id=$customer_order_data->driver_id;
+		 $warehouse_id=$customer_order_data->warehouse_id;
 		
-         $driver_data=$this->Customers->Drivers->find()
+		if($warehouse_id>0)
+		{
+		 $warehouse_data=$this->Customers->Warehouses->find()
+		->where(['id'=>$warehouse_id])->first();
+         $driver_name=$warehouse_data->name;
+		 $driver_mobile=$warehouse_data->mobile;
+		 $driver_lattitude=$warehouse_data->lattitude;
+		 $driver_longitude=$warehouse_data->longitude;
+		}
+		else if($driver_id>0){
+		 $driver_data=$this->Customers->Drivers->find()
 		->where(['id'=>$driver_id])->first();
          $driver_name=$driver_data->name;
 		 $driver_mobile=$driver_data->mobile;
 		 $driver_lattitude=$driver_data->lattitude;
 		 $driver_longitude=$driver_data->longitude;
-		
+		 	
+		}
 		
 		 $customer_address_data=$this->Customers->CustomerAddresses->find()
 		->where(['id'=>$address_id])->first();

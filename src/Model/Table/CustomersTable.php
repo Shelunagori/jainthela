@@ -50,6 +50,8 @@ class CustomersTable extends Table
         ]);
 		$this->belongsTo('CustomerAddresses');
 		$this->belongsTo('Drivers');
+        $this->belongsTo('Warehouses');
+
     }
 
     /**
