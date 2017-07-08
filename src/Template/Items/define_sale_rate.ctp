@@ -88,13 +88,14 @@
 						
 						<tr>
 						<td colspan="9">
-						<div align="center">
-							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Update Sales Rate'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
-						</div>
+						
 						</td></tr>
 						
 					</tbody>
 				</table>
+				<div align="center">
+					<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Update Sales Rate'),['class'=>'btn btn-success','id'=>'submitbtn']); ?>
+				</div>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

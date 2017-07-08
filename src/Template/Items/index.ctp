@@ -16,7 +16,7 @@
 				<div class="actions">
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New','/Items/Add',['escape'=>false,'class'=>'btn btn-default']) ?> 
 					
-					<?php if($status=='freeze' or $status==''){
+					<?php if($status=='freeze'){
 						$class1="btn btn-xs blue";
 						$class2="btn btn-default";
 					}elseif($status=='unfreeze' or $status==''){
@@ -105,7 +105,9 @@
 							<td><?= h($item->freeze) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
+								<?php if($status=='unfreeze' or $status==''){ ?>
 								<?= $this->Form->postLink(__('Freeze'), ['action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]) ?>
+								<?php } ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
