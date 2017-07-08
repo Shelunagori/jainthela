@@ -243,6 +243,10 @@ Router::prefix('api', function ($routes) {
 			   'delivered_order' => [
 				   'action' => 'delivered_order',
 				   'method' => 'GET'
+			   ],
+			   'remove_data' => [
+				   'action' => 'remove_data',
+				   'method' => 'GET'
 			   ]
 			 ]
 		]);

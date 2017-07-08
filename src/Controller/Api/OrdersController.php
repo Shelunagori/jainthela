@@ -109,7 +109,7 @@ class OrdersController extends AppController
 						->set(['status' => 'Cancel',
 						'cancel_id' => $Cancel_id])
 						->where(['id' => $order_id])
-						->execute
+						->execute();
 						
 			$customer_details=$this->Orders->Customers->find()
 			->where(['Customers.id' => $customer_id])->first();
@@ -422,7 +422,7 @@ class OrdersController extends AppController
 		
 				///////////////////////GET TIME/////////////////	
 				$delivery_time_data = $this->Orders->DeliveryTimes->find()
-				->where(['deliveryTimes.id'=>$delivery_time_id])->first();
+				->where(['DeliveryTimes.id'=>$delivery_time_id])->first();
 				$d_from=$delivery_time_data->time_from;
 				$d_to=$delivery_time_data->time_to;
 				$delivery_time=$d_from.$d_to;
@@ -568,14 +568,74 @@ class OrdersController extends AppController
 					$device_token1=rtrim($device_token);
                     $time1=date('Y-m-d G:i:s');
 					
+if(!empty($device_token1))
+					{
+					
+	$msg = array
+	(
+	'message' 	=> 'Thank You, your order place successfully',
+	'image' 	=> '',
+	'button_text'	=> 'Track Your Order',
+    'link' => 'jainthela://track_order?id='.$get_data->id,	
+    'notification_id'	=> 1,
+	);
+
+$url = 'https://fcm.googleapis.com/fcm/send';
+$fields = array
+(
+	'registration_ids' 	=> array($device_token1),
+	'data'			=> $msg
+);
+$headers = array
+(
+	'Authorization: key=' .$API_ACCESS_KEY,
+	'Content-Type: application/json'
+);
+
+  //echo json_encode($fields);
+  $ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+$result001 = curl_exec($ch);
+if ($result001 === FALSE) {
+	die('FCM Send Error: ' . curl_error($ch));
+}
+curl_close($ch);
+					} 
+									
+					if($get_data->driver_id>0)
+					{
+					$driver_warehouse_details=$this->Orders->Drivers->find()
+					->where(['Drivers.id' => $driver_id])->first();
+					$API_ACCESS_KEY1=$driver_warehouse_details->notification_key;
+					$exact_device_token=$driver_warehouse_details->device_token;
+					$device_token0=rtrim($device_token1);
+                    }
+					else if(($get_data->warehouse_id>0))
+					{
+					$driver_warehouse_details=$this->Orders->Warehouses->find()
+					->where(['Warehouses.id' => $get_data->warehouse_id])->first();
+					$API_ACCESS_KEY1=$driver_warehouse_details->notification_key;
+					$exact_device_token=$driver_warehouse_details->device_token;
+					$device_token0=rtrim($device_token1);
+					}
+					
+					
 					$customer_address_details=$this->Orders->CustomerAddresses->find()
-					->where(['CustomerAddresses.customer_id' => $get_data->customer_address_id])->first();
+					->where(['CustomerAddresses.id' => $get_data->customer_address_id])->first();
 					$mobile_no=$customer_address_details->mobile;
 					$billing_address=$customer_address_details->address;
 					$billing_name=$customer_address_details->name;
 					$billing_locality=$customer_address_details->locality;
 					$billing_house_no=$customer_address_details->house_no;
-						
+			
+	if(!empty($exact_device_token))
+	{
 			$msg = array
 	(
 	'title' 	=> 'Jainthela',
@@ -593,12 +653,12 @@ class OrdersController extends AppController
 
 $fields = array
 (
-	'registration_ids' 	=> array($device_token1),
+	'registration_ids' 	=> array($exact_device_token),
 	'data'			=> array("msg" =>$msg)
 );
 $headers = array
 (
-	'Authorization: key=' .$API_ACCESS_KEY,
+	'Authorization: key=' .$API_ACCESS_KEY1,
 	'Content-Type: application/json'
 );
 
@@ -611,9 +671,7 @@ curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
 curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode($fields) );
 $result121 = curl_exec($ch );
 curl_close($ch);
-
-				
-				$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$order_no.'. 
+	}			$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$order_no.'. 
 				Your order will be delivered on '.$delivery_day_date.' at '.$get_data->delivery_time.'. Bill Amount '.$pay_amount.' Please note amount of order may vary depending on the actual quantity delivered to you.');
 				$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 				$sms_sender='JAINTE';
@@ -621,8 +679,7 @@ curl_close($ch);
 				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
 				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
 
-	//////////SMS AND NOTIFICATIONS///////////////////
-		
+	    /////SMS AND NOTIFICATIONS///////////////////
 		$status=true;
 		$error="Thank You, Your order has been placed.";
         $this->set(compact('status', 'error','result'));
@@ -635,10 +692,8 @@ curl_close($ch);
 		$driver_warehouse_id=$this->request->query('driver_warehouse_id');
 		$is_login=$this->request->query('is_login');
 		
-		
 		if($is_login=='warehouse')
 		{
-		
 		$pending_order_data = $this->Orders->find()
 						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
 						->order(['order_date' => 'DESC'])
@@ -646,8 +701,6 @@ curl_close($ch);
 							return $q->contain(['Items'])->limit(1);
 						}])
 						->autoFields(true);
-						
-						
 						
 					foreach($pending_order_data as $data)
 					{

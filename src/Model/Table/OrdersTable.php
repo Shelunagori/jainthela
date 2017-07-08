@@ -70,7 +70,11 @@ class OrdersTable extends Table
 		$this->hasMany('CashBacks');
 		$this->hasMany('ItemLedgers');
 		$this->hasMany('ComboOfferDetails');
-    }
+		$this->belongsTo('Drivers');
+		$this->belongsTo('Warehouses');
+    	$this->hasMany('DeliveryTimes');
+
+	}
 
     /**
      * Default validation rules.
