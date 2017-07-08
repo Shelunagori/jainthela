@@ -95,6 +95,9 @@ $(document).ready(function() {
 				},
 				image:{
 					required: false,
+				},
+				alias_name:{
+					required: false,
 				}
 			},
 

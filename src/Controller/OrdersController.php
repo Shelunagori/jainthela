@@ -23,7 +23,12 @@ class OrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$curent_date=date('Y-m-d');
-		$orders = $this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->contain(['Customers']);
+		
+		$this->paginate = [
+            'contain' => ['Customers']
+        ];
+        $orders = $this->paginate($this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id]));
+		
 		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);
@@ -49,10 +54,10 @@ class OrdersController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('');
         $order = $this->Orders->get($id, [
-            'contain' => ['Customers', 'PromoCodes', 'OrderDetails']
+            'contain' => ['Customers', 'PromoCodes', 'OrderDetails'=>['Items'=>['Units']], 'CustomerAddresses']
         ]);
-
         $this->set('order', $order);
         $this->set('_serialize', ['order']);
     }
@@ -63,12 +68,20 @@ class OrdersController extends AppController
 		$order_id=$this->request->data['odr_id'];
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		$order_details=$this->Orders->OrderDetails->find()->where(['order_id'=>$order_id])->contain(['Items'=>['Units']]);
-		pr($order_id->toArray());  exit;
+
+		pr($order_details->toArray());  
  		$this->set('order_details', $order_details);
  		$this->set('order_id', $order_id);
         $this->set('_serialize', ['order_details', 'order_id']);
-		  exit;
-	}	  
+		 
+	}
+
+	public function ajaxDeliverApi()
+    {
+		echo $order_id=$this->request->data['odr_id'];
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		
+	}	
     /**
      * Add method
      *
