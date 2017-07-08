@@ -78,10 +78,11 @@ class OrdersController extends AppController
 
 	public function ajaxDeliverApi()
     {
-		echo $order_id=$this->request->data['odr_id'];
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
-		
-	}	
+		$order_id=$this->request->data['order_id'];
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->set(compact('jain_thela_admin_id', 'order_id'));
+        $this->set('_serialize', ['jain_thela_admin_id', 'order_id']);
+	}
     /**
      * Add method
      *
