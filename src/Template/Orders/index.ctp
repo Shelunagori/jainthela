@@ -53,7 +53,8 @@
 							<td><?= h($order->status) ?></td>
 							<td class="actions">
 							   <a class="btn btn-xs view_order" order_id="<?php echo $order->id; ?>" >Details</a> 
-							   <a class="btn blue btn-xs get_order" href="#" >Delivere</a>
+							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>"  href="#" >Delivere</a>
+							   <div class="setup"></div>
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -137,8 +138,7 @@ $(document).ready(function() {
 		var order_id=$(this).attr('order_id');
 		var m_data = new FormData();
 		m_data.append('order_id',order_id);
-			
-		$.ajax({
+ 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
 			data: m_data,
 			processData: false,
@@ -147,8 +147,7 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
-				 alert(data);
-				$('#data').html(data);
+ 				//$('.setup').html(data);
 			}	
 		});
 	});
