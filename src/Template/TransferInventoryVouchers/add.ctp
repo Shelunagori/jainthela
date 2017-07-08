@@ -66,13 +66,6 @@
 												
 												<td colspan="4"></td>
 											</tr>
-											<tr>
-												<td></td>
-												<td>Waste Quantity</td>
-												<td>
-													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'remaining form-control input-sm number valid','placeholder'=>'waste Quantity','value'=>0]); ?>	
-												</td>
-											</tr>
 										</tfoot>
 									</table>
 								 </div>
@@ -284,7 +277,7 @@ $(document).ready(function() {
 			success: function(data)   // A function to be called if request succeeds
 			{
 				$("#set").html(data);
-				$('.valid').attr('max',data);
+				//$('.valid').attr('max',data);
 				/* $(update).closest('div').find('#set').html(data);
 				$(update).closest('tr').find('.stock_available').html(data);
 				$(update).closest('tr').find('.valid').attr('max',data); */
@@ -298,7 +291,7 @@ $(document).ready(function() {
 		var unit_name = $('option:selected', this).attr('unit_name');
 		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
 		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
-		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+		//$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
 	});
 });
 

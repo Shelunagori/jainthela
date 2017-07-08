@@ -155,7 +155,8 @@ $(document).ready(function() {
 				var data=$("#data_fetch").html();
 				$(".set").html(data);
 			}else{
-				$(".set").html('');
+				var data=$("#data_fetch2").html();
+				$(".set").html(data);
 			}
  	});
 	$(".order_limit").die().live('keyup',function(){
@@ -188,6 +189,10 @@ $(document).ready(function() {
 ?>
 <div id="data_fetch" style="display:none;">
 	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm qunt_factor']); ?>
+</div>
+
+<div id="data_fetch2" style="display:none;">
+	<?php echo $this->Form->control('minimum_quantity_factor', ['class'=>'form-control input-sm qunt_factor', 'placeholder'=>'Minimum Quantity Factor']); ?>
 </div>
 
 <div id="fetch" style="display:none;">
