@@ -211,7 +211,10 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"order_details["+i+"][item_id]", id:"order_details-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"order_details["+i+"][quantity]", id:"order_details-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"order_details["+i+"][show_quantity]", id:"order_details-"+i+"-show_quantity"}).rules('add', {
+						required: true
+					});
+			$(this).find(".mains").attr({name:"order_details["+i+"][quantity]", id:"order_details-"+i+"-quantity"}).rules('add', {
 						required: true
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"order_details["+i+"][rate]", id:"order_details-"+i+"-rate"}).rules('add', {
@@ -292,6 +295,7 @@ $(document).ready(function() {
 		if(!unit_name){ unit_name=0; }
 		var g_total = quant*minimum_quantity_factor;
 		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
+		$(this).closest('tr').find('.mains').val(g_total);
 	});
 });
 </script>
@@ -304,8 +308,11 @@ $(document).ready(function() {
 						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity','value'=>0]); ?>
+						<?php echo $this->Form->input('show_quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity','value'=>0]); ?>
+						
 						<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
+							<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains','value'=>0, 'type'=>'hidden']); ?>
+						
 					</td>
 					<td>
 						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount rat_value','placeholder'=>'Rate','value'=>0]); ?>	

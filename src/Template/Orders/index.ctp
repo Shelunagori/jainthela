@@ -19,6 +19,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+			<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr>
@@ -36,10 +37,10 @@
 					<tbody>
 						<?php $sr_no=0; foreach ($orders as $order): ?>
 						<tr>
-							<td><?= ++$sr_no ?></td>
+							<td><?= ++$page_no ?></td>
 							<td><?= h($order->order_no) ?></td>
 							<td>
-								<?php 
+								<?php
 									$customer_name=$order->customer->name;
 									$customer_mobile=$order->customer->mobile;
 								?>
@@ -51,14 +52,23 @@
 							<td><?= h($order->order_date) ?></td>
 							<td><?= h($order->status) ?></td>
 							<td class="actions">
-							<?= $this->Html->link(__('View'), ['action' => 'view', $order->id]) ?>
-							   <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $order->id]) ?>-->
 							   <a class="btn btn-xs view_order" order_id="<?php echo $order->id; ?>" >Details</a> 
+							   <a class="btn blue btn-xs get_order" href="#" >Delivere</a>
 							</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->first('<< ' . __('first')) ?>
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+						<?= $this->Paginator->last(__('last') . ' >>') ?>
+					</ul>
+					<p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+				</div>
 			</div>
 			
 		</div>
@@ -105,7 +115,6 @@ $(document).ready(function() {
 	{ 
 		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
 		var odr_id = $(this).attr("value");
-		alert(odr_id);
  		var m_data = new FormData();
 		m_data.append('odr_id',odr_id);
 			
@@ -123,15 +132,32 @@ $(document).ready(function() {
 			}	
 		});	
 	});
+	
+	$('.get_order').die().live('click',function() {
+		var order_id=$(this).attr('order_id');
+		var m_data = new FormData();
+		m_data.append('order_id',order_id);
+			
+		$.ajax({
+			url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
+			data: m_data,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			dataType:'text',
+			success: function(data)   // A function to be called if request succeeds
+			{
+				 alert(data);
+				$('#data').html(data);
+			}	
+		});
+	});
 });
 </script>
 <div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;" id="popup">
 <div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			</div>
 			<div class="modal-body">
 				<p>
 					 Body goes here...
