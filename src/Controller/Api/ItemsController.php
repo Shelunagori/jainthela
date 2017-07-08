@@ -10,13 +10,14 @@ class ItemsController extends AppController
 		$item_sub_category_id=$this->request->query('item_sub_category_id');
 		$customer_id=$this->request->query('customer_id');
 
-		if($item_sub_category_id=='0'){
-			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.is_combo'=>'no'];
+		if($item_sub_category_id=='0')
+		{
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.ready_to_sale'=>'Yes'];
 		}
-		else{
-			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id, 'Items.is_combo'=>'no'];
+		else
+		{
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.item_category_id'=>$item_category_id, 'Items.item_sub_category_id'=>$item_sub_category_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.ready_to_sale'=>'Yes'];
 		}
-		
 		$items = $this->Items->find()
 					->where($where)
 					->order(['name'=>'ASC'])
@@ -180,7 +181,7 @@ $querys=$this->Items->ItemLedgers->find();
 		$customer_id=$this->request->query('customer_id');
 
         $search_items = $this->Items->find()
-		->where(['Items.is_combo'=>'no', 'Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.name LIKE' => '%'.$item_query.'%'])
+		->where(['Items.is_combo'=>'no', 'Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.name LIKE' => '%'.$item_query.'%', 'Items.freeze'=>0, 'Items.ready_to_sale'=>'Yes'])
 		->contain(['Units','Carts'=>function($q) use($customer_id){
 						return $q->where(['customer_id'=>$customer_id]);
 					}]);
