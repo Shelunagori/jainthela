@@ -106,7 +106,6 @@ $(document).ready(function(){
 
 	$('.stock_show').die().live("click",function() {
 		var current_entity=$(this);
-		
 		$(this).closest('td').append('<span class="loading_span">Loading...</span>');
 		$(this).closest('td').find(".stock_hide").show();
 		var entity=$(this).closest('tr');
@@ -117,7 +116,6 @@ $(document).ready(function(){
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			alert(response);
 			current_entity.removeClass("stock_show").addClass("stock_hide");
 			entity.after(response);
 			current_entity.closest('td').find('span.loading_span').remove();
