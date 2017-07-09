@@ -93,6 +93,7 @@ class ItemsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
+			
 			$file = $this->request->data['image'];
 			$file_name=$file['name'];			
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
@@ -142,7 +143,7 @@ class ItemsController extends AppController
 		
         $itemCategories = $this->Items->ItemCategories->find('list')->where(['is_deleted'=>0,'jain_thela_admin_id'=>$jain_thela_admin_id]);
         $units = $this->Items->Units->find()->where(['is_deleted'=>0]);
-        $item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no']);
+        $item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no','freeze'=>0]);
 		foreach($units as $unit_data){
 			$unit_name=$unit_data->unit_name;
 			$unit_option[]= ['value'=>$unit_data->id,'text'=>$unit_data->shortname,'unit_name'=>$unit_name];
@@ -167,6 +168,7 @@ class ItemsController extends AppController
         ]);
 		$old_image_name=$item->image;
         if ($this->request->is(['patch', 'post', 'put'])) {
+			
 			$file = $this->request->data['image'];	
 			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
@@ -217,7 +219,7 @@ class ItemsController extends AppController
         }
 		$itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200]);
 		$units = $this->Items->Units->find()->where(['is_deleted'=>0]);
-		$item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no']);
+		$item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no','freeze'=>0]);
 		foreach($units as $unit_data){
 			$unit_name=$unit_data->unit_name;
 			$unit_option[]= ['value'=>$unit_data->id,'text'=>$unit_data->shortname,'unit_name'=>$unit_name];
