@@ -342,13 +342,27 @@ class CartsController extends AppController
 			$isNextDayOrder=false;
 		}
 		
+		$current_time =  date('h:i a');
+		$delivery_time_schedule=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->where(['DeliveryTimes.time_from <' =>$current_time, 'DeliveryTimes.time_to >' =>$current_time])
+		->orWhere(['DeliveryTimes.time_from =' =>$current_time])
+		->orWhere(['DeliveryTimes.time_to =' =>$current_time])
+		->autoFields(true)->first();
 		
-		
+		if(empty($delivery_time_schedule))
+		{
+			$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->autoFields(true);
+		}
+		else{
 		$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
-		 ->autoFields(true);
-		 
-				
+		->where(['DeliveryTimes.id !=' =>$delivery_time_schedule->id])
+		->autoFields(true);
+		}
+		
 				
 		$carts=$this->Carts->find()
 				->where(['customer_id' => $customer_id])

@@ -354,7 +354,7 @@ if(!empty($device_token1))
 	(
 	'message' 	=> 'Thank You, your order delivered successfully',
 	'image' 	=> '',
-	'button_text'	=> 'Track Your Order',
+	'button_text'	=> 'See Your Order',
     'link' => 'jainthela://my_order?id='.$order_details->id,	
     'notification_id'	=> 1,
 	);
@@ -441,13 +441,20 @@ curl_close($ch);
 					$out_data=$this->Orders->Carts->Items->get($item_id);
 					$d=$out_data->out_of_stock;
 					$counts+=$d;
-				}
-				if($counts>0)
+				}				
+				$current_timess1=date('h', time());
+				$current_timess2=date('i', time());
+				$dots='.';
+				$current_timess=$current_timess1.$dots.$current_timess2;
+				$current_ampm=date('a', time());
+				$start = "06";
+				$end = "12";
+	if($current_ampm=='pm' &&  $current_timess > $start  && $current_timess < $end || $counts>0) 
 				{
 				    $delivery_date=date('Y-m-d', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
 				}
-				else{
-                     $delivery_date=date('Y-m-d');//delivery_date///
+    else{
+				$delivery_date=date('Y-m-d');//delivery_date///
 				}
 		
 			///////////////////////GET LAST ORDER NO/////////////////
