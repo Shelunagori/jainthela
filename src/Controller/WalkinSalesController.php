@@ -94,12 +94,14 @@ class WalkinSalesController extends AppController
 		$item_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.is_virtual'=>'no'])->contain(['Units']);
 		$items=[];
 		foreach($item_fetchs as $item_fetch){
-			$unit_name=$item_fetch->unit->unit_name;
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
+			@$unit_name=$item_fetch->unit->unit_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'unit_name'=>$unit_name];
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
 		}
         $drivers = $this->WalkinSales->Drivers->find('list', ['limit' => 200]);
         $jainThelaAdmins = $this->WalkinSales->JainThelaAdmins->find('list');
