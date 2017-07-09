@@ -21,8 +21,9 @@ class CashBacksController extends AppController
 	public function initialize()
 	{
 		parent::initialize();
-		$this->Auth->allow(['updateData', 'updateWinners']);
+		$this->Auth->allow();
 	}
+	
 	
 	public function cashBackTermCondition()
     {
@@ -59,7 +60,7 @@ class CashBacksController extends AppController
 	public function updateData($id = null)
     {
 		$this->viewBuilder()->layout('index_layout'); 
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$jain_thela_admin_id=1;
 		
 		$cash_back_details=$this->CashBacks->Users->find()->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
 		 

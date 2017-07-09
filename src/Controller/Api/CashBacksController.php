@@ -13,20 +13,14 @@ class CashBacksController extends AppController
 		->autoFields(true);
 		
 		
-		 foreach($fetch_cashback_details as $cash)
+		foreach($fetch_cashback_details as $cash)
 		{
-		
-			if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='no')
-			{
-			$cash->is_claim='win';
-			}	
-			else if($cash->won=='no' && $cash->flag==1 && $cash->claim=='no')
-			{
-			$cash->is_claim='wait';
-			}
-			else if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='yes')
-			{
+			if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='no'){
+				$cash->is_claim='win';
+			}else if($cash->won=='yes' && $cash->flag==2 && $cash->claim=='yes'){
 				$cash->is_claim='claimed';
+			}else if($cash->won=='no'){
+				$cash->is_claim='wait';
 			}
 		}
           
@@ -66,7 +60,7 @@ class CashBacksController extends AppController
 			$query = $this->CashBacks->Wallets->query();
 					$query->insert(['plan_id', 'advance', 'customer_id', 'order_no'])
 							->values([
-							'plan_id' => 3,
+							'plan_id' => 9,
 							'advance' => $advance,
 							'customer_id' => $customer_id,
 							'order_no' => 0
