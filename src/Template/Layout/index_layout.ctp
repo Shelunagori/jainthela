@@ -147,7 +147,7 @@
 						</li>
 						
 						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Manage Orders',array('controller'=>'Orders','action'=>'manage_order'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Manage Orders',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						
 						

@@ -38,7 +38,7 @@
 						<?php $sr_no=0; foreach ($orders as $order): ?>
 						<tr>
 							<td><?= ++$page_no ?></td>
-							<td><?= h($order->order_no) ?></td>
+							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
 								<?php
 									$customer_name=$order->customer->name;
@@ -52,9 +52,7 @@
 							<td><?= h($order->order_date) ?></td>
 							<td><?= h($order->status) ?></td>
 							<td class="actions">
-							   <a class="btn btn-xs view_order" order_id="<?php echo $order->id; ?>" >Details</a> 
 							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>"  href="#" >Delivere</a>
-							   <div class="setup"></div>
 							</td>
 						</tr>
 						<?php endforeach; ?>

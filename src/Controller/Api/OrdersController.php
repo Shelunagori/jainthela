@@ -70,7 +70,7 @@ class OrdersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
 		$orders_data = $this->Orders->find()
-		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status' => 'Delivered' ])
+		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status IN' => ['Delivered','Cancel'] ])
 		->order(['order_date' => 'DESC'])
 		->contain(['OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
