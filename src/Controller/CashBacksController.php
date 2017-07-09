@@ -18,7 +18,12 @@ class CashBacksController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-	 
+	public function initialize()
+	{
+		parent::initialize();
+		$this->Auth->allow(['updateData', 'updateWinners']);
+	}
+	
 	public function cashBackTermCondition()
     {
 		 $this->viewBuilder()->layout(''); 
