@@ -716,6 +716,10 @@ curl_close($ch);
 						
 					foreach($pending_order_data as $data)
 					{
+						if(!$data->customer_address){
+							$data->customer_address=(object)[];
+						}
+						
 						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
 						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
                         $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 
