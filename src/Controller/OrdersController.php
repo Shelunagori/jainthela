@@ -27,8 +27,7 @@ class OrdersController extends AppController
 		$this->paginate = [
             'contain' => ['Customers']
         ];
-        $orders = $this->paginate($this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id]));
-		
+        $orders = $this->paginate($this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id]));
 		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);
@@ -39,7 +38,7 @@ class OrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$curent_date=date('Y-m-d');
-		$orders = $this->Orders->find('all')->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
+		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
 		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);

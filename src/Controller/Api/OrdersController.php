@@ -103,11 +103,11 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 		$order_id=$this->request->query('order_id');
-		$cancel_id=$this->request->query('cancel_id');
+		@$cancel_id=$this->request->query('cancel_id');
 				$order_cancel = $this->Orders->query();
 					$result = $order_cancel->update()
 						->set(['status' => 'Cancel',
-						'cancel_id' => $Cancel_id])
+						'cancel_id' => $cancel_id])
 						->where(['id' => $order_id])
 						->execute();
 						

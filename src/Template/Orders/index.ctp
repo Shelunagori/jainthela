@@ -43,6 +43,7 @@
 								<?php
 									$customer_name=$order->customer->name;
 									$customer_mobile=$order->customer->mobile;
+									$status=$order->status;
 								?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
@@ -50,9 +51,12 @@
 							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
 							<td><?= h($order->order_type) ?></td>
 							<td><?= h($order->order_date) ?></td>
-							<td><?= h($order->status) ?></td>
+							<td><?= h($status) ?></td>
+							
 							<td class="actions">
-							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>"  href="#" >Delivere</a>
+							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
+							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
+							<?php } ?> 
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -145,6 +149,7 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
+				location.reload();
  				//$('.setup').html(data);
 			}	
 		});

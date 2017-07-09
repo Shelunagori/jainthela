@@ -171,7 +171,8 @@ $(document).ready(function() {
 
 	$(".attribute").die().live('change',function(){
 		var raw_attr_name = $('option:selected', this).attr('unit_name');
-		$(this).closest('tr').find('.msg_shw').html("per quantity in "+raw_attr_name);
+		
+$(this).closest('tr').find('.msg_shw').html(" in " +raw_attr_name);
 	});
 
 });

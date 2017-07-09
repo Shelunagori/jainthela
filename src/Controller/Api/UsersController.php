@@ -14,8 +14,9 @@ class UsersController extends AppController
 		
 		$status=true;
 		$error="";
-		$this->set(compact('status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas'));
-		$this->set('_serialize', ['status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas']);
+		$promo_code_to_be=false;
+		$this->set(compact('status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas', 'promo_code_to_be'));
+		$this->set('_serialize', ['status', 'error', 'faq', 'privacy', 'tcs', 'aboutus', 'company_details', 'supplier_areas', 'promo_code_to_be']);
 	}
 	public function currentApiVersion()
 	{
