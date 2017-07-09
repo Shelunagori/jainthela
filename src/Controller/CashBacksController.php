@@ -18,6 +18,11 @@ class CashBacksController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+	 
+	public function cashBackTermCondition()
+    {
+		 $this->viewBuilder()->layout(''); 
+	}	
     public function index()
     {
         $this->paginate = [

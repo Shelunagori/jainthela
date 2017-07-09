@@ -71,9 +71,9 @@ class CustomersController extends AppController
 					  }
 					
 				}
-				$promo_code_to_be='hide';
-				$this->set(compact('status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be'));
-		        $this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be']);
+				
+				$this->set(compact('status', 'error', 'new_signup', 'customerDetails'));
+		        $this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails']);
 		}
 		else if(!empty($mobile_no) && !empty($otp) && !empty($signup))
 		{
@@ -87,9 +87,9 @@ class CustomersController extends AppController
 					$status=true;
 					$new_signup='';
 					$error='Successfully Login';
-					$promo_code_to_be='hide';
-					$this->set(compact('status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be'));
-					$this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be']);
+					
+					$this->set(compact('status', 'error', 'new_signup', 'customerDetails'));
+					$this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails']);
 				}
 				else
 				{
@@ -113,9 +113,8 @@ class CustomersController extends AppController
 					$status=true;
 					$new_signup='';
 					$error='Successfully Login';
-					$promo_code_to_be='hide';
-					$this->set(compact('status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be'));
-					$this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails', 'promo_code_to_be']);
+					$this->set(compact('status', 'error', 'new_signup', 'customerDetails'));
+					$this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails']);
 				}
 				else
 				{
@@ -130,11 +129,10 @@ class CustomersController extends AppController
 		}
 		else
 		{
-			$promo_code_to_be='hide';
 			$status=false;
 			$error="Enter Mobile No.";
-			$this->set(compact('status', 'error', 'promo_code_to_be'));
-		    $this->set('_serialize', ['status', 'error', 'promo_code_to_be']);
+			$this->set(compact('status', 'error'));
+		    $this->set('_serialize', ['status', 'error']);
 			
 		}
     }

@@ -10,8 +10,7 @@
 							<B>Walk In Sales</B>
 							</span>
 						</div>
-						<div class="actions">
-					
+						<div class="actions">					
 					
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
 					
@@ -227,7 +226,7 @@ $(document).ready(function() {
 							});
 					$(this).find("td:nth-child(5) input").attr({name:"walkin_sale_details["+i+"][amount]", id:"walkin_sale_details-"+i+"-amount"}).rules('add', {
 								required: true
-							}); 
+							});
 					i++;
 				});
 			}
@@ -280,7 +279,7 @@ $(document).ready(function() {
 		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
 		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');
 		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
-		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
+		//$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
 		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
