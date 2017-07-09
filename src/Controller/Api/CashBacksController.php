@@ -36,8 +36,9 @@ class CashBacksController extends AppController
 		
 		$status=true;
 		$error="";
+		$cash_back_line="Jain Thela Offer 100% CashBack on every order of Rs. 300";
         $this->set(compact('status', 'error','message','cashback_info','fetch_cashback_details','fetch_cashback_win_details'));
-        $this->set('_serialize', ['status', 'error','message','cashback_info', 'fetch_cashback_details','fetch_cashback_win_details']);
+        $this->set('_serialize', ['status', 'error','message','cashback_info', 'fetch_cashback_details','fetch_cashback_win_details','cash_back_line']);
    
     }
 	public function claimOnCashBack()
