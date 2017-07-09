@@ -196,7 +196,7 @@ $(document).ready(function() {
 		if(unt_attr_name=='kg'){
 				var quantity_factor = $(".qunt_factor option:selected").val();
 				var total = quantity_factor*limit;
-				$("#msg2").html(total +' '+ unt_attr_name);
+				$("#msg2").html(limit +' '+ unt_attr_name);
 			}else{
 				$("#msg2").html(limit +' '+ unt_attr_name);
 			}

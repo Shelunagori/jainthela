@@ -115,6 +115,10 @@ class ItemsController extends AppController
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if($unit_name=='kg'){
 				$minimum_quantity_factor=$this->request->data['minimum_quantity_factor'];
+				if($minimum_quantity_factor==0.10){
+					$item->print_quantity='100 gm';
+					$item->minimum_quantity_factor=$minimum_quantity_factor;	
+				}
 				if($minimum_quantity_factor==0.25){	
 					$item->print_quantity='250 gm';
 					$item->minimum_quantity_factor=$minimum_quantity_factor;	
@@ -190,6 +194,10 @@ class ItemsController extends AppController
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if($unit_name=='kg'){
 				$minimum_quantity_factor=$this->request->data['minimum_quantity_factor'];
+				if($minimum_quantity_factor==0.10){	
+					$item->print_quantity='100 gm';
+					$item->minimum_quantity_factor=$minimum_quantity_factor;	
+				}
 				if($minimum_quantity_factor==0.25){	
 					$item->print_quantity='250 gm';
 					$item->minimum_quantity_factor=$minimum_quantity_factor;	
@@ -229,10 +237,10 @@ class ItemsController extends AppController
     }
 
     /**
-     * Delete method
-     *
      * @param string|null $id Item id.
      * @return \Cake\Http\Response|null Redirects to index.
+     *fsf
+     *  ete method
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
