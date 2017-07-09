@@ -279,7 +279,7 @@ $(document).ready(function() {
 		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
 		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
 		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');
-		$(this).closest('tr').find('.msg_shw').html("selling factor: "+ raw_attr_name);
+		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
 		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
@@ -294,7 +294,7 @@ $(document).ready(function() {
 		var unit_name = $(this).attr('unit_name');
 		if(!unit_name){ unit_name=0; }
 		var g_total = quant*minimum_quantity_factor;
-		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
+		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
 		$(this).closest('tr').find('.mains').val(g_total);
 	});
 });

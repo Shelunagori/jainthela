@@ -40,11 +40,12 @@
 							$parent_item_id=$item->parent_item_id;
 							$is_virtual=$item->is_virtual;
 							if($unit_name=='kg'){
-								$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
-								$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
-								$factor_select[]= ['value'=>1,'text'=>'1 kg'];
+								$factor_select1[]= ['value'=>0.10,'text'=>'100 gm'];
+								$factor_select1[]= ['value'=>0.25,'text'=>'250 gm'];
+								$factor_select1[]= ['value'=>0.50,'text'=>'500 gm'];
+								$factor_select1[]= ['value'=>1,'text'=>'1 kg'];
 							?>
-							<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm', 'value' =>$minimum_quantity_factor]); 
+							<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select1,'class'=>'form-control input-sm', 'value' =>$minimum_quantity_factor, 'disabled'=>'disabled']); 
 							}
 						?>
 					</div>
@@ -202,6 +203,7 @@ $(document).ready(function() {
 });
 </script>
 <?php 
+	$factor_select[]= ['value'=>0.10,'text'=>'100 gm'];
 	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
 	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
 	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
