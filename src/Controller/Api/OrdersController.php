@@ -773,7 +773,7 @@ curl_close($ch);
 		$order_id=$this->request->query('order_id');
 		
 		$view_pending_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
-               return $q->select(['image_path' => $q->func()->concat(['htp://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+               return $q->select(['image_path' => $q->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);
 			
 			
