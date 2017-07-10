@@ -350,17 +350,18 @@ class CartsController extends AppController
 		->orWhere(['DeliveryTimes.time_to =' =>$current_time])
 		->autoFields(true)->first();
 		
-		if(empty($delivery_time_schedule))
+		if(!empty($delivery_time_schedule))
 		{
 			$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
-		->autoFields(true);
-		}
-		else{
-		$delivery_time=$this->Carts->DeliveryTimes->find()
-		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->where(['DeliveryTimes.id !=' =>$delivery_time_schedule->id])
 		->autoFields(true);
+		}
+		else if(empty($delivery_time_schedule)){
+			$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->autoFields(true);
+		
 		}
 		
 				

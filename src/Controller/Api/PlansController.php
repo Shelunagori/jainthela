@@ -63,11 +63,21 @@ class PlansController extends AppController
 						->set(['no' => $new_order_no])
 						->where(['id' => 1])
 						->execute();
-		
-		$status=true;
+						
+				
+if(!empty($plan_details->toArray()))
+{
+$status=true;
 		$error="";
         $this->set(compact('status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details'));
         $this->set('_serialize', ['status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details']);
-    }
+}	
+else{
+	$status=false;
+		$error="";
+        $this->set(compact('status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details'));
+        $this->set('_serialize', ['status', 'error', 'wallet_balance','cart_count','wallet_order_id','plan_image', 'plan_details']);
+}
+		}
 
 }

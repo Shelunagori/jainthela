@@ -707,7 +707,7 @@ curl_close($ch);
 		if($is_login=='warehouse')
 		{
 		$pending_order_data = $this->Orders->find()
-						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
+						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status' =>'In Process'])
 						->order(['order_date' => 'DESC'])
 						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
@@ -776,7 +776,6 @@ curl_close($ch);
 		$view_pending_details_data->curent_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->curent_date));
 	 	$view_pending_details_data->order_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->order_date));
 	    $view_pending_details_data->delivery_date=date('D M j, Y H:i a', strtotime($view_pending_details_data->delivery_date));
-		
 			
 		$details=$view_pending_details_data->order_details;
 		$i=0;
