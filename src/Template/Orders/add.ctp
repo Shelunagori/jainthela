@@ -74,7 +74,7 @@
 									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
 									Amount From Wallet</td>
 									<td>
-									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
+									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
 									</td>
 									<td></td>
 								</tr>
@@ -297,6 +297,20 @@ $(document).ready(function() {
 		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
 		$(this).closest('tr').find('.mains').val(g_total);
 	});
+	
+	$(document).on('keyup', '.number', function(e)
+    { 
+		var mdl=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(mdl.match(numbers))
+		{
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
+    });
 });
 </script>
 <table id="sample_table" style="display:none;" >

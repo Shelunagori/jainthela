@@ -171,8 +171,19 @@ $(document).ready(function() {
 
 	$(".attribute").die().live('change',function(){
 		var raw_attr_name = $('option:selected', this).attr('unit_name');
-		
-$(this).closest('tr').find('.msg_shw').html(" in " +raw_attr_name);
+		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_name+'');
+$(this).closest('tr').find('.msg_shw').html("Selling Factor in : " +raw_attr_name);
+	});
+	
+	$(".quant").die().live('keyup',function(){
+		var quant = parseFloat($(this).val());
+		if(!quant){ quant=0; }
+		var minimum_quantity_factor = parseFloat($(this).attr('minimum_quantity_factor'));
+		if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+		var unit_name = $(this).attr('unit_name');
+		if(!unit_name){ unit_name=0; }
+		var g_total = quant*minimum_quantity_factor;
+		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
 	});
 
 });
@@ -183,10 +194,11 @@ $(this).closest('tr').find('.msg_shw').html(" in " +raw_attr_name);
 					<td align="center" width="1px"></td>
 				    <td>
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity']); ?>
-						<span class="msg_shw" style="color:blue;font-size:12px;"></span>	
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number quant','placeholder'=>'Quantity']); ?>
+						<span class="msg_shw2" style="color:blue;font-size:12px;"></span>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>

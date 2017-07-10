@@ -183,7 +183,7 @@ $(document).ready(function() {
  	});
 });
 </script>
-<?php 
+<?php
 	$factor_select[]= ['value'=>0.10,'text'=>'100 gm'];
 	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
 	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
