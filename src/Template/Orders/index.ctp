@@ -57,6 +57,7 @@
 							<td class="actions">
 							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
 							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
+							   <a class="btn blue btn-xs cncl" order_id="<?php echo $order->id; ?>" >Cancel</a>
 							<?php } ?> 
 							</td>
 						</tr>
@@ -114,6 +115,26 @@ $(document).ready(function() {
 	$('.close').die().live('click',function() {
 		$('#popup').hide();
 	});
+	
+	$('.cncl').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+ 		$('#popup').find('div.modal-body').html('Loading...');
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "cancel_box"]); ?>";
+		url=url+'/'+order_id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});	
+	});
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
+	
+	
 	
 	$('.goc').die().live('click',function() 
 	{ 

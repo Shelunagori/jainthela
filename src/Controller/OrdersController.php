@@ -60,6 +60,16 @@ class OrdersController extends AppController
         $this->set('order', $order);
         $this->set('_serialize', ['order']);
     }
+	
+	public function cancelBox($id = null)
+    {
+		$this->viewBuilder()->layout('');
+        $order = $this->Orders->get($id);
+		$CancelReasons=$this->Orders->CancelReasons->find('list');
+        $this->set('order', $order);
+        $this->set('CancelReasons', $CancelReasons);
+        $this->set('_serialize', ['order', 'CancelReasons']);
+    }
 
 	
 	public function ajaxOrderView()
