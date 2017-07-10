@@ -24,7 +24,6 @@
 						<tr>
 							<th>Sr</th>
 							<th>Name</th>
-							<th>Mobile No.</th>
 							<th>Email</th>
 							<th>Address</th>
 							<th>Bulk Booking Discount %</th>
@@ -35,11 +34,17 @@
 						<?php $i=0;
 						foreach ($customers as $customer): 
 						$i++;
+						$name=$customer->name;
+						$mobile=$customer->mobile;
+						if(!empty($mobile)){
+							$show_name=$name.' ('.$mobile.')';
+						}else{
+							$show_name=$name;
+						}
 						?>
 						<tr>
 							<td><?= $i ?></td>
-							<td><?= h($customer->name) ?></td>
-							<td><?= h($customer->mobile) ?></td>
+							<td><?= h($show_name) ?></td>
 							<td><?= h($customer->email) ?></td>
 							<td><?= h($customer->address) ?></td>
 							<td><?= h($customer->bulk_booking_discount_percent) ?></td>

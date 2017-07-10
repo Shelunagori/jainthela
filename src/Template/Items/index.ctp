@@ -85,7 +85,7 @@
 									$minimum_quantity_factor=$item->minimum_quantity_factor; 
 									$actual_stock=$minimum_stock*$minimum_quantity_factor;
 								?>
-								<?php echo $actual_stock.' '.$unit_name; ?>
+								<?php echo $minimum_stock.' '.$unit_name; ?>
 							</td>
 							<td>
 								<?php //$this->Number->format($item->minimum_quantity_factor) ?>

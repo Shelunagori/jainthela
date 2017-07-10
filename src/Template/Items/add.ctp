@@ -155,18 +155,20 @@ $(document).ready(function() {
 				var data=$("#data_fetch").html();
 				$(".set").html(data);
 			}else{
-				$(".set").html('');
+				var data=$("#data_fetch2").html();
+				$(".set").html(data);
 			}
  	});
 	$(".order_limit").die().live('keyup',function(){
 	var unt_attr_name = $('.attribute option:selected').attr('unit_name');
 	var limit = $(".order_limit").val();
+	var final_value = $(this).val();
 		if(unt_attr_name=='kg'){
 				var quantity_factor = $(".qunt_factor option:selected").val();
 				var total = quantity_factor*limit;
-				$("#msg2").html(total +' '+ unt_attr_name);
+				$("#msg2").html(final_value +' '+ unt_attr_name);
 			}else{
-				$("#msg2").html(limit +' '+ unt_attr_name);
+				$("#msg2").html(final_value +' '+ unt_attr_name);
 			}
 	});
 
@@ -174,14 +176,15 @@ $(document).ready(function() {
 		var virtual = $(this).val();
 			if(virtual=='yes'){
 				var data=$("#fetch").html();
-				$(".set2").html(data);
+ 				$(".set2").html(data);
 			}else{
 				$(".set2").html('');
 			}
  	});
 });
 </script>
-<?php 
+<?php
+	$factor_select[]= ['value'=>0.10,'text'=>'100 gm'];
 	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
 	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
 	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
@@ -190,6 +193,10 @@ $(document).ready(function() {
 	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm qunt_factor']); ?>
 </div>
 
+<div id="data_fetch2" style="display:none;">
+	<?php echo $this->Form->control('minimum_quantity_factor', ['class'=>'form-control input-sm qunt_factor', 'placeholder'=>'Minimum Quantity Factor']); ?>
+</div>
+
 <div id="fetch" style="display:none;">
-	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs,'class'=>'form-control input-sm']); ?>
+	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs, 'class'=>'form-control input-sm ']); ?>
 </div>

@@ -33,6 +33,7 @@
 									<div class="col-md-2">
 										<label class="control-label">Quantity<span class="required" aria-require>*</span></label>
 										<?php echo $this->Form->control('quantity',['placeholder'=>'quantity','class'=>'form-control input-sm valid main_quantity calculation_amount','label'=>false,'type'=>'text']); ?>
+										<span class="msg_shw3" style="color:blue;font-size:10px;"></span>
 									</div>
 								 </div>
 								 <div class="col-md-6">
@@ -65,13 +66,6 @@
 												</td>
 												
 												<td colspan="4"></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td>Waste Quantity</td>
-												<td>
-													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'remaining form-control input-sm number valid','placeholder'=>'waste Quantity','value'=>0]); ?>	
-												</td>
 											</tr>
 										</tfoot>
 									</table>
@@ -249,6 +243,7 @@ $(document).ready(function() {
 		var remaining = main_quantity-grand_total;
 		$(".remaining").val(remaining.toFixed(2));
 	}
+	
 
 	$(document).on('keyup', '.number', function(e)
     { 
@@ -269,6 +264,8 @@ $(document).ready(function() {
 		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
 		var update = $(this);
 		var itm_val = $(this).val();
+		var unit_name = $('option:selected', this).attr('unit_name');
+		$('.main_quantity').attr('unit_name', ''+unit_name+'');
 		var ware_house = $(".ware_house").val();
  		var m_data = new FormData();
 		m_data.append('itm_val',itm_val);
@@ -283,8 +280,8 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
-				$("#set").html(data);
-				$('.valid').attr('max',data);
+				$("#set").html(data+" "+unit_name);
+				//$('.valid').attr('max',data);
 				/* $(update).closest('div').find('#set').html(data);
 				$(update).closest('tr').find('.stock_available').html(data);
 				$(update).closest('tr').find('.valid').attr('max',data); */
@@ -298,7 +295,13 @@ $(document).ready(function() {
 		var unit_name = $('option:selected', this).attr('unit_name');
 		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
 		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
-		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+		//$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+	});
+	
+	$(".main_quantity").die().live('keyup',function(){
+		var use_quantity = $(this).val(); 
+		var unit_name = $(this).attr('unit_name');
+		$('.msg_shw3').html(use_quantity+" "+unit_name);
 	});
 });
 

@@ -70,7 +70,7 @@ class OrdersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
 		$orders_data = $this->Orders->find()
-		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status' => 'Delivered' ])
+		->where(['customer_id' => $customer_id, 'jain_thela_admin_id' => $jain_thela_admin_id, 'status IN' => ['Delivered','Cancel'] ])
 		->order(['order_date' => 'DESC'])
 		->contain(['OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
@@ -103,11 +103,11 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
 		$customer_id=$this->request->query('customer_id');
 		$order_id=$this->request->query('order_id');
-		$cancel_id=$this->request->query('cancel_id');
+		@$cancel_id=$this->request->query('cancel_id');
 				$order_cancel = $this->Orders->query();
 					$result = $order_cancel->update()
 						->set(['status' => 'Cancel',
-						'cancel_id' => $Cancel_id])
+						'cancel_id' => $cancel_id])
 						->where(['id' => $order_id])
 						->execute();
 						
@@ -716,6 +716,10 @@ curl_close($ch);
 						
 					foreach($pending_order_data as $data)
 					{
+						if(!$data->customer_address){
+							$data->customer_address=(object)[];
+						}
+						
 						$data->created_date=date('D M j, Y H:i a', strtotime($data->order_date));
 						$data->order_date=date('D M j, Y H:i a', strtotime($data->order_date));
                         $data->delivery_date=date('D M j, Y H:i a', strtotime($data->delivery_date)); 

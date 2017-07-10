@@ -93,6 +93,7 @@ class ItemsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $item = $this->Items->newEntity();
         if ($this->request->is('post')) {
+			
 			$file = $this->request->data['image'];
 			$file_name=$file['name'];			
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
@@ -114,6 +115,10 @@ class ItemsController extends AppController
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if($unit_name=='kg'){
 				$minimum_quantity_factor=$this->request->data['minimum_quantity_factor'];
+				if($minimum_quantity_factor==0.10){
+					$item->print_quantity='100 gm';
+					$item->minimum_quantity_factor=$minimum_quantity_factor;	
+				}
 				if($minimum_quantity_factor==0.25){	
 					$item->print_quantity='250 gm';
 					$item->minimum_quantity_factor=$minimum_quantity_factor;	
@@ -142,7 +147,7 @@ class ItemsController extends AppController
 		
         $itemCategories = $this->Items->ItemCategories->find('list')->where(['is_deleted'=>0,'jain_thela_admin_id'=>$jain_thela_admin_id]);
         $units = $this->Items->Units->find()->where(['is_deleted'=>0]);
-        $item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no']);
+        $item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no','freeze'=>0]);
 		foreach($units as $unit_data){
 			$unit_name=$unit_data->unit_name;
 			$unit_option[]= ['value'=>$unit_data->id,'text'=>$unit_data->shortname,'unit_name'=>$unit_name];
@@ -167,6 +172,7 @@ class ItemsController extends AppController
         ]);
 		$old_image_name=$item->image;
         if ($this->request->is(['patch', 'post', 'put'])) {
+			
 			$file = $this->request->data['image'];	
 			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
@@ -188,6 +194,10 @@ class ItemsController extends AppController
             $item->jain_thela_admin_id=$jain_thela_admin_id;
 			if($unit_name=='kg'){
 				$minimum_quantity_factor=$this->request->data['minimum_quantity_factor'];
+				if($minimum_quantity_factor==0.10){	
+					$item->print_quantity='100 gm';
+					$item->minimum_quantity_factor=$minimum_quantity_factor;	
+				}
 				if($minimum_quantity_factor==0.25){	
 					$item->print_quantity='250 gm';
 					$item->minimum_quantity_factor=$minimum_quantity_factor;	
@@ -217,7 +227,7 @@ class ItemsController extends AppController
         }
 		$itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200]);
 		$units = $this->Items->Units->find()->where(['is_deleted'=>0]);
-		$item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no']);
+		$item_fetchs = $this->Items->find('list')->where(['is_virtual'=> 'no','freeze'=>0]);
 		foreach($units as $unit_data){
 			$unit_name=$unit_data->unit_name;
 			$unit_option[]= ['value'=>$unit_data->id,'text'=>$unit_data->shortname,'unit_name'=>$unit_name];
@@ -227,10 +237,10 @@ class ItemsController extends AppController
     }
 
     /**
-     * Delete method
-     *
      * @param string|null $id Item id.
      * @return \Cake\Http\Response|null Redirects to index.
+     *fsf
+     *  ete method
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

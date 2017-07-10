@@ -38,11 +38,12 @@
 						<?php $sr_no=0; foreach ($orders as $order): ?>
 						<tr>
 							<td><?= ++$page_no ?></td>
-							<td><?= h($order->order_no) ?></td>
+							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
 								<?php
 									$customer_name=$order->customer->name;
 									$customer_mobile=$order->customer->mobile;
+									$status=$order->status;
 								?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
@@ -50,11 +51,12 @@
 							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
 							<td><?= h($order->order_type) ?></td>
 							<td><?= h($order->order_date) ?></td>
-							<td><?= h($order->status) ?></td>
+							<td><?= h($status) ?></td>
+							
 							<td class="actions">
-							   <a class="btn btn-xs view_order" order_id="<?php echo $order->id; ?>" >Details</a> 
-							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>"  href="#" >Delivere</a>
-							   <div class="setup"></div>
+							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
+							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
+							<?php } ?> 
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -147,6 +149,7 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
+				location.reload();
  				//$('.setup').html(data);
 			}	
 		});

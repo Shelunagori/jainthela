@@ -74,7 +74,7 @@
 							<td>
 								<?php echo  $this->Form->control('items['.$i.'][discount_per]',['class'=>'form-control input-sm  discount_per','placeholder'=>'Print Rate', 'value'=>$item->discount_per,'label'=>false]); ?></td>
 							<td>
-								<?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm  sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false, 'readonly']); ?>
+								<?php echo  $this->Form->control('items['.$i.'][sales_rate]',['class'=>'form-control input-sm  sales_rate','placeholder'=>'Print Rate', 'value'=>$item->sales_rate,'label'=>false]); ?>
 							</td>
 							<td>
 								<?php echo  $this->Form->control('items['.$i.'][offline_sales_rate]',['class'=>'form-control input-sm  offline_sales_rate','placeholder'=>'offline Print Rate', 'value'=>$item->offline_sales_rate,'label'=>false]); ?>
@@ -85,11 +85,6 @@
 						</tr>
 						<?php $i++; endforeach; ?>
 						
-						
-						<tr>
-						<td colspan="9">
-						
-						</td></tr>
 						
 					</tbody>
 				</table>
@@ -140,6 +135,19 @@ $(document).ready(function(){
 		 sale_amt=print_rate-t_amount;
 		 $(this).closest('tr').find('.sales_rate').val((sale_amt).toFixed(2));
 		 $(this).closest('tr').find('.offline_sales_rate').val((sale_amt).toFixed(2));
+	});
+	
+	$(".sales_rate").die().live("keyup",function(){
+		 var sales_rate=$(this).val();
+		 print_rate=$(this).closest('tr').find('.print_rate').val();
+		 //discount_per=$(this).closest('tr').find('.discount_per').val();
+		 
+		 var diff_amount=print_rate-sales_rate;
+		 
+		 var discount_per=diff_amount*100/sales_rate;
+		 
+		 
+		 $(this).closest('tr').find('.discount_per').val((discount_per).toFixed(2));
 	});
 
 	$(".all").die().live('change',function(){

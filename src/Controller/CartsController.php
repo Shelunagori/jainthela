@@ -29,6 +29,21 @@ class CartsController extends AppController
         $this->set('_serialize', ['carts']);
     }
 
+	//////USE///FOR////CRONJOB///START///////
+	public function freezeCartRemove()
+    {
+        $freeze_details = $this->Carts->Items->find()->where(['ready_to_sale'=>'No'])->orWhere(['freeze'=>1]);	
+		foreach($freeze_details as $freeze_detail){
+				$item_id=$freeze_detail->id;
+				$query = $this->Carts->query();
+				$result = $query->delete()
+				->where(['item_id' => $item_id])
+				->execute();
+		}
+		exit;
+    }
+	//////USE///FOR////CRONJOB///END////////
+
     /**
      * View method
      *

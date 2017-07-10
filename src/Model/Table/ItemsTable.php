@@ -74,11 +74,11 @@ class ItemsTable extends Table
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+/* 
         $validator
             ->requirePresence('alias_name', 'create')
             ->notEmpty('alias_name');
-
+ */
         $validator
             ->requirePresence('description', 'create')
             ->notEmpty('description');
@@ -87,12 +87,12 @@ class ItemsTable extends Table
             ->decimal('minimum_stock')
             ->requirePresence('minimum_stock', 'create')
             ->notEmpty('minimum_stock');
-
+/* 
         $validator
             ->decimal('minimum_quantity_factor')
             ->requirePresence('minimum_quantity_factor', 'create')
             ->notEmpty('minimum_quantity_factor');
-
+ */
         return $validator;
     }
 

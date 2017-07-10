@@ -18,6 +18,17 @@ class CashBacksController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+	public function initialize()
+	{
+		parent::initialize();
+		$this->Auth->allow();
+	}
+	
+	
+	public function cashBackTermCondition()
+    {
+		 $this->viewBuilder()->layout(''); 
+	}	
     public function index()
     {
         $this->paginate = [
@@ -49,7 +60,7 @@ class CashBacksController extends AppController
 	public function updateData($id = null)
     {
 		$this->viewBuilder()->layout('index_layout'); 
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$jain_thela_admin_id=1;
 		
 		$cash_back_details=$this->CashBacks->Users->find()->where(['jain_thela_admin_id'=>$jain_thela_admin_id]);
 		 

@@ -71,6 +71,7 @@ class CustomersController extends AppController
 					  }
 					
 				}
+				
 				$this->set(compact('status', 'error', 'new_signup', 'customerDetails'));
 		        $this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails']);
 		}
@@ -86,6 +87,7 @@ class CustomersController extends AppController
 					$status=true;
 					$new_signup='';
 					$error='Successfully Login';
+					
 					$this->set(compact('status', 'error', 'new_signup', 'customerDetails'));
 					$this->set('_serialize', ['status', 'error', 'new_signup', 'customerDetails']);
 				}

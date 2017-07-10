@@ -15,12 +15,12 @@
 					</td>
 				</tr>
 				<tr style="background-color:#F98630; color:#fff;">
-					<th style="text-align:center;"><label><strong>#</strong></label></th>
-					<th style="text-align:center;"><label><strong>Image</strong></label></th>
-					<th style="text-align:center;"><label><strong>Item Name</strong></label></th>
-					<th style="text-align:center;"><label><strong>QTY</strong></label></th>
-					<th style="text-align:center;"><label><strong>Actual QTY</strong></label></th>
-					<th style="text-align:center;"><label><strong>Amount</strong></label></th>
+					<th style="text-align:center;">#</th>
+					<th style="text-align:center;">Image</th>
+					<th style="text-align:center;">Item Name</th>
+					<th style="text-align:center;">QTY</th>
+					<th style="text-align:center;">Actual QTY</th>
+					<th style="text-align:center;">Amount</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -47,7 +47,7 @@
 					<td align="center">
 						<?php echo $this->Html->image('/img/item_images/'.$image, ['height' => '40px', 'width'=>'40px', 'class'=>'img-rounded img-responsive']); ?>
 					</td>
-					<td style="text-align:center;"><?= h($show_item) ?></td>
+					<td style="text-align:left;"><?= h($show_item) ?></td>
 					<td style="text-align:center;"><?= h($show_quantity) ?></td>
 					<td style="text-align:center;"><?= h($show_quantity) ?></td>
 					<td style="text-align:center;"><?= h($amount) ?></td>
@@ -60,6 +60,7 @@
 				$online_amount=$order->online_amount;
 				$amount_from_wallet=$order->amount_from_wallet;
 				$pay_amount=$order->pay_amount;
+				$status=$order->status;
 				$grand_total=@$total_rate+$delivery_charge;
 				?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
@@ -114,7 +115,14 @@
 			
 				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
 					<td colspan="4">&nbsp;</td>
-					<td align="right"><b>Total Paid</b></td>
+					<td align="right">
+						<b>
+						<?php if($status=='Delivered'){ ?>
+							Total Paid
+						<?php }else{ ?>
+							Due
+						<?php } ?>
+						</b></td>
 					<td align="center"><b><?= h($pay_amount) ?></b></td>
 				</tr>
 			</tbody>

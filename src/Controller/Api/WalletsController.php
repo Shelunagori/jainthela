@@ -9,7 +9,7 @@ class WalletsController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		$wallet_details = $this->Wallets->find()
 		->where(['Wallets.customer_id'=>$customer_id])
-		->contain(['Plans'])
+		->contain(['Plans','Orders'])
 		->order(['Wallets.id'=>'DESC'])
 		->autoFields(true);
 		
@@ -55,11 +55,11 @@ class WalletsController extends AppController
 		else
 		{
 			foreach($query as $fetch_query)
-		      {
+		    {
 			$advance=$fetch_query->total_in;
 			$consumed=$fetch_query->total_out;
 			$wallet_balance=$advance-$consumed;
-		      }
+		    }
 		}		
 		
 		

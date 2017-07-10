@@ -11,6 +11,7 @@
 				<div class="actions">
 				</div>
 			</div>
+			<?php $unit_name=$item->unit->unit_name; ?>
 			<div class="portlet-body">
 			<?= $this->Form->create($item,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="row">
@@ -20,8 +21,13 @@
 					<div class="col-md-3">
 						<?php echo $this->Form->control('alias_name',['class'=>'form-control input-sm','placeholder'=>'Alias Name']); ?>
 					</div>
+					
 					<div class="col-md-3">
-						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $unit_option,'class'=>'attribute form-control input-sm']); ?>
+						<?php if($unit_name=='kg'){ ?>
+						 
+							<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $unit_option,'class'=>'attribute form-control input-sm', 'style'=>'display:none']);  ?>	
+						<?php echo $unit_name; }else{ ?>
+						<?php echo $this->Form->control('unit_id', ['empty'=>'--select--','options' => $unit_option,'class'=>'attribute form-control input-sm']); } ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->control('item_category_id', ['empty'=>'--select--','options' => $itemCategories,'class'=>'form-control input-sm','required']); ?>
@@ -40,11 +46,16 @@
 							$parent_item_id=$item->parent_item_id;
 							$is_virtual=$item->is_virtual;
 							if($unit_name=='kg'){
-								$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
-								$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
-								$factor_select[]= ['value'=>1,'text'=>'1 kg'];
+								$factor_select1[]= ['value'=>0.10,'text'=>'100 gm'];
+								$factor_select1[]= ['value'=>0.25,'text'=>'250 gm'];
+								$factor_select1[]= ['value'=>0.50,'text'=>'500 gm'];
+								$factor_select1[]= ['value'=>1,'text'=>'1 kg'];
 							?>
-							<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm', 'value' =>$minimum_quantity_factor]); 
+							<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select1,'class'=>'form-control input-sm', 'value' =>$minimum_quantity_factor]); 
+							}else{
+								?>
+								<?php echo $this->Form->control('minimum_quantity_factor', ['class'=>'form-control input-sm qunt_factor', 'placeholder'=>'Minimum Quantity Factor']); ?>
+								<?php
 							}
 						?>
 					</div>
@@ -174,7 +185,8 @@ $(document).ready(function() {
 				var data=$("#data_fetch").html();
 				$(".set").html(data);
 			}else{
-				$(".set").html('');
+				var data=$("#data_fetch2").html();
+				$(".set").html(data);
 			}
  	});
 	
@@ -184,7 +196,7 @@ $(document).ready(function() {
 		if(unt_attr_name=='kg'){
 				var quantity_factor = $(".qunt_factor option:selected").val();
 				var total = quantity_factor*limit;
-				$("#msg2").html(total +' '+ unt_attr_name);
+				$("#msg2").html(limit +' '+ unt_attr_name);
 			}else{
 				$("#msg2").html(limit +' '+ unt_attr_name);
 			}
@@ -202,12 +214,17 @@ $(document).ready(function() {
 });
 </script>
 <?php 
+	$factor_select[]= ['value'=>0.10,'text'=>'100 gm'];
 	$factor_select[]= ['value'=>0.25,'text'=>'250 gm'];
 	$factor_select[]= ['value'=>0.50,'text'=>'500 gm'];
 	$factor_select[]= ['value'=>1,'text'=>'1 kg'];
 ?>
 <div id="data_fetch" style="display:none;">
 	<?php echo $this->Form->control('minimum_quantity_factor', ['options' => $factor_select,'class'=>'form-control input-sm qunt_factor']); ?>
+</div>
+
+<div id="data_fetch2" style="display:none;">
+	<?php echo $this->Form->control('minimum_quantity_factor', ['class'=>'form-control input-sm qunt_factor', 'placeholder'=>'Minimum Quantity Factor']); ?>
 </div>
 
 <div id="fetch" style="display:none;">
