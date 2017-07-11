@@ -57,7 +57,7 @@ select
 	cursor:pointer;
 }
 </style>  
-<body class="login" style="background-color:#364150 !important;">
+<body class="login" style="background:url(/jainthela/img/splash.jpg);">
 <!-- BEGIN LOGO -->
 <div class="logo">
 </span><span class="title-main" style="color:#0ECCEE !important;">

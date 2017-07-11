@@ -142,14 +142,6 @@
 				<div class="hor-menu hidden-sm hidden-xs">
 					<ul class="nav navbar-nav">
 						<!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the horizontal opening on mouse hover -->
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Dashboard',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Manage Orders',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						
 						
 					</ul>
 				</div>				 
@@ -159,6 +151,12 @@
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
 					<ul class="nav navbar-nav pull-right">
+					<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Dashboard',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
+						</li>
+						<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Manage Orders',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
+						</li>
 						<!-- BEGIN NOTIFICATION DROPDOWN -->						 
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -204,19 +202,21 @@
 								<?php echo $this->Html->link('<i class="icon-settings"></i> Item Categories','/Item-Categories',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
-							</li>
-							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
 							</li>
+							
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
+							</li>
+							
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Drivers','/Drivers',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
@@ -226,9 +226,6 @@
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Transfer Inventory','/TransferInventoryVouchers/',['escape'=>false]) ?>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
 							</li>
 							<li>
 								<a href="javascript:;">
@@ -286,6 +283,9 @@
 										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
 									</li>
 								</ul>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
 							</li>
 							
 							<li>
