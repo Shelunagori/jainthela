@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 use App\Controller\Api\AppController;
-class DriversController extends AppController
+class WarehousesController extends AppController
 {
 	
 	public function warehouseLogin()

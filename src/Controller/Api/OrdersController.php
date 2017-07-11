@@ -791,8 +791,21 @@ curl_close($ch);
 			}
 
 		 $c_a_id=$view_pending_details_data->customer_address_id;
-		 $customer_addresses=$this->Orders->CustomerAddresses->find()
+		 $customer_addresses1=$this->Orders->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.id'=>$c_a_id])->first();
+		
+		if(empty($customer_addresses1))
+		{
+			$customer_addresses=(object)[];
+		}
+		else{
+			$customer_addresses=$customer_addresses1;
+		}
+		
+		
+		
+		//(object)[]
+		
 		
 		 $customer_details=$this->Orders->Customers->find()
 		->where(['Customers.id' => $customer_id])->first();
@@ -853,4 +866,7 @@ curl_close($ch);
         $this->set(compact('status', 'error','Order_details'));
         $this->set('_serialize', ['status', 'error','Order_details']);
     }
+	
+	
+	
 }

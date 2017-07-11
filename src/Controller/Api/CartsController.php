@@ -361,7 +361,6 @@ class CartsController extends AppController
 			$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->autoFields(true);
-		
 		}
 		
 				

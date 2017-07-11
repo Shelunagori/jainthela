@@ -91,6 +91,10 @@ Router::prefix('api', function ($routes) {
 			   'search_item' => [
 				   'action' => 'search_item',
 				   'method' => 'GET'
+			   ],
+			   'fetch_item' => [
+				   'action' => 'fetch_item',
+				   'method' => 'GET'
 			   ]
 		   ]
 		]
@@ -380,6 +384,21 @@ Router::prefix('api', function ($routes) {
 			   ],
 			   'warehouse_location_update' => [
 				   'action' => 'warehouse_location_update',
+				   'method' => 'GET'
+			   ]
+		   ]
+		]
+	);
+	
+	$routes->resources(
+		'WalkinSales', [
+		   'map' => [
+			   'walkin_billing' => [
+				   'action' => 'walkin_billing',
+				   'method' => 'POST'
+			   ],
+			   'walkin_order_no' => [
+				   'action' => 'walkin_order_no',
 				   'method' => 'GET'
 			   ]
 		   ]

@@ -199,6 +199,24 @@ $querys=$this->Items->ItemLedgers->find();
         $this->set(compact('status', 'error', 'cart_count', 'search_items'));
         $this->set('_serialize', ['status', 'error', 'cart_count', 'search_items']);
      }
+	 public function fetchItem()
+    {
+		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.ready_to_sale'=>'Yes', 'Items.is_virtual'=>'no'];
+		$fetch_items = $this->Items->find()
+					->where($where)
+					->order(['name'=>'ASC'])
+					->contain(['Units']);
+					$fetch_items->select(['image_url' => $fetch_items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+                    ->autoFields(true);
+		
+		
+		$status=true;
+		$error="";
+        $this->set(compact('status', 'error', 'fetch_items'));
+        $this->set('_serialize', ['status', 'error', 'fetch_items']);
+    }
+
 
 	
 }
