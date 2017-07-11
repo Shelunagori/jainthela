@@ -60,6 +60,7 @@ $(document).ready(function() {
 				}
 			},
 
+
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
 				error.insertAfter(element.parent(".input-group"));
