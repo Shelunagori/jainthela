@@ -127,5 +127,11 @@
 					<td align="center"><b><?= h($pay_amount) ?></b></td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2"><b>Deliver Time Between:-</b></td>
+					<td colspan="2"><b><?= h($order->delivery_time) ?></b></td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>

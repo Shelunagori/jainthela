@@ -62,7 +62,7 @@
 							<td class="actions">
 							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
 							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
-							   <a class="btn blue btn-xs cncl" order_id="<?php echo $order->id; ?>" >Cancel</a>
+							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" >Cancel</a>
 							<?php } ?> 
 							</td>
 						</tr>
