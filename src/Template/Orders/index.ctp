@@ -35,8 +35,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $sr_no=0; foreach ($orders as $order): ?>
-						<tr>
+						<?php $sr_no=0; foreach ($orders as $order): 
+						$delivery_date=date('d-m-Y', strtotime($order->delivery_date));
+						$current_date=date('d-m-Y');
+						?>
+						<tr <?php if($delivery_date==$current_date){ ?>style="background-color:#D0D0D0; "<?php } ?>>
 							<td><?= ++$page_no ?></td>
 							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
@@ -45,6 +48,8 @@
 									$customer_mobile=$order->customer->mobile;
 									$status=$order->status;
 									$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
+									
+									
 								?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>

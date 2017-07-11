@@ -23,7 +23,7 @@
 						 
 							<div class="col-md-4">
 								<label class=" control-label">Reason <span class="required" aria-required="true">*</span></label>
-								<?php echo $this->Form->control('reason_id',['options' => $CancelReasons, 'class'=>'form-control input-sm','label'=>false,'type'=>'radio']); ?>
+								<?php echo $this->Form->control('cancel_id',['empty'=>'--select please--','options' => $CancelReasons, 'class'=>'form-control input-sm','label'=>false]); ?>
 							</div>
 							 
 						<br/>

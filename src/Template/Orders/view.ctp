@@ -11,13 +11,13 @@
 				</tr>
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
-					<b>Address: </b><?= $order->customer_address->name ?><br><b>Mobile:</b> <?= $order->customer_address->mobile ?><br><?= $order->customer_address->house_no ?> &nbsp;<?= $order->customer_address->address ?>,&nbsp;<?= $order->customer_address->locality ?><br>	
+					<b>Address: </b><?= h(@$order->customer_address->name) ?><br><b>Mobile:</b> <?= h(@$order->customer_address->mobile) ?><br><?= h(@$order->customer_address->house_no) ?> &nbsp;<?= h(@$order->customer_address->address) ?>,&nbsp;<?= h(@$order->customer_address->locality) ?><br>	
 					</td>
 				</tr>
 				<tr style="background-color:#F98630; color:#fff;">
 					<th style="text-align:center;">#</th>
 					<th style="text-align:center;">Image</th>
-					<th style="text-align:center;">Item Name</th>
+					<th style="text-align:left;">Item Name</th>
 					<th style="text-align:center;">QTY</th>
 					<th style="text-align:center;">Actual QTY</th>
 					<th style="text-align:center;">Amount</th>
@@ -35,6 +35,7 @@
 					$item_name=$order_detail->item->name;
 					$alias_name=$order_detail->item->alias_name;
 					$show_quantity=$quantity.' '.$unit_name;
+					$show_actual_quantity=$actual_quantity.' '.$unit_name;
 					$amount=$order_detail->amount;
 					@$total_rate+=$amount;
 					if(!empty($alias_name)){
@@ -49,7 +50,7 @@
 					</td>
 					<td style="text-align:left;"><?= h($show_item) ?></td>
 					<td style="text-align:center;"><?= h($show_quantity) ?></td>
-					<td style="text-align:center;"><?= h($show_quantity) ?></td>
+					<td style="text-align:center;"><?= h($show_actual_quantity) ?></td>
 					<td style="text-align:center;"><?= h($amount) ?></td>
 				</tr>
 				<?php } ?>
@@ -117,7 +118,7 @@
 					<td colspan="4">&nbsp;</td>
 					<td align="right">
 						<b>
-						<?php if($status=='Delivered'){ ?>
+						<?php if(($status=='Delivered') || ($status==' Delivered')){ ?>
 							Total Paid
 						<?php }else{ ?>
 							Due

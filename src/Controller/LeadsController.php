@@ -82,8 +82,6 @@ class LeadsController extends AppController
 				$lead->lead_no=1;
 			}
 			
-			
-			
 			  $lead->created_on=date('Y-m-d', strtotime($this->request->data['created_on']));
 			  $lead->jain_thela_admin_id=$jain_thela_admin_id;
              if ($this->Leads->save($lead)) {
