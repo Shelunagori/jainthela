@@ -35,8 +35,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $sr_no=0; foreach ($orders as $order): ?>
-						<tr>
+						<?php $sr_no=0; foreach ($orders as $order): 
+						$delivery_date=date('d-m-Y', strtotime($order->delivery_date));
+						$current_date=date('d-m-Y');
+						?>
+						<tr <?php if($delivery_date==$current_date){ ?>style="background-color:#D0D0D0; "<?php } ?>>
 							<td><?= ++$page_no ?></td>
 							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
@@ -44,18 +47,22 @@
 									$customer_name=$order->customer->name;
 									$customer_mobile=$order->customer->mobile;
 									$status=$order->status;
+									$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
+									
+									
 								?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
 							<td align="right"><?= $this->Number->format($order->amount_from_wallet) ?></td>
 							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
 							<td><?= h($order->order_type) ?></td>
-							<td><?= h($order->order_date) ?></td>
+							<td><?= h($order_date) ?></td>
 							<td><?= h($status) ?></td>
 							
 							<td class="actions">
 							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
 							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
+							   <a class="btn blue btn-xs cncl" order_id="<?php echo $order->id; ?>" >Cancel</a>
 							<?php } ?> 
 							</td>
 						</tr>
@@ -113,6 +120,26 @@ $(document).ready(function() {
 	$('.close').die().live('click',function() {
 		$('#popup').hide();
 	});
+	
+	$('.cncl').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+ 		$('#popup').find('div.modal-body').html('Loading...');
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "cancel_box"]); ?>";
+		url=url+'/'+order_id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});	
+	});
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
+	
+	
 	
 	$('.goc').die().live('click',function() 
 	{ 

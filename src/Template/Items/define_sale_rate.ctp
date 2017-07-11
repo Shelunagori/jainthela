@@ -144,7 +144,7 @@ $(document).ready(function(){
 		 
 		 var diff_amount=print_rate-sales_rate;
 		 
-		 var discount_per=diff_amount*100/sales_rate;
+		 var discount_per=diff_amount*100/print_rate;
 		 
 		 
 		 $(this).closest('tr').find('.discount_per').val((discount_per).toFixed(2));

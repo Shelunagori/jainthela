@@ -187,12 +187,17 @@ class CashBacksController extends AppController
                     ->execute();
 					
 		
-		} 
-	}
+	 } 
+	
+			
+		 
+
+		}
 		
+        
  exit;
        
-   }
+    }
 	
 	
 
@@ -209,22 +214,20 @@ class CashBacksController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
  		$cash_back_fetchs=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no']);
 		$k=0;
-		//pr($cash_back_fetchs->toArray());
-		 
  		 foreach($cash_back_fetchs as $cash_back_fetch){
 			 $k++;
 			 $customer_id=$cash_back_fetch->customer_id;
 			 $cash_back_limit=$cash_back_fetch->cash_back_limit;
 			 $cash_back_percentage=$cash_back_fetch->cash_back_percentage;
 			 $update_id=$cash_back_fetch->id; 
-			  
-			 $cash_back_count_limit=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1])->count();
+			 
+			 $cash_back_count_limit=$this->CashBacks->find()->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1])->count();
 			  if($cash_back_count_limit>=$cash_back_limit){ 
 				 $update_limit_datas=$this->CashBacks->find('all',['limit'=>$cash_back_limit])->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1]);
 				 $i=0;
 				$count_check=$update_limit_datas->count();
 				
-				 if($count_check>=$cash_back_limit){
+				 if($count_check>=$cash_back_limit){ 
 					foreach($update_limit_datas as $update_limit_data){
 						 $i++;
 						 $update_limit_id=$update_limit_data->id;
@@ -232,7 +235,7 @@ class CashBacksController extends AppController
 						 if($cash_back_limit<$i){ 
 							break;
 							}
-							$update_limit_id; 
+							   $update_limit_id; 
 							$query = $this->CashBacks->query();
 							$result = $query->update()
 								->set(['flag'=>2])
@@ -240,21 +243,17 @@ class CashBacksController extends AppController
 								->execute();
 						}
 		 
-					
-						 $updating_details=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no'])->Order(['id'=>'ASC'])->first();
-							$final_update_id=$updating_details->id;
-							$query = $this->CashBacks->query();
-							$result = $query->update()
-								->set(['won' => 'yes', 'flag'=>2])
-								->where(['id' => $final_update_id])
-								->execute();
-							 
+					$query = $this->CashBacks->query();
+					$result = $query->update()
+						->set(['won' => 'yes', 'flag'=>2])
+						->where(['id' => $update_id])
+						->execute();
 				} 
 			  }   
 		 }
 		 exit;
     }
-
+	 
 	
     public function add()
     {
