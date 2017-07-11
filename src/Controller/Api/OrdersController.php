@@ -772,8 +772,14 @@ curl_close($ch);
 		$customer_id=$this->request->query('customer_id');
 		$order_id=$this->request->query('order_id');
 		
-               return $q->select(['image_path' => $q->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
+		
+
+              
+		
 		$view_pending_details_data = $this->Orders->get($order_id, ['contain'=>['OrderDetails'=>['Items'=>function($q){
+			 return $q->select(['image_path' => $q->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
+			   ->contain('Units')
+			   ->autoFields(true);
 			}]]]);
 			
 			
@@ -793,6 +799,9 @@ curl_close($ch);
 		 $c_a_id=$view_pending_details_data->customer_address_id;
 		 $customer_addresses1=$this->Orders->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id' => $customer_id, 'CustomerAddresses.id'=>$c_a_id])->first();
+		
+		$customer_addresses1->address = $customer_addresses1->name.', '.$customer_addresses1->house_no.' '.$customer_addresses1->landmark.' '.$customer_addresses1->address.', '.$customer_addresses1->locality;
+		
 		
 		if(empty($customer_addresses1))
 		{
