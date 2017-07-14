@@ -4,10 +4,8 @@ class HomesController extends AppController
 {
 	public function index()
     {
-       $this->viewBuilder()->layout('index_layout');
-	   
+        $this->viewBuilder()->layout('index_layout');
 		
     }
-	
 }
 

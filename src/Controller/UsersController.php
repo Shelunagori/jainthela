@@ -40,7 +40,7 @@ class UsersController extends AppController
             if ($user) 
 			{
                 $this->Auth->setUser($user);
-				return $this->redirect(['controller'=>'Users','action' => 'index']);
+				return $this->redirect(['controller'=>'Homes','action' => 'index']);
             }
             $this->Flash->error_login(__('Invalid Username or Password'));
         }

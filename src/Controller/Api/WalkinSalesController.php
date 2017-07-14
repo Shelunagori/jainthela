@@ -22,7 +22,6 @@ class WalkinSalesController extends AppController
 			
 		if($is_login=='warehouse')
 		{	
-	
 	 $last_order_no = $this->WalkinSales->find()
 			->order(['get_auto_no'=>'DESC'])->where(['warehouse_id'=>$driver_warehouse_id, 'transaction_date'=>$transaction_date])
 			->first();
@@ -71,6 +70,23 @@ class WalkinSalesController extends AppController
 							'amount' => $item_amount
 							])
 					->execute();
+					
+					
+					$query = $this->WalkinSales->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'warehouse_id' => $driver_warehouse_id,
+							'item_id' => $item_id,
+							'quantity' => $item_quantity,
+							'inventory_transfer' => 'no',
+							'rate' => $item_amount,
+							'transaction_date'=>$transaction_date,
+							'order_id'=>$walkin_id,
+							'status'=>'out'
+							])
+					        ->execute(); 
+					
 		  }
 	    }
 		else if($is_login=='driver')
@@ -121,6 +137,25 @@ class WalkinSalesController extends AppController
 							'amount' => $item_amount
 							])
 					->execute();
+					
+					
+					
+					
+					$query = $this->WalkinSales->ItemLedgers->query();
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+							->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => $driver_warehouse_id,
+							'item_id' => $item_id,
+							'quantity' => $item_quantity,
+							'inventory_transfer' => 'no',
+							'rate' => $item_amount,
+							'transaction_date'=>$transaction_date,
+							'order_id'=>$walkin_id,
+							'status'=>'out'
+							])
+					        ->execute(); 
+					
 		  }
 	    }
 		$status=true;

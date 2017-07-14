@@ -28,6 +28,16 @@ class CashBacksController extends AppController
 		->where(['won'=>'yes', 'flag'=>2])
 		->contain(['Customers'])
 		->autoFields(true);
+		
+		
+		foreach($fetch_cashback_win_details->toArray() as $data)
+		{
+		$c_id=$data->customer->id;
+		$fetch_customer_name = $this->CashBacks->CustomerAddresses->find()
+		->where(['CustomerAddresses.customer_id'=>$c_id, 'default_address'=>1])
+		->first();
+		$data->customer->name=$fetch_customer_name->name;
+        }
         
 		 $cashback_info = $this->CashBacks->Users->find()
 		->where(['Users.jain_thela_admin_id'=>$jain_thela_admin_id])

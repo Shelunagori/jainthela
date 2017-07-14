@@ -27,7 +27,10 @@ class OrdersController extends AppController
 		$this->paginate = [
             'contain' => ['Customers']
         ];
-        $orders = $this->paginate($this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id]));
+        $orders = $this->paginate($this->Orders->find('all')
+		->order(['Orders.id'=>'DESC'])
+		->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
+		->contain(['CustomerAddresses']));
 		
         $this->set(compact('orders'));
         $this->set('_serialize', ['orders']);

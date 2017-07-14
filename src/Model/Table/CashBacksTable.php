@@ -43,6 +43,7 @@ class CashBacksTable extends Table
 		$this->belongsTo('Orders');
 		$this->belongsTo('Users');
 		$this->belongsTo('Wallets');
+		$this->belongsTo('CustomerAddresses');
     }
 
     /**

@@ -251,6 +251,10 @@ Router::prefix('api', function ($routes) {
 			   'remove_data' => [
 				   'action' => 'remove_data',
 				   'method' => 'GET'
+			   ],
+			   'item_cancel' => [
+				   'action' => 'item_cancel',
+				   'method' => 'GET'
 			   ]
 			 ]
 		]);

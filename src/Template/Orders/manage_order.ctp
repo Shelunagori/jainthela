@@ -27,6 +27,7 @@
 							<th scope="col">Grand Total</th>
 							<th scope="col">Order Type</th>
 							<th scope="col">Order Date</th>
+							<th scope="col">Delivery Date</th>
 							<th scope="col">Status</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -47,6 +48,7 @@
 							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
 							<td><?= h($order->order_type) ?></td>
 							<td><?= h($order->order_date) ?></td>
+							<td><?= h($order->delivery_date) ?></td>
 							<td><?= h($order->status) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $order->id]) ?>

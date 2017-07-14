@@ -26,16 +26,20 @@
 							<th scope="col">Sr. No.</th>
 							<th scope="col">Order No.</th>
 							<th scope="col">Customer Name</th>
-							<th scope="col">wallet Amount</th>
+							<!--<th scope="col">wallet Amount</th>-->
+							<th scope="col">Locality</th>
 							<th scope="col">Grand Total</th>
 							<th scope="col">Order Type</th>
 							<th scope="col">Order Date</th>
+							<th scope="col">Delivery Date</th>
+							<th scope="col">Delivery Time</th>
 							<th scope="col">Status</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php $sr_no=0; foreach ($orders as $order): 
+						<?php
+						$sr_no=0; foreach ($orders as $order): 
 						$delivery_date=date('d-m-Y', strtotime($order->delivery_date));
 						$current_date=date('d-m-Y');
 						?>
@@ -53,10 +57,13 @@
 								?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
-							<td align="right"><?= $this->Number->format($order->amount_from_wallet) ?></td>
-							<td align="right"><?= $this->Number->format($order->total_amount) ?></td>
+							<!--<td align="right"><?= $this->Number->format($order->amount_from_wallet) ?></td>-->
+							<td><?= h(@$order->customer_address->locality) ?></td>
+							<td align="right"><?= $this->Number->format($order->grand_total) ?></td>
 							<td><?= h($order->order_type) ?></td>
 							<td><?= h($order_date) ?></td>
+							<td><?= h($delivery_date) ?></td>
+							<td><?= h($order->delivery_time) ?></td>
 							<td><?= h($status) ?></td>
 							
 							<td class="actions">
