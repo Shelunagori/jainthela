@@ -5,7 +5,7 @@ $jain_thela_admin_id;
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "http://app.jainthela.in/api/orders/delivered_order.json?jain_thela_admin_id=".$jain_thela_admin_id."&&order_id=".$order_id."&is_login=warehouse&driver_warehouse_id=1",
+  CURLOPT_URL => "http://app.jainthela.in/api/orders/delivered_order.json?jain_thela_admin_id=".$jain_thela_admin_id."&order_id=".$order_id."&is_login=warehouse&driver_warehouse_id=1",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
