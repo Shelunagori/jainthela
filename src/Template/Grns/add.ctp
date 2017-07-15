@@ -157,7 +157,7 @@ $(document).ready(function() {
 
 	function rename_rows(){
 		var i=0; 
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			$(this).find('td:nth-child(1)').html(i+1);
 			$(this).find("td:nth-child(2) select").select2().attr({name:"grn_details["+i+"][item_id]", id:"grn_details-"+i+"-item_id"}).rules('add', {
 						required: true

@@ -55,14 +55,19 @@ class PushNotificationsController extends AppController
 			{
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
             $file = $this->request->data['image'];
+			$file_name=$file['name'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();
-            $pushNotification->image = $setNewFileName . '.' . $ext;
+			if(!empty($file_name)){
+				$pushNotification->image = $setNewFileName . '.' . $ext;
+			}
 			if (in_array($ext, $arr_ext))
-				{
+			{
+				if(!empty($file_name)){
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/Notify_images/' . $setNewFileName . '.' . $ext);
 				}
+			}
 			$pushNotification->link_url = $deepLinks->link_url;
 			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
@@ -87,6 +92,58 @@ class PushNotificationsController extends AppController
 		
 	}
 	
+	
+	
+	public function ItemView()
+    {
+		$this->viewBuilder()->layout('index_layout');
+        $pushNotification = $this->PushNotifications->newEntity();
+		
+		$customers = $this->PushNotifications->Customers->find();
+		$this->loadModel('Items');
+		$item_fetchs=$this->Items->find()->where(['freeze'=>0])->orWhere(['ready_to_sale'=>'Yes']);
+		$path = 'http://localhost'.$this->request->webroot.'img/item_images/';
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			@$image=$item_fetch->image;
+			$final_image_full_path=$path.$image;
+			$Items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'image'=>$final_image_full_path];
+		}
+
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>7])->first();
+         if ($this->request->is('post'))
+			{
+			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
+            
+			$pushNotification->link_url = $deepLinks->link_url;
+			$pushNotification->type = 'Product Description';
+		
+			if ($push_data=$this->PushNotifications->save($pushNotification))
+			  {
+			   foreach($customers as $customer)
+				{
+					$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity();
+					$pushNotificationCustomer->customer_id =$customer->id;
+					$pushNotificationCustomer->push_notification_id =$push_data->id;
+					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
+				}
+				$id=$pushNotification->id;
+				$this->Flash->success(__('The push notification saved.'));
+			 $this->redirect(['action' => 'sendProgress/' . $id]);
+			} 
+			else {
+				$this->Flash->error(__('The push notification could not be saved. Please, try again.'));
+				}
+			}
+		$this->set('pushNotification', $pushNotification);
+		$this->set('Items', $Items);
+        $this->set('_serialize', ['pushNotification', 'Items']);
+		
+	}
+	
+	
+	
 	public function sendProgress($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -100,6 +157,14 @@ class PushNotificationsController extends AppController
 		
 		$pushNotifications_data = $this->PushNotifications->find()->where(['id'=>$id])->first();
 		
+		
+		$type=$pushNotifications_data->type;
+		$item_id=$pushNotifications_data->item_id;
+		if(!empty($type)){
+			$link_url=$pushNotifications_data->link_url.'?id='.$item_id;
+		}else{
+			$link_url=$pushNotifications_data->link_url;
+		}
 		foreach($pushNotifications as $pushNotification)
 		{
 			  $API_ACCESS_KEY=$pushNotification->customer->notification_key;
@@ -112,7 +177,7 @@ class PushNotificationsController extends AppController
 							(
 							'message'     =>$pushNotifications_data->message,
 							'image'     =>'',
-							'link'    => $pushNotifications_data->link_url,
+							'link'    => $link_url,
 							'notification_id'    => 1,
 							);
 						
@@ -160,8 +225,7 @@ class PushNotificationsController extends AppController
                                    }
 									else{$again_call_ajax="YES";}
 			die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
- 
-   } 
+   }
 
     /**
      * View method

@@ -120,7 +120,7 @@ class OrdersController extends AppController
 			$curent_date=date('Y-m-d');
 			
 			$last_order_no = $this->Orders->find()->select(['order_no', 'get_auto_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->first();
-			 
+
 			if(!empty($last_order_no)){
 			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
 			$next_get_auto_no=$last_order_no->get_auto_no+1;
@@ -137,9 +137,9 @@ class OrdersController extends AppController
 			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
-		 
+
             if ($this->Orders->save($order)) {
-				 
+
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -153,10 +153,10 @@ class OrdersController extends AppController
 			$customer_mobile=$customer_fetch->mobile;
 			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
 		}
-		
+
        // $promoCodes = $this->Orders->PromoCodes->find('list');
 		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
-		
+
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;

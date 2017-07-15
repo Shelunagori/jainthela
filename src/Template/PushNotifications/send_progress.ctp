@@ -38,8 +38,7 @@ function convert_csv_data_ajax(){
 			}).done(function(response){
 				$('#result').html(response);
 				
-				alert(response);
-				
+				//alert(response);
 				
 				if(response.again_call_ajax=="YES"){
 					$("#progress").css("width",response.converted_per+"%");

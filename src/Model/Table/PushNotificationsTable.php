@@ -59,10 +59,11 @@ class PushNotificationsTable extends Table
             ->requirePresence('message', 'create')
             ->notEmpty('message');
 
-        $validator
+     /*    $validator
             ->requirePresence('image', 'create')
-            ->notEmpty('image');
- $validator
+            ->notEmpty('image'); */
+			
+		$validator
             ->requirePresence('link_url', 'create')
             ->notEmpty('link_url');
    
