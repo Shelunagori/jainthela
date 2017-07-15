@@ -37,6 +37,10 @@ function convert_csv_data_ajax(){
 			dataType: 'json'
 			}).done(function(response){
 				$('#result').html(response);
+				
+				alert(response);
+				
+				
 				if(response.again_call_ajax=="YES"){
 					$("#progress").css("width",response.converted_per+"%");
 					$("#per").html(response.converted_per+"%");

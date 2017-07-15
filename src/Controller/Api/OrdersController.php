@@ -363,7 +363,7 @@ class OrdersController extends AppController
 					$device_token1=rtrim($device_token);
                     $time1=date('Y-m-d G:i:s');
 					
-if(!empty($device_token1))
+ if(!empty($device_token1))
 					{
 					
 	$msg = array
@@ -401,7 +401,7 @@ if ($result001 === FALSE) {
 	die('FCM Send Error: ' . curl_error($ch));
 }
 curl_close($ch);
-					} 
+					}  
 					/*....................................*/
 
 					$sms=str_replace(' ', '+', 'Thank You, Your order has been delivered successfully. your order no. is: '.$order_no.'' );
@@ -607,7 +607,7 @@ curl_close($ch);
 					$device_token1=rtrim($device_token);
                     $time1=date('Y-m-d G:i:s');
 					
-if(!empty($device_token1))
+					if(!empty($device_token1))
 					{
 					
 	$msg = array
@@ -645,7 +645,7 @@ if ($result001 === FALSE) {
 	die('FCM Send Error: ' . curl_error($ch));
 }
 curl_close($ch);
-					} 
+					}  
 									
 					if($get_data->driver_id>0)
 					{
@@ -710,7 +710,7 @@ curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
 curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode($fields) );
 $result121 = curl_exec($ch );
 curl_close($ch);
-	}			$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$order_no.'. 
+	}	 	$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$order_no.'. 
 				Your order will be delivered on '.$delivery_day_date.' at '.$get_data->delivery_time.'. Bill Amount '.$pay_amount.' Please note amount of order may vary depending on the actual quantity delivered to you.');
 				$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 				$sms_sender='JAINTE';

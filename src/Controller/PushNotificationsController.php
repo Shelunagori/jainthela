@@ -33,7 +33,8 @@ class PushNotificationsController extends AppController
 		$page = $this->request->getQuery('page');
 		if($page=="home")
 		{
-		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>1])->first();}
+		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>1])->first();
+		}
 		if($page=="bulkbooking")
 		{
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>2])->first();}
@@ -63,13 +64,13 @@ class PushNotificationsController extends AppController
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/Notify_images/' . $setNewFileName . '.' . $ext);
 				}
 			$pushNotification->link_url = $deepLinks->link_url;
-			if ($this->PushNotifications->save($pushNotification))
+			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
 			   foreach($customers as $customer)
 				{
 					$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity(); 
 					$pushNotificationCustomer->customer_id =$customer->id;
-					$pushNotificationCustomer->push_notification_id =$pushNotification->id;
+					$pushNotificationCustomer->push_notification_id =$push_data->id;
 					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
 				}
 				$id=$pushNotification->id;
@@ -93,22 +94,28 @@ class PushNotificationsController extends AppController
     }
 	public function checkNotify($id)
     {
-		
 		$this->viewBuilder()->layout(null);
 		$pushNotifications = $this->PushNotifications->PushNotificationCustomers->find()->where(['sent'=>0,'push_notification_id'=>$id])->contain(['Customers'])->limit(1);
-		$pushNotifications_data = $this->PushNotifications->find()->where(['id'=>$id])->first();;
+		
+		
+		$pushNotifications_data = $this->PushNotifications->find()->where(['id'=>$id])->first();
+		
 		foreach($pushNotifications as $pushNotification)
 		{
-			    $API_ACCESS_KEY=$pushNotification->customer->notification_key;
+			  $API_ACCESS_KEY=$pushNotification->customer->notification_key;
 				$device_token=$pushNotification->customer->device_token;
 				  $device_token1=rtrim($device_token);
+				
                 if(!empty($device_token))
+					
 					$msg = array
 							(
 							'message'     =>$pushNotifications_data->message,
+							'image'     =>'',
 							'link'    => $pushNotifications_data->link_url,
 							'notification_id'    => 1,
 							);
+						
 							
 						$url = 'https://fcm.googleapis.com/fcm/send';
 						$fields = array
@@ -138,6 +145,7 @@ class PushNotificationsController extends AppController
 						curl_close($ch);
 						$l[]=$result;
 						//return $l;  
+						
 						
 						$query = $this->PushNotifications->PushNotificationCustomers->query();
 						$query->update()
