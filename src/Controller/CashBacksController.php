@@ -220,11 +220,12 @@ class CashBacksController extends AppController
 			  
 			 $cash_back_count_limit=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1])->count();
 			  if($cash_back_count_limit>=$cash_back_limit){ 
-				 $update_limit_datas=$this->CashBacks->find('all',['limit'=>$cash_back_limit])->where(['customer_id'=>$customer_id, 'ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1]);
+				 $update_limit_datas=$this->CashBacks->find('all',['limit'=>$cash_back_limit])->where(['ready_to_win' => 'yes', 'won' => 'no', 'flag'=>1]);
 				 $i=0;
-				$count_check=$update_limit_datas->count();
-				
+				  $count_check=$update_limit_datas->count();
+				 
 				 if($count_check>=$cash_back_limit){
+					 
 					foreach($update_limit_datas as $update_limit_data){
 						 $i++;
 						 $update_limit_id=$update_limit_data->id;

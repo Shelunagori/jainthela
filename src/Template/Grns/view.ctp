@@ -1,4 +1,7 @@
+<head>
+
 <style>
+
 @media print{
 	.maindiv{
 		width:100% !important;
@@ -20,9 +23,10 @@ margin-bottom: 0;
     margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
 }
 </style>
+</head>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;" class="maindiv">	
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;font-family:Lato" class="maindiv">	
 	<table width="100%" class="divHeader">
 		
 		<tr>
