@@ -56,31 +56,68 @@ class PushNotificationsController extends AppController
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
             $file = $this->request->data['image'];
 			$file_name=$file['name'];
+			 
+			if(!empty($file_name))
+			{
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
             $arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
             $setNewFileName = uniqid();
-			if(!empty($file_name)){
-				$pushNotification->image = $setNewFileName . '.' . $ext;
-			}
+            $pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/'.$setNewFileName . '.' .$ext;
+			
 			if (in_array($ext, $arr_ext))
 			{
-				if(!empty($file_name)){
+				 
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/Notify_images/' . $setNewFileName . '.' . $ext);
-				}
+ 			}
 			}
+
+			else{
+	$pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
+			}
+			
 			$pushNotification->link_url = $deepLinks->link_url;
 			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
-			   foreach($customers as $customer)
-				{
+				  if($page=="viewcart")
+				  {
+				  $this->loadModel('Carts');
+				  $customerscart = $this->Carts->find()
+				   ->select(['customer_id'])
+				  ->group(['customer_id'])
+				  ->autoFields(true);
+				  if(!empty($customerscart->toArray()))
+				  {
+				   foreach($customerscart as $customer1)
+				    {
+					$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity(); 
+					$pushNotificationCustomer->customer_id =$customer1->customer_id;
+					$pushNotificationCustomer->push_notification_id =$push_data->id;
+					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
+				    }
+					$id=$pushNotification->id;
+				$this->Flash->success(__('The push notification saved.'));
+			 $this->redirect(['action' => 'sendProgress/' . $id]);
+				  }
+				  else{
+				$this->Flash->error(__('Right now no customers who added items in their cart.'));
+				  }
+				  
+				  }
+				  else
+				  {
+			    foreach($customers as $customer)
+				 {
 					$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity(); 
 					$pushNotificationCustomer->customer_id =$customer->id;
 					$pushNotificationCustomer->push_notification_id =$push_data->id;
 					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
-				}
-				$id=$pushNotification->id;
+				 }
+				 
+				 $id=$pushNotification->id;
 				$this->Flash->success(__('The push notification saved.'));
 			 $this->redirect(['action' => 'sendProgress/' . $id]);
+				  }
+				
 			} 
 			else {
 				$this->Flash->error(__('The push notification could not be saved. Please, try again.'));
@@ -151,6 +188,7 @@ class PushNotificationsController extends AppController
     }
 	public function checkNotify($id)
     {
+		
 		$this->viewBuilder()->layout(null);
 		$pushNotifications = $this->PushNotifications->PushNotificationCustomers->find()->where(['sent'=>0,'push_notification_id'=>$id])->contain(['Customers'])->limit(1);
 		

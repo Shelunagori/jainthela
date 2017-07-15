@@ -152,11 +152,23 @@
 				<div class="top-menu">
 					<ul class="nav navbar-nav pull-right">
 					<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Dashboard',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-home" style="color:#fff"></i> <span style="color:#fff">Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> Manage Orders',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-circle" style="color:#fff"></i> <span style="color:#fff">Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
 						</li>
+						<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="fa fa-bell" style="color:#fff"></i> <span style="color:#fff">Push Notifications</span>',array('controller'=>'PushNotifications'),['escape'=>false]); ?>
+						</li>
+						<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Bulk Leads</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
+						</li>
+						<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="fa fa-edit" style="color:#fff"></i> <span style="color:#fff">Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
+						</li>
+						
+						
+						
 						<!-- BEGIN NOTIFICATION DROPDOWN -->						 
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -195,7 +207,17 @@
 						<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 						<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 						<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+						
 							<li>
+								<a href="javascript:;">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<span class="title">
+								Item Masters </span>
+								<span class="arrow ">
+								</span>
+								</a>
+								<ul class="sub-menu">
+									<li>
 								<?php echo $this->Html->link('<i class="icon-home"></i> Units','/Units',['escape'=>false]) ?>
 							</li>
 							<li>
@@ -207,8 +229,20 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
 							</li>
+								</ul>
+							</li>
+							
 							
 							<li>
+								<a href="javascript:;">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<span class="title">
+								User Masters </span>
+								<span class="arrow ">
+								</span>
+								</a>
+								<ul class="sub-menu">
+									<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
 							</li>
 							
@@ -218,6 +252,11 @@
 							<li>
 								<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
 							</li>
+								</ul>
+							</li>
+							
+							
+							
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
 							</li>
@@ -285,30 +324,31 @@
 								</ul>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
 							</li>
 							
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads','/Leads/index/open',['escape'=>false]) ?>
 							</li>
-							<li>
+							<!-- <li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Bulk Booking Leads','/BulkBookingLeads/index/open',['escape'=>false]) ?>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
-							</li>
-							<li>
+							</li> -->
+							
+							<!-- <li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Feedback','/Feedbacks',['escape'=>false]) ?>
-							</li>
+							</li> -->
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Plans','/Plans',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
 							</li>
-							<li>
+							<!-- <li>
 								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Push Notifications','/PushNotifications/',['escape'=>false]) ?>
-							</li>
+							</li> -->
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>
