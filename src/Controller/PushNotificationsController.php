@@ -199,7 +199,8 @@ class PushNotificationsController extends AppController
 		$type=$pushNotifications_data->type;
 		$item_id=$pushNotifications_data->item_id;
 		if(!empty($type)){
-			$link_url=$pushNotifications_data->link_url.'?id='.$item_id;
+			$link_url=$pushNotifications_data->link_url.'?item_id='.$item_id;
+			
 		}else{
 			$link_url=$pushNotifications_data->link_url;
 		}
@@ -216,7 +217,7 @@ class PushNotificationsController extends AppController
 							'message'     =>$pushNotifications_data->message,
 							'image'     =>'',
 							'link'    => $link_url,
-							'notification_id'    => 1,
+							'notification_id'    => $item_id,
 							);
 						
 							

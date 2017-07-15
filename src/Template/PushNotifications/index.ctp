@@ -99,7 +99,7 @@
 						</p>
 					</div>
 
-				</div>','/PushNotifications/home?page=product',['escape'=>false]) ?>
+				</div>','/PushNotifications/item_view',['escape'=>false]) ?>
 			</div>
 
 				 
