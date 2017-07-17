@@ -31,12 +31,12 @@ class CashBacksController extends AppController
 	}	
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Customers']
-        ];
-        $cashBacks = $this->paginate($this->CashBacks);
+       		$this->viewBuilder()->layout('index_layout');
 
-        $this->set(compact('cashBacks'));
+		$cashBacks = $this->CashBacks->find()
+		->where(['ready_to_win'=>'yes'])
+		->contain(['Customers']);
+		$this->set('cashBacks', $cashBacks);
         $this->set('_serialize', ['cashBacks']);
     }
 

@@ -1,57 +1,85 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\CashBack[]|\Cake\Collection\CollectionInterface $cashBacks
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Cash Back'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Customers'), ['controller' => 'Customers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Customer'), ['controller' => 'Customers', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="cashBacks index large-9 medium-8 columns content">
-    <h3><?= __('Cash Backs') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cash_back_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('customer_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('amount') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('claim') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($cashBacks as $cashBack): ?>
-            <tr>
-                <td><?= $this->Number->format($cashBack->id) ?></td>
-                <td><?= h($cashBack->cash_back_no) ?></td>
-                <td><?= $cashBack->has('customer') ? $this->Html->link($cashBack->customer->name, ['controller' => 'Customers', 'action' => 'view', $cashBack->customer->id]) : '' ?></td>
-                <td><?= $this->Number->format($cashBack->amount) ?></td>
-                <td><?= h($cashBack->claim) ?></td>
-                <td><?= h($cashBack->created_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $cashBack->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $cashBack->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $cashBack->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cashBack->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<style>
+.table>thead>tr>th{
+	font-size:12px !important;
+}
+.YES{
+	color:green;
+	
+}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="font-purple-intense"></i>
+					<span class="caption-subject font-purple-intense ">
+						<i class="fa fa-book"></i> Cash Back Details</span>
+				</div>
+				
+			</div>
+			<div class="portlet-body">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<thead>
+						<tr style="background-color:#F3F3F3">
+							<th scope="col">Sr. No.</th>
+							<th scope="col">Created On</th>
+							<th scope="col">Order No.</th>
+							<th scope="col">Customer Name</th>
+							<th scope="col">Cash Back No</th>
+							<th scope="col">CashBack(%)</th>
+							<th scope="col">CashBack(Limit)</th>
+							<th scope="col">Winner</th>
+							<th scope="col">Claim</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						
+						
+						$sr_no=0; foreach ($cashBacks as $cb): $sr_no++;
+						$created_on=date('d-m-Y', strtotime($cb->created_on));
+						
+						if($cb->won=='yes')
+						{
+						$winner='YES';
+						}
+						else if($cb->won=='no')
+						{
+							$winner='NO';
+						}
+						
+						if($cb->claim=='yes')
+						{
+						$claimed='YES';	
+						}
+						else if($cb->claim=='no')
+						{
+							$claimed='NO';
+						}
+						?>
+						<tr <?php if($cb->won=='yes' && $cb->claim=='yes')
+						{
+					echo 'style="background-color:#BCDCE5; color:green;style:bold"';
+							
+						}?>>
+							<td><?= $sr_no ?></td>
+							<td><?= $created_on ?></td>
+							<td><?= h($cb->order_no) ?></td>
+							<td><?= h($cb->customer->mobile); echo ' - '; h($cb->customer->name) ?></td>
+							<td><b><?= h($cb->cash_back_no) ?></b></td>
+							<td><?= h($cb->cash_back_percentage . '%') ?></td>
+							<td><?= h('After '.$cb->cash_back_limit . ' Order') ?></td>
+							<td class="<?php echo $winner;?>"><b><?= h($winner) ?></b></td>
+							<td class="<?php echo $claimed;?>"><b><?= h($claimed) ?></b></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
+			
+				 
+				

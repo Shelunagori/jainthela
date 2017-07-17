@@ -102,5 +102,53 @@
 				</div>','/PushNotifications/item_view',['escape'=>false]) ?>
 			</div>
 
+			<style>
+.table>thead>tr>th{
+	font-size:12px !important;
+}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="font-purple-intense"></i>
+					<span class="caption-subject font-purple-intense ">
+						<i class="fa fa-book"></i> Notification Details</span>
+				</div>
+				
+			</div>
+			<div class="portlet-body">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<thead>
+						<tr>
+							<th scope="col">Sr. No.</th>
+							<th scope="col">Notification Date</th>
+							<th scope="col">Message</th>
+							<!--<th scope="col">wallet Amount</th>-->
+							<th scope="col">Image</th>
+							<th scope="col">Type</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$sr_no=0; foreach ($pushNotifications as $push): $sr_no++;
+						$created_on=date('d-m-Y', strtotime($push->created_on));
+						?>
+						<tr>
+							<td><?= $sr_no ?></td>
+							<td><?= $created_on ?></td>
+							<td><?= h($push->message) ?></td>
+							<td><img src="<?php echo $push->image;?>"></td>
+							<td><?= h($push->type) ?></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+			
 				 
 				

@@ -21,7 +21,9 @@ class PushNotificationsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-       
+		$pushNotifications = $this->PushNotifications->find();
+		$this->set('pushNotifications', $pushNotifications);
+        $this->set('_serialize', ['pushNotifications']);
     }
 	
 
