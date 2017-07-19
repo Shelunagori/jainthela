@@ -10,7 +10,7 @@
 							<B>Walk In Sales</B>
 							</span>
 						</div>
-						<div class="actions">					
+						<div class="actions">
 					
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
 					

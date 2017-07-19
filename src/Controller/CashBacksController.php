@@ -212,13 +212,11 @@ class CashBacksController extends AppController
                     ->set(['cash_back_flag' => 'yes'])
                     ->where(['order_no' => $order_no])
                     ->execute();
-					
-		
 		} 
 	}
 		
  exit;
-       
+
    }
 	
 	
