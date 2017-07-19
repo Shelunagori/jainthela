@@ -45,6 +45,16 @@ class WalkinSalesController extends AppController
         $this->set('walkinSales', $walkinSales);
         $this->set('_serialize', ['walkinSales']);
     }
+	 public function ajaxView($id = null)
+    {
+		$this->viewBuilder()->layout('');
+        $walkinSales = $this->WalkinSales->get($id, [
+            'contain' => ['Drivers', 'Warehouses', 'WalkinSaleDetails'=>['Items'=>['Units']]]
+        ]);
+
+        $this->set('walkinSales', $walkinSales);
+        $this->set('_serialize', ['walkinSales']);
+    }
 
     /**
      * Add method

@@ -36,7 +36,18 @@ class CashBacksController extends AppController
 		$fetch_customer_name = $this->CashBacks->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id'=>$c_id, 'default_address'=>1])
 		->first();
-		$data->customer->name=$fetch_customer_name->name;
+		if(!empty($fetch_customer_name->name))
+		{
+			$data->customer->name=$fetch_customer_name->name;
+		}
+		else{
+			$fetch_customer_names = $this->CashBacks->Customers->find()
+		->where(['Customers.id'=>$c_id])
+		->first();
+			$data->customer->name=$fetch_customer_names->name;
+		}
+		
+		
         }
         
 		 $cashback_info = $this->CashBacks->Users->find()

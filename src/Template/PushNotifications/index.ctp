@@ -121,7 +121,7 @@
 			<div class="portlet-body">
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
-						<tr>
+						<tr style="background-color:#B7D0D9">
 							<th scope="col">Sr. No.</th>
 							<th scope="col">Notification Date</th>
 							<th scope="col">Message</th>
@@ -139,7 +139,7 @@
 							<td><?= $sr_no ?></td>
 							<td><?= $created_on ?></td>
 							<td><?= h($push->message) ?></td>
-							<td><img src="<?php echo $push->image;?>"></td>
+							<td><img src="<?php echo $push->image;?>" style="width:100px; height:100px"></td>
 							<td><?= h($push->type) ?></td>
 						</tr>
 						<?php endforeach; ?>
