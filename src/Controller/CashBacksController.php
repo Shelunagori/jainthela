@@ -36,6 +36,7 @@ class CashBacksController extends AppController
 		$cashBacks = $this->CashBacks->find()
 		->where(['ready_to_win'=>'yes'])
 		->contain(['Customers']);
+		
 		$this->set('cashBacks', $cashBacks);
         $this->set('_serialize', ['cashBacks']);
     }
