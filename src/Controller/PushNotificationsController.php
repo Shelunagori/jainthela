@@ -21,7 +21,13 @@ class PushNotificationsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$pushNotifications = $this->PushNotifications->find();
+		$pushNotifications = $this->PushNotifications->find()->contain(['PushNotificationCustomers']);
+	/* 	$pushNotifications=$this->PushNotifications->find->contain([
+    'PushNotificationCustomers' => function($q) {
+        return $q->select(['total' => $q->func()->count('PushNotificationCustomers.push_notification_id')]);
+    }
+]); */
+		
 		$this->set('pushNotifications', $pushNotifications);
         $this->set('_serialize', ['pushNotifications']);
     }
