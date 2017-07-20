@@ -47,7 +47,8 @@ class WalkinSalesTable extends Table
 		$this->belongsTo('LedgersAccounts');
 		$this->belongsTo('ItemLedgers');
         $this->hasMany('WalkinSaleDetails', [
-            'foreignKey' => 'walkin_sale_id'
+            'foreignKey' => 'walkin_sale_id',
+			'saveStrategy'=>'replace'
         ]);
     }
 	

@@ -56,7 +56,8 @@ class OrdersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('OrderDetails', [
-            'foreignKey' => 'order_id'
+            'foreignKey' => 'order_id',
+			'saveStrategy'=>'replace'
         ]);
         $this->hasMany('Wallets', [
             'foreignKey' => 'order_id'

@@ -42,19 +42,20 @@
 						$sr_no=0; foreach ($orders as $order): 
 						$delivery_date=date('d-m-Y', strtotime($order->delivery_date));
 						$current_date=date('d-m-Y');
+						$status=$order->status;
 						?>
-						<tr <?php if($delivery_date==$current_date){ ?>style="background-color:#D0D0D0; "<?php } ?>>
+						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#D0D0D0; "<?php } ?> >
 							<td><?= ++$page_no ?></td>
 							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
-								<?php
-									$customer_name=$order->customer->name;
-									$customer_mobile=$order->customer->mobile;
-									$status=$order->status;
-									$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
-									
-									
-								?>
+							<?php
+								$customer_name=$order->customer->name;
+								$customer_mobile=$order->customer->mobile;
+								
+								$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
+								
+								
+							?>
 								<?= h($customer_name.' ('.$customer_mobile.')') ?>
 							</td>
 							<!--<td align="right"><?= $this->Number->format($order->amount_from_wallet) ?></td>-->

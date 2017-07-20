@@ -17,7 +17,7 @@ class HomesController extends AppController
 		$fetch_customer_name = $this->CashBacks->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id'=>$c_id, 'default_address'=>1])
 		->first();
-		$data->customer->name=$fetch_customer_name->name;
+		@$data->customer->name=$fetch_customer_name->name;
         }
 		
         

@@ -192,6 +192,10 @@ class OrdersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$curent_date=date('Y-m-d');
+		
         $order = $this->Orders->get($id, [
             'contain' => []
         ]);
@@ -204,9 +208,27 @@ class OrdersController extends AppController
             }
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
-        $customers = $this->Orders->Customers->find('list', ['limit' => 200]);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
+
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			@$unit_name=$item_fetch->unit->unit_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$rates=$item_fetch->offline_sales_rate;
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
+		}
+        $customer_fetchs = $this->Orders->Customers->find('all');
+		foreach($customer_fetchs as $customer_fetch){
+			$customer_name=$customer_fetch->name;
+			$customer_mobile=$customer_fetch->mobile;
+			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
+		}
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
-        $this->set(compact('order', 'customers', 'promoCodes'));
+        $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id]);
+        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items'));
         $this->set('_serialize', ['order']);
     }
 

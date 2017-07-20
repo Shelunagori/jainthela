@@ -72,8 +72,10 @@ class PurchaseBookingsController extends AppController
 			}
 			$purchaseBooking->jain_thela_admin_id=$jain_thela_admin_id;
 			$purchaseBooking->vendor_id=$grn->vendor_id;
-			$purchaseBooking->grn_id=$grn->id;
+			echo $purchaseBooking->grn_id=$grn->id;
 			
+			
+			exit;
             if ($this->PurchaseBookings->save($purchaseBooking)) {
 				
 				$this->PurchaseBookings->ItemLedgers->deleteAll(['grn_id' => $grn_id]);
