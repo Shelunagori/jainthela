@@ -211,6 +211,7 @@ $(document).ready(function() {
 			success: function(data)   // A function to be called if request succeeds
 			{
 				$('#data').html(data);
+				 
 			}	
 		});	
 	});

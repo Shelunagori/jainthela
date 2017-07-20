@@ -51,7 +51,6 @@
 													<label>Quantity<label>
 												</td>
 												<td width="20%">
-													<label>Actual<label>
 												</td>
 												<td></td>
 											</tr>
@@ -64,8 +63,13 @@
 												<td>
 													<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 												</td>
-												
-												<td colspan="4"></td>
+												<td>
+													Wastage Quantity
+												</td>
+												<td>
+													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+												</td>
+												<td></td>
 											</tr>
 										</tfoot>
 									</table>
@@ -212,13 +216,9 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"transfer_inventory_voucher_rows["+i+"][item_id]", id:"transfer_inventory_voucher_rows-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity_factor]", id:"transfer_inventory_voucher_rows-"+i+"-quantity_factor"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
-						required: true
-					});
-							
 			i++;
 		});
 	}
@@ -293,7 +293,7 @@ $(document).ready(function() {
 		var raw_attr_name = $('option:selected', this).attr('print_quantity');
 		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
 		var unit_name = $('option:selected', this).attr('unit_name');
-		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
+		$(this).closest('tr').find('.msg_shw').html("In : "+unit_name);
 		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
 		//$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
 	});
@@ -314,13 +314,10 @@ $(document).ready(function() {
 						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity_factor', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
 						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
 					</td>
-					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>0, 'readonly'=>'readonly']); ?>
-						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>
-					</td>
+					 
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 					</td>

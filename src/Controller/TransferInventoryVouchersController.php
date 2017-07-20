@@ -79,6 +79,7 @@ class TransferInventoryVouchersController extends AppController
 				$warehouse_id=$inventory_data->warehouse_id;
 				$inventory_created_on=$inventory_data->created_on;
 				$item_id=$inventory_data->item_id;
+				$waste_quantity=$inventory_data->waste_quantity;
 				
 					$query = $this->TransferInventoryVouchers->ItemLedgers->query();
 				$query->insert(['warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer', 'transfer_inventory_voucher_id'])
@@ -100,19 +101,35 @@ class TransferInventoryVouchersController extends AppController
 					$transfer_quantity=$transfer_data->quantity;
 					$transfer_inventory_voucher_id=$transfer_data->transfer_inventory_voucher_id;
 					
-						$query = $this->TransferInventoryVouchers->ItemLedgers->query();
+				$query = $this->TransferInventoryVouchers->ItemLedgers->query();
 				$query->insert(['warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer', 'transfer_inventory_voucher_id'])
 						->values([
 						'warehouse_id' => $warehouse_id,
 						'transaction_date' => $inventory_created_on,
 						'item_id' => $transfer_item_id,
 						'quantity' => $transfer_quantity,
-						'status' => 'in',
+						'status' => 'In',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
 						'inventory_transfer' => 'yes',
 						'transfer_inventory_voucher_id' => $transfer_inventory_voucher_id
 						])
 				->execute();
+				
+				$query = $this->TransferInventoryVouchers->ItemLedgers->query();
+				$query->insert(['warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer', 'transfer_inventory_voucher_id', 'wastage'])
+						->values([
+						'warehouse_id' => 0,
+						'transaction_date' => $inventory_created_on,
+						'item_id' => $transfer_item_id,
+						'quantity' => $waste_quantity,
+						'status' => 'In',
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'inventory_transfer' => 'yes',
+						'transfer_inventory_voucher_id' => $transfer_inventory_voucher_id,
+						'wastage' => 1
+						])
+				->execute();
+
 
 				}
                 $this->Flash->success(__('The transfer inventory voucher has been saved.'));

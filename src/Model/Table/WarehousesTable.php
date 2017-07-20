@@ -52,6 +52,9 @@ class WarehousesTable extends Table
         $this->hasMany('WalkinSales', [
             'foreignKey' => 'warehouse_id'
         ]);
+		$this->hasMany('PurchaseOutwards', [
+            'foreignKey' => 'warehouse_id'
+        ]);
     }
 
     /**

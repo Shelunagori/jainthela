@@ -49,6 +49,8 @@ class PurchaseOutwardsTable extends Table
         $this->hasMany('PurchaseOutwardDetails', [
             'foreignKey' => 'purchase_outward_id'
         ]);
+		$this->belongsTo('Warehouses');
+		$this->belongsTo('ItemLedgers');
     }
 
     /**

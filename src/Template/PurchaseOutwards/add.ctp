@@ -7,7 +7,7 @@
 					<div class="portlet-title">
 						<div class="caption">
 							<span>
-							<B>Purchase Order Outward</B>
+								<B>Purchase Order Outward</B>
 							</span>
 						</div>
 					</div>
@@ -19,6 +19,11 @@
 										<label class="col-md-6 control-label">Vendors <span class="required" 	aria-required="true">*</span></label>
 										<?= $this->Form->input('vendor_id',array('options' => $vendors,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
 									</div>
+									
+									<div class="col-md-4">
+											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
+											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false)) ?>
+										</div>
 									
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
