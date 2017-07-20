@@ -192,19 +192,19 @@
 						
 						
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-bell" style="color:#fff"></i> <span style="color:#fff">Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-bell"></i> <span>Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						<li>
-							<?php echo $this->Html->link('<i class="fa fa-edit" style="color:#fff"></i> <span style="color:#fff">Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="fa fa-edit"></i> <span>Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
 						</li>
 						<li>
-							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
+							<?php echo $this->Html->link('<i class="icon-rocket"></i> <span>Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
 						</li>
 						<li>
 								<a href="javascript:;">

@@ -113,7 +113,7 @@
 							<th scope="col">Image</th>
 							<th scope="col">Message</th>
 							<th scope="col">Type</th>
-							<th scope="col">No. of Customers</th>
+							<th scope="col">Total Send</th>
 						</tr>
 					</thead>
 					<tbody>
