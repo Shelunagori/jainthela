@@ -151,29 +151,6 @@
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
 					<ul class="nav navbar-nav pull-right">
-<<<<<<< HEAD
-					<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-bell" style="color:#fff"></i> <span style="color:#fff">Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Cash Back Details</span>',array('controller'=>'CashBacks'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-edit" style="color:#fff"></i> <span style="color:#fff">Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
-						</li>
-=======
-					
-						
->>>>>>> 48e42782b6321a9f531ca84c70124416d61a6c92
 						<!-- BEGIN NOTIFICATION DROPDOWN -->						 
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
