@@ -161,6 +161,9 @@
 							<?php echo $this->Html->link('<i class="fa fa-bell" style="color:#fff"></i> <span style="color:#fff">Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
 						</li>
 						<li class="classic-menu-dropdown">
+							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Cash Back Details</span>',array('controller'=>'CashBacks'),['escape'=>false]); ?>
+						</li>
+						<li class="classic-menu-dropdown">
 							<?php echo $this->Html->link('<i class="fa fa-edit" style="color:#fff"></i> <span style="color:#fff">Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
 						</li>
 						<li class="classic-menu-dropdown">
