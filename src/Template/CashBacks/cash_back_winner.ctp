@@ -14,7 +14,7 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-book"></i> Cash Back Details</span>
+						<i class="fa fa-book"></i> Cash Back Winners</span>
 				</div>
 				<div class="actions"> 
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
@@ -24,54 +24,29 @@
 				<table class="table table-bordered table-condensed" id="main_tble">
 					<thead>
 						<tr>
-							<th scope="col">Cash Back Login Id</th>
+							
+							<th scope="col">Sr</th>
+							<th scope="col">#</th>
 							<th scope="col">Customer Name</th>
-							<th scope="col">Order No.</th>
-							<th scope="col">CashBack(%)</th>
-							<th scope="col">CashBack(Limit)</th>
-							<th scope="col">Won</th>
-							<th scope="col">Claim</th>
-							<th scope="col">Created On</th>
+							<th scope="col">Amount</th>
 						</tr>
 					</thead>
 					<tbody>
+						
 						<?php
-						
-						
-						$sr_no=0; foreach ($cashBacks as $cb): $sr_no++;
-						$created_on=date('d-m-Y', strtotime($cb->created_on));
+						$sr_no=0; foreach ($fetch_cashback_win_details as $cb): $sr_no++;
 						$customer_name=$cb->customer->name;
 						$customer_mobile=$cb->customer->mobile;
-						if($cb->won=='yes')
-						{
-						$winner='YES';
-						}
-						else if($cb->won=='no')
-						{
-							$winner='NO';
-						}
-						
-						if($cb->claim=='yes')
-						{
-						$claimed='YES';	
-						}
-						else if($cb->claim=='no')
-						{
-							$claimed='NO';
-						}
+						$firstCharacter = substr($customer_name, 0, 1);
 						
 						?>
 						<tr >
-							
-							<td><?= h($cb->cash_back_no) ?></td>
+							<td><?= h($sr_no) ?></td>
+							<td><?php echo '<span class="badge badge-success tooltips">'?><?= h($firstCharacter) ?><?php echo '</span>'; ?></td>
 							<td><?= h($customer_name.' ('.$customer_mobile.')') ?></td>
-							<td><?= h($cb->order_no) ?></td>
 							
-							<td><?= h($cb->cash_back_percentage . '%') ?></td>
-							<td><?= h('After '.$cb->cash_back_limit . ' Logins') ?></td>
-							<td class="<?php echo $winner;?>"><b><?= h($winner) ?></b></td>
-							<td class="<?php echo $claimed;?>"><b><?= h($claimed) ?></b></td>
-							<td><?= $created_on ?></td>
+							
+							<td><?= h($cb->amount) ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
