@@ -128,7 +128,7 @@
 							<td><?= h($push->message) ?></td>
 							<td><img src="<?php echo $push->image;?>" style="width:100px; height:100px"></td>
 							<td><?= h($push->type) ?></td>
-							<td></td>
+							<td><?=h</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
