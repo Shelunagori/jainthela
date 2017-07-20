@@ -38,27 +38,23 @@
 							</thead>
 							<tbody id='main_tbody' class="tab">
 						<?php foreach($itemLedgers as $itemLedger){
-								$total_in=$itemLedger->total_in;
-								$total_out=$itemLedger->total_out;
-								$remaining=$total_in-$total_out;
-								$item_id=$itemLedger->item_id;
+								$driver_stock=$itemLedger->totalInDriver-$itemLedger->totalOutDriver;
+								$warehouse_stock=$itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse;
 								@$i++;3
 								?>
 									<tr class="main_tr" class="tab">
-										<td width="1px">
-											<?= $i ?>.
+										<td width="1px"><?= $i ?>.</td>
+										<td>
+											<a href="#" role="button" class="stock_show" itm="<?= $itemLedger->item_id ?>"><?= $itemLedger->item->name ?></a>	
 										</td>
 										<td>
-											<a href="#" role="button" class="stock_show" itm="<?= $item_id ?>"><?= $itemLedger->item->name ?></a>	
+											<?= $driver_stock.' '.$itemLedger->item->unit->shortname ?>
 										</td>
 										<td>
-											<?= $itemLedger->total_driver_in ?></a>
+											<?= $warehouse_stock.' '.$itemLedger->item->unit->shortname ?>
 										</td>
 										<td>
-											<?= $itemLedger->total_warehouse_in ?></a>
-										</td>
-										<td>
-											<?= $remaining.' '.$itemLedger->item->unit->shortname ?>
+											<?= $driver_stock+$warehouse_stock.' '.$itemLedger->item->unit->shortname ?>
 										</td>
 									</tr>
 								<?php } ?>

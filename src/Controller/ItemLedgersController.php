@@ -265,7 +265,7 @@ public function DriverReport()
 		->contain(['Items']);
         $itemLedgers = ($query);
 		$count=$itemLedgers->count();
-		
+
         $this->set(compact('itemLedgers','count'));
      }
 
@@ -392,46 +392,49 @@ public function DriverReport()
 
 	public function reportShow()
     {
-		$this->viewBuilder()->layout('index_layout'); 
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
- 				$query = $this->ItemLedgers->find();
-		$totalInCase = $query->newExpr()
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->viewBuilder()->layout('index_layout');
+		
+		$query = $this->ItemLedgers->find();
+		
+		$totalInWarehouseCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$totalOutCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'out']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$totalDriverCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'in', 'warehouse_id'=>0]),
+				$query->newExpr()->add(['status' => 'In', 'warehouse_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);	
-		$totalWarehouseCase = $query->newExpr()
+		$totalOutWarehouseCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in', 'driver_id'=>0]),
+				$query->newExpr()->add(['status' => 'out', 'warehouse_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalInDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In', 'driver_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);	
+		$totalOutDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'driver_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
 		$query->select([
-			'total_in' => $query->func()->sum($totalInCase),
-			'total_out' => $query->func()->sum($totalOutCase),
-			'total_driver_in' => $query->func()->sum($totalDriverCase),
-			'total_warehouse_in' => $query->func()->sum($totalWarehouseCase),'id','item_id'
+			'totalInWarehouse' => $query->func()->sum($totalInWarehouseCase),
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),
+			'totalInDriver' => $query->func()->sum($totalInDriverCase),
+			'totalOutDriver' => $query->func()->sum($totalOutDriverCase),'id','item_id'
 		])
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units','itemCategories']]);
-        $itemLedgers = ($query);
-		 
-         $this->set(compact('itemLedgers'));
+        
+		$itemLedgers=$query;
+		
+		$this->set(compact('itemLedgers'));
     }
 
 	public function itemStockUpdate()
@@ -486,7 +489,7 @@ public function DriverReport()
 		   $query =$this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['status' => 'In']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
@@ -508,9 +511,9 @@ public function DriverReport()
 		
          $this->set(compact('itemLedgers'));
     }
-	
 
-	
+
+
     /**
      * Edit method
      *
