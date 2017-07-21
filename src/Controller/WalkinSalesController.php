@@ -79,21 +79,20 @@ class WalkinSalesController extends AppController
 			->first();
 			
 			if(!empty($last_order_no)){
-			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
-			$get_no=$last_order_no->get_auto_no+1;
+				$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
+				$get_no=$last_order_no->get_auto_no+1;
 			}else{
-		    $get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
-			$get_no=1;
+				$get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
+				$get_no=1;
 			}
 			$get_date=str_replace('-','',$curent_date);
-			$order_no=h('W'.$driver_warehouse_id.$get_date.$get_auto_no);//orderno///
+			$order_no=h('W'.$warehouse_id.$get_date.$get_auto_no);//orderno///
 			
+			$walkinSale->jain_thela_admin_id=$jain_thela_admin_id;
+			$walkinSale->order_no=$order_no;
+			$walkinSale->get_auto_no=$get_no;
 			
-			  $walkinSale->jain_thela_admin_id=$jain_thela_admin_id;
-			  $walkinSale->order_no=$order_no;
-			  $walkinSale->get_auto_no=$get_no;
-			  
-            if ($walkinsale_data=$this->WalkinSales->save($walkinSale)) {
+            if ($walkinsale_data=$this->WalkinSales->save($walkinSale)) { 
 					$walkinsale_id=$walkinsale_data->id;
 					$walkinsale_total_amount=$walkinsale_data->total_amount;
 					$transaction_date=$walkinsale_data->transaction_date;

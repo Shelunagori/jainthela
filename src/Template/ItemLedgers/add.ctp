@@ -1,13 +1,13 @@
 <div class="row">
 		<div class="col-md-12">
 			<div class="portlet">
-		<div class="portlet-body"> 
+		<div class="portlet-body">
 			<?= $this->Form->create($itemLedger,['id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
 							<span>
-							<B>Stock Issue</B>
+							<B>Stock Issue To Driver</B>
 							</span>
 						</div>
 					</div>
@@ -23,10 +23,9 @@
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
 											<?= $this->Form->input('warehouse_id',array('options' => $warehouses,'class'=>'ware_house form-control input-sm','label'=>false)) ?>
 										</div>
-										 
+
 									<div class="col-md-2">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
-										
 										<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 										
 									</div>

@@ -13,6 +13,8 @@
 						<i class="fa fa-book"></i> Purchase Booking</span>
 				</div>
 				<div class="actions">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/PurchaseOutwards/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+					
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
 				</div>
 			</div>

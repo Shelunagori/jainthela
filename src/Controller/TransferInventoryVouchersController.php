@@ -208,7 +208,7 @@ class TransferInventoryVouchersController extends AppController
 						'transaction_date' => $inventory_created_on,
 						'item_id' => $transfer_item_id,
 						'quantity' => $transfer_quantity,
-						'status' => 'in',
+						'status' => 'In',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
 						'inventory_transfer' => 'yes',
 						'transfer_inventory_voucher_id' => $transfer_inventory_voucher_id
