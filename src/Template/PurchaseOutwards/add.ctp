@@ -335,7 +335,7 @@ $(document).ready(function() {
 					
 					</td>
 					<td align="center">
-						<div class="stock_available"></div><div class="stock_unit"></div>
+						<div class="stock_available"></div></div>
 						
 					</td>
 					<td>
