@@ -105,7 +105,7 @@ $(document).ready(function(){
 		$(this).closest('td').append('<span class="loading_span">Loading...</span>');
 		$(this).closest('td').find(".stock_hide").show();
 		var entity=$(this).closest('tr');
-		var item_id=$(".stock_show").attr("itm");
+		var item_id=$(this).closest('tr').find(".stock_show").attr("itm");
 		var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'ajaxItemDetails']);
 		?>";
 		url=url+'/'+item_id,

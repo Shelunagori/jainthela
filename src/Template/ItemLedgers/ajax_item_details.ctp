@@ -15,21 +15,16 @@
 					</tr>
 				</thead>
 				<tbody id='main_tbody' class="tab">
-					<?php foreach($itemLedgers as $itemLedger){
+					<?php foreach($warehpouse_itemLedgers as $warehpouse_itemLedger){
 
-					$total_in=$itemLedger->total_in;
-					$total_out=$itemLedger->total_out;
+					$total_in=$warehpouse_itemLedger->totalInWarehouse;
+					$total_out=$warehpouse_itemLedger->totalOutWarehouse;
 					$remaining=$total_in-$total_out;
-					$item_id=$itemLedger->item_id;
+					$item_id=$warehpouse_itemLedger->item_id;
 					@$i++;
-					if($itemLedger->driver_id==0)
-					{
-						$name=@$itemLedger->warehouse->name;
+						$name=@$warehpouse_itemLedger->warehouse->name;
 						$warehouse_name=' (Warehouse) ';
-						}else {
-						$name=$itemLedger->driver->name;
-						$warehouse_name='';
-					}
+						 
 					?>
 						<tr class="main_tr" class="tab">
 							<td width="1px">
@@ -39,11 +34,38 @@
 							 <?= $name.$warehouse_name ?>
 							 </td>
 							<td>
-								<?= $remaining.' '.$itemLedger->item->unit->shortname;?>
+								<?= $remaining.' '.$warehpouse_itemLedger->item->unit->shortname;?>
 							</td>
 							
 						</tr>
 					<?php } ?>
+					
+					<?php foreach($driver_itemLedgers as $driver_itemLedger){
+
+					$total_in=$driver_itemLedger->totalInDriver;
+					$total_out=$driver_itemLedger->totalOutDriver;
+					$remaining=$total_in-$total_out;
+					$item_id=$driver_itemLedger->item_id;
+					@$i++;
+					 
+						$name=$driver_itemLedger->driver->name;
+						$driver=' (Driver) ';
+					?>
+						<tr class="main_tr" class="tab">
+							<td width="1px">
+								<?= $i ?>.
+							</td>
+							 <td>
+								<?= h($name.''.$driver) ?>
+							 </td>
+							<td>
+								<?= $remaining.' '.$warehpouse_itemLedger->item->unit->shortname;?>
+							</td>
+							
+						</tr>
+					<?php } ?>
+					
+					
 				</tbody>
 			</table>
 		</td>

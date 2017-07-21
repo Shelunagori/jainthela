@@ -388,21 +388,30 @@ public function DriverReport()
 		  exit;
      }
 
-	 
 
+	 public function itemIssueReport()
+    {
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+ 				 
+				 $item_ledgers=$this->ItemLedgers->find()->where(['driver_id !='=>0])->contain(['Drivers', 'Items'=>['Units','itemCategories']]);;
+				 pr($item_ledgers->toArray());
+         $this->set(compact('item_ledgers'));
+    }
+	
 	public function reportShow()
     {
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$this->viewBuilder()->layout('index_layout');
-		
+
 		$query = $this->ItemLedgers->find();
-		
+
 		$totalInWarehouseCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'In', 'warehouse_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
-			);	
+			);
 		$totalOutWarehouseCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'out', 'warehouse_id']),
@@ -414,7 +423,7 @@ public function DriverReport()
 				$query->newExpr()->add(['status' => 'In', 'driver_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
-			);	
+			);
 		$totalOutDriverCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'out', 'driver_id']),
@@ -431,9 +440,9 @@ public function DriverReport()
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units','itemCategories']]);
-        
+
 		$itemLedgers=$query;
-		
+
 		$this->set(compact('itemLedgers'));
     }
 
@@ -482,36 +491,60 @@ public function DriverReport()
 			} 
          $this->set(compact('itemLedgers'));
     }
-	
+
 	public function ajaxItemDetails($id = null)
     {
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		   $query =$this->ItemLedgers->find();
-		$totalInCase = $query->newExpr()
+		   
+		$totalInWarehouseCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'In']),
+				$query->newExpr()->add(['status' => 'In', 'warehouse_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
-		$totalOutCase = $query->newExpr()
+		$totalOutWarehouseCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['status' => 'out', 'warehouse_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
 		$query->select([
-			'total_in' => $query->func()->sum($totalInCase),
-			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+			'totalInWarehouse' => $query->func()->sum($totalInWarehouseCase),
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
 		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id, 'item_id'=>$id])
-		->group(['driver_id','warehouse_id'])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id, 'item_id'=>$id, 'warehouse_id !='=>0])
+		->group(['warehouse_id'])
 		->autoFields(true)
 		->contain(['Items'=>['Units'], 'Drivers', 'Warehouses']);
-        $itemLedgers = ($query);
+        $warehpouse_itemLedgers = ($query);
 		
-         $this->set(compact('itemLedgers'));
+/////////////////////////////////
+		$query1 =$this->ItemLedgers->find();
+		$totalInDriverCase = $query1->newExpr()
+			->addCase(
+				$query1->newExpr()->add(['status' => 'In', 'driver_id']),
+				$query1->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutDriverCase = $query1->newExpr()
+			->addCase(
+				$query1->newExpr()->add(['status' => 'out', 'driver_id']),
+				$query1->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query1->select([
+			'totalInDriver' => $query->func()->sum($totalInDriverCase),
+			'totalOutDriver' => $query->func()->sum($totalOutDriverCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id, 'item_id'=>$id, 'driver_id !='=>0])
+		->group(['driver_id'])
+		->autoFields(true)
+		->contain(['Items'=>['Units'], 'Drivers', 'Warehouses']);
+        $driver_itemLedgers = ($query1);
+		
+        $this->set(compact('warehpouse_itemLedgers', 'driver_itemLedgers'));
     }
-
 
 
     /**

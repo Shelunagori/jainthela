@@ -17,7 +17,7 @@
 				<?= $this->Form->create($grn,['id'=>'form_sample_3']) ?>
 				<div class="row">
 					<div class="col-md-4">
-						<label class=" control-label">Transaction Date <span class="required" aria-required="true">*</span></label>
+						<label class=" control-label">GRN Date <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 						
 					</div>
