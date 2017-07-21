@@ -38,6 +38,11 @@
 							</thead>
 							<tbody id='main_tbody' class="tab">
 						<?php foreach($itemLedgers as $itemLedger){
+							
+								$item_freeze=$itemLedger->item->freeze;
+								if($item_freeze==1){
+									continue;
+								}
 								$driver_stock=$itemLedger->totalInDriver-$itemLedger->totalOutDriver;
 								$warehouse_stock=$itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse;
 								@$i++;3
