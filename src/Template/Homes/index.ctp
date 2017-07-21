@@ -180,6 +180,7 @@
 		</div>
 	</div>
 </div>
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 var $rows = $('#main_tble tbody tr');

@@ -24,12 +24,12 @@
 					<thead>
 						<tr>
 									<tr> <th>Sr</th>
-									<th>Transaction Date</th>
 									<th>Order No.</th>
-									<th >Warehouse</th>
-									<th>Driver</th>
-									<th >Total Amount</th>
-									<th class="actions"><?= __('Actions') ?></th>
+									<th>Transaction Date</th>
+									<th >Seller</th>
+									<th>Driver Name</th>
+									<th style="text-align:right;">Total Amount</th>
+									<!-- <th class="actions"><?= __('Actions') ?></th> -->
 								</tr>
 						</tr>
 					</thead>
@@ -39,14 +39,16 @@
                 <td><?= $this->Number->format($walkinSale->id) ?></td>
 				 <td><a class="view_order" order_id="<?php echo $walkinSale->id; ?>" ><?= h($walkinSale->order_no) ?></a> </td>
                 <td><?= h($walkinSale->transaction_date) ?></td>
-                <td><?= h(@$walkinSale->warehouse->name)?></td>
-				 <td><?= h(@$walkinSale->driver->name)?></td>
-                <td><?= $this->Number->format($walkinSale->total_amount) ?></td>
-                <td class="actions">
+                <td><?php if(!empty(h(@$walkinSale->warehouse_id))){echo 'Warehouse';} else { echo 'Driver'; }?></td>
+				 <td><?php if(empty(h(@$walkinSale->driver_id))){echo '-';} else { ?><?= h(@$walkinSale->driver->name)?><?php } ?></td>
+                <td align="right"><?= $this->Number->precision($walkinSale->total_amount,2) ?></td>
+               <!--
+				<td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $walkinSale->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $walkinSale->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $walkinSale->id], ['confirm' => __('Are you sure you want to delete # {0}?', $walkinSale->id)]) ?>
                 </td>
+				-->
             </tr>
             <?php endforeach; ?>
 					</tbody>
