@@ -187,7 +187,7 @@
 									<?php echo $this->Html->link('<i class="fa  fa-file"></i> Cash Back Details','/CashBacks/Index',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-file"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
 								</li>
 							</ul>
 						</li>
@@ -284,7 +284,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-tasks"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-file"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-tree"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
