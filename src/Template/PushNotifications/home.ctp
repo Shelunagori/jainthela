@@ -42,22 +42,18 @@
 										<label class="col-md-6 control-label">Message <span class="required" 	aria-required="true">*</span></label>
 										 <?= $this->Form->input('message',['class'=>'form-control input-sm','id'=>'msg','label'=>false,'placeholder'=>'','rows'=>'3','style'=>'resize: none;']) ?>
 									</div>	 
-									 </div>
+								</div>
 								 <br></div><br><br>
 								 <div class="row">
-								 <div class="col-md-4">
-								 <div class="form-group">
-							<label class="control-label">Image <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('image', ['type' => 'file','label' => false]);?>
-							</div>
-						</div>
-						
-								 
-								 
-							</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="control-label">Image <span class="required" aria-required="true">*</span></label>
+											<?php echo $this->Form->input('image', ['type' => 'file','label' => false]);?>
+										</div>
+									</div>
+								</div>
 						<!-- END FORM-->
 					 
-						
 						<div align="center">
 						<a class="btn red btn-md" id="notify" rel="tooltip" title="Delete"  data-toggle="modal" href="#delete1"><i class="fa fa-plus">  Send</i></a>
 							<div class="modal fade" id="delete1" tabindex="-1" aria-hidden="true" style="padding-top:35px">

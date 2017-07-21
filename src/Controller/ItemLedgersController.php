@@ -394,7 +394,7 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
  				 
-				 $item_ledgers=$this->ItemLedgers->find()->where(['driver_id !='=>0])->contain(['Drivers', 'Items'=>['Units','itemCategories']]);;
+		$item_ledgers=$this->ItemLedgers->find()->where(['driver_id !='=>0])->contain(['Drivers', 'Items'=>['Units','itemCategories']]);;
 				 pr($item_ledgers->toArray());
          $this->set(compact('item_ledgers'));
     }
