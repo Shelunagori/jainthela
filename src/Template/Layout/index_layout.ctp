@@ -140,9 +140,57 @@
 				</div>
 				<!-- End LOGO -->
 				<div class="hor-menu hidden-sm hidden-xs">
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav " style="margin-left:100px;">
 						<!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the horizontal opening on mouse hover -->
 						
+						<li class="classic-menu-dropdown" >
+							<a data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+							Masters & Setup <i class="fa fa-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu" >
+								<li>
+								<?php echo $this->Html->link('<i class="fa fa-user"></i> Customers','/Customers',['escape'=>false]) ?>
+								</li>
+								
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-truck"></i> Drivers','/Drivers',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-users"></i> Vendors','/Vendors',['escape'=>false]) ?>
+								</li>
+								<li>
+								<?php echo $this->Html->link('<i class="fa fa-magnet"></i> Units','/Units',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Item Categories','/Item-Categories',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-info"></i> Items','/Items',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
+								</li>
+							</ul>
+						</li>
+						<li class="classic-menu-dropdown" >
+							<a data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+							Reports <i class="fa fa-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu" >
+								<li>
+									<?php echo $this->Html->link('<i class="fa  fa-file"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-file"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa  fa-file"></i> Cash Back Details','/CashBacks/Index',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-file"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
+								</li>
+							</ul>
+						</li>
 					</ul>
 				</div>				 
 				<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
@@ -150,6 +198,7 @@
 				<!-- END RESPONSIVE MENU TOGGLER -->
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
+					
 					<ul class="nav navbar-nav pull-right">
 						<!-- BEGIN NOTIFICATION DROPDOWN -->						 
 						<li class="dropdown dropdown-user">
@@ -189,156 +238,69 @@
 						<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
 						<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 						<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+
+
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-reorder"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-bell"></i> <span>Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class=" fa-file-text"></i> <span>Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-chain "></i> <span>Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
+							</li>
+
+
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-ticket"></i> GRNs','/Grns',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa  fa-book"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
+							</li>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Transfer Inventory','/TransferInventoryVouchers/',['escape'=>false]) ?>
+							</li>
+
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-gear"></i> Purchase Outward','/PurchaseOutwards/',['escape'=>false]) ?>
+							</li>
 						
-						
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-bell"></i> <span>Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="fa fa-edit"></i> <span>Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
-						</li>
-						<li>
-							<?php echo $this->Html->link('<i class="icon-rocket"></i> <span>Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
-						</li>
-						<li>
-								<a href="javascript:;">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								<span class="title">
-								Item Masters </span>
-								<span class="arrow ">
-								</span>
-								</a>
-								<ul class="sub-menu">
-									<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Units','/Units',['escape'=>false]) ?>
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="icon-settings"></i> Item Categories','/Item-Categories',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-retweet"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Items','/Items',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-asterisk"></i> Online Order','/Orders',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
-							</li>
-								</ul>
-							</li>
-							
-							<li>
-								<a href="javascript:;">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								<span class="title">
-								User Masters </span>
-								<span class="arrow ">
-								</span>
-								</a>
-								<ul class="sub-menu">
-									<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Customers','/Customers',['escape'=>false]) ?>
-							</li>
-							
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Drivers','/Drivers',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-tasks"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="icon-home"></i> Vendors','/Vendors',['escape'=>false]) ?>
-							</li>
-								</ul>
-							</li>
-							
-							
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> GRNs','/Grns',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Purchase Booking','/PurchaseBookings',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-tree"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
+							</li>
+
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-star"></i> Leads','/Leads/index/open',['escape'=>false]) ?>
+							</li>
+
+							<li>
+								<?php echo $this->Html->link('<i class="fa fa-road"></i> Plans','/Plans',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Transfer Inventory','/TransferInventoryVouchers/',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-rocket"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
 							</li>
-							<li>
-								<a href="javascript:;">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								<span class="title">
-								Purchase Outward</span>
-								<span class="arrow ">
-								</span>
-								</a>
-								<ul class="sub-menu">
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Create','/PurchaseOutwards/add',['escape'=>false]) ?>
-									</li>
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> View','/PurchaseOutwards/',['escape'=>false]) ?>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="javascript:;">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								<span class="title">
-								Order </span>
-								<span class="arrow ">
-								</span>
-								</a>
-								<ul class="sub-menu">
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Order','/Orders',['escape'=>false]) ?>
-									</li>
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<a href="javascript:;">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								<span class="title">
-								Stock </span>
-								<span class="arrow ">
-								</span>
-								</a>
-								<ul class="sub-menu">
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Issue','/itemLedgers/add',['escape'=>false]) ?>
-									</li>
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
-									</li>
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
-									</li>
-									<li>
-										<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
-							</li>
-							
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Leads','/Leads/index/open',['escape'=>false]) ?>
-							</li>
-							
-							
-							
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Plans','/Plans',['escape'=>false]) ?>
-							</li>
-							<li>
-								<?php echo $this->Html->link('<i class="fa fa-sitemap"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
-							</li>
-							
+
 						</ul>
 						<!-- END SIDEBAR MENU -->
 					</div>
