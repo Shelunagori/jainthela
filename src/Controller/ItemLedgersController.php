@@ -245,7 +245,7 @@ public function DriverReport()
  			$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['status' => 'In']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
@@ -290,7 +290,7 @@ public function DriverReport()
  			$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['status' => 'In']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
@@ -361,7 +361,7 @@ public function DriverReport()
  			$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['status' => 'In']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
@@ -453,7 +453,7 @@ public function DriverReport()
  				$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['status' => 'in']),
+				$query->newExpr()->add(['status' => 'In']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
