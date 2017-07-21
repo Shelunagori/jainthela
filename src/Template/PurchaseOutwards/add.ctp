@@ -270,6 +270,8 @@ $(document).ready(function() {
 		var update = $(this);
 		var itm_val = $(this).val();
 		var ware_house = $(".ware_house").val();
+		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
+		
  		var m_data = new FormData();
 		m_data.append('itm_val',itm_val);
 		m_data.append('ware_house',ware_house);
@@ -283,7 +285,7 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
-				$(update).closest('tr').find('.stock_available').html(data);
+				$(update).closest('tr').find('.stock_available').html(data +' ' + raw_attr_unit_name3);
 				$(update).closest('tr').find('.valid').attr('max',data);
 			}
 		});	
@@ -291,12 +293,34 @@ $(document).ready(function() {
 	
 	$(".attribute").die().live('change',function(){
 		var raw_attr_name = $('option:selected', this).attr('print_quantity');
+		var raw_attr_rates = $('option:selected', this).attr('rates');
+		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
 		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
-		var unit_name = $('option:selected', this).attr('unit_name');
-		$(this).closest('tr').find('.msg_shw').html("Stock in "+unit_name);
-		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
+		
+		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
+		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');
+		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
+		$(this).closest('tr').find('.stock_unit').html(+raw_attr_unit_name3);
+		
+		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
+		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
 		$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+		
+		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
 	});
+
+	$(".quant").die().live('keyup',function(){
+		var quant = parseFloat($(this).val());
+		if(!quant){ quant=0; }
+		var minimum_quantity_factor = parseFloat($(this).attr('minimum_quantity_factor'));
+		if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+		var unit_name = $(this).attr('unit_name');
+		if(!unit_name){ unit_name=0; }
+		var g_total = quant*minimum_quantity_factor;
+		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
+		$(this).closest('tr').find('.mains').val(g_total);
+	});
+	
 	
 });
 
@@ -307,14 +331,15 @@ $(document).ready(function() {
 					<td align="center" width="1px"></td>
 				    <td>
 						<?= $this->Form->input('item_id[]',array('options' => $items,'class'=>'form-control input-sm itm_chng attribute','empty' => 'Select','label'=>false)) ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
+					
 					</td>
 					<td align="center">
-						<div class="stock_available"></div>
-						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
+						<div class="stock_available"></div><div class="stock_unit"></div>
 						
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+						<?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount quant','placeholder'=>'Quantity','value'=>0]); ?>
 						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>						
 					</td>
 					<td>
