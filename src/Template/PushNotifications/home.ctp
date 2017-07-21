@@ -24,7 +24,7 @@
 								echo "<h3><B>Add Money Notifications to Customers</B></h3>";}
 								if($page=="viewcart")
 								{
-								echo "<h3><B>Cart Notify to customers who have added items in cart</B></h3>";}
+								echo "<h3><B>Cart item Notification to Customers</B></h3>";}
 								if($page=="specialoffers")
 								{
 								echo "<h3><B>Special Offers Notification </B></h3>";}

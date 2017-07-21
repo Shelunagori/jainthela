@@ -243,7 +243,6 @@ class PushNotificationsController extends AppController
 							'notification_id'    => $item_id,
 							);
 						
-							
 						$url = 'https://fcm.googleapis.com/fcm/send';
 						$fields = array
 						(
