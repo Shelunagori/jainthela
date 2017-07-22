@@ -393,10 +393,41 @@ class ItemLedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		
+		$from=$this->request->query('from');
+		$to=$this->request->query('to');
+		$item_id=$this->request->query('item_id');
+		$driver_id=$this->request->query('driver_id');
+		if(!empty($from)){
+			$where['transaction_date >=']=date('Y-m-d',strtotime($from));
+		}
+		if(!empty($to)){
+			$where['transaction_date <=']=date('Y-m-d',strtotime($to));
+		}
+		if(!empty($item_id)){
+			$where['item_id']=$item_id;
+		}
+		if(!empty($driver_id)){
+			$where['driver_id']=$driver_id;
+		}
+		$where['driver_id !=']=0;
+		//pr($where); exit;
  				 
-		$item_ledgers=$this->ItemLedgers->find()->where(['driver_id !='=>0])->contain(['Drivers', 'Items'=>['Units','itemCategories']]);;
-				 pr($item_ledgers->toArray());
-         $this->set(compact('item_ledgers'));
+		$item_ledgers=$this->paginate(
+			$this->ItemLedgers->find()
+			->where($where)
+			->contain(['Drivers', 'Items'=>['Units','itemCategories']])
+		);
+		$drivers=$this->ItemLedgers->Drivers->find('list');
+		
+		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1]);
+
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")"];
+		}
+		$this->set(compact('item_ledgers','from','to', 'drivers', 'items','driver_id','item_id'));
     }
 	
 	public function reportShow()
@@ -480,7 +511,7 @@ class ItemLedgersController extends AppController
 			$item_data = $this->ItemLedgers->Items->find()->where(['id'=>$item_id]);
 				foreach($item_data as $item_data_fetch){
 					$minimum_stock=$item_data_fetch->minimum_stock;
-					if($remaining_stock<$minimum_stock){			
+					if($remaining_stock<$minimum_stock){
 						$query=$this->ItemLedgers->Items->query();
 						$result = $query->update()
 							->set(['out_of_stock' => 1])

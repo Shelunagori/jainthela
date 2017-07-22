@@ -40,6 +40,11 @@ class DriversTable extends Table
             'foreignKey' => 'city_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('DriverLocations', [
+            'foreignKey' => 'driver_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

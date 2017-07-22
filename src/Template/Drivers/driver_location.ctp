@@ -10,72 +10,39 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense">
-						<i class="fa fa-plus"></i> Item Issue Report
+						<i class="fa fa-plus"></i> Driver Location Report
 					</span>
 				</div>
-				
+				<div class="actions">
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
+				</div>
 			</div>
 			<div class="portlet-body">
-				<form method="GET">
-					<div class="col-md-12">
-						<div class="col-md-3">
-							<?php echo $this->Form->control('from',['placeholder'=>'Date From','class'=>'form-control input-sm date-picker from','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>@$from]); ?>
-						</div>
-						<div class="col-md-3">
-							<?php echo $this->Form->control('to',['placeholder'=>'Date To','class'=>'form-control input-sm date-picker go','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>@$to]); ?>
-						</div>
-						<div class="col-md-2">
-							<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute select2me', 'value'=>@$item_id]); ?>
-						</div>
-						<div class="col-md-2">
-							<?php echo $this->Form->input('driver_id', ['empty'=>'--Select-','options'=>$drivers,'label' => false,'class' => 'form-control input-sm attribute select2me', 'value'=>@$driver_id]); ?>
-						</div>
-						<div class="col-md-2">
-							<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-search']) . __(' Go'),['class'=>'btn btn-success']); ?>
-						</div>
-					</div>
-				</form>
-				<br><br>
 				<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr>
 							<th>Sr.no</th>
-							<th>Date</th>
-							<th>Time</th>
 							<th>Driver</th>
-							<th>Item</th>
-							<th>Issue</th>
-							<th>Return</th>
+							<th>lattitude</th>
+							<th>longitude</th>
+							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php $sr_no=0; foreach ($item_ledgers as $item_ledger): 
+						<?php $sr_no=0; foreach ($driver_details as $driver_detail): 
 						
-						$transaction_date=$item_ledger->transaction_date;
-						$org_transaction_date=date('d-M-Y');
-						$created_on=$item_ledger->created_on;
-						
-						$order_time=date('h:i a', strtotime($created_on));
-						$status=$item_ledger->status;
-						$quantity=$item_ledger->quantity;
-						$driver_name=$item_ledger->driver->name;
-						$item_name=$item_ledger->item->name;
-						$unit_name=$item_ledger->item->unit->unit_name;
+						$created_on=date('d-m-Y h:i a', strtotime($driver_detail->created_on));
+						$longitude=$driver_detail->longitude;
+						$lattitude=$driver_detail->lattitude;
+						$driver_name=$driver_detail->driver->name;
 						?>
 						<tr>
 							<td><?= $this->Number->format(++$sr_no) ?></td>
-							<td><?= h($org_transaction_date) ?></td>
-							<td><?= h($order_time) ?></td>
 							<td><?= h($driver_name) ?></td>
-							<td><?= h($item_name) ?></td>
-							<?php if($status=='In'){ ?>
-								<td align="right"><?= h($quantity.' '.$unit_name) ?></td>
-								<td></td>
-							<?php }	if($status=='out'){ ?>
-								<td></td>
-								<td align="right"><?= h($quantity.' '.$unit_name) ?></td>
-							<?php } ?>
+							<td><?= h($lattitude) ?></td>
+							<td><?= h($longitude) ?></td>
+							<td><?= h($created_on) ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
@@ -121,7 +88,7 @@ $(document).ready(function() {
  		var m_data = new FormData();
 		m_data.append('dat_from',dat_from);
 		m_data.append('dat_to',dat_to);
-			
+
 		$.ajax({
 			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_item_issue_report"]); ?>",
 			data: m_data,
@@ -138,6 +105,4 @@ $(document).ready(function() {
 		});	
 	});
 });
-	
-	
 </script>
