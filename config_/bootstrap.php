@@ -13,9 +13,11 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-// You can remove this if you are confident that your PHP version is sufficient.
-if (version_compare(PHP_VERSION, '5.6.0') < 0) {
-    trigger_error('Your PHP version must be equal or higher than 5.6.0 to use CakePHP.', E_USER_ERROR);
+/*
+ * You can remove this if you are confident that your PHP version is sufficient.
+ */
+if (version_compare(PHP_VERSION, '5.5.9') < 0) {
+    trigger_error('Your PHP version must be equal or higher than 5.5.9 to use CakePHP.', E_USER_ERROR);
 }
 
 /*
@@ -87,19 +89,20 @@ try {
 //Configure::load('app_local', 'default');
 
 /*
- * When debug = true the metadata cache should only last
- * for a short time.
+ * When debug = false the metadata cache should last
+ * for a very very long time, as we don't want
+ * to refresh the cache while users are doing requests.
  */
-if (Configure::read('debug')) {
-    Configure::write('Cache._cake_model_.duration', '+2 minutes');
-    Configure::write('Cache._cake_core_.duration', '+2 minutes');
+if (!Configure::read('debug')) {
+    Configure::write('Cache._cake_model_.duration', '+1 years');
+    Configure::write('Cache._cake_core_.duration', '+1 years');
 }
 
 /*
  * Set server timezone to UTC. You can change it to another timezone of your
  * choice but using UTC makes time calculations / conversions easier.
  */
-date_default_timezone_set('Asia/Kolkata'); 
+date_default_timezone_set('UTC');
 
 /*
  * Configure the mbstring extension to use the correct encoding.
@@ -148,11 +151,11 @@ if (!Configure::read('App.fullBaseUrl')) {
     unset($httpHost, $s);
 }
 
-Cache::setConfig(Configure::consume('Cache'));
-ConnectionManager::setConfig(Configure::consume('Datasources'));
-Email::setConfigTransport(Configure::consume('EmailTransport'));
-Email::setConfig(Configure::consume('Email'));
-Log::setConfig(Configure::consume('Log'));
+Cache::config(Configure::consume('Cache'));
+ConnectionManager::config(Configure::consume('Datasources'));
+Email::configTransport(Configure::consume('EmailTransport'));
+Email::config(Configure::consume('Email'));
+Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
 
 /*
@@ -175,7 +178,11 @@ Request::addDetector('tablet', function ($request) {
 
     return $detector->isTablet();
 });
-
+Request::addDetector('csv', [
+    'accept' => ['text/csv'],
+    'param' => '_ext',
+    'value' => 'csv',
+]);
 /*
  * Enable immutable time objects in the ORM.
  *
@@ -189,8 +196,6 @@ Type::build('time')
 Type::build('date')
     ->useImmutable();
 Type::build('datetime')
-    ->useImmutable();
-Type::build('timestamp')
     ->useImmutable();
 
 /*
@@ -208,11 +213,12 @@ Type::build('timestamp')
  * Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
  * advanced ways of loading plugins
  *
- * Plugin::loadAll(); // Loads all plugins at once
- * Plugin::load('Migrations'); //Loads a single plugin named Migrations
+  *Plugin::loadAll(); // Loads all plugins at once
+* Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
 
+Plugin::load('CsvView'); //Loads a single plugin named Migrations
 /*
  * Only try to load DebugKit in development mode
  * Debug Kit should not be installed on a production system

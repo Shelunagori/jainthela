@@ -110,7 +110,7 @@ Router::prefix('api', function ($routes) {
 				   'action' => 'profile_edit',
 				   'method' => 'POST'
 				   ],
-				   'my_account' => [
+				'my_account' => [
 				   'action' => 'my_account',
 				   'method' => 'GET'
 				   ],

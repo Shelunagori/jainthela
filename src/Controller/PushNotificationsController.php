@@ -21,12 +21,21 @@ class PushNotificationsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$pushNotifications = $this->PushNotifications->find()->contain(['PushNotificationCustomers']);
-	/* 	$pushNotifications=$this->PushNotifications->find->contain([
-    'PushNotificationCustomers' => function($q) {
+		$pushNotifications = $this->PushNotifications->find()->contain(['PushNotificationCustomers' => function($q) {
+								$q->select([
+									 'PushNotificationCustomers.push_notification_id',
+									 'count_customer' => $q->func()->count('PushNotificationCustomers.push_notification_id')
+								])
+								->group(['PushNotificationCustomers.push_notification_id']);
+
+								return $q;
+							}]);
+		//pr($pushNotifications->toArray()); exit;
+		/* $pushNotifications=$this->PushNotifications->find()->contain([
+		'PushNotificationCustomers' => function($q) {
         return $q->select(['total' => $q->func()->count('PushNotificationCustomers.push_notification_id')]);
-    }
-]); */
+		}
+		]);  */
 		
 		$this->set('pushNotifications', $pushNotifications);
         $this->set('_serialize', ['pushNotifications']);
@@ -45,26 +54,31 @@ class PushNotificationsController extends AppController
 		}
 		if($page=="bulkbooking")
 		{
+		
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>2])->first();}
 		if($page=="referfriend")
 		{
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>3])->first();}
 		if($page=="addmoney")
 		{
+		
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>4])->first();}
 		if($page=="viewcart")
 		{
+		
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>5])->first();}
 		if($page=="specialoffers")
 		{
+		
 		$deepLinks = $this->PushNotifications->DeepLinks->find()->where(['id'=>6])->first();}
 		
         if ($this->request->is('post'))
 			{
+			
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
             $file = $this->request->data['image'];
 			$file_name=$file['name'];
-			 
+			
 			if(!empty($file_name))
 			{
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
@@ -80,10 +94,11 @@ class PushNotificationsController extends AppController
 			}
 
 			else{
-	$pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
+					$pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
 			}
 			
 			$pushNotification->link_url = $deepLinks->link_url;
+			$pushNotification->type = $deepLinks->link_name; 
 			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
 				  if($page=="viewcart")
@@ -228,7 +243,6 @@ class PushNotificationsController extends AppController
 							'notification_id'    => $item_id,
 							);
 						
-							
 						$url = 'https://fcm.googleapis.com/fcm/send';
 						$fields = array
 						(

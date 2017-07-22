@@ -6,7 +6,7 @@ class HomesController extends AppController
     {
         $this->viewBuilder()->layout('index_layout');
 		$this->loadModel('CashBacks');
-		 $fetch_cashback_win_details = $this->CashBacks->find()
+		$fetch_cashback_win_details = $this->CashBacks->find()
 		->where(['won'=>'yes', 'flag'=>2])
 		->contain(['Customers'])
 		->autoFields(true);

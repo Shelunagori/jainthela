@@ -56,7 +56,9 @@ class PurchaseOutwardsController extends AppController
         $purchaseOutward = $this->PurchaseOutwards->newEntity();
 		
         if ($this->request->is('post')) {
-			$this->request->data['transaction_date']=date('Y-m-d',strtotime($this->request->data['transaction_date']));
+			
+			$transaction_date=date('Y-m-d',strtotime($this->request->data['transaction_date']));
+			$this->request->data['transaction_date']=$transaction_date;
 
             $purchaseOutward = $this->PurchaseOutwards->patchEntity($purchaseOutward, $this->request->getData());
 			$last_voucher_no = $this->PurchaseOutwards->find()->select(['voucher_no'])->order(['voucher_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id])->first();
@@ -66,8 +68,35 @@ class PurchaseOutwardsController extends AppController
 				$purchaseOutward->voucher_no=1;
 			}
 			$purchaseOutward->jain_thela_admin_id=$jain_thela_admin_id;
+			
             if ($this->PurchaseOutwards->save($purchaseOutward)) {
+				$purchaseOutward_id=$purchaseOutward->id;
+				$warehouse_id=$purchaseOutward->warehouse_id;
+				
+				$outward_details=$this->PurchaseOutwards->PurchaseOutwardDetails->find()->where(['purchase_outward_id' => $purchaseOutward_id]);
+				
+				foreach($outward_details as $outward_detail){
+					
+					$fetch_item_id=$outward_detail->item_id;
+					$fetch_quantity=$outward_detail->quantity;
+					$fetch_rate=$outward_detail->rate;
+					
+				$query = $this->PurchaseOutwards->ItemLedgers->query();
+				$query->insert(['warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id', 'rate'])
+						->values([
+						'warehouse_id' => $warehouse_id,
+						'transaction_date' => $transaction_date,
+						'item_id' => $fetch_item_id,
+						'quantity' => $fetch_quantity,
+						'status' => 'out',
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'rate' => $fetch_rate
+						])
+				->execute();
+					
+				}
                 $this->Flash->success(__('The purchase outward has been saved.'));
+				
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The purchase outward could not be saved. Please, try again.'));
@@ -84,8 +113,9 @@ class PurchaseOutwardsController extends AppController
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
 			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name];
 		}
-        $this->set(compact('purchaseOutward', 'vendors', 'jainThelaAdmins', 'items'));
-        $this->set('_serialize', ['purchaseOutward', 'items']);
+		$warehouses = $this->PurchaseOutwards->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('purchaseOutward', 'vendors', 'jainThelaAdmins', 'items', 'warehouses'));
+        $this->set('_serialize', ['purchaseOutward', 'items', 'warehouses']);
     }
 
     /**

@@ -51,7 +51,6 @@
 													<label>Quantity<label>
 												</td>
 												<td width="20%">
-													<label>Actual<label>
 												</td>
 												<td></td>
 											</tr>
@@ -64,8 +63,13 @@
 												<td>
 													<button type="button" class="add btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 												</td>
-												
-												<td colspan="4"></td>
+												<td>
+													Wastage Quantity
+												</td>
+												<td>
+													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+												</td>
+												<td></td>
 											</tr>
 										</tfoot>
 									</table>
@@ -212,13 +216,9 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"transfer_inventory_voucher_rows["+i+"][item_id]", id:"transfer_inventory_voucher_rows-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity_factor]", id:"transfer_inventory_voucher_rows-"+i+"-quantity_factor"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"transfer_inventory_voucher_rows["+i+"][quantity]", id:"transfer_inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
-						required: true
-					});
-							
 			i++;
 		});
 	}
@@ -291,18 +291,29 @@ $(document).ready(function() {
 
 	$(".attribute").die().live('change',function(){
 		var raw_attr_name = $('option:selected', this).attr('print_quantity');
-		var minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
-		var unit_name = $('option:selected', this).attr('unit_name');
-		$(this).closest('tr').find('.msg_shw').html(raw_attr_name+" / per");
-		$(this).closest('tr').find('.msg_shw2').html("Total in "+unit_name);
-		//$(this).closest('tr').find('.valid').attr('minimum_quantity_factor', +minimum_quantity_factor);
+		var raw_attr_rates = $('option:selected', this).attr('rates');
+		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
+		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
+		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');
+		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
+		//$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
+		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
+		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
+		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
+	});
+
+	$(".quant").die().live('keyup',function(){
+		var quant = parseFloat($(this).val());
+		if(!quant){ quant=0; }
+		var minimum_quantity_factor = parseFloat($(this).attr('minimum_quantity_factor'));
+		if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+		var unit_name = $(this).attr('unit_name');
+		if(!unit_name){ unit_name=0; }
+		var g_total = quant*minimum_quantity_factor;
+		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
+		$(this).closest('tr').find('.mains').val(g_total);
 	});
 	
-	$(".main_quantity").die().live('keyup',function(){
-		var use_quantity = $(this).val(); 
-		var unit_name = $(this).attr('unit_name');
-		$('.msg_shw3').html(use_quantity+" "+unit_name);
-	});
 });
 
 </script>
@@ -312,15 +323,16 @@ $(document).ready(function() {
 					<td align="center" width="1px"></td>
 				    <td>
 						<?= $this->Form->input('item_id',array('options' => $items,'class'=>'form-control input-sm attribute','empty' => 'Select','label'=>false)) ?>
+						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
+					
 					</td>
 					<td>
-						<?php echo $this->Form->input('quantity_factor', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
-						<span class="msg_shw" style="color:blue;font-size:10px;"></span>
-					</td>
-					<td>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'Quantity','value'=>0, 'readonly'=>'readonly']); ?>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount quant','placeholder'=>'Quantity','value'=>0]); ?>
 						<span class="msg_shw2" style="color:blue;font-size:10px;"></span>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains','value'=>0, 'type'=>'hidden']); ?>
+						
 					</td>
+					 
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 					</td>

@@ -110,25 +110,23 @@
 						<tr>
 							<th scope="col">Sr. No.</th>
 							<th scope="col">Notification Date</th>
-							<th scope="col">Message</th>
-							<!--<th scope="col">wallet Amount</th>-->
 							<th scope="col">Image</th>
+							<th scope="col">Message</th>
 							<th scope="col">Type</th>
-							<th scope="col">No. of Customers</th>
+							<th scope="col">Total Send</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-						$sr_no=0; foreach ($pushNotifications as $push): $sr_no++;
-						$created_on=date('d-m-Y', strtotime($push->created_on));
+						$sr_no=0; foreach ($pushNotifications as $pushNotification): $sr_no++;
 						?>
 						<tr>
 							<td><?= $sr_no ?></td>
-							<td><?= $created_on ?></td>
-							<td><?= h($push->message) ?></td>
-							<td><img src="<?php echo $push->image;?>" style="width:100px; height:100px"></td>
-							<td><?= h($push->type) ?></td>
-							<td></td>
+							<td><?= $pushNotification->created_on ?></td>
+							<td><?php if (!empty($pushNotification->image)) { ?><img src="<?php echo $pushNotification->image; ?>" style="width:100px; height:100px"><?php } else { echo 'No Image'; } ?></td>
+							<td><?= h($pushNotification->message) ?></td> 
+							<td><?= h($pushNotification->type) ?></td>
+							<td><?=($pushNotification->push_notification_customers[0]->count_customer) ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

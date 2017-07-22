@@ -100,7 +100,6 @@ class WalkinSalesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['driver_id'], 'Drivers'));
-        $rules->add($rules->existsIn(['jain_thela_admin_id'], 'JainThelaAdmins'));
         $rules->add($rules->existsIn(['warehouse_id'], 'Warehouses'));
 
         return $rules;

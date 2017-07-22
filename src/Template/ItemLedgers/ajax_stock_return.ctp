@@ -41,7 +41,7 @@
 					</span>
 				</td>
 				<td>
-					<?php echo $this->Form->input('item_ledgers['.$k.'][waste]', ['label' => false,'class' => 'form-control input-sm number','value'=>0]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][waste]', ['label' => false,'class' => 'form-control input-sm number quant','value'=>0]); ?>
 					<span class="msg_shw2" style="color:green;font-size:10px;">
 						quantity in <?= $unit_name ?>
 					</span>

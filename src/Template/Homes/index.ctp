@@ -180,6 +180,7 @@
 		</div>
 	</div>
 </div>
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 var $rows = $('#main_tble tbody tr');
@@ -292,49 +293,3 @@ $(document).ready(function() {
 	</div>
 </div>-->
 
-
-
-<div class="portlet blue-hoki box col-md-6">
-						<div class="portlet-title">
-						<div class="caption">
-								<i class="fa fa-user"></i>Cash Back Winners
-								</div>
-							<div class="tools">
-								<a href="javascript:;" class="collapse" data-original-title="" title="">
-								</a>
-							</div>
-						</div>
-						<div class="portlet-body" style="display: block">
-								
-							<p>
-								<table class="table table-condensed table-hover table-bordered" id="main_tble">
-					<tbody>
-						<?php
-						$sr_no=0; foreach ($fetch_cashback_win_details as $cb): $sr_no++;
-						?>
-						<tr>
-						<div class="col-md-3">
-<div class="row">
-							<!-- SIDEBAR USERPIC -->
-							<span class="badge badge-danger tooltips" data-original-title="Virtule Item"><?php echo $sr_no;?></span>
-							<div class="profile-userpic">
-								<img src="http://app.jainthela.in<?php echo $this->request->webroot;?>img/user2.png" class="img-responsive" alt="" style="width:100px; height:100px">
-							</div>
-							<!-- END SIDEBAR USERPIC -->
-							<!-- SIDEBAR USER TITLE -->
-							<div class="profile-usertitle">
-								<div class="profile-usertitle-name" style="padding-left:40px">
-									 <?php echo $cb->customer->name;?>
-								</div>
-								<div class="profile-usertitle-job" style="padding-left:18px">
-									 <?php echo $cb->customer->mobile;?>
-								</div>
-							</div>
-						</div>
-					</div>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-							</p>
-					</div></div>

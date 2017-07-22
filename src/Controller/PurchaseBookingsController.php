@@ -58,7 +58,6 @@ class PurchaseBookingsController extends AppController
 		$grn = $this->PurchaseBookings->Grns->get($grn_id, [
             'contain' => ['GrnDetails'=>['Items'], 'Vendors', 'JainThelaAdmins']
         ]);
-		
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
         $purchaseBooking = $this->PurchaseBookings->newEntity();
         if ($this->request->is('post')) { 
@@ -72,10 +71,9 @@ class PurchaseBookingsController extends AppController
 			}
 			$purchaseBooking->jain_thela_admin_id=$jain_thela_admin_id;
 			$purchaseBooking->vendor_id=$grn->vendor_id;
-			echo $purchaseBooking->grn_id=$grn->id;
+			$purchaseBooking->grn_id=$grn->id;
 			
 			
-			exit;
             if ($this->PurchaseBookings->save($purchaseBooking)) {
 				
 				$this->PurchaseBookings->ItemLedgers->deleteAll(['grn_id' => $grn_id]);
