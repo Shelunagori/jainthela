@@ -137,6 +137,7 @@ class OrdersController extends AppController
 			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
+			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 
             if ($this->Orders->save($order)) {
 
@@ -153,7 +154,13 @@ class OrdersController extends AppController
 			$customer_mobile=$customer_fetch->mobile;
 			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
 		}
-
+		$deliverytime_fetchs = $this->Orders->DeliveryTimes->find('all');
+		foreach($deliverytime_fetchs as $deliverytime_fetch){
+			$time_id=$deliverytime_fetch->id;
+			$time_from=$deliverytime_fetch->time_from;
+			$time_to=$deliverytime_fetch->time_to;
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
 		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
 
@@ -170,7 +177,7 @@ class OrdersController extends AppController
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
 
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id'));
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time'));
         $this->set('_serialize', ['order']);
     }
 	/**
