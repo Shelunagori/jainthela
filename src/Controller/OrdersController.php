@@ -208,6 +208,9 @@ class OrdersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
+			$order->grand_total=$this->request->data['total_amount'];
+			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
+
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
@@ -233,9 +236,16 @@ class OrdersController extends AppController
 			$customer_mobile=$customer_fetch->mobile;
 			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
 		}
+		$deliverytime_fetchs = $this->Orders->DeliveryTimes->find('all');
+		foreach($deliverytime_fetchs as $deliverytime_fetch){
+			$time_id=$deliverytime_fetch->id;
+			$time_from=$deliverytime_fetch->time_from;
+			$time_to=$deliverytime_fetch->time_to;
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+		}
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
         $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items'));
+        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time'));
         $this->set('_serialize', ['order']);
     }
 
