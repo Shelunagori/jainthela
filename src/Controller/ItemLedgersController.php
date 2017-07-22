@@ -523,6 +523,68 @@ class ItemLedgersController extends AppController
          $this->set(compact('itemLedgers'));
     }
 
+	public function itemSaleReports(){
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['ItemLedgers.transaction_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['ItemLedgers.transaction_date <=']=$to_date;
+		}
+		
+		$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
+			return $q->where(['is_combo'=>'no','is_virtual'=>'no']);
+		}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where);
+		
+		$order_online = []; $order_online_name=[];
+		$order_bulk = [];
+		$order_offline = [];
+		$order_online_rate = [];
+		$order_bulk_rate = [];
+		$order_offline_rate = [];
+		$Itemsexists=[]; $qty=0;
+		foreach($itemLedgers as $itemLedger){
+			$Orders = $this->ItemLedgers->Orders->find()->where(['id'=>$itemLedger->order_id])->toArray();
+			if(sizeof($Orders)>0){ 
+				foreach($Orders as $order){
+					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'){
+						@$order_online[$itemLedger->item_id] += $itemLedger->quantity; 
+						@$order_online_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+						//pr($order_online);
+					}
+					if($order->order_type == 'Bulkorder'){
+						@$order_bulk[$itemLedger->item_id] += $itemLedger->quantity;
+						@$order_bulk_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+					}
+					if($order->order_type =='Offline'){
+						@$order_offline[$itemLedger->item_id] += $itemLedger->quantity;
+						@$order_offline_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+						
+					}
+				}
+			}
+		}
+		//pr($Itemsexists);exit;
+		
+		$ItemList =  $this->ItemLedgers->Items->find();
+		
+
+		$this->set(compact('itemLedgers','ItemList','from_date','to_date','order_online','order_bulk','order_offline'
+		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists'));
+		 $this->set('_serialize', ['itemLedgers']);
+	}
+	
 	public function ajaxItemDetails($id = null)
     {
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
@@ -625,4 +687,6 @@ class ItemLedgersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	
 }

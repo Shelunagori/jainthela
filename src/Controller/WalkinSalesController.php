@@ -232,4 +232,15 @@ class WalkinSalesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function walkinSaleDetails($item_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$walkinSales = $this->WalkinSales->find()->contain(['Drivers', 'Warehouses','WalkinSaleDetails'=>['Items'=>function($q) use($item_id){
+			return $q->where(['Items.id'=>$item_id])->contain(['Units']);
+		}]]);
+		 $this->set(compact('walkinSales'));
+        $this->set('_serialize', ['walkinSales']);
+	}
 }
