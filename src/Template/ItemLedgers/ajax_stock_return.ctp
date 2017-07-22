@@ -9,10 +9,13 @@
 					<label>Item<label>
 				</td>
 				<td width="20%">
-					<label>Quantity<label>
+					<label>Available Stock<label>
 				</td>
 				<td width="20%">
-					<label>Waste Quantity<label>
+					<label>Return<label>
+				</td>
+				<td width="20%">
+					<label>Weight variation<label>
 				</td>
 			</tr>
 		</thead>

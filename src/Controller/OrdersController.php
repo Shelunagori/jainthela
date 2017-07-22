@@ -118,7 +118,7 @@ class OrdersController extends AppController
         if ($this->request->is('post')) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
 			$curent_date=date('Y-m-d');
-			
+
 			$last_order_no = $this->Orders->find()->select(['order_no', 'get_auto_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->first();
 
 			if(!empty($last_order_no)){
