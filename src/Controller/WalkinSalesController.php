@@ -253,7 +253,7 @@ class WalkinSalesController extends AppController
 			return $q->contain(['Drivers','Warehouses'])->where($where);
 		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id]);
 	//	pr($walkinSales->toArray());
-		 $this->set(compact('walkinSales'));
+		 $this->set(compact('walkinSales','from_date','to_date'));
         $this->set('_serialize', ['walkinSales']);
 	}
 }

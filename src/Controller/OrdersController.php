@@ -290,7 +290,7 @@ class OrdersController extends AppController
 			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod']])->where($where);
 		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id,'order_id']);
 		//pr($onlineSales->toArray());exit;
-		 $this->set(compact('onlineSales'));
+		 $this->set(compact('onlineSales','from_date','to_date'));
         $this->set('_serialize', ['onlineSales']);
 	}
 	
@@ -314,7 +314,7 @@ class OrdersController extends AppController
 			return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
 		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
 		//pr($bulkSales->toArray());exit;
-		 $this->set(compact('bulkSales'));
+		 $this->set(compact('bulkSales','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
 	}
 }

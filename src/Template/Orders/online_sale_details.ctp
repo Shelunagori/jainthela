@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($onlineSales as $onlineSale){ echo $onlineSale->item->name; break; } ?>"</span>
+			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($onlineSales as $onlineSale){ echo $onlineSale->item->name.'('.$onlineSale->item->alias_name.')'; break; } ?>"</span>
 		</div>
 		<div class="portlet-body">
 		

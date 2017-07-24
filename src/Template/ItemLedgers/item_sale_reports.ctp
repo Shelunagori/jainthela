@@ -59,21 +59,21 @@
 							<td><?= h($itemLedger->name).'('.$itemLedger->alias_name.')' ?></td>
 							<?php if(!empty(@$order_offline[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_offline[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id]) ?>
+							<?= $this->Html->link(@$order_offline[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_online[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_online[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id]) ?>
+							<?= $this->Html->link(@$order_online[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_bulk[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_bulk[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id]) ?>
+							<?= $this->Html->link(@$order_bulk[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
