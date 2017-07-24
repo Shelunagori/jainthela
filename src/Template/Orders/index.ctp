@@ -72,7 +72,7 @@
 							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a>
 							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" > <i class="fa fa-remove"></i> Cancel</a>
 							<?php } ?> 
-							<?php  if(($status=='cancel' || $status=='Cancel')){ ?>
+							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ ?>
 								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Reopen</a>
 							
 							<?php }?>
