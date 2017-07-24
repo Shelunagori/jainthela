@@ -9,10 +9,11 @@
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
-					<span>
-					<B>Leads</B>
-					</span>
-				</div>
+							<i class="font-purple-intense"></i>
+							<span class="caption-subject font-purple-intense ">
+							<i class="fa fa-book"></i> Leads</span>
+						</div>
+				
 				<div class="actions">
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add New',['controller'=>'Leads','action' => 'add'],['escape'=>false,'class'=>'btn btn-default']); ?>
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">

@@ -6,17 +6,15 @@
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
-							<span>
-							<B>Walk In Sales</B>
-							</span>
+							<i class="font-purple-intense"></i>
+							<span class="caption-subject font-purple-intense ">
+							<i class="fa fa-book"></i> Walk In Sales</span>
 						</div>
 						<div class="actions">
-					
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
-					
-				</div>
+							<?php echo $this->Html->link('<i class="fa fa-plus"></i> View All','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default']) ?>
+						</div>
 					</div><?php /* echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/WalkinSales/index',['escape'=>false,'class'=>'btn btn-default'])  */?>
-					<div class="portlet-body form">
+				<div class="portlet-body form">
 					<!-- BEGIN FORM-->
 							<div class="row">
 								<div class="col-md-12">
