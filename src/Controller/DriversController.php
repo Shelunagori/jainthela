@@ -33,8 +33,7 @@ class DriversController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-        
-        $driver_details = $this->paginate($this->Drivers->DriverLocations->find()->order(['created_on'=> 'DESC'])->contain(['Drivers']));
+        $driver_details = $this->paginate($this->Drivers->DriverLocations->find()->order(['created_on'=> 'DESC'])->contain(['Drivers'])->group('driver_id'));
 		$drivers=$this->Drivers->find('list');
         $this->set(compact('driver_details', 'drivers'));
         $this->set('_serialize', ['driver_details', 'drivers']);
