@@ -153,7 +153,7 @@
 								</li>
 								
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-truck"></i> Drivers','/Drivers',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-truck"></i> Drivers','/Drivers/add',['escape'=>false]) ?>
 								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-users"></i> Vendors','/Vendors',['escape'=>false]) ?>

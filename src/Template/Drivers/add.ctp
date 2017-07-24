@@ -55,6 +55,8 @@
 					<span class="caption-subject">Drivers</span>
 				</div>
 				<div class="actions">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Driver Location','/Drivers/driver_location',['escape'=>false,'class'=>'btn btn-default']) ?>
+					&nbsp;
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
 				</div>
 			</div>
