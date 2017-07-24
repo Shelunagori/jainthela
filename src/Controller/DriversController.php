@@ -62,24 +62,33 @@ class DriversController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-        $driver = $this->Drivers->newEntity();
-        if ($this->request->is('post')) {
+		if(!$id){
+			$driver = $this->Drivers->newEntity();
+		}else{
+			 $driver = $this->Drivers->get($id, [
+            'contain' => []
+			]);
+		}
+        if ($this->request->is(['patch', 'post', 'put'])) {
+			$password=md5($this->request->data('password'));
             $driver = $this->Drivers->patchEntity($driver, $this->request->getData());
             $driver->jain_thela_admin_id=$jain_thela_admin_id;
+            $driver->password=$password;
 			if ($this->Drivers->save($driver)) {
                 $this->Flash->success(__('The driver has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The driver could not be saved. Please, try again.'));
         }
+		$driver_details = $this->paginate($this->Drivers);
+
        // $cities = $this->Drivers->Cities->find('list', ['limit' => 200]);
-        $this->set(compact('driver'));
-        $this->set('_serialize', ['driver']);
+        $this->set(compact('driver', 'driver_details', 'id'));
+        $this->set('_serialize', ['driver', 'driver_details', 'id']);
     }
 
     /**
@@ -128,6 +137,6 @@ class DriversController extends AppController
             $this->Flash->error(__('The driver could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add']);
     }
 }

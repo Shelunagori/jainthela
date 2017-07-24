@@ -8,7 +8,7 @@
 				<td width="40%">
 					<label>Item<label>
 				</td>
-				<td width="20%">
+				<td width="10%">
 					<label>Available Stock<label>
 				</td>
 				<td width="20%">
@@ -35,10 +35,10 @@
 				<td>
 					<?= $itemLedger->item->name ?>
 					<?php echo $this->Form->input('item_ledgers['.$k.'][item_id]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number','value'=> $item_id]); ?>
-					
 				</td>	
+				<td align="center"><?= h($remaining) ?></td>
 				<td>
-					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining, 'max'=>$remaining]); ?>
 					<span class="msg_shw" style="color:green;font-size:10px;">
 						quantity in <?= $unit_name ?>
 					</span>
