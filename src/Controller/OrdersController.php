@@ -83,7 +83,19 @@ class OrdersController extends AppController
         $this->set('_serialize', ['order', 'CancelReasons']);
     }
 
-	
+	public function undoBox($id = null)
+    {
+		$Orders = $this->Orders->get($id);
+		$Orders->status='In Process';
+		$Orders->cancel_id=0;
+		 if ($this->Orders->save($Orders)) {
+            $this->Flash->success(__('The Order has been reopened.'));
+        } else {
+            $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
+		
+    }
 	public function ajaxOrderView()
     {
 		$order_id=$this->request->data['odr_id'];

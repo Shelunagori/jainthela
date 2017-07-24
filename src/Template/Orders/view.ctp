@@ -35,7 +35,12 @@
 					$item_name=$order_detail->item->name;
 					$alias_name=$order_detail->item->alias_name;
 					$show_quantity=$quantity.' '.$unit_name;
+					if(!empty($actual_quantity)){
 					$show_actual_quantity=$actual_quantity.' '.$unit_name;
+					}
+					else{
+					$show_actual_quantity='-';
+					}
 					$amount=$order_detail->amount;
 					@$total_rate+=$amount;
 					if(!empty($alias_name)){
