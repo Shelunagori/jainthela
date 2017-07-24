@@ -1,3 +1,8 @@
+<style>
+.tiles .tile {
+	    height: 118px !important;
+}
+</style>
 <div class="row">
 <div class="col-md-12">
 <div class="portlet">
@@ -18,7 +23,6 @@
 		<!-- BEGIN FORM-->
 				<div class="row">
 					<div class="col-md-12">
-						<div class="actions">
 							<?php
 							foreach($Customers->jain_cash_points as $jain_cash_data){
 								$jain_cash_total_point=$jain_cash_data->total_point;
@@ -34,107 +38,55 @@
 								$total_order_data=$order_data->total_order;
 							}
 							 ?>
-							 <table>
-								<tr>
-									<td width="35%">
-										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:100px;font-size:17px;padding:4px;">
-										JAIN CASH<br><?= @$jain_cash_remaining_point ?>
+							<div class="col-md-4"></div> 
+							 <div class="tiles">
+								<div class="tile bg-blue-steel">
+									<div class="tile-body">
+										<i class="fa fa-briefcase"></i>
+									</div>
+									<div class="tile-object">
+										<div class="name">
+											 WALLET
 										</div>
-									</td>
-									<td width="35%">
-										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
-										WALLET<br><?= @$wallet_remaining_amount ?>
+										<div class="number">
+											<?php if(!empty(@$wallet_remaining_amount)){ ?>
+											<?= @$wallet_remaining_amount ?>
+											<?php }else{
+												echo "0";
+											} ?>
 										</div>
-									</td>
-									<td width="35%">
-										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
-										ORDERS<br><?= @$total_order_data ?>
+									</div>
+								</div>
+								
+								<div class="tile bg-purple-studio">
+									<div class="tile-body">
+										<i class="fa fa-shopping-cart"></i>
+									</div>
+									<div class="tile-object">
+										<div class="name">
+											 ORDERS
 										</div>
-									</td>
-								</tr>
-							</table>
-	<div class="col-md-12">
-		<h3 align="center">Jain Cash Details</h3>
-	<div>
-	<table width="100%" border="1">
-		<tr>
-			<td width="50%" valign="top" align="left">
-				<table class="table table-condensed table-hover table-bordered" id="main_tble">
-					<caption style="text-align:center;font-size:20px;">Earned Points</caption>
-					<thead>
-						<tr>
-							<th>Sr</th>
-							<th>Customer</th>
-							<th>Point</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php 
-						foreach($jain_cash_gains as $jain_cash_gain){
-						@$i++;
-							?>
-							<tr>
-								<td><?= $i ?></td>
-								<td>
-									<?= h($jain_cash_gain->from_customer->name) ?>
-								</td>
-								<td>
-									<?= h($jain_cash_gain->points) ?>
-								</td>
-								<td>
-									<?= h(date('d-M-Y', strtotime($jain_cash_gain->created_on))) ?>
-								</td>
-						<?php } ?>														 
-					</tbody>
-				</table>
-			</td>
-			<td width="50%" valign="top" align="right">
-				<table class="table table-condensed table-hover table-bordered" id="main_tble2">
-					<caption style="text-align:center;font-size:20px;">Used Points</caption>
-					<thead>
-						<tr>
-							<th>Sr</th>
-							<th>Order</th>
-							<th>Point</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php 
-						foreach($jain_cash_uses as $jain_cash_use){
-						@$j++;
-							?>
-							<tr>
-								<td><?= $j ?></td>
-								<td>
-									<?php @$order_number_show=$jain_cash_use->order->order_no; ?>
-									<?= h('#'.str_pad($this->Number->format(@$order_number_show), 4, '0', STR_PAD_LEFT)) ?>
-								</td>
-								<td>
-									<?= h($jain_cash_use->used_point) ?>
-								</td>
-								<td>
-									<?= h(date('d-M-Y', strtotime($jain_cash_use->updated_on))) ?>
-								</td>
-						<?php } ?>
-						 
-					</tbody>
-				</table>	
-			</td>
-		</tr>
-	</table>
-	 
+										<div class="number">
+										<?php if(!empty(@$total_order_data)){ ?>
+											<?= @$total_order_data ?>
+										<?php }else{
+												echo "0";
+											} ?>	
+										</div>
+									</div>
+								</div>
+							</div>
+							
 <!-------------------------------------!-Wallet----START----------------------------------->
 	<div class="col-md-12">
-		<h3 align="center">Wallet</h3>
-	<div>
-	<table width="100%" border="1">
+		
+	<table width="100%" class="table table-condensed  table-bordered" >
 		<tr>
-			<td width="50%" valign="top" align="left">
-				<table class="table table-condensed table-hover table-bordered" id="main_tble">
-					<caption style="text-align:center;font-size:20px;">Advance</caption>
+			<td width="50%" valign="top" align="left" style="background-color: rgba(228, 226, 226, 0.38);">
+				<table class="table table-condensed table-bordered" id="main_tble">
+					<caption style="text-align:center;font-size:20px;">Advance Wallet</caption>
 					<thead>
+						
 						<tr>
 							<th>Sr</th>
 							<th>Plan</th>
@@ -162,9 +114,9 @@
 					</tbody>
 				</table>
 			</td>
-			<td width="50%" valign="top" align="right">
-				<table class="table table-condensed table-hover table-bordered" id="main_tble2">
-					<caption style="text-align:center;font-size:20px;">Consumed</caption>
+			<td width="50%" valign="top" align="right" style="background-color: rgba(228, 226, 226, 0.38);">
+				<table class="table table-condensed  table-bordered" id="main_tble2">
+					<caption style="text-align:center;font-size:20px;">Consumed Wallet</caption>
 					<thead>
 						<tr>
 							<th>Sr</th>
@@ -198,14 +150,14 @@
 	</table>
 <!-----------------------------------Wallet----END------------------------------------------->
 <!-------------------------------Order---Details---START------------------------------------->
-<div class="col-md-12">
-		<h3 align="center">Order Details</h3>
-	<div>
-<table width="100%" border="1">
-<tr>
-	<td width="100%" valign="top">	
-		<table class="table table-condensed table-hover table-bordered" id="main_tble" >
+		
+<table width="100%" class="table table-condensed table-bordered" >
+<tr >
+	<td width="100%" style="background-color: rgba(228, 226, 226, 0.38);" valign="top">	
+		<table class="table table-condensed  table-bordered" id="main_tble" >
 			<thead>
+			<tr><h4 align="left">Order Details</h4></tr>
+
 				<tr>
 					<th>Sr</th>
 					<th>Order</th>
@@ -253,7 +205,6 @@
 		</div>
 	</div>
 </div>
-	</div>
 </div>
     <div class="col-md-1">
 	</div>

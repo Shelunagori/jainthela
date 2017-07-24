@@ -28,12 +28,42 @@ class WalkinSalesController extends AppController
         $this->set('_serialize', ['walkinSales']);
     }
 
-	public function invoiceReport()
+	public function invoiceReports()
     {
 		$this->viewBuilder()->layout('index_layout');
         $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
-		$this->set(compact('walkinSales'));
+		
+		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['WalkinSales.transaction_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['WalkinSales.transaction_date <=']=$to_date;
+		}
+		
+		$where1 =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where1['Orders.delivery_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where1['Orders.delivery_date <=']=$to_date;
+		}
+		
+		$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>				$jain_thela_admin_id])
+					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+		
+		$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+					->where(['order_type NOT IN'=>['Offline']])->where($where1);
+					
+		$this->set(compact('walkinSales','Orders','from_date','to_date'));
 		$this->set('_serialize', ['walkinSales']);
     }
 

@@ -41,6 +41,7 @@ class WalkinSalesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Drivers');
+        $this->belongsTo('Orders');
         $this->belongsTo('JainThelaAdmins');
         $this->belongsTo('Warehouses');
 		$this->belongsTo('Ledgers');
