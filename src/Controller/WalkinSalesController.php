@@ -237,11 +237,20 @@ class WalkinSalesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		/* $walkinSales = $this->WalkinSales->find()->contain(['Drivers', 'Warehouses','WalkinSaleDetails'=>['Items'=>function($q) use($item_id){
-			return $q->where(['Items.id'=>$item_id])->contain(['Units']);
-		}]]); */
-		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q){
-			return $q->contain(['Drivers','Warehouses']);
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['Orders.transaction_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['Orders.transaction_date <=']=$to_date;
+		}
+		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
+			return $q->contain(['Drivers','Warehouses'])->where($where);
 		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id]);
 	//	pr($walkinSales->toArray());
 		 $this->set(compact('walkinSales'));

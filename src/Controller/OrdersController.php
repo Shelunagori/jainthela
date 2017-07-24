@@ -273,9 +273,22 @@ class OrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q){
-			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod']]);
-		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['Orders.delivery_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['Orders.delivery_date <=']=$to_date;
+		}
+		
+		$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
+			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod']])->where($where);
+		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id,'order_id']);
 		//pr($onlineSales->toArray());exit;
 		 $this->set(compact('onlineSales'));
         $this->set('_serialize', ['onlineSales']);
@@ -285,8 +298,20 @@ class OrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q){
-			return $q->where(['order_type IN'=>['Bulkorder']]);
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['Orders.delivery_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['Orders.delivery_date <=']=$to_date;
+		}
+		$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
+			return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
 		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
 		//pr($bulkSales->toArray());exit;
 		 $this->set(compact('bulkSales'));
