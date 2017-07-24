@@ -268,4 +268,28 @@ class OrdersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function onlineSaleDetails($item_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q){
+			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod']]);
+		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
+		//pr($onlineSales->toArray());exit;
+		 $this->set(compact('onlineSales'));
+        $this->set('_serialize', ['onlineSales']);
+	}
+	
+	public function bulkSaleDetails($item_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q){
+			return $q->where(['order_type IN'=>['Bulkorder']]);
+		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
+		//pr($bulkSales->toArray());exit;
+		 $this->set(compact('bulkSales'));
+        $this->set('_serialize', ['bulkSales']);
+	}
 }

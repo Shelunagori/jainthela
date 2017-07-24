@@ -237,9 +237,13 @@ class WalkinSalesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$walkinSales = $this->WalkinSales->find()->contain(['Drivers', 'Warehouses','WalkinSaleDetails'=>['Items'=>function($q) use($item_id){
+		/* $walkinSales = $this->WalkinSales->find()->contain(['Drivers', 'Warehouses','WalkinSaleDetails'=>['Items'=>function($q) use($item_id){
 			return $q->where(['Items.id'=>$item_id])->contain(['Units']);
-		}]]);
+		}]]); */
+		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q){
+			return $q->contain(['Drivers','Warehouses']);
+		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id]);
+	//	pr($walkinSales->toArray());
 		 $this->set(compact('walkinSales'));
         $this->set('_serialize', ['walkinSales']);
 	}
