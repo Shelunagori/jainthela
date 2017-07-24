@@ -11,7 +11,7 @@
 				<div class="caption">
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-book"></i>BULK BOOKING LEADS</span>
+						<i class="fa fa-book"></i> BULK BOOKING LEADS</span>
 				</div>
 				
 				<div class="actions"> 
