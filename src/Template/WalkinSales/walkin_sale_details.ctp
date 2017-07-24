@@ -2,6 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
+			
 			<span class="caption-subject font-blue-steel ">Walk In Sale "<?php foreach ($walkinSales as $walkinSale){ echo $walkinSale->item->name; break; } ?>"</span>
 		</div>
 		<div class="portlet-body">
@@ -20,7 +21,7 @@
 							<?php if(!empty($to_date)){ ?>
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
 							<?php }else{ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
+							<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
 							<?php } ?>	
 							</td>
 							<td width="10%">
@@ -30,7 +31,7 @@
 					</tbody>
 				</table>
 			</form>
-			<div class="row">
+		<div class="row">
 				<div class="col-md-12">
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
@@ -43,7 +44,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach($walkinSales as $walkinSale){ ?> 
+						
+						<?php $i=1; foreach($walkinSales as $walkinSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
 							<?php if($walkinSale->walkin_sale->driver_id !=0){ ?>
@@ -64,4 +66,3 @@
 		</div>
 	</div>
 </div>
-
