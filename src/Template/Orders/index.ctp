@@ -52,7 +52,8 @@
 								$customer_name=$order->customer->name;
 								$customer_mobile=$order->customer->mobile;
 								
-								$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
+								$order_date=date('d-m-Y', strtotime($order->order_date));
+								$prev_date=date('d-m-Y', strtotime('-1 day'));
 								
 								
 							?>
@@ -74,10 +75,12 @@
 							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" > <i class="fa fa-remove"></i> Cancel</a>
 							   
 							<?php } ?> 
-							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ ?>
+							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ 
+							       if(( $order_date == $current_date ) || ($order_date == $prev_date  )){
+							?>
 								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Reopen</a>
-							
-							<?php }?>
+								
+							<?php } }?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

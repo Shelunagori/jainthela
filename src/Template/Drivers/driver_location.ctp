@@ -1,108 +1,168 @@
-<style>
-.table>thead>tr>th{
-	font-size:12px !important;
-}
-</style>
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light bordered">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="font-purple-intense"></i>
-					<span class="caption-subject font-purple-intense">
-						<i class="fa fa-plus"></i> Driver Location Report
-					</span>
-				</div>
-				<div class="actions">
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">
-				</div>
-			</div>
-			<div class="portlet-body">
-				<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-condensed table-hover table-bordered" id="main_tble">
-					<thead>
-						<tr>
-							<th>Sr.no</th>
-							<th>Driver</th>
-							<th>lattitude</th>
-							<th>longitude</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php $sr_no=0; foreach ($driver_details as $driver_detail): 
-						
-						$created_on=date('d-m-Y h:i a', strtotime($driver_detail->created_on));
-						$longitude=$driver_detail->longitude;
-						$lattitude=$driver_detail->lattitude;
-						$driver_name=$driver_detail->driver->name;
-						?>
-						<tr>
-							<td><?= $this->Number->format(++$sr_no) ?></td>
-							<td><?= h($driver_name) ?></td>
-							<td><?= h($lattitude) ?></td>
-							<td><?= h($longitude) ?></td>
-							<td><?= h($created_on) ?></td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->first('<< ' . __('first')) ?>
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-						<?= $this->Paginator->last(__('last') . ' >>') ?>
-					</ul>
-					<p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<script>
-var $rows = $('#main_tble tbody tr');
-	$('#search3').on('keyup',function() {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-		var v = $(this).val();
-		if(v){ 
-			$rows.show().filter(function() {
-				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-	
-				return !~text.indexOf(val);
-			}).hide();
-		}else{
-			$rows.show();
-		}
-	});
-	
 
-$(document).ready(function() {	
-	$('.go').die().live('change',function()
-	{ 
-		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
-		var dat_from = $(".from").val();
-		var dat_to = $(this).val();
- 		var m_data = new FormData();
-		m_data.append('dat_from',dat_from);
-		m_data.append('dat_to',dat_to);
+		
+		
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA7IZt-36CgqSGDFK8pChUdQXFyKIhpMBY&sensor=true" type="text/javascript"></script>
+    <script type="text/javascript">
 
-		$.ajax({
-			url: "<?php echo $this->Url->build(["controller" => "ItemLedgers", "action" => "ajax_item_issue_report"]); ?>",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			dataType:'text',
-			success: function(data)   // A function to be called if request succeeds
-			{
-				alert(data);
-				$('#data').html(data);
-				 
-			}	
-		});	
-	});
-});
-</script>
+        var map;
+        var geocoder;
+        var marker;
+        var people = new Array();
+        var latlng;
+        var infowindow;
+
+        $(document).ready(function() {
+            ViewCustInGoogleMap();
+        });
+
+        function ViewCustInGoogleMap() {
+
+            var mapOptions = {
+                center: new google.maps.LatLng(24.5989579, 73.7456404),   // Coimbatore = (11.0168445, 76.9558321)
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+            // Get data from database. It should be like below format or you can alter it.
+<?php 
+				$i=0;
+				foreach($driver_details as $driver_detail)
+				{
+					$i++;
+                    //$id=$data['login']['id'];
+					$name=$driver_detail->driver->name;;
+					$mobile=$driver_detail->driver->mobile;
+					$latitude=$driver_detail->lattitude;
+					 $longitude=$driver_detail->longitude;
+					?>
+
+            var data = '[{ "DisplayText": "<?php echo $name;?> <?php
+					
+					$geolocation = $latitude.','.$longitude;
+$request = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='.$geolocation.'&sensor=false'; 
+$file_contents = file_get_contents($request);
+$json_decode = json_decode($file_contents);
+if(isset($json_decode->results[0])) {	
+    $response = array();
+    foreach($json_decode->results[0]->address_components as $addressComponet) {
+        if(in_array('political', $addressComponet->types)) {
+                $response[] = $addressComponet->long_name; 
+        }
+    }
+
+    if(isset($response[0])){ $first  =  $response[0];  } else { $first  = 'null'; }
+    if(isset($response[1])){ $second =  $response[1];  } else { $second = 'null'; } 
+    if(isset($response[2])){ $third  =  $response[2];  } else { $third  = 'null'; }
+    if(isset($response[3])){ $fourth =  $response[3];  } else { $fourth = 'null'; }
+    if(isset($response[4])){ $fifth  =  $response[4];  } else { $fifth  = 'null'; }
+
+    if( $first != 'null' && $second != 'null' && $third != 'null' && $fourth != 'null' && $fifth != 'null' ) {
+        echo "<br/>Address:: ".$first;
+        echo "<br/>City:: ".$second;
+        echo "<br/>State:: ".$fourth;
+        echo "<br/>Country:: ".$fifth;
+    }
+    else if ( $first != 'null' && $second != 'null' && $third != 'null' && $fourth != 'null' && $fifth == 'null'  ) {
+        echo "<br/>Address:: ".$first;
+        echo "<br/>City:: ".$second;
+        echo "<br/>State:: ".$third;
+        echo "<br/>Country:: ".$fourth;
+    }
+    else if ( $first != 'null' && $second != 'null' && $third != 'null' && $fourth == 'null' && $fifth == 'null' ) {
+        echo "<br/>City:: ".$first;
+        echo "<br/>State:: ".$second;
+        echo "<br/>Country:: ".$third;
+    }
+    else if ( $first != 'null' && $second != 'null' && $third == 'null' && $fourth == 'null' && $fifth == 'null'  ) {
+        echo "<br/>State:: ".$first;
+        echo "<br/>Country:: ".$second;
+    }
+    else if ( $first != 'null' && $second == 'null' && $third == 'null' && $fourth == 'null' && $fifth == 'null'  ) {
+        echo "<br/>Country:: ".$first;
+    }
+  }
+				?>", "LatitudeLongitude": "<?php echo $latitude;?>,<?php echo $longitude;?>", "MarkerId": "Supplier" }]';
+
+			people = JSON.parse(data); 
+
+            for (var i = 0; i < people.length; i++) {
+                setMarker(people[i]);
+				//alert(people[i]);
+            }
+			
+			<?php }?>
+			            
+			
+
+        }
+
+        function setMarker(people) {
+			
+            geocoder = new google.maps.Geocoder();
+            infowindow = new google.maps.InfoWindow();
+            if ((people["LatitudeLongitude"] == null) || (people["LatitudeLongitude"] == 'null') || (people["LatitudeLongitude"] == '')) {
+
+                geocoder.geocode({ 'address': people["Address"] }, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        latlng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                        marker = new google.maps.Marker({
+                            position: latlng,
+                            map: map,
+                            draggable: false,
+                            html: people["DisplayText"],
+                            icon: "images/marker/" + people["MarkerId"] + ".png"
+							
+							
+							
+                        });
+                        //marker.setPosition(latlng);
+                        //map.setCenter(latlng);
+                        google.maps.event.addListener(marker, 'hover', function(event) {
+                            infowindow.setContent(this.html);
+                            infowindow.setPosition(event.latLng);
+                            infowindow.open(map, this);
+                        });
+                    }
+                    else {
+                        alert(people["DisplayText"] + " -- " + people["Address"] + ". This address couldn't be found");
+                    }
+                });
+            }
+            else {
+				  var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+                var latlngStr = people["LatitudeLongitude"].split(",");
+                var lat = parseFloat(latlngStr[0]);
+                var lng = parseFloat(latlngStr[1]);
+                latlng = new google.maps.LatLng(lat, lng);
+                marker = new google.maps.Marker({	
+                    position: latlng,
+                    map: map,
+                    draggable: false,               // cant drag it
+                    html: people["DisplayText"]    // Content display on marker click
+                    //icon: "img/test-fail-icon.png" 
+					//icon: image
+                });
+                marker.setPosition(latlng);
+                map.setCenter(latlng);
+                google.maps.event.addListener(marker, 'click', function(event) {
+                    infowindow.setContent(this.html);
+                    infowindow.setPosition(event.latLng);
+                    infowindow.open(map, this);
+                });
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div id="map-canvas" style="width: 1300px; height: 1000px;">
+    </div>
+</body>
+</html>
