@@ -5,25 +5,19 @@
 
 	<div class="portlet light bordered">
 		<div class="portlet-title">
-		<h3 align="center"><b>Customer Details Report</b></h3>
+			<div class="caption">
+				<i class="icon-globe font-blue-steel"></i>
+				<span class="caption-subject font-blue-steel uppercase">Customer Details Report</span>
+			</div>
+			<div class="caption pull-right">
+				<i class="fa fa-user"></i>Customer : <?= $Customers->name ?><span class="hidden-480">
+				| Mobile : <?= $Customers->mobile ?></span>
+			</div>
 		</div>
 		<div class="portlet-body form"><br>
 		<!-- BEGIN FORM-->
 				<div class="row">
 					<div class="col-md-12">
-						<table width="100%">
-							<tr>
-								<td width="50%">
-									<h4>Customer: <?= $Customers->name ?></h4>
-								</td>
-								<td width="50%">
-									<h4>Mobile: <?= $Customers->mobile ?></h4>
-								</td>
-							</tr>
-						</table>
-					 </div>
-					 <div class="col-md-12"><br></div>
-					 <div class="col-md-12">
 						<div class="actions">
 							<?php
 							foreach($Customers->jain_cash_points as $jain_cash_data){
@@ -42,18 +36,18 @@
 							 ?>
 							 <table>
 								<tr>
-									<td align="center">
-										<div style="border:1px solid black;height:70px;width:100px;margin-left:100px;font-size:17px;padding:4px;">
+									<td width="35%">
+										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:100px;font-size:17px;padding:4px;">
 										JAIN CASH<br><?= @$jain_cash_remaining_point ?>
 										</div>
 									</td>
-									<td align="center">
-										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
+									<td width="35%">
+										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
 										WALLET<br><?= @$wallet_remaining_amount ?>
 										</div>
 									</td>
-									<td align="center">
-										<div style="border:1px solid black;height:70px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
+									<td width="35%">
+										<div style="border:1px solid #ece5e5;height:38px;width:100px;margin-left:120px;font-size:18px;padding:8px;">
 										ORDERS<br><?= @$total_order_data ?>
 										</div>
 									</td>
