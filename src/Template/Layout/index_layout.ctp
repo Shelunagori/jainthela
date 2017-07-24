@@ -189,6 +189,9 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
 								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
+								</li>
 							</ul>
 						</li>
 					</ul>
