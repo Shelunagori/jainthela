@@ -285,7 +285,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-retweet"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-asterisk"></i> Online Order','/Orders/add',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-asterisk"></i> Online Order','/Orders/add/Offline',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-tasks"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>

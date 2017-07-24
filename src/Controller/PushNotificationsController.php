@@ -97,7 +97,7 @@ class PushNotificationsController extends AppController
 					$pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
 			}
 			
-			$pushNotification->link_url = $deepLinks->link_url;
+			$pushNotification->created_link = $deepLinks->link_url;
 			$pushNotification->type = $deepLinks->link_name; 
 			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
@@ -109,18 +109,18 @@ class PushNotificationsController extends AppController
 				  ->group(['customer_id'])
 				  ->autoFields(true);
 				  if(!empty($customerscart->toArray()))
-				  {
-				   foreach($customerscart as $customer1)
-				    {
-					$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity(); 
-					$pushNotificationCustomer->customer_id =$customer1->customer_id;
-					$pushNotificationCustomer->push_notification_id =$push_data->id;
-					$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
-				    }
-					$id=$pushNotification->id;
-				$this->Flash->success(__('The push notification saved.'));
-			 $this->redirect(['action' => 'sendProgress/' . $id]);
-				  }
+					{
+						foreach($customerscart as $customer1)
+						{
+							$pushNotificationCustomer = $this->PushNotifications->PushNotificationCustomers->newEntity(); 
+							$pushNotificationCustomer->customer_id =$customer1->customer_id;
+							$pushNotificationCustomer->push_notification_id =$push_data->id;
+							$this->PushNotifications->PushNotificationCustomers->save($pushNotificationCustomer);
+						}
+						$id=$pushNotification->id;
+						$this->Flash->success(__('The push notification saved.'));
+						$this->redirect(['action' => 'sendProgress/' . $id]);
+					}
 				  else{
 				$this->Flash->error(__('Right now no customers who added items in their cart.'));
 				  }
@@ -176,7 +176,7 @@ class PushNotificationsController extends AppController
 			{
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
             
-			$pushNotification->link_url = $deepLinks->link_url;
+			$pushNotification->created_link = $deepLinks->link_url;
 			$pushNotification->type = 'Product Description';
 		
 			if ($push_data=$this->PushNotifications->save($pushNotification))
@@ -222,10 +222,10 @@ class PushNotificationsController extends AppController
 		$type=$pushNotifications_data->type;
 		$item_id=$pushNotifications_data->item_id;
 		if(!empty($type)){
-			$link_url=$pushNotifications_data->link_url.'?item_id='.$item_id;
+			$created_link=$pushNotifications_data->created_link.'?item_id='.$item_id;
 			
 		}else{
-			$link_url=$pushNotifications_data->link_url;
+			$created_link=$pushNotifications_data->created_link;
 		}
 		foreach($pushNotifications as $pushNotification)
 		{
@@ -239,7 +239,7 @@ class PushNotificationsController extends AppController
 							(
 							'message'     =>$pushNotifications_data->message,
 							'image'     =>'',
-							'link'    => $link_url,
+							'link'    => $created_link,
 							'notification_id'    => $item_id,
 							);
 						

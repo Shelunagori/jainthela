@@ -105,14 +105,13 @@ class CashBacksController extends AppController
 			   @$count+=1;
          $remaining=$grand_total-$cash_back_amount;
 		 
-		 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
+		 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['id'=>'DESC'])->first();
 		 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
-		 if($last_cash_back_no_data){
+		 if(!empty($last_cash_back_no_data)){
 				$cash_back_no = $last_cash_back_no_data+1;
 			}else{
 				$cash_back_no=1;
 			}
-			 
 		 $query = $this->CashBacks->query();
 				$query->insert(['cash_back_no', 'customer_id', 'order_no', 'amount', 'ready_to_win', 'cash_back_percentage', 'cash_back_limit', 'flag'])
 						->values([
@@ -130,7 +129,7 @@ class CashBacksController extends AppController
     }while($remaining>$cash_back_amount);
 		  $grand_total;
 		  
-		   $cash_back_claims = $this->CashBacks->find()->where(['customer_id'=>$customer_id, 'amount <'=>$cash_back_amount])->order(['cash_back_no'=>'ASC'])->first();
+		   $cash_back_claims = $this->CashBacks->find()->where(['customer_id'=>$customer_id, 'amount <'=>$cash_back_amount])->order(['id'=>'ASC'])->first();
 		   
 		   $updated_id=$cash_back_claims->id;
 	   if($updated_id){
@@ -151,9 +150,9 @@ class CashBacksController extends AppController
 					$updt_order_no=$updata_data_detail->order_no;
 				}
 				
-		$last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
+		$last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['id'=>'DESC'])->first();
 		 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
-			if($last_cash_back_no_data){
+			if(!empty($last_cash_back_no_data)){
 				$cash_back_no = $last_cash_back_no_data+1;
 			}else{
 				$cash_back_no=1;
@@ -185,9 +184,9 @@ class CashBacksController extends AppController
 				}else{
 					$flag=0;
 				}
-				 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
+				 $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['id'=>'DESC'])->first();
 					 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
-					 if($last_cash_back_no_data){
+					if(!empty($last_cash_back_no_data)){
 							$cash_back_no = $last_cash_back_no_data+1;
 						}else{
 							$cash_back_no=1;
@@ -208,9 +207,9 @@ class CashBacksController extends AppController
 		   
 	   }else{
 		   
-		  $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['cash_back_no'=>'DESC'])->first();
+		  $last_cash_back_no = $this->CashBacks->find()->select(['cash_back_no'])->order(['id'=>'DESC'])->first();
 		 $last_cash_back_no_data=$last_cash_back_no->cash_back_no;
-		 if($last_cash_back_no_data){
+		if(!empty($last_cash_back_no_data)){
 				$cash_back_no = $last_cash_back_no_data+1;
 			}else{
 				$cash_back_no=1;

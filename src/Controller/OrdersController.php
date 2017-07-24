@@ -83,6 +83,16 @@ class OrdersController extends AppController
         $this->set('_serialize', ['order', 'CancelReasons']);
     }
 
+	public function ajaxDeliver($id = null)
+    {
+		$this->viewBuilder()->layout('');
+         $order = $this->Orders->get($id, [
+            'contain' => ['Customers']
+        ]);
+        $this->set('order', $order);
+        $this->set('_serialize', ['order']);
+    }
+	
 	public function undoBox($id = null)
     {
 		$Orders = $this->Orders->get($id);

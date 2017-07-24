@@ -69,8 +69,10 @@
 							
 							<td class="actions">
 							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
-							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a>
+							   <!--a class="btn blue btn-xs get_orders" order_id="<?php //echo $order->id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a-->
+							   <a class="btn blue btn-xs dlvr" order_id="<?php echo $order->id; ?>" > <i class="fa fa-shopping-cart"></i> Deliver</a>
 							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" > <i class="fa fa-remove"></i> Cancel</a>
+							   
 							<?php } ?> 
 							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ ?>
 								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Reopen</a>
@@ -147,6 +149,22 @@ $(document).ready(function() {
 			$('#popup').find('div.modal-body').html(response);
 		});	
 	});
+	
+	$('.dlvr').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+ 		$('#popup').find('div.modal-body').html('Loading...');
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver"]); ?>";
+		url=url+'/'+order_id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});	
+	});
+	
 	$('.close').die().live('click',function() {
 		$('#popup').hide();
 	});
