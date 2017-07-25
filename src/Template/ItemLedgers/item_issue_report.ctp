@@ -59,7 +59,7 @@
 						$order_time=date('h:i a', strtotime($created_on));
 						$status=$item_ledger->status;
 						$quantity=$item_ledger->quantity;
-						$driver_name=$item_ledger->driver->name;
+						@$driver_name=$item_ledger->driver->name;
 						$item_name=$item_ledger->item->name;
 						$unit_name=$item_ledger->item->unit->unit_name;
 						?>
