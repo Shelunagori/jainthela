@@ -53,10 +53,16 @@ class CashBacksController extends AppController
 		foreach($fetch_cashback_win_details->toArray() as $data)
 		{
 		$c_id=$data->customer->id;
+		if(!empty($data->customer->name))
+		{
+		$data->customer->name=$data->customer->name;
+		}
+		else{
 		$fetch_customer_name = $this->CashBacks->CustomerAddresses->find()
 		->where(['CustomerAddresses.customer_id'=>$c_id, 'default_address'=>1])
 		->first();
 		@$data->customer->name=$fetch_customer_name->name;
+		}
         }
 		
 		$this->set('fetch_cashback_win_details', $fetch_cashback_win_details);
