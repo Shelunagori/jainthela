@@ -25,10 +25,13 @@
 					<thead>
 						<tr>
 							
-							<th scope="col">Sr</th>
 							<th scope="col">#</th>
 							<th scope="col">Customer Name</th>
+							<th scope="col">Cash Back No.</th>
+							<th scope="col">Order No.</th>
 							<th scope="col">Amount</th>
+							<th scope="col">Winning Date</th>
+							<th scope="col">Claimed/Not Claimed</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,12 +44,14 @@
 						
 						?>
 						<tr >
-							<td><?= h($sr_no) ?></td>
-							<td><?php echo '<span class="badge badge-success tooltips">'?><?= h($firstCharacter) ?><?php echo '</span>'; ?></td>
-							<td><?= h($customer_name.' ('.$customer_mobile.')') ?></td>
-							
-							
+							<td><?php if($cb->claim=='yes'){ ?><?php echo '<span class="badge badge-success tooltips">'?><?php } else {?><?php echo '<span class="badge badge-warning tooltips">'?><?php } ?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
+							<td><?= h(ucwords($customer_name).' ('.$customer_mobile.')') ?></td>
+							<td><?= h('#'.str_pad($cb->cash_back_no, 4, '0', STR_PAD_LEFT)) ?></td>
+							<td><?= h($cb->order_no) ?></td>
 							<td><?= h($cb->amount) ?></td>
+							<td><?= h(date('d-m-Y',strtotime($cb->created_on))) ?></td>
+							<td><?php if($cb->claim=='yes'){ ?><a class="btn green btn-xs" >Claimed</a><?php } else {?><a class="btn red btn-xs" >Not Claimed</a><?php } ?>
+								</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

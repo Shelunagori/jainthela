@@ -64,7 +64,8 @@ class CashBacksController extends AppController
 		@$data->customer->name=$fetch_customer_name->name;
 		}
         }
-		
+		//pr($fetch_cashback_win_details->toArray());
+		//exit;
 		$this->set('fetch_cashback_win_details', $fetch_cashback_win_details);
         $this->set('_serialize', ['fetch_cashback_win_details']); 
     }
