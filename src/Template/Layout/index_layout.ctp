@@ -193,7 +193,7 @@
 									<?php echo $this->Html->link('<i class="fa fa-book"></i> Sales Report','/WalkinSales/invoiceReports',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Item Issue Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Issue Return Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
 								</li>
 								
 								<li>

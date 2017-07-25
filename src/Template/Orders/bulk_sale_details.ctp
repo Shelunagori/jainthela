@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($bulkSales as $bulkSale){ echo $bulkSale->item->name.'('.$bulkSale->item->alias_name.')'; break; } ?>"</span>
+			<span class="caption-subject font-blue-steel ">Bulk Sale For "<?php foreach ($bulkSales as $bulkSale){ echo $bulkSale->item->name.'('.$bulkSale->item->alias_name.')'; break; } ?>"</span>
 		</div>
 		<div class="portlet-body">
 		<form method="GET" >
@@ -41,13 +41,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=1; foreach($bulkSales as $bulkSale){ ?> 
+						<?php $total=0; $i=1; foreach($bulkSales as $bulkSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
 							<td><?= h(@$bulkSale->order->order_no) ?></td>
 							<td><?= h(@$bulkSale->quantity).$bulkSale->item->unit->unit_name ?></td>
 						</tr>
 						<?php } ?>
+						
 					</tbody>
 				</table>
 				
