@@ -75,7 +75,7 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
-			
+
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);
