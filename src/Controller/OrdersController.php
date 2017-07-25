@@ -98,10 +98,16 @@ class OrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $order = $this->Orders->get($id);
+		$order_date=$order->order_date;
+		$delivery_date=$order->delivery_date;
+		$curent_date=$order->curent_date;
 		$CancelReasons=$this->Orders->CancelReasons->find('list');
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$cancel_id=$this->request->data['cancel_id'];
 			$Orders=$this->Orders->get($id);
+			$Orders->order_date=$order_date;
+			$Orders->delivery_date=$delivery_date;
+			$Orders->curent_date=$curent_date;
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
