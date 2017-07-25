@@ -1,7 +1,5 @@
 
-		
-		
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
@@ -32,11 +30,8 @@
             // Get data from database. It should be like below format or you can alter it.
 <?php 
 				$i=0;
-				pr($driver_details);
-				exit;
 				foreach($driver_details as $driver_detail)
 				{
-				
 					$i++;
                     //$id=$data['login']['id'];
 					$name=$driver_detail->driver->name;;
@@ -107,7 +102,6 @@ if(isset($json_decode->results[0])) {
         }
 
         function setMarker(people) {
-			
             geocoder = new google.maps.Geocoder();
             infowindow = new google.maps.InfoWindow();
             if ((people["LatitudeLongitude"] == null) || (people["LatitudeLongitude"] == 'null') || (people["LatitudeLongitude"] == '')) {
