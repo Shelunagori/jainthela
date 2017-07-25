@@ -302,9 +302,25 @@ class WalkinSalesController extends AppController
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['WalkinSales.transaction_date <=']=$to_date;
 		}
-		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
-			return $q->contain(['Drivers','Warehouses'])->where($where);
-		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
+		
+		$where1 =[];
+		if(empty($from_date)){
+			$from_date=date("Y-m-01");
+			$where1['WalkinSales.transaction_date >=']=$from_date;
+		}
+		if(empty($to_date)){
+			$to_date=date('Y-m-d');
+			$where1['WalkinSales.transaction_date <=']=$to_date;
+		}
+		if(!empty($where)){
+			$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
+				return $q->contain(['Drivers','Warehouses'])->where($where);
+			},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
+		}else{
+			$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where1){
+				return $q->contain(['Drivers','Warehouses'])->where($where1);
+			},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
+		}
 	//	pr($walkinSales->toArray());
 		 $this->set(compact('walkinSales','from_date','to_date'));
         $this->set('_serialize', ['walkinSales']);

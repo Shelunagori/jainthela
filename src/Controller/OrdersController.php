@@ -308,11 +308,26 @@ class OrdersController extends AppController
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['Orders.delivery_date <=']=$to_date;
 		}
-		
-		$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
-			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
-			;
-		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		$where1 =[];
+		if(empty($from_date)){
+			$from_date=date("Y-m-01");
+			$where1['Orders.delivery_date >=']=$from_date;
+		}
+		if(empty($to_date)){
+			$to_date=date('Y-m-d');
+			$where1['Orders.delivery_date <=']=$to_date;
+		}
+		if(!empty($where)){
+			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
+				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
+				;
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		}else{
+			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where1){
+				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where1)
+				;
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		}
 		//pr($onlineSales->toArray());exit;
 		 $this->set(compact('onlineSales','from_date','to_date'));
         $this->set('_serialize', ['onlineSales']);
@@ -334,9 +349,25 @@ class OrdersController extends AppController
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['Orders.delivery_date <=']=$to_date;
 		}
-		$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
-			return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
-		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		
+		$where1 =[];
+		if(empty($from_date)){
+			$from_date=date("Y-m-01");
+			$where1['Orders.delivery_date >=']=$from_date;
+		}
+		if(empty($to_date)){
+			$to_date=date('Y-m-d');
+			$where1['Orders.delivery_date <=']=$to_date;
+		}
+		if(!empty($where)){
+			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
+				return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		}else{
+			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where1){
+				return $q->where(['order_type IN'=>['Bulkorder']])->where($where1);
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		}	
 		//pr($bulkSales->toArray());exit;
 		 $this->set(compact('bulkSales','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
