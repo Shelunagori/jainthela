@@ -113,14 +113,17 @@ class WalletsController extends AppController
 
 	public function checksubtract($customer_id){
 		//$this->viewBuilder()->layout('');
+		
 		$query = $this->Wallets->find();
 		$totalInCase = $query->newExpr()
 			->addCase(
+				$query->newExpr()->add(['advance > ' => 0]),
 				$query->newExpr()->add(['advance']),
 				'integer'
-			);
+			); 
 		$totalOutCase = $query->newExpr()
 			->addCase(
+				$query->newExpr()->add(['consumed > ' => 0]),
 				$query->newExpr()->add(['consumed']),
 				'integer'
 			);
@@ -131,12 +134,11 @@ class WalletsController extends AppController
 		->where(['Wallets.customer_id' => $customer_id])
 		->autoFields(true);
 		$wallets = ($query);
-		//pr($wallets->toArray());
 		foreach($wallets as $wallet){
 			
-			$total_advanced=$wallet->total_advanced;
+			 $total_advanced=$wallet->total_advanced;
 			$total_consumed=$wallet->total_consumed;
-			echo $remaining=$total_advanced-$total_consumed;
+			 echo $remaining=$total_advanced-$total_consumed;
 			exit;
 		}
 	}
