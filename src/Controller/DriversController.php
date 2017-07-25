@@ -35,18 +35,21 @@ class DriversController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$current_date=date('Y-m-d');
 
-      
-		$query=$this->Drivers->DriverLocations->find();
-		$query->select(['id' => $query->func()->max('DriverLocations.id')])
-		->group(['driver_id']);
-		$ids=[];
-		foreach($query as $data){
-			$ids[]=$data->id;
-		}
-		
-		$driver_details = $this->Drivers->DriverLocations->find()
-							->where(['id IN'=>$ids]);
- 
+        /* 
+		$driver_details = $this->paginate($this->Drivers->DriverLocations->find()
+						->order(['DriverLocations.id'=> 'DESC'])
+						->group('driver_id')
+						->contain(['Drivers'])); 
+		*/
+
+		$driver_details=$this->paginate($this->Drivers->DriverLocations->find()
+                             ->where(['created_on >'=>'24-07-2017'])
+                             ->group(['driver_id']));
+							 
+							 
+
+		//pr($driver_details->toArray());
+		//exit;
 		$drivers=$this->Drivers->find('list');
         $this->set(compact('driver_details', 'drivers'));
         $this->set('_serialize', ['driver_details', 'drivers']);

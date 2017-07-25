@@ -32,14 +32,18 @@
             // Get data from database. It should be like below format or you can alter it.
 <?php 
 				$i=0;
+				pr($driver_details);
+				exit;
 				foreach($driver_details as $driver_detail)
 				{
+				
 					$i++;
                     //$id=$data['login']['id'];
 					$name=$driver_detail->driver->name;;
 					$mobile=$driver_detail->driver->mobile;
 					$latitude=$driver_detail->lattitude;
 					 $longitude=$driver_detail->longitude;
+					
 					?>
 
             var data = '[{ "DisplayText": "<?php echo $name;?> <?php
