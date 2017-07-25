@@ -44,14 +44,12 @@ class DriversController extends AppController
 			$ids[]=$data->id;
 		}
 		
-		$DriverLocations = $this->paginate(
-							$this->Drivers->DriverLocations->find()
-							->where(['id IN'=>$ids])
-						);
+		$driver_details = $this->Drivers->DriverLocations->find()
+							->where(['id IN'=>$ids]);
  
 		$drivers=$this->Drivers->find('list');
-        $this->set(compact('DriverLocations', 'drivers'));
-        $this->set('_serialize', ['DriverLocations', 'drivers']);
+        $this->set(compact('driver_details', 'drivers'));
+        $this->set('_serialize', ['driver_details', 'drivers']);
     }
 	
     /**
