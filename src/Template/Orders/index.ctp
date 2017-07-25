@@ -78,7 +78,7 @@
 							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ 
 							       if(( $order_date == $current_date ) || ($order_date == $prev_date  )){
 							?>
-								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Reopen</a>
+								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Mark as <b>In Process</b></a>
 								
 							<?php } }?>
 							</td>
