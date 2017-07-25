@@ -61,7 +61,7 @@ class WalkinSalesController extends AppController
 					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 		
 		$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where(['order_type NOT IN'=>['Offline']])->where($where1);
+					->where($where1);
 					
 		$this->set(compact('walkinSales','Orders','from_date','to_date'));
 		$this->set('_serialize', ['walkinSales']);
@@ -131,8 +131,21 @@ class WalkinSalesController extends AppController
 			$walkinSale->jain_thela_admin_id=$jain_thela_admin_id;
 			$walkinSale->order_no=$order_no;
 			$walkinSale->get_auto_no=$get_no;
-			
+		
             if ($walkinsale_data=$this->WalkinSales->save($walkinSale)) { 
+			foreach($walkinSale->walkin_sale_details as $walkin_sale_detail){
+				$itemledgers = $this->WalkinSales->ItemLedgers->newEntity();
+				$itemledgers->walkin_sales_id=$walkin_sale_detail['walkin_sale_id'];
+				$itemledgers->jain_thela_admin_id=$jain_thela_admin_id;
+				$itemledgers->warehouse_id=$walkinSale->warehouse_id;
+				$itemledgers->item_id = $walkin_sale_detail['item_id'];
+				$itemledgers->quantity = $walkin_sale_detail['quantity'];
+				$itemledgers->rate = $walkin_sale_detail['rate'];
+				$itemledgers->status = 'Out';
+				$itemledgers->transaction_date = $walkinSale->transaction_date;
+				
+				$this->WalkinSales->ItemLedgers->save($itemledgers);
+			}
 					$walkinsale_id=$walkinsale_data->id;
 					$walkinsale_total_amount=$walkinsale_data->total_amount;
 					$transaction_date=$walkinsale_data->transaction_date;
@@ -283,11 +296,11 @@ class WalkinSalesController extends AppController
 		$where =[];
 		if(!empty($from_date)){
 			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
-			$where['Orders.transaction_date >=']=$from_date;
+			$where['WalkinSales.transaction_date >=']=$from_date;
 		}
 		if(!empty($to_date)){
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
-			$where['Orders.transaction_date <=']=$to_date;
+			$where['WalkinSales.transaction_date <=']=$to_date;
 		}
 		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
 			return $q->contain(['Drivers','Warehouses'])->where($where);

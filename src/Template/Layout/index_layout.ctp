@@ -190,13 +190,14 @@
 									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-trophy"></i>Issue Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-book"></i> Sales Report','/WalkinSales/invoiceReports',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Invoice Report','/WalkinSales/invoiceReports',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Item Issue Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
 								</li>
+								
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
 								</li>
 								
 							</ul>

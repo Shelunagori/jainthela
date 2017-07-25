@@ -542,47 +542,50 @@ class ItemLedgersController extends AppController
 		}
 		
 		$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
-			return $q->where(['is_combo'=>'no','is_virtual'=>'no']);
+			return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units']);
 		}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where);
 		
 		$order_online = []; $order_online_name=[];
 		$order_bulk = [];
-		$order_offline = [];
+		$walkins_sales = [];
 		$order_online_rate = [];
 		$order_bulk_rate = [];
-		$order_offline_rate = [];
+		$walkins_sales_rate = [];
 		$Itemsexists=[]; $qty=0;
-		foreach($itemLedgers as $itemLedger){
+		$units=[];
+		foreach($itemLedgers as $itemLedger){ 
 			$Orders = $this->ItemLedgers->Orders->find()->where(['id'=>$itemLedger->order_id])->toArray();
 			if(sizeof($Orders)>0){ 
 				foreach($Orders as $order){
-					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'){
+					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'|| $order->order_type =='Offline'){
 						@$order_online[$itemLedger->item_id] += $itemLedger->quantity; 
 						@$order_online_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
 						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
 						//pr($order_online);
 					}
 					if($order->order_type == 'Bulkorder'){
 						@$order_bulk[$itemLedger->item_id] += $itemLedger->quantity;
 						@$order_bulk_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
 						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
-					}
-					if($order->order_type =='Offline'){
-						@$order_offline[$itemLedger->item_id] += $itemLedger->quantity;
-						@$order_offline_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
-						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
-						
+						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
 					}
 				}
 			}
+		$WalkinSales = $this->ItemLedgers->WalkinSales->find()->where(['id'=>$itemLedger->walkin_sales_id]);	
+		  foreach($WalkinSales as $WalkinSale){
+				@$walkins_sales[$itemLedger->item_id] += $itemLedger->quantity; 
+				@$walkins_sales_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+				@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+				@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
+		  }
 		}
 		//pr($Itemsexists);exit;
 		
 		$ItemList =  $this->ItemLedgers->Items->find();
 		
-
 		$this->set(compact('itemLedgers','ItemList','from_date','to_date','order_online','order_bulk','order_offline'
-		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists'));
+		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units'));
 		 $this->set('_serialize', ['itemLedgers']);
 	}
 	

@@ -56,6 +56,7 @@ class ItemLedgersTable extends Table
             'joinType' => 'LEFT'
         ]);
 
+		$this->belongsTo('WalkinSales');
 		$this->belongsTo('Orders');
 		$this->belongsTo('TransferInventoryVouchers');
 		$this->belongsTo('PurchaseOutwards');

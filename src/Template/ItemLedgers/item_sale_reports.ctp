@@ -60,31 +60,31 @@
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h($itemLedger->name).'('.$itemLedger->alias_name.')' ?></td>
-							<?php if(!empty(@$order_offline[$itemLedger->id])){ ?>
+							<td><?= h($itemLedger->name).'('.$itemLedger->alias_name.')'  ?></td>
+							<?php if(!empty(@$walkins_sales[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_offline[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_online[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_online[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_bulk[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_bulk[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
-							<td><?php echo $this->Number->format(@$order_online[$itemLedger->id]+@$order_bulk[$itemLedger->id]+@$order_offline[$itemLedger->id],['places'=>2]);?></td>
-							<td align="right"><?php echo $this->Number->format(@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$order_offline_rate[$itemLedger->id],['places'=>2]);
-							$amount_total+=@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$order_offline_rate[$itemLedger->id]?></td>
+							<td><?php echo $this->Number->format(@$order_online[$itemLedger->id]+@$order_bulk[$itemLedger->id]+@$walkins_sales[$itemLedger->id],['places'=>2]);?></td>
+							<td align="right"><?php echo $this->Number->format(@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id],['places'=>2]);
+							$amount_total+=@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id]?></td>
 						</tr>
 						
 					<?php

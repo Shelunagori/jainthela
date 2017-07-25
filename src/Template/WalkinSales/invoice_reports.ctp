@@ -60,11 +60,11 @@
 						?>
 						<tr>
 							<td><?= h($i++) ?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo $walkinSale->driver->name; }?></td>
-							<td align="center"><?= h($walkinSale->order_no) ?></td>
-							<td align="center"><?= h($walkinSale->transaction_date) ?></td>
+							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo @$walkinSale->driver->name; }?></td>
+							<td align="center"><?= h(@$walkinSale->order_no) ?></td>
+							<td align="center"><?= h(@$walkinSale->transaction_date) ?></td>
 							<td align="center">Walkin</td>
-							<td align="right"><?= $this->Number->precision($walkinSale->total_amount,2); 
+							<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
 							$amount_total+=$walkinSale->total_amount;
 							?></td>
 						</tr>
@@ -72,11 +72,11 @@
 						<?php $i=$i; foreach($Orders as $order){ ?>
 							<tr>
 							<td><?= h($i++) ?></td>
-							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo $order->driver->name; }?></td>
-							<td align="center"><?= h($order->order_no) ?></td>
-							<td align="center"><?= h(date('d-m-Y',strtotime($order->delivery_date))) ?></td>
+							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo @$order->driver->name; }?></td>
+							<td align="center"><?= h(@$order->order_no) ?></td>
+							<td align="center"><?= h(date('d-m-Y',strtotime(@$order->delivery_date))) ?></td>
 							<td align="center">
-							<?php if($order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'Online' ){
+							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
 								echo "Online";
 							}else {
 								echo "BulkOrder";

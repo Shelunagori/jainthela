@@ -48,10 +48,10 @@
 						<?php $i=1; foreach($walkinSales as $walkinSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
-							<?php if($walkinSale->walkin_sale->driver_id !=0){ ?>
-							<td><?= h($walkinSale->walkin_sale->driver->name) ?></td>
-							<?php }else if($walkinSale->walkin_sale->warehouse_id !=0){ ?>
-							<td><?= h($walkinSale->walkin_sale->warehouse->name) ?></td>
+							<?php if(@$walkinSale->walkin_sale->driver_id !=0){ ?>
+							<td><?= h(@$walkinSale->walkin_sale->driver->name) ?></td>
+							<?php }else if(@$walkinSale->walkin_sale->warehouse_id !=0){ ?>
+							<td><?= h(@$walkinSale->walkin_sale->warehouse->name) ?></td>
 							<?php }?>
 							<td><?= h(@$walkinSale->walkin_sale->order_no) ?></td>
 							<td><?= h(@$walkinSale->quantity) ?></td>
