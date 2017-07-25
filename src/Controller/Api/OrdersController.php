@@ -104,10 +104,14 @@ class OrdersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		$order_id=$this->request->query('order_id');
 		@$cancel_id=$this->request->query('cancel_id');
+
+				$odrer_datas=$this->Orders->get($order_id);
+				$o_date=$odrer_datas->otder_date;
+				
 				$order_cancel = $this->Orders->query();
 					$result = $order_cancel->update()
 						->set(['status' => 'Cancel',
-						'cancel_id' => $cancel_id])
+						'cancel_id' => $cancel_id, 'order_date' => $o_date])
 						->where(['id' => $order_id])
 						->execute();
 						
@@ -135,9 +139,12 @@ class OrdersController extends AppController
 		$transaction_date=date('Y-m-d');
 		if($is_login=='warehouse')
 		{
+			    $odrer_datas=$this->Orders->get($order_id);
+				$o_date=$odrer_datas->otder_date;
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
-						->set(['status' => 'Delivered'])
+						->set(['status' => 'Delivered',
+						'order_date' => $o_date])
 						->where(['id' => $order_id])
 						->execute();
                     

@@ -132,7 +132,9 @@ class OrdersController extends AppController
 	public function undoBox($id = null)
     {
 		$Orders = $this->Orders->get($id);
+		$order_date=$Orders->order_date;
 		$Orders->status='In Process';
+		$Orders->order_date=$order_date;
 		$Orders->cancel_id=0;
 		 if ($this->Orders->save($Orders)) {
             $this->Flash->success(__('The Order has been reopened.'));
@@ -140,7 +142,6 @@ class OrdersController extends AppController
             $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));
         }
 		return $this->redirect(['action' => 'index']);
-		
     }
 	public function ajaxOrderView()
     {
