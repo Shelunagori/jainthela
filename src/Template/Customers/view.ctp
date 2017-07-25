@@ -91,6 +91,7 @@
 							<th>Sr</th>
 							<th>Plan</th>
 							<th>Advance</th>
+							<th>Narration</th>
 							<th>Date</th>
 						</tr>
 					</thead>
@@ -102,13 +103,16 @@
 							<tr>
 								<td><?= $m ?></td>
 								<td>
-									<?= h($wallet_advance->plan->name) ?>
+									<?= h(@$wallet_advance->plan->name) ?>
 								</td>
 								<td>
-									<?= h($wallet_advance->advance) ?>
+									<?= h(@$wallet_advance->advance) ?>
 								</td>
 								<td>
-									<?= h(date('d-M-Y', strtotime($jain_cash_gain->created_on))) ?>
+									<?= h(@$wallet_advance->narration) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime(@$wallet_advance->updated_on))) ?>
 								</td>
 						<?php } ?>														 
 					</tbody>
@@ -122,6 +126,7 @@
 							<th>Sr</th>
 							<th>Order</th>
 							<th>Consumed</th>
+							<th>Narration</th>
 							<th>Date</th>
 						</tr>
 					</thead>
@@ -133,13 +138,16 @@
 							<tr>
 								<td><?= $s ?></td>
 								<td>
-									<?= h('#'.str_pad($this->Number->format($wallet_consume->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+									<?= h('#'.str_pad($this->Number->format(@$wallet_consume->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
 								</td>
 								<td>
-									<?= h($wallet_consume->consumed) ?>
+									<?= h(@$wallet_consume->consumed) ?>
 								</td>
 								<td>
-									<?= h(date('d-M-Y', strtotime($wallet_consume->updated_on))) ?>
+									<?= h(@$wallet_consume->narration) ?>
+								</td>
+								<td>
+									<?= h(date('d-M-Y', strtotime(@$wallet_consume->updated_on))) ?>
 								</td>
 						<?php } ?>
 						 
@@ -175,19 +183,19 @@
 					<tr>
 						<td><?= $t ?></td>
 						<td>
-							<?= h('#'.str_pad($this->Number->format($Order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+							<?= h('#'.str_pad($this->Number->format(@$Order->order_no), 4, '0', STR_PAD_LEFT)) ?>
 						</td>
 						<td>
-							<?= h(date('d-M-Y', strtotime($Order->order_date))) ?>
+							<?= h(date('d-M-Y', strtotime(@$Order->order_date))) ?>
 						</td>
 						<td>
-							<?= h($Order->total_amount) ?>
+							<?= h(@$Order->total_amount) ?>
 						</td>
 						<td>
 							<?= $this->Html->link(__('View'), ['action' => 'view', $Order->id]) ?>
 						</td>
 						<td>
-							<?= h($Order->status) ?>
+							<?= h(@$Order->status) ?>
 						</td>
 					</tr>
 				<?php } ?>														 

@@ -7,8 +7,7 @@
 					<div class="portlet-title">
 						<div class="caption">
 							<i class="icon-globe font-blue-steel"></i>
-							<span class="caption-subject font-blue-steel uppercase">Add Wallets
-							</span>
+				<span class="caption-subject font-blue-steel uppercase">Remove Wallets	</span>
 						</div>
 					</div>
 					<div class="portlet-body form">
@@ -18,12 +17,11 @@
 								<div class="col-md-10">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Customer <span class="required" 	aria-required="true">*</span></label>
-										<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
+										<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me cstmr','id'=>'customer_id','label'=>false]); ?>
 									</div>
-									
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Amount <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('advance',array('class'=>'form-control input-sm ','label'=>false)) ?>
+										<?= $this->Form->input('consumed',array('class'=>'form-control input-sm consumed','label'=>false)) ?>
 									</div>
 									
 								 </div>
@@ -65,7 +63,7 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				advance:{
+				consumed:{
 					required: true
 				},
 				customer_id:{
@@ -127,19 +125,22 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	$(document).on('keyup', '.number', function(e)
-    { 
-		var mdl=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(mdl.match(numbers))
-		{
-		}
-		else
-		{
-			$(this).val('');
-			return false;
-		}
-    });
+	$('.consumed').on('keyup',function() {
+		
+	});
 
+	///
+	$('.cstmr').on("change",function() {
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+	 
+		var url="<?php echo $this->Url->build(['controller'=>'Wallets','action'=>'checksubtract']); ?>";
+		url=url+'/'+customer_id,
+			$.ajax({
+				url: url,
+				type: 'GET',
+			}).done(function(response) { 
+				$('.consumed').attr('max',response);
+			});
+	});
 });
 </script>

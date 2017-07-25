@@ -23,7 +23,7 @@
 							<th>Name</th>
 							<th>Consumed Wallet</th>
 							<th>Plan</th>
-							<th scope="col" class="actions"><?= __('Actions') ?></th>
+							<!--<th scope="col" class="actions"><?= __('Actions') ?></th>-->
 						</tr>
 					</thead>
 					<tbody>
@@ -32,9 +32,9 @@
 						foreach ($wallets as $wallet): ?>
 						<tr>
 							<td><?= h($i++) ?></td>
-							<td><?= h($wallet->customer->name) ?></td>
-							<td><?= h($wallet->consumed) ?></td>
-							<td><?= h($wallet->plan->name) ?></td>
+							<td><?= h(@$wallet->customer->name) ?></td>
+							<td><?= h(@$wallet->consumed) ?></td>
+							<td><?= h(@$wallet->plan->name) ?></td>
 							
 						</tr>
 						<?php endforeach; ?>

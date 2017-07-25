@@ -64,20 +64,7 @@ class WalletsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->decimal('advance')
-            ->requirePresence('advance', 'create')
-            ->notEmpty('advance');
-
-        $validator
-            ->decimal('consumed')
-            ->requirePresence('consumed', 'create')
-            ->notEmpty('consumed');
-
-        $validator
-            ->dateTime('updated_on')
-            ->requirePresence('updated_on', 'create')
-            ->notEmpty('updated_on');
+       
 
         return $validator;
     }

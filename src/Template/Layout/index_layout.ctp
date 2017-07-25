@@ -315,6 +315,22 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-rocket"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
 							</li>
+							
+							<li>
+								<a href="javascript:;"><i class="fa fa-puzzle-piece"></i><span class="title">Wallets</span>
+								<span class="arrow "></span>
+								</a>
+								<ul class="sub-menu">
+									<?php 
+									echo '<li>'.$this->Html->link('<i class="icon-home"></i> Add','/Wallets/Add',array('escape'=>false)).'</li>';
+									?>
+									<?php 
+									echo '<li>'.$this->Html->link('<i class="icon-home"></i> Subtract','/Wallets/remove',array('escape'=>false)).'</li>';
+									 ?>
+								</ul>
+							</li>
+							
+							
 
 						</ul>
 						<!-- END SIDEBAR MENU -->
