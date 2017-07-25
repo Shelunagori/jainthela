@@ -58,11 +58,12 @@ class DriversTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
+		/* 
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+		*/
+		
         return $validator;
     }
 

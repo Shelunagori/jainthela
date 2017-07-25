@@ -229,7 +229,7 @@ $(document).ready(function() {
 			{
 				location.reload();
  				//$('.setup').html(data);
-			}	
+			}
 		});
 	});
 });

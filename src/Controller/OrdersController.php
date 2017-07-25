@@ -18,6 +18,36 @@ class OrdersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+	 
+	public function dashboard()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$curent_date=date('Y-m-d');
+	    $totalOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date])->count();
+		$this->set(compact('totalOrder'));
+		$inProcessOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'In Process'])->count();
+		$this->set(compact('inProcessOrder'));
+		$deliveredOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered'])->count();
+		$this->set(compact('deliveredOrder'));
+		$cancelOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel'])->count();
+		$this->set(compact('cancelOrder'));
+		$offlineOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Offline'])->count();
+		$this->set(compact('offlineOrder'));
+		$bulkOrder=$this->Orders->find()
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Bulk'])->count();
+		$this->set(compact('bulkOrder'));
+		
+		$curent_date=date('Y-m-d');
+		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
+		$this->set(compact('orders'));
+        $this->set('_serialize', ['orders']);
+    }
+	
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -68,14 +98,20 @@ class OrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $order = $this->Orders->get($id);
+		$order_date=$order->order_date;
+		$delivery_date=$order->delivery_date;
+		$curent_date=$order->curent_date;
 		$CancelReasons=$this->Orders->CancelReasons->find('list');
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$cancel_id=$this->request->data['cancel_id'];
 			$Orders=$this->Orders->get($id);
+			$Orders->order_date=$order_date;
+			$Orders->delivery_date=$delivery_date;
+			$Orders->curent_date=$curent_date;
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
-			
+
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);

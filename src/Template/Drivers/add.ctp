@@ -116,7 +116,7 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 				name:{
-					required: true,					 
+					required: false,					 
 				},
 				mobile:{
 					required: true,					 

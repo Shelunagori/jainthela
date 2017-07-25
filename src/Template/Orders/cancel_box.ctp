@@ -5,11 +5,12 @@
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
 						<b>
-						<?php foreach($order as $order_detail){
-								$order_id=$order_detail->id;
-								$order_no=$order_detail->order_no;
-							
-						} ?>
+						<?php  
+					 
+								$order_id=$order->id;
+								$order_no=$order->order_no;
+								
+					  ?>
 							Customer Order No.: <?= h(@$order_no) ?>
 						</b>
 					</td>
