@@ -70,29 +70,7 @@ class AppController extends Controller
         ]);
 		
 		$this->loadModel('Orders');
-		$curent_date=date('Y-m-d');
-	    $totalOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date])->count();
-		$this->set(compact('totalOrder'));
-		$inProcessOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'In Process'])->count();
-		$this->set(compact('inProcessOrder'));
-		$deliveredOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered'])->count();
-		$this->set(compact('deliveredOrder'));
-		$cancelOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel'])->count();
-		$this->set(compact('cancelOrder'));
-		$offlineOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Offline'])->count();
-		$this->set(compact('offlineOrder'));
-		$bulkOrder=$this->Orders->find()
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Bulk'])->count();
-		$this->set(compact('bulkOrder'));
 		
-		$curent_date=date('Y-m-d');
-		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
-		$this->set(compact('orders'));
 
         /*
          * Enable the following components for recommended CakePHP security settings.

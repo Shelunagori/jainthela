@@ -107,27 +107,48 @@ class WalkinSalesController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
 		$walkinSale=$this->WalkinSales->newEntity();
-        if ($this->request->is('post')) {
-			
+        if ($this->request->is('post')) 
+		{
 			$warehouse_id = $this->request->data['warehouse_id'];
-            $walkinSale = $this->WalkinSales->patchEntity($walkinSale, $this->request->getData());
+			@$driver_id = $this->request->data['driver_id'];
+			
+			$walkinSale = $this->WalkinSales->patchEntity($walkinSale, $this->request->getData());
 			$curent_date=date('Y-m-d');
-			
-			$last_order_no = $this->WalkinSales->find()
-			->select(['get_auto_no'])
-			->order(['get_auto_no'=>'DESC'])->where(['warehouse_id'=>$warehouse_id, 'transaction_date'=>$curent_date])
-			->first();
-			
-			if(!empty($last_order_no)){
-				$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
-				$get_no=$last_order_no->get_auto_no+1;
-			}else{
-				$get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
-				$get_no=1;
-			}
 			$get_date=str_replace('-','',$curent_date);
-			$order_no=h('W'.$warehouse_id.$get_date.$get_auto_no);//orderno///
+			if(!empty($warehouse_id))
+			{
+				$last_order_no = $this->WalkinSales->find()
+				->select(['get_auto_no'])
+				->order(['get_auto_no'=>'DESC'])->where(['warehouse_id'=>$warehouse_id, 'transaction_date'=>$curent_date])
+				->first();
+				
+				if(!empty($last_order_no)){
+					$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
+					$get_no=$last_order_no->get_auto_no+1;
+				}else{
+					$get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
+					$get_no=1;
+				}
+				$order_no=h('WS'.$warehouse_id.$get_date.$get_auto_no);
+			}
+			else{
+				$last_order_no = $this->WalkinSales->find()
+				->select(['get_auto_no'])
+				->order(['get_auto_no'=>'DESC'])->where(['driver_id'=>$driver_id, 'transaction_date'=>$curent_date])
+				->first();
+				
+				if(!empty($last_order_no)){
+					$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
+					$get_no=$last_order_no->get_auto_no+1;
+				}else{
+					$get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
+					$get_no=1;
+				}
+				$order_no=h('D'.$driver_id.$get_date.$get_auto_no);
+			}
+		
 			
+			//orderno///
 			$walkinSale->jain_thela_admin_id=$jain_thela_admin_id;
 			$walkinSale->order_no=$order_no;
 			$walkinSale->get_auto_no=$get_no;

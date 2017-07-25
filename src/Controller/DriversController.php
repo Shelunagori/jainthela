@@ -48,8 +48,8 @@ class DriversController extends AppController
 							 
 							 
 
-		pr($driver_details->toArray());
-		exit;
+		//pr($driver_details->toArray());
+		//exit;
 		$drivers=$this->Drivers->find('list');
         $this->set(compact('driver_details', 'drivers'));
         $this->set('_serialize', ['driver_details', 'drivers']);
