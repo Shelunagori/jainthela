@@ -22,7 +22,7 @@ class WalkinSalesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
+		$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->order(['transaction_date'=>'Desc'])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
 		
 	   $this->set(compact('walkinSales'));
         $this->set('_serialize', ['walkinSales']);
