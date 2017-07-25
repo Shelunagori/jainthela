@@ -36,7 +36,20 @@ class CashBacksController extends AppController
 		$cashBacks = $this->CashBacks->find()
 		->where(['ready_to_win'=>'yes'])
 		->contain(['Customers']);
-		
+		foreach($cashBacks->toArray() as $data)
+		{
+		$c_id=$data->customer->id;
+		if(!empty($data->customer->name))
+		{
+		$data->customer->name=$data->customer->name;
+		}
+		else{
+		$fetch_customer_name = $this->CashBacks->CustomerAddresses->find()
+		->where(['CustomerAddresses.customer_id'=>$c_id, 'default_address'=>1])
+		->first();
+		@$data->customer->name=$fetch_customer_name->name;
+		}
+        }
 		$this->set('cashBacks', $cashBacks);
         $this->set('_serialize', ['cashBacks']);
     }

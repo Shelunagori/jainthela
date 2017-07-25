@@ -40,7 +40,7 @@
 						
 						$sr_no=0; foreach ($cashBacks as $cb): $sr_no++;
 						$created_on=date('d-m-Y', strtotime($cb->created_on));
-						$customer_name=$cb->customer->name;
+						$customer_name=ucwords($cb->customer->name);
 						$customer_mobile=$cb->customer->mobile;
 						if($cb->won=='yes')
 						{

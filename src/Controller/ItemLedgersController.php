@@ -417,6 +417,7 @@ class ItemLedgersController extends AppController
 		$item_ledgers=$this->paginate(
 			$this->ItemLedgers->find()
 			->where($where)
+			->order(['transaction_date'=> 'DESC'])
 			->contain(['Drivers', 'Items'=>['Units','itemCategories']])
 		);
 		$drivers=$this->ItemLedgers->Drivers->find('list');
