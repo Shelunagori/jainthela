@@ -41,14 +41,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $total=0; $i=1; foreach($bulkSales as $bulkSale){ ?> 
+						<?php $unit; $total=0; $i=1; foreach($bulkSales as $bulkSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
 							<td><?= h(@$bulkSale->order->order_no) ?></td>
-							<td><?= h(@$bulkSale->quantity).$bulkSale->item->unit->unit_name ?></td>
+							<td><?= h(@$bulkSale->quantity).$bulkSale->item->unit->unit_name;
+							@$total+=@$bulkSale->quantity; 
+							@$unit = @$bulkSale->item->unit->unit_name;?></td>
 						</tr>
 						<?php } ?>
-						
+						<tr>
+							<td colspan="2" align="right"><b>Total</b></td>
+							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
+						</tr>
 					</tbody>
 				</table>
 				

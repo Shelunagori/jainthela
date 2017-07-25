@@ -56,20 +56,20 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout'); 
         $itemLedger = $this->ItemLedgers->newEntity();
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		 
+
         if ($this->request->is('post')) {
 			$item_ledgers=$this->request->getData('item_ledgers');
-			
+
 			$driver_id=$this->request->data['driver_id'];
 			$warehouse_id=$this->request->data['warehouse_id'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
 			$i=0;
-			
+
 			foreach($item_ledgers as $item_ledger){
 				$item_ledger=(object)$item_ledger;
 				$quantity=$item_ledger->quantity;
 				$item_id=$item_ledger->item_id;
-				
+
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer'])
 						->values([
@@ -83,7 +83,7 @@ class ItemLedgersController extends AppController
 						'inventory_transfer' => 'yes'
 						])
 				->execute();
-			
+
 				$query = $this->ItemLedgers->query();
 				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id', 'inventory_transfer'])
 						->values([

@@ -59,7 +59,8 @@ class AppController extends Controller
                         'password' => 'password'
                     ],
                       'userModel' => 'Users'
-                ]
+                ],
+                
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',

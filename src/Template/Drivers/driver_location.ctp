@@ -1,4 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+		
+		
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
@@ -29,14 +32,18 @@
             // Get data from database. It should be like below format or you can alter it.
 <?php 
 				$i=0;
+				pr($driver_details);
+				exit;
 				foreach($driver_details as $driver_detail)
 				{
+				
 					$i++;
                     //$id=$data['login']['id'];
 					$name=$driver_detail->driver->name;;
 					$mobile=$driver_detail->driver->mobile;
 					$latitude=$driver_detail->lattitude;
 					 $longitude=$driver_detail->longitude;
+					
 					?>
 
             var data = '[{ "DisplayText": "<?php echo $name;?> <?php
