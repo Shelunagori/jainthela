@@ -42,13 +42,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=1; foreach($onlineSales as $onlineSale){ ?> 
+						<?php $unit; $total=0; $i=1; foreach($onlineSales as $onlineSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
 							<td><?= h(@$onlineSale->order->order_no) ?></td>
-							<td><?= h(@$onlineSale->quantity).$onlineSale->item->unit->unit_name ?></td>
+							<td><?= h(@$onlineSale->quantity).@$onlineSale->item->unit->unit_name;
+								@$total+=@$onlineSale->quantity; 
+								@$unit = @$onlineSale->item->unit->unit_name?></td>
 						</tr>
 						<?php } ?>
+						<tr>
+							<td colspan="2" align="right"><b>Total</b></td>
+							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
+						</tr>
 					</tbody>
 				</table>
 				

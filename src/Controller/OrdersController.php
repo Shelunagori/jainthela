@@ -310,8 +310,9 @@ class OrdersController extends AppController
 		}
 		
 		$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
-			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where);
-		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id,'order_id']);
+			return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
+			;
+		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
 		//pr($onlineSales->toArray());exit;
 		 $this->set(compact('onlineSales','from_date','to_date'));
         $this->set('_serialize', ['onlineSales']);
@@ -335,7 +336,7 @@ class OrdersController extends AppController
 		}
 		$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where){
 			return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
-		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id]);
+		},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
 		//pr($bulkSales->toArray());exit;
 		 $this->set(compact('bulkSales','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);

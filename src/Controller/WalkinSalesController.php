@@ -304,7 +304,7 @@ class WalkinSalesController extends AppController
 		}
 		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
 			return $q->contain(['Drivers','Warehouses'])->where($where);
-		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id]);
+		},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
 	//	pr($walkinSales->toArray());
 		 $this->set(compact('walkinSales','from_date','to_date'));
         $this->set('_serialize', ['walkinSales']);

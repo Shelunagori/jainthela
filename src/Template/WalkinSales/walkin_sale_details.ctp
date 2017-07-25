@@ -39,13 +39,14 @@
 							<th>Sr. No.</th>
 							<th>Supplier Name</th>
 							<th>Order No</th>
-							<th>Quantity</th>
 							<th>Transaction Date</th>
+							<th>Quantity</th>
+							
 						</tr>
 					</thead>
 					<tbody>
 						
-						<?php $i=1; foreach($walkinSales as $walkinSale){ ?> 
+						<?php $total=0; $unit; $i=1; foreach($walkinSales as $walkinSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
 							<?php if(@$walkinSale->walkin_sale->driver_id !=0){ ?>
@@ -54,10 +55,18 @@
 							<td><?= h(@$walkinSale->walkin_sale->warehouse->name) ?></td>
 							<?php }?>
 							<td><?= h(@$walkinSale->walkin_sale->order_no) ?></td>
-							<td><?= h(@$walkinSale->quantity) ?></td>
 							<td><?= h(@$walkinSale->walkin_sale->transaction_date) ?></td>
+							<td><?= h(@$walkinSale->quantity).@$walkinSale->item->unit->unit_name ;
+							@$total+=@$walkinSale->quantity;
+							@$unit=@$walkinSale->item->unit->unit_name;
+							?></td>
+							
 						</tr>
 						<?php } ?>
+						<tr>
+							<td colspan="4" align="right"><b>Total</b></td>
+							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
+						</tr>
 					</tbody>
 				</table>
 				
