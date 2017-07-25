@@ -411,6 +411,7 @@ class ItemLedgersController extends AppController
 			$where['driver_id']=$driver_id;
 		}
 		$where['driver_id !=']=0;
+		$where['order_id =']=0;
 		//pr($where); exit;
  				 
 		$item_ledgers=$this->paginate(
