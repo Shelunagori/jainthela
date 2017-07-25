@@ -1,25 +1,22 @@
 
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA7IZt-36CgqSGDFK8pChUdQXFyKIhpMBY&sensor=true" type="text/javascript"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA7IZt-36CgqSGDFK8pChUdQXFyKIhpMBY&sensor=true" type="text/javascript"></script>
+   <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
     <script type="text/javascript">
 
-        var map;
-        var geocoder;
-        var marker;
-        var people = new Array();
-        var latlng;
-        var infowindow;
+       
 
         $(document).ready(function() {
             ViewCustInGoogleMap();
         });
 
         function ViewCustInGoogleMap() {
-
+			
             var mapOptions = {
                 center: new google.maps.LatLng(24.5989579, 73.7456404),   // Coimbatore = (11.0168445, 76.9558321)
                 zoom: 14,
@@ -38,7 +35,6 @@
 					$mobile=$driver_detail->driver->mobile;
 					$latitude=$driver_detail->lattitude;
 					 $longitude=$driver_detail->longitude;
-					
 					?>
 
             var data = '[{ "DisplayText": "<?php echo $name;?> <?php
