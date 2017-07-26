@@ -553,11 +553,11 @@ class ItemLedgersController extends AppController
 		}
 		if(!empty($where)){
 			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
-				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units']);
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units'])->order(['Items.name'=>'ASC']);
 			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where);
 		}else{
 			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
-				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units']);
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units'])->order(['Items.name'=>'ASC']);
 			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where1);
 		}	
 		$order_online = []; $order_online_name=[];
@@ -597,7 +597,7 @@ class ItemLedgersController extends AppController
 		}
 		//pr($Itemsexists);exit;
 		
-		$ItemList =  $this->ItemLedgers->Items->find()->order(['name'=>'ASC']);
+		$ItemList =  $this->ItemLedgers->Items->find()->order(['Items.name'=>'ASC']);
 		
 		$this->set(compact('itemLedgers','ItemList','from_date','to_date','order_online','order_bulk','order_offline'
 		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units'));

@@ -53,8 +53,8 @@
 					<thead>
 						<tr> 
 							<th>Sr</th>
-							<th style="text-align:center;">Seller Name</th>
-							<th style="text-align:center;">Driver Name</th>
+							<th style="text-align:center;">Warehouse</th>
+							<th style="text-align:center;">Driver</th>
 							<th style="text-align:center;">Order No.</th>
 							<th style="text-align:center;">Transaction Date</th>
 							<th style="text-align:center;">Type</th>
@@ -69,7 +69,7 @@
 							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo "-"; }?></td>
 							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo $walkinSale->driver->name ;} else { echo "-"; }?></td>
 							<td align="center"><?= h(@$walkinSale->order_no) ?></td>
-							<td align="center"><?= h(@$walkinSale->transaction_date) ?></td>
+							<td align="center"><?= h(@$walkinSale->created_on) ?></td>
 							<td align="center">Walkin</td>
 							<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
 							$amount_total+=$walkinSale->total_amount;
@@ -82,7 +82,7 @@
 							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
 							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
 							<td align="center"><?= h(@$order->order_no) ?></td>
-							<td align="center"><?= h(date('d-m-Y',strtotime(@$order->delivery_date))) ?></td>
+							<td align="center"><?= h(@$order->order_date) ?></td>
 							<td align="center">
 							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
 								echo "Online";
