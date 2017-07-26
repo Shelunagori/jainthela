@@ -35,6 +35,7 @@
 							<th scope="col">Delivery Time</th>
 							<th scope="col">Status</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
+							<th scope="col">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,6 +82,9 @@
 								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Mark as <b>In Process</b></a>
 								
 							<?php } }?>
+							</td>
+							<td>
+								<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
 							</td>
 						</tr>
 						<?php endforeach; ?>

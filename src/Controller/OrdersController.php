@@ -324,9 +324,38 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id, [
             'contain' => []
         ]);
+		
+		$amount_from_wallet=$order->amount_from_wallet;
+		$amount_from_jain_cash=$order->amount_from_jain_cash;
+		$amount_from_promo_code=$order->amount_from_promo_code;
+		$customer_id=$order->customer_id;
+		$order_date=$order->order_date;
+		
+		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
-			$order->grand_total=$this->request->data['total_amount'];
+			$total_amount=$this->request->data['total_amount'];
+			$delivery_charge=$this->request->data['delivery_charge'];
+			$grand_total=$total_amount+$delivery_charge;
+			$remaining_amount=$grand_total-$paid_amount;
+			$remaining_paid_amount=$paid_amount-$grand_total;
+			if($remaining_amount>0){
+				$order->pay_amount=$remaining_amount;
+			}
+			else if($remaining_paid_amount>0){
+				$order->pay_amount=0;
+				$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $remaining_paid_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $id
+							])
+					->execute();
+			}
+			$order->grand_total=$grand_total;
+			$order->order_date=$order_date;
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 
             if ($this->Orders->save($order)) {
@@ -336,6 +365,7 @@ class OrdersController extends AppController
             }
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
+		
 		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
 
 		foreach($item_fetchs as $item_fetch){
