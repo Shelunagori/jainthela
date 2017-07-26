@@ -13,6 +13,8 @@ use Cake\ORM\Entity;
  * @property float $debit
  * @property float $credit
  * @property \Cake\I18n\FrozenTime $transaction_date
+ * @property \Cake\I18n\FrozenTime $created_on
+ * @property \Cake\I18n\FrozenTime $edited_on
  *
  * @property \App\Model\Entity\LedgerAccount $ledger_account
  * @property \App\Model\Entity\PurchaseBooking $purchase_booking

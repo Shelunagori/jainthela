@@ -24,6 +24,8 @@ class LedgersFixture extends TestFixture
         'debit' => ['type' => 'decimal', 'length' => 10, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
         'credit' => ['type' => 'decimal', 'length' => 10, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
         'transaction_date' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'created_on' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => '', 'precision' => null],
+        'edited_on' => ['type' => 'timestamp', 'length' => null, 'null' => false, 'default' => '0000-00-00 00:00:00', 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -47,7 +49,9 @@ class LedgersFixture extends TestFixture
             'walkin_sale_id' => 1,
             'debit' => 1.5,
             'credit' => 1.5,
-            'transaction_date' => 1500464738
+            'transaction_date' => 1501067015,
+            'created_on' => 1501067015,
+            'edited_on' => 1501067015
         ],
     ];
 }

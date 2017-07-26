@@ -64,7 +64,7 @@ class LedgersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        /* $validator
+        $validator
             ->decimal('debit')
             ->requirePresence('debit', 'create')
             ->notEmpty('debit');
@@ -73,11 +73,21 @@ class LedgersTable extends Table
             ->decimal('credit')
             ->requirePresence('credit', 'create')
             ->notEmpty('credit');
-		*/
+
         $validator
             ->dateTime('transaction_date')
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
+
+        $validator
+            ->dateTime('created_on')
+            ->requirePresence('created_on', 'create')
+            ->notEmpty('created_on');
+
+        $validator
+            ->dateTime('edited_on')
+            ->requirePresence('edited_on', 'create')
+            ->notEmpty('edited_on');
 
         return $validator;
     }

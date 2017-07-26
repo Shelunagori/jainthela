@@ -195,10 +195,13 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Issue Return Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
 								</li>
-								
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Account Statement','/Ledgers/AccountStatements',['escape'=>false]) ?>
+								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
 								</li>
+								
 								
 							</ul>
 						</li>
