@@ -172,7 +172,7 @@ class LedgersController extends AppController
 						return $row['name'];
 					}
 					
-				}]);
+				}])->where(['customer_id !='=>0]);
 		
 			$this->set(compact('Ledgers','ledger','ledger_account_id','Ledger_Account_data','transaction_from_date','transaction_to_date','opening_balance_ar'));
 

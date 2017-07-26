@@ -52,3 +52,9 @@ create field into grn table     warehouse_id int (10)
 
 				16-06-2017
 create field into orders table     discount_percent decimal (10,2)
+
+<!-----Dimpal 26/July/2017 ------------------>
+create new field in ledger_accounts     customer_id (int)
+create new fiels in ledgers  			created_on(timestamp),edited_on(timestamp)
+change transaction_date in ledgers      transaction_date(date) 
+create new field in walkin table		created_on(timestamp)

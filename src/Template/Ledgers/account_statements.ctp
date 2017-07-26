@@ -51,8 +51,7 @@
 .btn1 { padding: 3px 10px; }
 </style>
 <div class="row">
-   <div class="col-md-1"></div>
-	<div class="col-md-10">
+	<div class="col-md-12">
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -79,7 +78,7 @@
 							
 						</div>
 					</td>
-					<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+					<td><button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -131,8 +130,6 @@
 				<thead>
 					<tr>
 						<th>Transaction Date</th>
-						<th>Invoice No</th>
-						<th>Source</th>
 						<th style="text-align:right;">Dr</th>
 						<th style="text-align:right;">Cr</th>
 					</tr>
@@ -145,9 +142,6 @@
 				?>
 				<tr>
 						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-						<td><?php echo $this->Html->link('#'.str_pad($ledger->voucher_id, 4, '0', STR_PAD_LEFT),['controller'=>'Invoices', 'action'=>'getInvocieView',$ledger->voucher_id,'_full'=>true],['escape' => false]); ?>
-						</td>
-						<td><?= h($ledger->voucher_source); ?></td>
 						<td align="right"><?= $this->Number->format($ledger->debit,[ 'places' => 2]); 
 							$total_debit+=$ledger->debit; ?></td>
 						<td align="right"><?= $this->Number->format($ledger->credit,[ 'places' => 2]); 
@@ -155,7 +149,7 @@
 				</tr>
 				<?php } endforeach; ?>
 				<tr>
-					<td colspan="3" align="right">Total</td>
+					<td colspan="1" align="right">Total</td>
 					<td align="right" ><?= number_format(@$opening_balance_total['debit'],2,'.',',') ;?> Dr</td>
 					<td align="right" ><?= number_format(@$opening_balance_total['credit'],2,'.',',')?> Cr</td>
 					
