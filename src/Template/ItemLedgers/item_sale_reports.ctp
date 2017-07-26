@@ -13,7 +13,7 @@
 							<?php if(!empty($from_date)){ ?>
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
 							<?php }else{ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo date('01-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
 							<?php } ?>	
 							</td>	
 							<td width="2%">

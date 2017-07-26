@@ -19,19 +19,24 @@
 				<table width="50%" class="table table-condensed">
 					<tbody>
 						<tr>
-							
 							<td width="2%">
+								<?php echo $this->Form->input('warehouse', ['empty'=>'--Warehouses--','options' => $Warehouses,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$warehouse_id) ]); ?>
+							</td>
+							<td width="2%">
+								<?php echo $this->Form->input('drivers', ['empty'=>'--Drivers--','options' => $Drivers,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$drivers_id) ]); ?>
+							</td>
+							<td width="5%">
 							<?php if(!empty($from_date)){ ?>
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
 							<?php }else{ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo date('01-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
 							<?php } ?>	
 							</td>	
-							<td width="2%">
+							<td width="5%">
 							<?php if(!empty($to_date)){ ?>
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
 							<?php }else{ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
 							<?php } ?>	
 							</td>
 							<td width="10%">
@@ -48,7 +53,8 @@
 					<thead>
 						<tr> 
 							<th>Sr</th>
-							<th style="text-align:center;">Supplier Name</th>
+							<th style="text-align:center;">Seller Name</th>
+							<th style="text-align:center;">Driver Name</th>
 							<th style="text-align:center;">Order No.</th>
 							<th style="text-align:center;">Transaction Date</th>
 							<th style="text-align:center;">Type</th>
@@ -60,7 +66,8 @@
 						?>
 						<tr>
 							<td><?= h($i++) ?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo @$walkinSale->driver->name; }?></td>
+							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo "-"; }?></td>
+							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo $walkinSale->driver->name ;} else { echo "-"; }?></td>
 							<td align="center"><?= h(@$walkinSale->order_no) ?></td>
 							<td align="center"><?= h(@$walkinSale->transaction_date) ?></td>
 							<td align="center">Walkin</td>
@@ -72,7 +79,8 @@
 						<?php $i=$i; foreach($Orders as $order){ ?>
 							<tr>
 							<td><?= h($i++) ?></td>
-							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo @$order->driver->name; }?></td>
+							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
+							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
 							<td align="center"><?= h(@$order->order_no) ?></td>
 							<td align="center"><?= h(date('d-m-Y',strtotime(@$order->delivery_date))) ?></td>
 							<td align="center">
@@ -88,7 +96,7 @@
 						</tr>
 						<?php } ?>
 						<tr>
-						<td align="right" colspan="5"><b>Total</b></td>
+						<td align="right" colspan="6"><b>Total</b></td>
 						<td align="right"><b><?php echo $this->Number->format($amount_total,['places'=>2]); ?></b></td>
 					<tr>
 					</tbody>
