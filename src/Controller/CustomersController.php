@@ -164,6 +164,33 @@ class CustomersController extends AppController
     }
 
 
+	public function defaultAddress($id = null)
+    { 
+		$this->viewBuilder()->layout('');
+		
+		if(empty($id)){
+			echo ''; exit;
+		}
+		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->first();
+		
+		echo $defaultAddress->address; exit;
+    }
+	
+	public function addressList($id = null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+		
+		if(empty($id)){
+			echo 'Please Select Customer First.'; exit;
+		}
+        $customer = $this->Customers->get($id, [
+            'contain' => ['CustomerAddresses']
+        ]);
+
+        $this->set('customer', $customer);
+        $this->set('_serialize', ['customer']);
+    }
+	
     /**
      * Delete method
      *

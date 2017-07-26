@@ -3,8 +3,8 @@
 	vertical-align: top !important;
 }
 </style>
-<div class="row">
-	<div class="col-md-12">
+<div class="row"><div class="col-md-1"></div>
+	<div class="col-md-10">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
@@ -27,9 +27,9 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id','id'=>'customer_id','label'=>false]); ?>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
 						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 					</div>
@@ -46,7 +46,17 @@
 				<?php } ?>
 				-->
 				</div><br/>
-				
+				<div class="row">
+					<div class="col-md-6">
+						<label class="control-label">Address</label>
+						
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5']); ?>
+							<a href="#" role="button" class="pull-right select_address" >
+							Select Address </a>
+						
+					</div>
+				<div>
+				<div class="col-md-12"><br/></div>
 				<div class="row">
 					
 					<div class="col-md-8">
@@ -124,7 +134,7 @@
 			</div>
 		</div>
 	</div>
-
+<div class="col-md-1"></div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
@@ -335,6 +345,44 @@ $(document).ready(function() {
 		$('#del_time').val(raw_time_name);
 		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
 	});
+	///default Address
+	$('.select_address').on("click",function() { 
+		open_address();
+    });
+	
+	function open_address(){
+		var customer_id=$('select[name="customer_id"]').val();
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
+		url=url+'/'+customer_id,
+		$("#myModal1").show();
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	}
+	
+	
+	$('.insert_address').die().live("click",function() { 
+		var addr=$(this).text();
+		$('textarea[name="customer_address"]').val(addr);
+		$("#myModal1").hide();
+    });
+	
+	
+	$('.customer_id').on("change",function() {
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+		
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
+		url=url+'/'+customer_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('textarea[name="customer_address"]').val(response);
+		});
+	});
 });
 </script>
 <table id="sample_table" style="display:none;" >
@@ -364,4 +412,17 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
+		
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: ; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
