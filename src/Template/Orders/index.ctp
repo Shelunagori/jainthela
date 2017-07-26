@@ -3,7 +3,7 @@
 	font-size:12px !important;
 }
 </style>
-<div class="row">
+<div class="row hidden-print">
 	<div class="col-md-12">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
@@ -234,12 +234,12 @@ $(document).ready(function() {
 	});
 });
 </script>
-<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;" id="popup">
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
 <div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-				<p>
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body" >
+				<p >
 					 Body goes here...
 				</p>
 			</div>
