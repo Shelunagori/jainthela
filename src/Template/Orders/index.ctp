@@ -3,7 +3,7 @@
 	font-size:12px !important;
 }
 </style>
-<div class="row">
+<div class="row hidden-print">
 	<div class="col-md-12">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
@@ -35,6 +35,7 @@
 							<th scope="col">Delivery Time</th>
 							<th scope="col">Status</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
+							<th scope="col">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,6 +82,9 @@
 								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Mark as <b>In Process</b></a>
 								
 							<?php } }?>
+							</td>
+							<td>
+								<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -234,12 +238,12 @@ $(document).ready(function() {
 	});
 });
 </script>
-<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;" id="popup">
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
 <div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-				<p>
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body" >
+				<p >
 					 Body goes here...
 				</p>
 			</div>

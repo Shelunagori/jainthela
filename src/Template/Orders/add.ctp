@@ -88,20 +88,38 @@
 								<tr>
 									<td colspan="4" style="text-align:right;">
 									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
-									Amount From Wallet</td>
+									Grand Total</td>
+									<td>
+									<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="4" style="text-align:right;">
+									Amount From Wallet
+									</td>
 									<td>
 									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
 									</td>
 									<td></td>
 								</tr>
 								<tr>
-								<td colspan="4" style="text-align:right;">
-								Grand Total
-								</td>
-								<td>
-								<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
-								</td>
-								<td></td>
+									<td colspan="4" style="text-align:right;">
+									Delivery Charge
+									</td>
+									<td>
+									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>0,'readonly']); ?>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="4" style="text-align:right;">
+									Paid Amount
+									</td>
+									<td>
+									<?php echo $this->Form->input('pay_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
+									</td>
+									<td></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -293,13 +311,22 @@ $(document).ready(function() {
 		});
 		if($('input[name=discount_percent]').val())
 		{
-			var discount_percent=parseFloat($('input[name=discount_percent]').val());
-			var discount_amount=total_amount*(discount_percent/100);
-			total_amount-=discount_amount;
+		var discount_percent=parseFloat($('input[name=discount_percent]').val());
+		var discount_amount=total_amount*(discount_percent/100);
+		total_amount-=discount_amount;
+		}
+		if(total_amount<100){
+			$('input[name=delivery_charge]').val(100);
+		}else{
+			$('input[name=delivery_charge]').val(0);
 		}
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
-		var grand_total=total_amount-amount_from_wallet;
-		$('input[name=total_amount]').val(grand_total);
+		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
+		
+		var grand_total=total_amount-amount_from_wallet+delivery_charge;
+		$('input[name=total_amount]').val(total_amount);
+		$('input[name=pay_amount]').val(grand_total);
+		
 	});
 
 	$(".attribute").die().live('change',function(){

@@ -1,6 +1,32 @@
-	<div style="">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-		<table class=" table-striped table-condensed table-hover  scroll" width="100%" border="0">
+<style>
+@media print{
+	.maindiv{
+		width:100% !important;
+	}	
+	.hidden-print{
+		display:none;
+	}
+}
+p{
+margin-bottom: 0;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+	font-family:Lato !important;
+}
+</style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0px 0px 0px 0px;  /* this affects the margin in the printer settings */
+}
+</style>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;margin-top: -10px;width: 100%;font-size:14px;" class="maindiv">	
+<button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
+<div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
+	<div style="border:solid 2px #F98630; margin-bottom:15px;"></div>
+		<table width="100%">	
 			<thead>
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
@@ -15,13 +41,14 @@
 					</td>
 				</tr>
 				<tr style="background-color:#F98630; color:#fff;">
-					<th style="text-align:center;">#</th>
+					<th style="text-align:right;">#</th>
 					<th style="text-align:center;">Image</th>
 					<th style="text-align:left;">Item Name</th>
 					<th style="text-align:center;">QTY</th>
 					<th style="text-align:center;">Actual QTY</th>
 					<th style="text-align:center;">Amount</th>
 				</tr>
+				
 			</thead>
 			<tbody>
 				<?php
@@ -49,7 +76,7 @@
 						$show_item=$item_name;
 					} ?>
 				<tr style="background-color:#fff;">
-					<td><?= $i ?></td>
+					<td align="right"><?= $i ?></td>
 					<td align="center">
 						<?php echo $this->Html->image('/img/item_images/'.$image, ['height' => '40px', 'width'=>'40px', 'class'=>'img-rounded img-responsive']); ?>
 					</td>
@@ -136,6 +163,10 @@
 				<tr>
 					<td colspan="2"><b>Deliver Time Between:-</b></td>
 					<td colspan="2"><b><?= h($order->delivery_time) ?></b></td>
+				</tr>
+				<tr>
+				<td colspan="6"><a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+				</td>
 				</tr>
 			</tfoot>
 		</table>
