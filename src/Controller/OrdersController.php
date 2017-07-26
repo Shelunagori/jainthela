@@ -225,9 +225,39 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-
+			//pr($order);exit;
             if ($this->Orders->save($order)) {
+				$customer = $this->Orders->Customers->get($order->customer_id);
+				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
+				$ledgerAccount->name = $customer->name;
+				$ledgerAccount->account_group_id = '5';
+				$ledgerAccount->jain_thela_admin_id = $jain_thela_admin_id;
+				$this->Orders->LedgerAccounts->save($ledgerAccount);
+				
+			
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = $ledgerAccount->id;
+					$ledgers->debit = $order->grand_total;
+					$ledgers->credit = '0';
+					$this->Orders->Ledgers->save($ledgers);
 
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = 9;
+					$ledgers->debit = $order->amount_from_wallet;
+					$ledgers->credit = '0';
+					if($order->amount_from_wallet > 0){
+					$this->Orders->Ledgers->save($ledgers);
+					}
+					
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = 8;
+					$ledgers->debit = '0';
+					$ledgers->credit = ($order->grand_total+$order->amount_from_wallet);
+					$this->Orders->Ledgers->save($ledgers);
+			
+
+
+				
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

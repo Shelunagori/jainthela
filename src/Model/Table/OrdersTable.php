@@ -74,6 +74,8 @@ class OrdersTable extends Table
 		$this->belongsTo('Drivers');
 		$this->belongsTo('Warehouses');
     	$this->hasMany('DeliveryTimes');
+    	$this->hasMany('Ledgers');
+    	$this->hasMany('LedgerAccounts');
 		$this->belongsTo('CancelReason');
 	}
 

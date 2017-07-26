@@ -25,7 +25,7 @@
 							</td>
 							
 							<td width="10%">
-								<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
 							</td>
 							<td width="2%" align="right">
 								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">

@@ -76,6 +76,7 @@ class CustomersController extends AppController
     public function add($id=null)
     {
         $this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$customer = $this->Customers->newEntity();
 		if ($this->request->is(['post'])) {
 			$customer->status='completed';
