@@ -191,8 +191,8 @@ return [
 		'SendGrid' => [
         'host' => 'smtp.sendgrid.net',
         'port' => 587,
-        'username' => 'ucci',
-        'password' => 'ucciudaipur281989',
+        'username' => '',
+        'password' => '',
         'className' => 'Smtp'
                 ],
     ],
