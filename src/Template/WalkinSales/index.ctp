@@ -20,6 +20,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+			<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr>
@@ -36,7 +37,7 @@
 					<tbody>
 						<?php foreach ($walkinSales as $walkinSale): ?>
             <tr>
-                <td><?= $this->Number->format($walkinSale->id) ?></td>
+                <td><?= ++$page_no ?></td>
 				 <td><a class="view_order" order_id="<?php echo $walkinSale->id; ?>" ><?= h($walkinSale->order_no) ?></a> </td>
                 <td><?= h($walkinSale->transaction_date) ?></td>
                 <td><?php if(!empty(h(@$walkinSale->warehouse_id))){echo 'Warehouse';} else { echo 'Driver'; }?></td>
