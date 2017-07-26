@@ -40,7 +40,7 @@ class WalletsController extends AppController
 		$wallets = $this->Wallets->find()->contain(['Customers', 'Plans', 'Orders'])->distinct(['Wallets.customer_id']);
 		$final_output1=[];
 		$final_output2=[];
-		foreach($wallets as $wallet)
+		/* foreach($wallets as $wallet)
 		{
 			
 			$wallets_datas=$this->Wallets->find()->where(['Wallets.customer_id'=>$wallet->customer_id])->contain(['Customers', 'Plans', 'Orders']);
@@ -48,14 +48,10 @@ class WalletsController extends AppController
 			 foreach($wallets_datas as $wallets_data )
 			{
 				$final_output1[$wallets_data->customer_id]=$wallets_data->plan->name;
-	
 			} 
-		}
-		pr($final_output1);
-		pr($final_output2);
-		exit;
+		} */
 		
-		$this->set(compact('wallets'));
+		$this->set(compact('wallets','final_output1'));
 			$this->set('_serialize', ['wallets']);
 	}
 	 public function consumed()
@@ -92,23 +88,86 @@ class WalletsController extends AppController
      */
     public function add()
     {
+		 $this->viewBuilder()->layout('index_layout');
         $wallet = $this->Wallets->newEntity();
         if ($this->request->is('post')) {
             $wallet = $this->Wallets->patchEntity($wallet, $this->request->getData());
+			
             if ($this->Wallets->save($wallet)) {
-                $this->Flash->success(__('The wallet has been saved.'));
+                $this->Flash->success(__('The wallet has been added.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
         }
-        $customers = $this->Wallets->Customers->find('list', ['limit' => 200]);
-        $plans = $this->Wallets->Plans->find('list', ['limit' => 200]);
-        $orders = $this->Wallets->Orders->find('list', ['limit' => 200]);
-        $this->set(compact('wallet', 'customers', 'plans', 'orders'));
+        
+		$customers_data = $this->Wallets->Customers->find('all');
+			foreach($customers_data as $customer){
+				$customer_name=$customer->name;
+				$customer_mobile=$customer->mobile;
+				$customers[]= ['value'=>$customer->id,'text'=>$customer_name." (".$customer_mobile.")"];
+			}
+        $this->set(compact('wallet', 'customers'));
         $this->set('_serialize', ['wallet']);
     }
 
+	public function checksubtract($customer_id){
+		//$this->viewBuilder()->layout('');
+		
+		$query = $this->Wallets->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['advance > ' => 0]),
+				$query->newExpr()->add(['advance']),
+				'integer'
+			); 
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['consumed > ' => 0]),
+				$query->newExpr()->add(['consumed']),
+				'integer'
+			);
+			$query->select([
+			'total_advanced' => $query->func()->sum($totalInCase),
+			'total_consumed' => $query->func()->sum($totalOutCase),'id','customer_id'
+		])
+		->where(['Wallets.customer_id' => $customer_id])
+		->autoFields(true);
+		$wallets = ($query);
+		foreach($wallets as $wallet){
+			
+			 $total_advanced=$wallet->total_advanced;
+			$total_consumed=$wallet->total_consumed;
+			 echo $remaining=$total_advanced-$total_consumed;
+			exit;
+		}
+	}
+	public function remove(){
+		 $this->viewBuilder()->layout('index_layout');
+        $wallet = $this->Wallets->newEntity();
+        if ($this->request->is('post')) {
+            $wallet = $this->Wallets->patchEntity($wallet, $this->request->getData());
+			
+            if ($this->Wallets->save($wallet)) {
+                $this->Flash->success(__('The wallet has been removed.'));
+
+                return $this->redirect(['action' => 'remove']);
+            }
+            $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
+        }
+        
+		
+		
+		//pr($wallets_data->toArray());exit;
+		$customers_data = $this->Wallets->Customers->find('all');
+			foreach($customers_data as $customer){
+				$customer_name=$customer->name;
+				$customer_mobile=$customer->mobile;
+				$customers[]= ['value'=>$customer->id,'text'=>$customer_name." (".$customer_mobile.")"];
+			}
+        $this->set(compact('wallet', 'customers','wallets'));
+        $this->set('_serialize', ['wallet']);
+	}
     /**
      * Edit method
      *

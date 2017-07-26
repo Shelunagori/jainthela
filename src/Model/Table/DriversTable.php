@@ -40,6 +40,11 @@ class DriversTable extends Table
             'foreignKey' => 'city_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('DriverLocations', [
+            'foreignKey' => 'driver_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -53,11 +58,12 @@ class DriversTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
+		/* 
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+		*/
+		
         return $validator;
     }
 

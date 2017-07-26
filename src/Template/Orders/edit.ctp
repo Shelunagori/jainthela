@@ -29,6 +29,11 @@
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
 					</div>
+					<div class="col-md-2">
+						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
+						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+					</div>
+				<!--
 				<?php if(!empty($bulkorder_id)){ ?>
 					<div class="col-md-4" align="center">
 						<label class=" control-label">Delivery Date</label><br>
@@ -39,6 +44,7 @@
 						<?php echo $bulk_delivery_time; ?>
 					</div>
 				<?php } ?>
+				-->
 				</div><br/>
 				
 				<div class="row">
@@ -83,7 +89,7 @@
 						<?php echo $this->Form->input('order_details.'.$k.'.id', ['value' => $fetch_id]); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('show_quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity']); ?>
+						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity']); ?>
 						
 						<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains', 'type'=>'hidden','value'=>$fetch_quantity]); ?>
@@ -130,7 +136,19 @@
 						<?php } ?>
 					</div>
 				</div>
-				 
+				<div class="row">
+					<div class="col-md-2">
+						<label class="control-label">Delivery Date<span class="required" aria-require>*</span></label>
+						<?php echo $this->Form->control('delivery_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">Delivery Time <span class="required" aria-require>*</span></label>										
+						<?= $this->Form->input('delivery_time_id', ['empty'=>'--Select time--','options' => $delivery_time,'class'=>'form-control input-sm select2me','id'=>'delivery_id','label'=>false]) ?>
+					</div>
+					<div class="col-md-1">
+						<?= $this->Form->input('delivery_time', ['class'=>'form-control','label'=>false,'type'=>'hidden','id'=>'del_time']) ?>
+					</div>
+				</div> 
 				 
 				<br/>
 				<center>
@@ -309,6 +327,11 @@ $(document).ready(function() {
 		$(this).closest('tr').find('.mains').val(g_total);
 	});
 	
+	$("#delivery_id").die().live('change',function(){
+		var raw_time_name = $('option:selected', this).text();
+		$('#del_time').val(raw_time_name);
+		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
+	});
 	
 });
 </script>

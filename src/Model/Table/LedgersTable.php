@@ -73,7 +73,7 @@ class LedgersTable extends Table
             ->decimal('credit')
             ->requirePresence('credit', 'create')
             ->notEmpty('credit');
- */
+		*/
         $validator
             ->dateTime('transaction_date')
             ->requirePresence('transaction_date', 'create')

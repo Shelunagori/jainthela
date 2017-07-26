@@ -25,11 +25,16 @@
 				}
 					?>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
 					</div>
-				<?php if(!empty($bulkorder_id)){ ?>
+					<div class="col-md-2">
+						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
+						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+					</div>
+					
+				<!--<?php if(!empty($bulkorder_id)){ ?>
 					<div class="col-md-4" align="center">
 						<label class=" control-label">Delivery Date</label><br>
 						<?php echo $bulk_delivery_date; ?>
@@ -39,6 +44,7 @@
 						<?php echo $bulk_delivery_time; ?>
 					</div>
 				<?php } ?>
+				-->
 				</div><br/>
 				
 				<div class="row">
@@ -94,6 +100,19 @@
 						<?php if(!empty($bulkorder_id)){ ?>
 						<?php echo $this->Html->image('/img/bulkbookingimages/'.$bulk_image.'', ['height' => '200px','width' => '320px']); ?>
 						<?php } ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<label class="control-label">Delivery Date<span class="required" aria-require>*</span></label>
+						<?php echo $this->Form->control('delivery_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">Delivery Time <span class="required" aria-require>*</span></label>										
+						<?= $this->Form->input('delivery_time_id', ['empty'=>'--Select time--','options' => $delivery_time,'class'=>'form-control input-sm select2me','id'=>'delivery_id','label'=>false]) ?>
+					</div>
+					<div class="col-md-1">
+						<?= $this->Form->input('delivery_time', ['class'=>'form-control','label'=>false,'type'=>'hidden','id'=>'del_time']) ?>
 					</div>
 				</div>
 				 
@@ -311,6 +330,11 @@ $(document).ready(function() {
 			return false;
 		}
     });
+	$("#delivery_id").die().live('change',function(){
+		var raw_time_name = $('option:selected', this).text();
+		$('#del_time').val(raw_time_name);
+		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
+	});
 });
 </script>
 <table id="sample_table" style="display:none;" >

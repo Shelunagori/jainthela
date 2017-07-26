@@ -61,12 +61,12 @@ class PushNotificationsTable extends Table
 
      /*    $validator
             ->requirePresence('image', 'create')
-            ->notEmpty('image'); */
+            ->notEmpty('image'); 
 			
 		$validator
             ->requirePresence('link_url', 'create')
             ->notEmpty('link_url');
-   
+   */
         return $validator;
     }
 }

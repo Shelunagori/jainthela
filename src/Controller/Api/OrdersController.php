@@ -104,9 +104,14 @@ class OrdersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		$order_id=$this->request->query('order_id');
 		@$cancel_id=$this->request->query('cancel_id');
+<<<<<<< HEAD
 		
 		//chnge tis code///
 		$odrer_datas=$this->Orders->get($order_id);
+=======
+
+				$odrer_datas=$this->Orders->get($order_id);
+>>>>>>> 28c59af2576704cdc274153f8fc67e7ea7159c6b
 				$o_date=$odrer_datas->otder_date;
 				
 				$order_cancel = $this->Orders->query();
@@ -142,7 +147,10 @@ class OrdersController extends AppController
 		$transaction_date=date('Y-m-d');
 		if($is_login=='warehouse')
 		{
+<<<<<<< HEAD
 					//chnge tis code///
+=======
+>>>>>>> 28c59af2576704cdc274153f8fc67e7ea7159c6b
 			    $odrer_datas=$this->Orders->get($order_id);
 				$o_date=$odrer_datas->otder_date;
 			        $order_delivered = $this->Orders->query();

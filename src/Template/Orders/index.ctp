@@ -52,7 +52,8 @@
 								$customer_name=$order->customer->name;
 								$customer_mobile=$order->customer->mobile;
 								
-								$order_date=date('d-m-Y h:i a', strtotime($order->order_date));
+								$order_date=date('d-m-Y', strtotime($order->order_date));
+								$prev_date=date('d-m-Y', strtotime('-1 day'));
 								
 								
 							?>
@@ -69,9 +70,17 @@
 							
 							<td class="actions">
 							<?php  if(($status=='In Process') || ($status=='In process')){ ?>
-							   <a class="btn blue btn-xs get_order" order_id="<?php echo $order->id; ?>" >Delivere</a>
-							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" >Cancel</a>
+							   <!--a class="btn blue btn-xs get_orders" order_id="<?php //echo $order->id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a-->
+							   <a class="btn blue btn-xs dlvr" order_id="<?php echo $order->id; ?>" > <i class="fa fa-shopping-cart"></i> Deliver</a>
+							   <a class="btn red btn-xs cncl" order_id="<?php echo $order->id; ?>" > <i class="fa fa-remove"></i> Cancel</a>
+							   
 							<?php } ?> 
+							<?php  if(($status=='cancel') || ($status=='Cancel') || ($status=='Delivered')){ 
+							       if(( $order_date == $current_date ) || ($order_date == $prev_date  )){
+							?>
+								<a class="btn green btn-xs undo" order_id="<?php echo $order->id; ?>" ><i class="fa fa-undo"></i> Mark as <b>In Process</b></a>
+								
+							<?php } }?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -143,11 +152,45 @@ $(document).ready(function() {
 			$('#popup').find('div.modal-body').html(response);
 		});	
 	});
+	
+	$('.dlvr').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+ 		$('#popup').find('div.modal-body').html('Loading...');
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver"]); ?>";
+		url=url+'/'+order_id;
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});	
+	});
+	
 	$('.close').die().live('click',function() {
 		$('#popup').hide();
 	});
 	
-	
+	$('.undo').die().live('click',function() {
+		
+		var order_id=$(this).attr('order_id');
+		
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "undo_box"]); ?>";
+		url=url+'/'+order_id;
+		
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			
+			location.reload();
+		});	
+	});
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
 	
 	$('.goc').die().live('click',function() 
 	{ 
@@ -186,7 +229,7 @@ $(document).ready(function() {
 			{
 				location.reload();
  				//$('.setup').html(data);
-			}	
+			}
 		});
 	});
 });

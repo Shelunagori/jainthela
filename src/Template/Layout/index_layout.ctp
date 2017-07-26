@@ -153,7 +153,7 @@
 								</li>
 								
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-truck"></i> Drivers','/Drivers',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-truck"></i> Drivers','/Drivers/add',['escape'=>false]) ?>
 								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-users"></i> Vendors','/Vendors',['escape'=>false]) ?>
@@ -181,14 +181,25 @@
 									<?php echo $this->Html->link('<i class="fa  fa-file"></i> Stock Report','/itemLedgers/report_show',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-file"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-database"></i> Product Report','/itemLedgers/driver_report',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa  fa-file"></i> Cash Back Details','/CashBacks/Index',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-bar-chart-o"></i> Cash Back Details','/CashBacks/Index',['escape'=>false]) ?>
 								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
 								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-book"></i> Invoice Report','/WalkinSales/invoiceReports',['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Issue Return Report','/ItemLedgers/itemIssueReport',['escape'=>false]) ?>
+								</li>
+								
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
+								</li>
+								
 							</ul>
 						</li>
 					</ul>
@@ -198,30 +209,12 @@
 				<!-- END RESPONSIVE MENU TOGGLER -->
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
-<<<<<<< HEAD
-					<ul class="nav navbar-nav pull-right">
-					<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-dashboard" style="color:#fff"></i> <span style="color:#fff">Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-bell" style="color:#fff"></i> <span style="color:#fff">Push Notification</span>',array('controller'=>'PushNotifications','action'=>'index'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Cash Back Details</span>',array('controller'=>'CashBacks'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="fa fa-edit" style="color:#fff"></i> <span style="color:#fff">Feedback</span>',array('controller'=>'Feedbacks'),['escape'=>false]); ?>
-						</li>
-						<li class="classic-menu-dropdown">
-							<?php echo $this->Html->link('<i class="icon-rocket" style="color:#fff"></i> <span style="color:#fff">Bulk Lead</span>',array('controller'=>'BulkBookingLeads/index/open'),['escape'=>false]); ?>
-						</li>
-=======
+
+					
+
 					
 					<ul class="nav navbar-nav pull-right">
->>>>>>> 7c8a1fa731cfed5fedbe49652745c10a0049903b
+
 						<!-- BEGIN NOTIFICATION DROPDOWN -->						 
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -263,7 +256,7 @@
 
 
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Homes','action'=>'index'),['escape'=>false]); ?>
+								<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Orders','action'=>'dashboard'),['escape'=>false]); ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-reorder"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
@@ -300,7 +293,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-retweet"></i> Stock Return','/itemLedgers/stock_return',['escape'=>false]) ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-asterisk"></i> Online Order','/Orders',['escape'=>false]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-asterisk"></i> Online Order','/Orders/add/Offline',['escape'=>false]) ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-tasks"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
@@ -322,6 +315,22 @@
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-rocket"></i> Promo Code','/PromoCodes',['escape'=>false]) ?>
 							</li>
+							
+							<li>
+								<a href="javascript:;"><i class="fa fa-puzzle-piece"></i><span class="title">Wallets</span>
+								<span class="arrow "></span>
+								</a>
+								<ul class="sub-menu">
+									<?php 
+									echo '<li>'.$this->Html->link('<i class="icon-home"></i> Add','/Wallets/Add',array('escape'=>false)).'</li>';
+									?>
+									<?php 
+									echo '<li>'.$this->Html->link('<i class="icon-home"></i> Subtract','/Wallets/remove',array('escape'=>false)).'</li>';
+									 ?>
+								</ul>
+							</li>
+							
+							
 
 						</ul>
 						<!-- END SIDEBAR MENU -->

@@ -18,6 +18,63 @@ class OrdersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+	 
+	public function dashboard()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$curent_date=date('Y-m-d');
+		$query = $this->Orders->find();
+		
+		$totalOrder=$query
+		->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date])->first();
+		
+		$this->set(compact('totalOrder'));
+		
+		$query = $this->Orders->find();
+		$inProcessOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'In Process'])->first();
+		$this->set(compact('inProcessOrder'));
+		
+		$this->loadModel('WalkinSales');
+		$query = $this->WalkinSales->find();
+		$walkinsales=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('walkinsales.total_amount')])
+		->where(['WalkinSales.transaction_date' => $curent_date])->first();
+		$this->set(compact('walkinsales'));
+		
+		$query = $this->Orders->find();
+		$deliveredOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered'])->first();
+		$this->set(compact('deliveredOrder'));
+		
+		
+		$query = $this->Orders->find();
+		$cancelOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel'])->first();
+		$this->set(compact('cancelOrder'));
+		
+		$query = $this->Orders->find();
+		$bulkOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Bulk'])->first();
+		$this->set(compact('bulkOrder'));
+		$curent_date=date('Y-m-d');
+		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
+		$this->set(compact('orders'));
+        $this->set('_serialize', ['orders']);
+    }
+	
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -68,14 +125,20 @@ class OrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $order = $this->Orders->get($id);
+		$order_date=$order->order_date;
+		$delivery_date=$order->delivery_date;
+		$curent_date=$order->curent_date;
 		$CancelReasons=$this->Orders->CancelReasons->find('list');
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$cancel_id=$this->request->data['cancel_id'];
 			$Orders=$this->Orders->get($id);
+			$Orders->order_date=$order_date;
+			$Orders->delivery_date=$delivery_date;
+			$Orders->curent_date=$curent_date;
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
-			
+
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);
@@ -83,7 +146,30 @@ class OrdersController extends AppController
         $this->set('_serialize', ['order', 'CancelReasons']);
     }
 
+	public function ajaxDeliver($id = null)
+    {
+		$this->viewBuilder()->layout('');
+         $order = $this->Orders->get($id, [
+            'contain' => ['Customers']
+        ]);
+        $this->set('order', $order);
+        $this->set('_serialize', ['order']);
+    }
 	
+	public function undoBox($id = null)
+    {
+		$Orders = $this->Orders->get($id);
+		$order_date=$Orders->order_date;
+		$Orders->status='In Process';
+		$Orders->order_date=$order_date;
+		$Orders->cancel_id=0;
+		 if ($this->Orders->save($Orders)) {
+            $this->Flash->success(__('The Order has been reopened.'));
+        } else {
+            $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
+    }
 	public function ajaxOrderView()
     {
 		$order_id=$this->request->data['odr_id'];
@@ -111,6 +197,7 @@ class OrdersController extends AppController
      */
     public function add($order_type = Null,$bulkorder_id = Null)
     {
+		
 		@$bulkorder_id;
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
@@ -118,7 +205,7 @@ class OrdersController extends AppController
         if ($this->request->is('post')) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
 			$curent_date=date('Y-m-d');
-			
+
 			$last_order_no = $this->Orders->find()->select(['order_no', 'get_auto_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->first();
 
 			if(!empty($last_order_no)){
@@ -137,6 +224,7 @@ class OrdersController extends AppController
 			$order->order_type=$order_type;
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
+			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 
             if ($this->Orders->save($order)) {
 
@@ -153,7 +241,13 @@ class OrdersController extends AppController
 			$customer_mobile=$customer_fetch->mobile;
 			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
 		}
-
+		$deliverytime_fetchs = $this->Orders->DeliveryTimes->find('all');
+		foreach($deliverytime_fetchs as $deliverytime_fetch){
+			$time_id=$deliverytime_fetch->id;
+			$time_from=$deliverytime_fetch->time_from;
+			$time_to=$deliverytime_fetch->time_to;
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
 		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
 
@@ -170,7 +264,7 @@ class OrdersController extends AppController
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
 
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id'));
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time'));
         $this->set('_serialize', ['order']);
     }
 	/**
@@ -201,6 +295,9 @@ class OrdersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
+			$order->grand_total=$this->request->data['total_amount'];
+			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
+
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
@@ -226,9 +323,16 @@ class OrdersController extends AppController
 			$customer_mobile=$customer_fetch->mobile;
 			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
 		}
+		$deliverytime_fetchs = $this->Orders->DeliveryTimes->find('all');
+		foreach($deliverytime_fetchs as $deliverytime_fetch){
+			$time_id=$deliverytime_fetch->id;
+			$time_from=$deliverytime_fetch->time_from;
+			$time_to=$deliverytime_fetch->time_to;
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+		}
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
         $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items'));
+        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time'));
         $this->set('_serialize', ['order']);
     }
 
@@ -251,4 +355,33 @@ class OrdersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function onlineSaleDetails($item_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) {
+				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])
+				;
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		
+		//pr($onlineSales->toArray());exit;
+		 $this->set(compact('onlineSales','from_date','to_date'));
+        $this->set('_serialize', ['onlineSales']);
+	}
+	
+	public function bulkSaleDetails($item_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		
+		
+			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) {
+				return $q->where(['order_type IN'=>['Bulkorder']]);
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+		
+		//pr($bulkSales->toArray());exit;
+		 $this->set(compact('bulkSales','from_date','to_date'));
+        $this->set('_serialize', ['bulkSales']);
+	}
 }

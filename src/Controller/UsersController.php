@@ -36,11 +36,14 @@ class UsersController extends AppController
 		$this->viewBuilder()->layout('login_layout');
         if ($this->request->is('post')) 
 		{
-            $user = $this->Auth->identify();
+              $user = $this->Auth->identify();
+		 
             if ($user) 
 			{
                 $this->Auth->setUser($user);
-				return $this->redirect(['controller'=>'Homes','action' => 'index']);
+				@header('location: Homes/index');
+				//return $this->redirect(['controller'=>'Homes','action' => 'index']);
+				return $this->redirect(['controller'=>'Orders','action' => 'dashboard']);
             }
             $this->Flash->error_login(__('Invalid Username or Password'));
         }

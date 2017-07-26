@@ -79,11 +79,11 @@
 						?>
 						<tr>
 							<td><?= $i ?></td>
-							<td><?= h($promoCode->code) ?></td>
-							<td><?= h($promoCode->discount_per) ?></td>
-							<td><?= h($promoCode->ItemCategories->item_category_id) ?></td>
-							<td><?= h($promoCode->valid_from) ?>
-							<td><?= h($promoCode->valid_to) ?>
+							<td><?= h(@$promoCode->code) ?></td>
+							<td><?= h(@$promoCode->discount_per) ?></td>
+							<td><?= h(@$promoCode->ItemCategories->item_category_id) ?></td>
+							<td><?= h(@$promoCode->valid_from) ?>
+							<td><?= h(@$promoCode->valid_to) ?>
 							<span id="status_id" style="display:none;"><?php echo $promoCode->id; ?></span>
 							</td>
 							<td>

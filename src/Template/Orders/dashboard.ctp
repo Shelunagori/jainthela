@@ -7,13 +7,16 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							 <?php echo $totalOrder;?>
+							 
 						</div>
 						<div class="desc">
-							 Total Order
+							 Total Order : <?php echo $totalOrder->count;?>
+						</div>
+						<div class="desc">
+							 Total Amount : <?php if($totalOrder->total_amount) { echo $totalOrder->total_amount; } else { echo  '0';}?>
 						</div>
 					</div>
-					<a class="more" href="Orders">
+					<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>
@@ -25,13 +28,16 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							  <?php echo $inProcessOrder;?>
+							  
 						</div>
 						<div class="desc">
-							 In Process
+							 In Process : <?php echo $inProcessOrder->count;?>
+						</div>
+						<div class="desc">
+							 Total Amount : <?php if($inProcessOrder->total_amount) { echo $inProcessOrder->total_amount; } else { echo  '0';}?>
 						</div>
 					</div>
-					<a class="more" href="Orders">
+					<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>
@@ -43,13 +49,16 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							  <?php echo $deliveredOrder;?>
+							 
 						</div>
 						<div class="desc">
-							 Delivered order
+							 Delivered order : <?php echo $deliveredOrder->count; ?>
+						</div>
+						<div class="desc">
+							 Total Amount : <?php if($deliveredOrder->total_amount) { echo $deliveredOrder->total_amount; } else { echo  '0';}?>
 						</div>
 					</div>
-					<a class="more" href="Orders">
+					<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>
@@ -61,13 +70,17 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							  <?php echo $cancelOrder;?>
+							 
 						</div>
 						<div class="desc">
-							 Cancel order
+							 Cancel order :  <?php echo $cancelOrder->count;?>
+						</div>
+						<div class="desc">
+							 Total Amount : <?php if($cancelOrder->total_amount) { echo $cancelOrder->total_amount; } else { echo  '0';}?>
+						
 						</div>
 					</div>
-					<a class="more" href="Orders">
+					<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>
@@ -79,13 +92,16 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							  <?php echo $offlineOrder;?>
+							  
 						</div>
 						<div class="desc">
-							 Offline Order
+							 Walkin Sales : <?php echo $walkinsales->count;?>
+						</div>
+						<div class="desc">
+							  Total Amount : <?php if($walkinsales->total_amount) { echo $walkinsales->total_amount; } else { echo  '0';}?>
 						</div>
 					</div>
-					<a class="more" href="Orders">
+					<a class="more" href="../WalkinSales/index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
 					</a>
 				</div>
@@ -97,13 +113,17 @@
 				</div>
 				<div class="details">
 					<div class="number">
-						  <?php echo $bulkOrder;?>
+						 
 					</div>
 					<div class="desc">
-						 Bulk Booking
+						 Bulk Booking :  <?php echo $bulkOrder->count;?>
+					</div>
+					<div class="desc">
+						Total Amount : <?php if($bulkOrder->total_amount) { echo $bulkOrder->total_amount; } else { echo  '0';}?>
+						
 					</div>
 				</div>
-				<a class="more" href="Orders">
+				<a class="more" href="index">
 				View more <i class="m-icon-swapright m-icon-white"></i>
 				</a>
 			</div>

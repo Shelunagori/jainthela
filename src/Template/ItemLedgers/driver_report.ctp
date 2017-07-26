@@ -6,10 +6,11 @@
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">
-							<span>
-							<B>Driver Report</B>
-							</span>
+							<i class="font-purple-intense"></i>
+							<span class="caption-subject font-purple-intense ">
+							<i class="fa fa-book"></i> Driver Report</span>
 						</div>
+						
 					</div>
 					<div class="portlet-body form">
 					<!-- BEGIN FORM-->
