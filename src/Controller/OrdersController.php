@@ -229,7 +229,8 @@ class OrdersController extends AppController
             if ($this->Orders->save($order)) {
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
-				$ledgerAccount->name = $customer->name;
+				$ledgerAccount->name = $customer->name.$customer->mobile;
+				$ledgerAccount->customer_id = $order->customer_id;
 				$ledgerAccount->account_group_id = '5';
 				$ledgerAccount->jain_thela_admin_id = $jain_thela_admin_id;
 				$this->Orders->LedgerAccounts->save($ledgerAccount);
@@ -386,12 +387,19 @@ class OrdersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
-	public function onlineSaleDetails($item_id=null){
+	public function onlineSaleDetails($item_id=null,$from_date=null,$to_date=null){
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) {
-				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])
+		$where =[];
+		if(!empty($from_date)){
+			$where['Orders.delivery_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['Orders.delivery_date <=']=date('Y-m-d',strtotime($to_date));
+		}
+			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where) {
+				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
 				;
 			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
 		
@@ -400,14 +408,20 @@ class OrdersController extends AppController
         $this->set('_serialize', ['onlineSales']);
 	}
 	
-	public function bulkSaleDetails($item_id=null){
+	public function bulkSaleDetails($item_id=null,$from_date=null,$to_date=null){
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$where =[];
+		if(!empty($from_date)){
+			$where['Orders.delivery_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['Orders.delivery_date <=']=date('Y-m-d',strtotime($to_date));
+		}
 		
 		
-		
-			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) {
-				return $q->where(['order_type IN'=>['Bulkorder']]);
+			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q)use($where) {
+				return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
 			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
 		
 		//pr($bulkSales->toArray());exit;

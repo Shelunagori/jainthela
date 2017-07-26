@@ -21,7 +21,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						
+						<?php if(sizeof($walkinSales->toArray())>0){ ?>
 						<?php $total=0; $unit; $i=1; foreach($walkinSales as $walkinSale){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
@@ -44,6 +44,13 @@
 							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
 						</tr>
 					</tbody>
+					<?php }else{ ?>
+					<tbody>
+					<tr>
+							<td colspan="5">No Data Found</td>
+					</tr>		
+					</tbody>
+					<?php  } ?>
 				</table>
 				
 				</div>

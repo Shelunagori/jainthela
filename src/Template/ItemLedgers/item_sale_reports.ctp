@@ -54,7 +54,8 @@
 					<?php $amount_total=0;
 					foreach ($ItemList as $itemLedger):
 					$id=$itemLedger->id;
-					
+					$from_dates = date('d-m-Y');
+					$to_dates = date('d-m-Y');
 					if(in_array($id , $Itemsexists))
 					{
 					?>
@@ -63,21 +64,33 @@
 							<td><?= h($itemLedger->name).'('.$itemLedger->alias_name.')'  ?></td>
 							<?php if(!empty(@$walkins_sales[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php if(!empty($from_date)){ ?>
+							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_date,$to_date ],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php }else{ ?>
+							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_dates,$to_dates ],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php } ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_online[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php if(!empty($from_date)){ ?>
+							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php }else{ ?>
+							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php } ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_bulk[$itemLedger->id])){ ?>
 							<td>
-							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php if(!empty($from_date)){ ?>
+							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php }else{ ?>
+							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
+							<?php } ?>
 							</td>
 							<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>

@@ -17,6 +17,7 @@
 							<th>Quantity</th>
 						</tr>
 					</thead>
+					<?php if(sizeof($onlineSales->toArray())>0){ ?>
 					<tbody>
 						<?php $unit; $total=0; $i=1; foreach($onlineSales as $onlineSale){ ?> 
 						<tr>
@@ -32,6 +33,13 @@
 							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
 						</tr>
 					</tbody>
+					<?php }else{ ?>
+					<tbody>
+					<tr>
+							<td colspan="3">No Data Found</td>
+					</tr>		
+					</tbody>
+					<?php  } ?>
 				</table>
 				
 				</div>

@@ -355,12 +355,20 @@ class WalkinSalesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
-	public function walkinSaleDetails($item_id=null){
+	public function walkinSaleDetails($item_id=null,$from_date=null,$to_date=null){
+		
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) {
-				return $q->contain(['Drivers','Warehouses']);
+		$where =[];
+		if(!empty($from_date)){
+			$where['WalkinSales.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['WalkinSales.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
+		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
+				return $q->contain(['Drivers','Warehouses'])->where($where);
 			},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
 		
 	//	pr($walkinSales->toArray());
