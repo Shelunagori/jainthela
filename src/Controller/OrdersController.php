@@ -67,7 +67,7 @@ class OrdersController extends AppController
 		$bulkOrder=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Bulk'])->first();
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.order_type' => 'Bulkorder', 'Orders.status' => 'In Process'])->first();
 		$this->set(compact('bulkOrder'));
 		$curent_date=date('Y-m-d');
 		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
