@@ -33,7 +33,7 @@ class CashBacksController extends AppController
     {
        	$this->viewBuilder()->layout('index_layout');
 
-		$cashBacks = $this->CashBacks->find()
+		$cashBacks = $this->CashBacks->find()->order(['created_on' => 'DESC'])
 		->where(['ready_to_win'=>'yes'])
 		->contain(['Customers']);
 		foreach($cashBacks->toArray() as $data)
@@ -58,7 +58,7 @@ class CashBacksController extends AppController
     {
        	$this->viewBuilder()->layout('index_layout');
 
-		$fetch_cashback_win_details = $this->CashBacks->find()
+		$fetch_cashback_win_details = $this->CashBacks->find()->order(['created_on' => 'DESC'])
 		->where(['won'=>'yes', 'flag'=>2])
 		->contain(['Customers'])
 		->autoFields(true);
