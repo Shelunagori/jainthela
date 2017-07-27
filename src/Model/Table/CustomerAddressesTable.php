@@ -55,7 +55,7 @@ class CustomerAddressesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
+       /*  $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
@@ -74,7 +74,7 @@ class CustomerAddressesTable extends Table
 
         $validator
             ->requirePresence('locality', 'create')
-            ->notEmpty('locality');
+            ->notEmpty('locality'); */
 /* 
         $validator
             ->integer('default_address')

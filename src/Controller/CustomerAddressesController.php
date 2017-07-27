@@ -50,6 +50,24 @@ class CustomerAddressesController extends AppController
         $this->set('_serialize', ['customerAddresses', 'customerAddress', 'customer_id', 'id']);
     }
 
+	public function saveAddress($customer_id,$name,$mobile,$house_no,$address,$locality,$default_address){
+		$customerAddress = $this->CustomerAddresses->newEntity();
+				  $customerAddress = $this->CustomerAddresses->patchEntity($customerAddress, $this->request->getData());
+						$query = $this->CustomerAddresses->query();
+						$query->insert(['customer_id', 'name', 'mobile', 'house_no','address','locality','default_address'])
+									->values([
+										'customer_id' => $customer_id,
+										'name' => $name,
+										'mobile' => $mobile,
+										'house_no' => $house_no,
+										'address' => $address,
+										'locality' => $locality,
+										'default_address' => $default_address
+									]);
+					$query->execute();	
+					
+				exit;
+	}
     /**
      * View method
      *

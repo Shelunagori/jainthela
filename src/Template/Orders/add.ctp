@@ -385,26 +385,26 @@ $(document).ready(function() {
 	
 	$('.add_address').on("click",function() {
 			$('#address').modal('show');
-			var validator = $( "#form_sample_4" ).validate();
-			$('#form_sample_4')[0].reset();
-			$("label.error").hide();
-			$(".error").removeClass("error");
-			validator.resetForm();
-			save_address();
+			
 	});
 	
-	function save_address(){
-		var customer_id=$('select[name="customer_id"]').val();
-		var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'add']); ?>";
-		url=url+'/'+customer_id,
-		$("#address").hide();
-		$.ajax({
-			url: url,
-			type:"POST",
-		}).done(function(response) {
-				
-		});
-	}
+	$('.btnsubmit').on("click",function() {
+			var customer_id=$('select[name="customer_id"]').val();
+			var name=$('input[name="name"]').val();
+			var mobile=$('input[name="mobile"]').val();
+			var house_no=$('input[name="house_no"]').val();
+			var address=$('input[name="address"]').val();
+			var locality=$('input[name="locality"]').val();
+			var default_address=$('input[name="default_address"]:checked').val();
+			var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'saveAddress']); ?>";
+				url=url+'/'+customer_id+'/'+name+'/'+mobile+'/'+house_no+'/'+address+'/'+locality+'/'+default_address,
+				$.ajax({
+					url: url,
+				}).done(function(response) {
+					$('#address').hide();
+				});
+			
+	});
 	
 	
 	function open_address(){
@@ -497,7 +497,6 @@ $(document).ready(function() {
 				<h4 class="modal-title" id="myModalLabel">Add Address</h4>
 			</div>
 			<div class="modal-body">
-			<?= $this->Form->create('CustomerAddresses',['id'=>'form_sample_4',['url'=>['controller'=>'CustomerAddresses','action'=>'add']]]) ?>
 				<div class="row">
 					<div class="col-md-12">
 						<label class=" control-label">Name<span class="required" aria-required="true">*</span></label>
@@ -550,10 +549,9 @@ $(document).ready(function() {
 							
 				<br/>
 				 <div class="modal-footer">
-				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success btnsubmit']); ?>
 			</div>
 				
-			<?= $this->Form->end() ?>
 			</div>
 			
 		</div>
