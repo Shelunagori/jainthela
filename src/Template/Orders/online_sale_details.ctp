@@ -2,7 +2,8 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($onlineSales as $onlineSale){ echo $onlineSale->item->name.'('.$onlineSale->item->alias_name.')'; break; } ?>"</span>
+			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($onlineSales as $onlineSale){ echo $onlineSale->item->name.'('.$onlineSale->item->alias_name.')'; break; } ?>"</span> <br/>
+			<span class="caption-subject" align="right" style="margin-left: 406px;"><b> <?php echo date('d-m-Y',strtotime(@$from_date)); ?> To <?php echo  date('d-m-Y',strtotime(@$to_date)); ?></b></span>
 		</div>
 		<div class="portlet-body">
 		

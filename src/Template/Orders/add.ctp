@@ -49,10 +49,12 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label class="control-label">Address</label>
-						
+							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
 							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5']); ?>
 							<a href="#" role="button" class="pull-right select_address" >
-							Select Address </a>
+							Select Address </a>&nbsp;&nbsp;
+							<a href="#" role="button" class="pull-right add_address" >
+							Add Address </a>
 						
 					</div>
 				<div>
@@ -373,9 +375,23 @@ $(document).ready(function() {
 		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
 	});
 	///default Address
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
+    });
+	
 	$('.select_address').on("click",function() { 
 		open_address();
     });
+	
+	$('.add_address').on("click",function() {
+			$('#address').modal('show');
+			var validator = $( "#form_sample_4" ).validate();
+			$('#form_sample_4')[0].reset();
+			$("label.error").hide();
+			$(".error").removeClass("error");
+			validator.resetForm();
+	});
+	
 	
 	function open_address(){
 		var customer_id=$('select[name="customer_id"]').val();
@@ -393,7 +409,9 @@ $(document).ready(function() {
 	
 	$('.insert_address').die().live("click",function() { 
 		var addr=$(this).text();
+		var addr_id=$(this).attr('addressid');
 		$('textarea[name="customer_address"]').val(addr);
+		$('input[name="customer_address_id"]').val(addr_id);
 		$("#myModal1").hide();
     });
 	
@@ -406,8 +424,12 @@ $(document).ready(function() {
 		
 		$.ajax({
 			url: url,
-		}).done(function(response) {
-			$('textarea[name="customer_address"]').val(response);
+		}).done(function(response) { 
+			if(response == ' '){
+				
+			}else{	
+				$('textarea[name="customer_address"]').val(response);
+			}
 		});
 	});
 });
@@ -446,7 +468,77 @@ $(document).ready(function() {
 			<div class="modal-body" id="result_ajax">
 				
 			</div>
-			<div class="modal-footer">
+			 <div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-----Address-->
+<div class="modal fade" id="address" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+				<h4 class="modal-title" id="myModalLabel">Add Address</h4>
+			</div>
+			<div class="modal-body">
+			<?= $this->Form->create('#',['id'=>'form_sample_4']) ?>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Name<span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('name',['placeholder'=>'Name','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Mobile <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('mobile',['placeholder'=>'Mobile','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">House no <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('house_no',['placeholder'=>'House no','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Address<span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('address',['placeholder'=>'address','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						<label class=" control-label">Locality<span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('locality',['placeholder'=>'locality','class'=>'form-control input-sm','label'=>false]); ?>
+					</div>
+				</div>
+				 <br>
+				<div class="row">
+				<div class="col-md-8">
+								<div class="form-group">
+									<label class="control-label">Default Address<span class="required" aria-required="true">*</span></label>
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'default_address',
+											[
+												['value' => '0', 'text' => 'No','class' => 'radio-task virt','checked' => 'checked'],
+												['value' => '1', 'text' => 'Yes','class' => 'radio-task virt']
+											]
+											); ?>
+										</div>
+                                    </div>
+								</div>
+							</div>
+						</div>
+							
+				<br/>
+				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success']); ?>
+			<?= $this->Form->end() ?>
+			</div>
+			 <div class="modal-footer">
 				<button class="btn default closebtn">Close</button>
 			</div>
 		</div>

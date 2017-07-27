@@ -172,8 +172,11 @@ class CustomersController extends AppController
 			echo ''; exit;
 		}
 		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->first();
-		
-		echo $defaultAddress->address; exit;
+		if(!empty($defaultAddress)){
+			echo $defaultAddress->house_no.$defaultAddress->address." - ".$defaultAddress->locality; exit;
+		}else{
+			return true;exit;
+		}
     }
 	
 	public function addressList($id = null)
@@ -186,7 +189,8 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, [
             'contain' => ['CustomerAddresses']
         ]);
-
+		
+		
         $this->set('customer', $customer);
         $this->set('_serialize', ['customer']);
     }

@@ -40,6 +40,7 @@ class CustomerAddressesTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		
     }
 
     /**

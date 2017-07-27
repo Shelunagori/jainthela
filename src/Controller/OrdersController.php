@@ -225,7 +225,7 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			//pr($order);exit;
+			
             if ($this->Orders->save($order)) {
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
@@ -423,10 +423,10 @@ class OrdersController extends AppController
 		
 		$where =[];
 		if(!empty($from_date)){
-			$where['Orders.delivery_date >=']=date('Y-m-d',strtotime($from_date));
+			$where['Orders.curent_date >=']=date('Y-m-d',strtotime($from_date));
 		}
 		if(!empty($to_date)){
-			$where['Orders.delivery_date <=']=date('Y-m-d',strtotime($to_date));
+			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where) {
 				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
@@ -443,10 +443,10 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$where =[];
 		if(!empty($from_date)){
-			$where['Orders.delivery_date >=']=date('Y-m-d',strtotime($from_date));
+			$where['Orders.curent_date >=']=date('Y-m-d',strtotime($from_date));
 		}
 		if(!empty($to_date)){
-			$where['Orders.delivery_date <=']=date('Y-m-d',strtotime($to_date));
+			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 		
 		
