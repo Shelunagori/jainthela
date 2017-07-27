@@ -1,10 +1,21 @@
 <div class="col-md-12">
+		
+			
+				<div class="caption" >
+					<i class="font-purple-intense"></i>
+					<span class="caption-subject font-purple-intense ">
+						<h4><i class="fa fa-book"></i> Today's Order Summary</h4></span>
+				</div>
+		
+		
 		<div class="row">
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
-				<div class="dashboard-stat blue-madison">
-					<div class="visual">
-						<i class="fa fa-comments"></i>
-					</div>
+			<div class="portlet light bordered">
+				<div class="portlet-title">
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+					<div class="dashboard-stat blue-madison">
+						<div class="visual">
+							<i class="fa fa-comments"></i>
+						</div>
 					<div class="details">
 						<div class="number">
 							 
@@ -42,7 +53,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
 				<div class="dashboard-stat green-haze">
 					<div class="visual">
 						<i class="fa fa-shopping-cart"></i>
@@ -127,8 +138,11 @@
 				View more <i class="m-icon-swapright m-icon-white"></i>
 				</a>
 			</div>
+			</div>
+		</div>
+			</div>
 		</div>
 	</div>
 </div>
+</div>
 			
-		
