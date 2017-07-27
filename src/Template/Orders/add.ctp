@@ -402,6 +402,9 @@ $(document).ready(function() {
 					e.preventDefault();
 				});
 				var customer_id=$('select[name="customer_id"]').val();
+				if(customer_id == ""){
+					alert("Please Select Customer First");
+				}
 				var name=$('input[name="name"]').val();
 				var mobile=$('input[name="mobile"]').val();
 				var house_no=$('input[name="house_no"]').val();
