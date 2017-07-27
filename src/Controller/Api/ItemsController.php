@@ -202,7 +202,7 @@ $querys=$this->Items->ItemLedgers->find();
 	 public function fetchItem()
     {
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');
-			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.ready_to_sale'=>'Yes', 'Items.is_virtual'=>'no'];
+			$where=['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0,'Items.is_virtual'=>'no'];
 		$fetch_items = $this->Items->find()
 					->where($where)
 					->order(['name'=>'ASC'])
