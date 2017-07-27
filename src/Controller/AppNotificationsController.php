@@ -68,7 +68,7 @@ class AppNotificationsController extends AppController
 		
         if ($this->request->is('post'))
 			{
-				$appNotification = $this->AppNotifications->patchEntity($appNotifications, $this->request->data);
+				$appNotification = $this->AppNotifications->patchEntity($appNotification, $this->request->data);
 				$file = $this->request->data['image'];
 				$file_name=$file['name'];
 				
