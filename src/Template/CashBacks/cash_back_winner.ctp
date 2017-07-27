@@ -20,6 +20,7 @@
 					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
 				</div>	
 			</div>
+			<a href="sendNotification" class="btn green btn-md pull-left" >Send SMS / Notification to Winners</a>
 			<div class="portlet-body">
 				<table class="table table-bordered table-condensed" id="main_tble">
 					<thead>
@@ -32,6 +33,7 @@
 							<th scope="col">Winning Amount</th>
 							<th scope="col">Winning Date</th>
 							<th scope="col">Claimed/Not Claimed</th>
+							<th scope="col">Notification/SMS Sent</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -51,7 +53,9 @@
 							<td><?php echo $this->Number->format($cb->amount,['places'=>2]); ?></td>
 							<td><?= h(date('d-m-Y',strtotime($cb->created_on))) ?></td>
 							<td><?php if($cb->claim=='yes'){ ?><a class="btn green btn-xs" >Claimed</a><?php } else {?><a class="btn red btn-xs" >Not Claimed</a><?php } ?>
-								</td>
+							</td>	
+							<td><?= h($cb->sms_sent) ?></td>
+							
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
