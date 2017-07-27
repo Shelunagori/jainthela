@@ -90,10 +90,11 @@ class DriversController extends AppController
 			$password=md5($this->request->data('password'));
             $driver = $this->Drivers->patchEntity($driver, $this->request->getData());
             $driver->jain_thela_admin_id=$jain_thela_admin_id;
+            $driver->device_token='AAAAXmNqxY4:APA91bG0X6RHVhwJKXUQGNSSCas44hruFdR6_CFd6WHPwx9abUr-WsrfEzsFInJawElgrp24QzaE4ksfmXu6kmIL6JG3yP487fierMys5byv-I1agRtMPIoSqdgCZf8R0iqsnds-u4CU';
             $driver->password=$password;
 			if ($this->Drivers->save($driver)) {
                 $this->Flash->success(__('The driver has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The driver could not be saved. Please, try again.'));
         }
