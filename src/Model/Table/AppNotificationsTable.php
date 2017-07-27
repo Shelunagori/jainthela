@@ -39,6 +39,12 @@ class AppNotificationsTable extends Table
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id'
         ]);
+		
+		 $this->hasMany('AppNotificationCustomers', [
+            'foreignKey' => 'app_notification_id'
+        ]);
+		 $this->belongsTo('Customers');
+		 $this->belongsTo('DeepLinks');
     }
 
     /**
@@ -57,22 +63,22 @@ class AppNotificationsTable extends Table
             ->requirePresence('message', 'create')
             ->notEmpty('message');
 
-        $validator
+       /*  $validator
             ->requirePresence('image', 'create')
-            ->notEmpty('image');
+            ->notEmpty('image'); */
 
-        $validator
+       /*  $validator
             ->requirePresence('app_link', 'create')
             ->notEmpty('app_link');
 
         $validator
             ->requirePresence('screen_type', 'create')
             ->notEmpty('screen_type');
-
+  
         $validator
             ->dateTime('created_on')
             ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
+            ->notEmpty('created_on'); */
 
         return $validator;
     }
