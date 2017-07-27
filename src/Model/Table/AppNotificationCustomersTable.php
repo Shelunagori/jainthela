@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * PushNotificationCustomers Model
+ * AppNotificationCustomers Model
  *
- * @property \App\Model\Table\PushNotificationsTable|\Cake\ORM\Association\BelongsTo $PushNotifications
+ * @property \App\Model\Table\AppNotificationsTable|\Cake\ORM\Association\BelongsTo $AppNotifications
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
  *
- * @method \App\Model\Entity\PushNotificationCustomer get($primaryKey, $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\PushNotificationCustomer findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer get($primaryKey, $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\AppNotificationCustomer findOrCreate($search, callable $callback = null, $options = [])
  */
-class PushNotificationCustomersTable extends Table
+class AppNotificationCustomersTable extends Table
 {
 
     /**
@@ -33,15 +33,18 @@ class PushNotificationCustomersTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('push_notification_customers');
+        $this->setTable('app_notification_customers');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('AppNotifications', [
-            'foreignKey' => 'push_notification_id',
+            'foreignKey' => 'app_notification_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Customers');
+        $this->belongsTo('Customers', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -73,7 +76,7 @@ class PushNotificationCustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['push_notification_id'], 'PushNotifications'));
+        $rules->add($rules->existsIn(['app_notification_id'], 'AppNotifications'));
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
 
         return $rules;
