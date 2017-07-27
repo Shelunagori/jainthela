@@ -392,6 +392,7 @@
 		<?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 		<!-- END CORE PLUGINS -->
+		
 		<!-- BEGIN PAGE LEVEL PLUGINS -->
 		<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js'); ?>
