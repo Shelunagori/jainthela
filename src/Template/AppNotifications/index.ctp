@@ -1,55 +1,140 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\AppNotification[]|\Cake\Collection\CollectionInterface $appNotifications
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New App Notification'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Items'), ['controller' => 'Items', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Item'), ['controller' => 'Items', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="appNotifications index large-9 medium-8 columns content">
-    <h3><?= __('App Notifications') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('app_link') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('item_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('screen_type') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($appNotifications as $appNotification): ?>
-            <tr>
-                <td><?= $this->Number->format($appNotification->id) ?></td>
-                <td><?= h($appNotification->app_link) ?></td>
-                <td><?= $appNotification->has('item') ? $this->Html->link($appNotification->item->name, ['controller' => 'Items', 'action' => 'view', $appNotification->item->id]) : '' ?></td>
-                <td><?= h($appNotification->screen_type) ?></td>
-                <td><?= h($appNotification->created_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $appNotification->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $appNotification->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $appNotification->id], ['confirm' => __('Are you sure you want to delete # {0}?', $appNotification->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+		
+			<div class="row">
+			
+			<?php echo $this->Html->link('<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat" style="background-color:#CDCDCD; height:40px">
+						
+						<div class="details">
+							
+						</div>
+						<p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>Info Message</b>
+						</p>
+					</div>
+				</div>','/AppNotifications/home?page=home',['escape'=>false]) ?>
+				
+				<?php echo $this->Html->link('<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat" style="background-color:#888888;height:40px">
+						
+						<div class="details">
+							
+						</div>
+						<p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>Bulk Booking</b>
+						</p>
+					</div>
+				</div>','/AppNotifications/home?page=bulkbooking',['escape'=>false]) ?>
+				
+				
+				<!--<?php echo $this->Html->link('
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat  red-intense" style="height:40px">
+						
+						<div class="details" >
+						
+						</div><p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center; height:30px"><b>Bulk Booking</b>
+						</p>
+					</div>
+				</div>
+				</a>
+				</div>','/AppNotifications/home?page=referfriend',['escape'=>false]) ?>-->
+				
+				
+				<?php echo $this->Html->link('
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat red-intense" style="height:40px">
+						
+						<div class="details">
+						
+						</div><p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>Add Money</b>
+						</p>
+					</div>
+				</div>','/AppNotifications/home?page=addmoney',['escape'=>false]) ?>
+				
+				
+				<?php echo $this->Html->link('
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat green-haze" style="height:40px">
+						
+						<div class="details">
+						
+						</div><p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>View Cart</b>
+						</p>
+					</div>
+				</div>	','/AppNotifications/home?page=viewcart',['escape'=>false]) ?>
+				
+				
+				
+				
+				<?php echo $this->Html->link('
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat purple-plum" style="height:40px">
+						
+						<div class="details">
+						
+						</div><p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>Combo Offers</b>
+						</p>
+					</div>
+				</div>	','/AppNotifications/home?page=specialoffers',['escape'=>false]) ?>
+				
+				<?php echo $this->Html->link('
+				<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
+					<div class="dashboard-stat red-intense" style="height:40px">
+						
+						<div class="details">
+						
+						</div><p class="more  tooltips" data-placement="bottom" data-original-title="" href="" style="background-color:#ffffff; color:#000; text-align:center"><b>Product Description</b>
+						</p>
+					</div>
+
+				</div>','/AppNotifications/item_view',['escape'=>false]) ?>
+			</div>
+
+			<style>
+.table>thead>tr>th{
+	font-size:12px !important;
+}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light bordered">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="font-purple-intense"></i>
+					<span class="caption-subject font-purple-intense ">
+						<i class="fa fa-book"></i> Notification History</span>
+				</div>
+				
+			</div>
+			<div class="portlet-body">
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
+					<thead>
+						<tr>
+							<th scope="col">Sr. No.</th>
+							<th scope="col">Notification Date</th>
+							<th scope="col">Image</th>
+							<th scope="col">Message</th>
+							<th scope="col">Type</th>
+							<th scope="col">Total Send</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$sr_no=0; foreach ($pushNotifications as $pushNotification): $sr_no++;
+						?>
+						<tr>
+							<td><?= $sr_no ?></td>
+							<td><?= $pushNotification->created_on ?></td>
+							<td><?php if (!empty($pushNotification->image)) { ?><img src="<?php echo $pushNotification->image; ?>" style="width:100px; height:100px"><?php } else { echo 'No Image'; } ?></td>
+							<td><?= h($pushNotification->message) ?></td> 
+							<td><?= h($pushNotification->screen_type) ?></td>
+							<td><?=($pushNotification->app_notification_customers[0]->count_customer) ?></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
+			
+				 
+				
