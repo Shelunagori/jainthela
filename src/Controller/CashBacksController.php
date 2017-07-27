@@ -54,6 +54,86 @@ class CashBacksController extends AppController
         $this->set('_serialize', ['cashBacks']);
     }
 
+	public function sendNotification()
+    {
+	$fetch_cashback_win_details = $this->CashBacks->find()->order(['created_on' => 'DESC'])
+		->where(['won'=>'yes', 'flag'=>2, 'sms_sent'=>'no'])
+		->contain(['Customers'])
+		->autoFields(true);
+		//pr($fetch_cashback_win_details->toArray());
+		foreach($fetch_cashback_win_details->toArray() as $customer_details)
+		{
+			$cashback_id=$customer_details->id;
+			$cashback_amount=$customer_details->amount;
+			$name=$customer_details->customer->name;
+			$mobile=$customer_details->customer->mobile;
+            $API_ACCESS_KEY=$customer_details->customer->notification_key;
+			
+            $device_token=$customer_details->customer->device_token;
+            $device_token1=rtrim($device_token);
+            $time1=date('Y-m-d G:i:s');
+
+				if(!empty($device_token1))
+				{
+
+					$msg = array
+					(
+					'message'     => 'Congratulation ,you won Rs '.$cashback_amount.' Cashback.',
+					'image'     => '',
+					'button_text'    => 'Track Your Order',
+					'link' => 'jainthela://cashback',
+					'notification_id'    => 1,
+					);
+
+					$url = 'https://fcm.googleapis.com/fcm/send';
+					$fields = array
+					(
+						'registration_ids'     => array($device_token1),
+						'data'            => $msg
+					);
+					$headers = array
+					(
+						'Authorization: key=' .$API_ACCESS_KEY,
+						'Content-Type: application/json'
+					);
+
+					  //echo json_encode($fields);
+					 $ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url);
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+					$result001 = curl_exec($ch);
+					if ($result001 === FALSE) {
+						die('FCM Send Error: ' . curl_error($ch));
+					}
+					curl_close($ch);
+					
+					$sms=str_replace(' ', '+', 'Congratulation '.$name.' ,you won Rs'.$cashback_amount.'Cashback. For Claim your Amount go to jainthela app .');
+					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+					$sms_sender='JAINTE';
+					$sms=str_replace(' ', '+', $sms);
+					file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
+					
+					
+					$query=$this->CashBacks->query();
+					$result = $query->update()
+                    ->set(['sms_sent' => 'yes'])
+                    ->where(['id' => $cashback_id])
+                    ->execute();
+					
+					
+				}
+		}
+		 $this->Flash->success(__('The Notification has been sent.'));
+		return $this->redirect(['action' => 'cashBackWinner']);
+		exit;	
+	}
+	
+	
 	public function cashBackWinner()
     {
        	$this->viewBuilder()->layout('index_layout');
