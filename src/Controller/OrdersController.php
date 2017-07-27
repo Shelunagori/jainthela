@@ -44,7 +44,7 @@ class OrdersController extends AppController
 		$query = $this->WalkinSales->find();
 		$walkinsales=$query->select([
 		'count' => $query->func()->count('id'),
-		'total_amount' => $query->func()->sum('walkinsales.total_amount')])
+		'total_amount' => $query->func()->sum('total_amount')]) 
 		->where(['WalkinSales.transaction_date' => $curent_date])->first();
 		$this->set(compact('walkinsales'));
 		
