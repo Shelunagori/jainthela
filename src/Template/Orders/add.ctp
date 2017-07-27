@@ -2,6 +2,9 @@
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
 }
+.error{
+	color:#a94442;
+}
 </style>
 <div class="row"><div class="col-md-1"></div>
 	<div class="col-md-10">
@@ -51,10 +54,11 @@
 						<label class="control-label">Address</label>
 							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
 							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5']); ?>
+							<a href="#" role="button" class="pull-left add_address"  >
+							 Add Address </a>
 							<a href="#" role="button" class="pull-right select_address" >
-							Select Address </a>&nbsp;&nbsp;
-							<a href="#" role="button" class="pull-right add_address" >
-							Add Address </a>
+							Select Address </a>
+							
 						
 					</div>
 				<div>
@@ -220,6 +224,7 @@ $(document).ready(function() {
 		}
 
 	});
+	
 	//--	 END OF VALIDATION
 	$('.delete-tr').live('click',function() 
 	{
@@ -388,22 +393,35 @@ $(document).ready(function() {
 			
 	});
 	
-	$('.btnsubmit').on("click",function() {
-			var customer_id=$('select[name="customer_id"]').val();
-			var name=$('input[name="name"]').val();
-			var mobile=$('input[name="mobile"]').val();
-			var house_no=$('input[name="house_no"]').val();
-			var address=$('input[name="address"]').val();
-			var locality=$('input[name="locality"]').val();
-			var default_address=$('input[name="default_address"]:checked').val();
-			var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'saveAddress']); ?>";
+	$('.btnsubmit').on("click",function(e) {
+//	var validator = $("#form1").validate();
+
+    $("#form1").validate({ 
+        submitHandler: function(form) {
+				$("#form1").submit(function(e) {
+					e.preventDefault();
+				});
+				var customer_id=$('select[name="customer_id"]').val();
+				var name=$('input[name="name"]').val();
+				var mobile=$('input[name="mobile"]').val();
+				var house_no=$('input[name="house_no"]').val();
+				var address=$('textarea[name="address"]').val();
+				var locality=$('input[name="locality"]').val();
+				var default_address=$('input[name="default_address"]:checked').val();
+				var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'saveAddress']); ?>";
 				url=url+'/'+customer_id+'/'+name+'/'+mobile+'/'+house_no+'/'+address+'/'+locality+'/'+default_address,
 				$.ajax({
 					url: url,
-				}).done(function(response) {
+				}).done(function(response,e) {
 					$('#address').hide();
 				});
-			
+        }
+    });		
+		
+		
+
+
+		
 	});
 	
 	
@@ -440,7 +458,7 @@ $(document).ready(function() {
 			url: url,
 		}).done(function(response) { 
 			if(response == ' '){
-				
+				alert("plese enter Address !!!! then you Create Order")
 			}else{	
 				$('textarea[name="customer_address"]').val(response);
 			}
@@ -493,67 +511,63 @@ $(document).ready(function() {
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-				<h4 class="modal-title" id="myModalLabel">Add Address</h4>
-			</div>
+				<h4 class="modal-title">Add Address</h4>
+			</div><form id="form1">
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<label class=" control-label">Name<span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('name',['placeholder'=>'Name','class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->input('name',['placeholder'=>'Name','class'=>'form-control input-sm','label'=>false,'required']); ?>
+					</div>
+					<div class="col-md-6">
+					<label class=" control-label">Mobile <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->input('mobile',['placeholder'=>'Mobile','class'=>'form-control input-sm','label'=>false,'required']); ?>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
-						<label class=" control-label">Mobile <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('mobile',['placeholder'=>'Mobile','class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<label class=" control-label">House no <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('house_no',['placeholder'=>'House no','class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->input('house_no',['placeholder'=>'House no','class'=>'form-control input-sm','label'=>false,'required']); ?>
+					</div>
+					<div class="col-md-6">
+						<label class=" control-label">Locality<span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->input('locality',['placeholder'=>'locality','class'=>'form-control input-sm','label'=>false,'required']); ?>
 					</div>
 				</div>
+				
 				<div class="row">
 					<div class="col-md-12">
 						<label class=" control-label">Address<span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('address',['placeholder'=>'address','class'=>'form-control input-sm','label'=>false]); ?>
+						<?php echo $this->Form->input('address',['placeholder'=>'Address','class'=>'form-control input-sm','label'=>false,'cols'=>1,'required']); ?>
 					</div>
+					
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<label class=" control-label">Locality<span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('locality',['placeholder'=>'locality','class'=>'form-control input-sm','label'=>false]); ?>
-					</div>
-				</div>
-				 <br>
-				<div class="row">
-				<div class="col-md-12">
-								<div class="form-group">
-									<label class="control-label">Default Address<span class="required" aria-required="true">*</span></label>
-									<div class="radio-list">
-										<div class="radio-inline" style="padding-left: 0px;">
-											<?php echo $this->Form->radio(
-											'default_address',
-											[
-												['value' => '0', 'text' => 'No','class' => 'radio-task virt','checked' => 'checked'],
-												['value' => '1', 'text' => 'Yes','class' => 'radio-task virt']
-											]
-											); ?>
-										</div>
-                                    </div>
-								</div>
-							</div>
-						</div>
-							
-				<br/>
-				 <div class="modal-footer">
-				<?= $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']) . __(' Submit'),['class'=>'btn btn-success btnsubmit']); ?>
-			</div>
 				
-			</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Default Address<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" style="padding-left: 0px;">
+									<?php echo $this->Form->radio(
+									'default_address',
+									[
+										['value' => '0', 'text' => 'No','class' => 'radio-task virt','checked' => 'checked'],
+										['value' => '1', 'text' => 'Yes','class' => 'radio-task virt']
+									]
+									); ?>
+								</div>
+						</div>
+					</div>
+					</div>
+				</div>
 			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn default" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-success btnsubmit">Save changes</button>
+			</div>
+			</form>
 		</div>
 	</div>
 </div>

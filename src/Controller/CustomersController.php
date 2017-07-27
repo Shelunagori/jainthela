@@ -175,7 +175,7 @@ class CustomersController extends AppController
 		if(!empty($defaultAddress)){
 			echo $defaultAddress->house_no.$defaultAddress->address." - ".$defaultAddress->locality; exit;
 		}else{
-			return true;exit;
+			echo " ";   exit;
 		}
     }
 	

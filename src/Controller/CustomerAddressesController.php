@@ -51,6 +51,7 @@ class CustomerAddressesController extends AppController
     }
 
 	public function saveAddress($customer_id,$name,$mobile,$house_no,$address,$locality,$default_address){
+		pr($address);
 		$customerAddress = $this->CustomerAddresses->newEntity();
 				  $customerAddress = $this->CustomerAddresses->patchEntity($customerAddress, $this->request->getData());
 						$query = $this->CustomerAddresses->query();
