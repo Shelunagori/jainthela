@@ -91,7 +91,7 @@ class AppNotificationsController extends AppController
 			}
 			
 			$appNotification->created_link = $deepLinks->app_link;
-			$appNotification->type = $deepLinks->link_name; 
+			$appNotification->screen_type = $deepLinks->link_name; 
 			if ($push_data=$this->AppNotifications->save($appNotification))
 			  {
 				  if($page=="viewcart")
@@ -212,8 +212,8 @@ class AppNotificationsController extends AppController
 		$appNotifications_data = $this->AppNotifications->find()->where(['id'=>$id])->first();
 		
 		
-		$type=$appNotifications_data->type;
-		$item_id=$appNotifications_data->item_id;
+		$type=$appNotifications_data->screen_type;
+		$item_id=$appNotifications_data->item_id; 
 		if(!empty($type)){
 			$created_link=$appNotifications_data->created_link.'?item_id='.$item_id;
 			

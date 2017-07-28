@@ -2,7 +2,7 @@
 		<div class="col-md-12">
 			<div class="portlet">
 		<div class="portlet-body"> 
-			<?= $this->Form->create($pushNotification,['type' => 'file','id'=>'form_sample_3']) ?>
+			<?= $this->Form->create($appNotification,['type' => 'file','id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
 					<div class="portlet-title">
 						<div class="caption">

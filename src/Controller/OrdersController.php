@@ -428,13 +428,29 @@ class OrdersController extends AppController
 		if(!empty($to_date)){
 			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
+		
+		$Itemsexists=[];
+		$items = $this->Orders->Items->find()->where(['Items.parent_item_id'=>$item_id]);
+			foreach($items as $item){
+				$Itemsexists[$item->parent_item_id]= $item->parent_item_id;
+			}
+			
 			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where) {
 				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
 				;
-			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+			},'Items'=>function ($q) {
+				return $q->contain(['Units']);
+			}])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+			//--------
+		foreach($onlineSales as $onlineSale){ 
 		
-		//pr($onlineSales->toArray());exit;
-		 $this->set(compact('onlineSales','from_date','to_date'));
+			echo $onlineItemId = $onlineSale->item_id;
+		
+		}
+		//exit;
+		//----
+		
+		 $this->set(compact('onlineSales','from_date','to_date','items','Itemsexists'));
         $this->set('_serialize', ['onlineSales']);
 	}
 	

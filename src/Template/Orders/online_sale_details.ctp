@@ -20,15 +20,18 @@
 					</thead>
 					<?php if(sizeof($onlineSales->toArray())>0){ ?>
 					<tbody>
-						<?php $unit; $total=0; $i=1; foreach($onlineSales as $onlineSale){ ?> 
+						<?php $unit; $total=0; $i=1; foreach($onlineSales as $onlineSale){ 
+						$onlineItemId = $onlineSale->item_id;
+						//if(in_array($onlineItemId , $Itemsexists))
+						{  ?>
 						<tr>
-							<td><?= h($i++) ?></td>
+							<td><?= h($onlineItemId) ?></td>
 							<td><?= h(@$onlineSale->order->order_no) ?></td>
 							<td><?= h(@$onlineSale->quantity).@$onlineSale->item->unit->unit_name;
 								@$total+=@$onlineSale->quantity; 
 								@$unit = @$onlineSale->item->unit->unit_name?></td>
 						</tr>
-						<?php } ?>
+						<?php } }?>
 						<tr>
 							<td colspan="2" align="right"><b>Total</b></td>
 							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
