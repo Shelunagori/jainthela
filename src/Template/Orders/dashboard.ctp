@@ -21,10 +21,10 @@
 							 
 						</div>
 						<div class="desc">
-							 Total Order : <?php echo $totalOrder->count;?>
+							 <h5>Total Order : <?php echo $totalOrder->count;?></h5>
 						</div>
 						<div class="desc">
-							 Total Amount : <?php if($totalOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '. $totalOrder->total_amount; } else { echo  '0';}?>
+							<h5> Total Amount : <?php if($totalOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '. $totalOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
 					<a class="more" href="index">
@@ -42,10 +42,10 @@
 							  
 						</div>
 						<div class="desc">
-							 In Process : <?php echo $inProcessOrder->count;?>
+							<h5> In Process : <?php echo $inProcessOrder->count;?></h5>
 						</div>
 						<div class="desc">
-							 Total Amount : <?php if($inProcessOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $inProcessOrder->total_amount; } else { echo  '0';}?>
+							<h5> Total Amount : <?php if($inProcessOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $inProcessOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
 					<a class="more" href="index">
@@ -63,10 +63,10 @@
 							 
 						</div>
 						<div class="desc">
-							 Delivered order : <?php echo $deliveredOrder->count; ?>
+							<h5> Delivered order : <?php echo $deliveredOrder->count; ?></h5>
 						</div>
 						<div class="desc">
-							 Total Amount : <?php if($deliveredOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.   $deliveredOrder->total_amount; } else { echo  '0';}?>
+							<h5> Total Amount : <?php if($deliveredOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.   $deliveredOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
 					<a class="more" href="index">
@@ -84,10 +84,10 @@
 							 
 						</div>
 						<div class="desc">
-							 Cancel order :  <?php echo $cancelOrder->count;?>
+							 <h5>Cancel order :  <?php echo $cancelOrder->count;?></h5>
 						</div>
 						<div class="desc">
-							 Total Amount : <?php if($cancelOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $cancelOrder->total_amount; } else { echo  '0';}?>
+							<h5> Total Amount : <?php if($cancelOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $cancelOrder->total_amount; } else { echo  '0';}?></h5>
 						
 						</div>
 					</div>
@@ -106,10 +106,10 @@
 							  
 						</div>
 						<div class="desc">
-							 Walkin Sales : <?php echo $walkinsales->count;?>
+							<h5> Walkin Sales : <?php echo $walkinsales->count;?></h5>
 						</div>
 						<div class="desc">
-							  Total Amount : <?php if($walkinsales->total_amount) { echo '<i class="fa fa-rupee"> </i>'.' '.  $walkinsales->total_amount; } else { echo  '0';}?>
+							<h5> Total Amount : <?php if($walkinsales->total_amount) { echo '<i class="fa fa-rupee"> </i>'.' '.  $walkinsales->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
 					<a class="more" href="../WalkinSales/index">
@@ -127,10 +127,10 @@
 						 
 					</div>
 					<div class="desc">
-						 Bulk Booking :  <?php echo $bulkOrder->count;?>
+						 <h5>Bulk Booking :  <?php echo $bulkOrder->count;?></h5>
 					</div>
 					<div class="desc">
-						Total Amount : <?php if($bulkOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>'.' '.  $bulkOrder->total_amount; } else { echo  '0';}?>
+						<h5>Total Amount : <?php if($bulkOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>'.' '.  $bulkOrder->total_amount; } else { echo  '0';}?></h5>
 						
 					</div>
 				</div>
