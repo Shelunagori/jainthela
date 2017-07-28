@@ -90,8 +90,8 @@ class AppNotificationsController extends AppController
 					$appNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
 			}
 			
-			$appNotification->created_link = $deepLinks->app_link;
-			$appNotification->type = $deepLinks->link_name; 
+			$appNotification->app_link = $deepLinks->link_url;
+			$appNotification->screen_type = $deepLinks->link_name; 
 			if ($push_data=$this->AppNotifications->save($appNotification))
 			  {
 				  if($page=="viewcart")
@@ -169,8 +169,8 @@ class AppNotificationsController extends AppController
 			{
 			$appNotification = $this->AppNotifications->patchEntity($appNotification, $this->request->data);
             
-			$appNotification->created_link = $deepLinks->app_link;
-			$appNotification->type = 'Product Description';
+			$appNotification->app_link = $deepLinks->link_url;
+			$appNotification->screen_type = 'Product Description';
 		
 			if ($push_data=$this->AppNotifications->save($appNotification))
 			  {
@@ -212,9 +212,9 @@ class AppNotificationsController extends AppController
 		$appNotifications_data = $this->AppNotifications->find()->where(['id'=>$id])->first();
 		
 		
-		$type=$appNotifications_data->type;
+		$screen_type=$appNotifications_data->screen_type;
 		$item_id=$appNotifications_data->item_id;
-		if(!empty($type)){
+		if(!empty($screen_type)){
 			$created_link=$appNotifications_data->created_link.'?item_id='.$item_id;
 			
 		}else{
