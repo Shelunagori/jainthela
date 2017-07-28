@@ -41,7 +41,7 @@ class UsersController extends AppController
             if ($user) 
 			{
                 $this->Auth->setUser($user);
-				@header('location: Homes/index');
+				@header('location: Orders/dashboard');
 				//return $this->redirect(['controller'=>'Homes','action' => 'index']);
 				return $this->redirect(['controller'=>'Orders','action' => 'dashboard']);
             }
