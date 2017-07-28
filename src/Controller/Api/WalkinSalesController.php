@@ -82,7 +82,8 @@ class WalkinSalesController extends AppController
 							'inventory_transfer' => 'no',
 							'rate' => $item_amount,
 							'transaction_date'=>$transaction_date,
-							'order_id'=>$walkin_id,
+							'order_id'=>0,
+							'walkin_sales_id'=>$walkin_id,
 							'status'=>'out'
 							])
 					        ->execute(); 
@@ -151,7 +152,8 @@ class WalkinSalesController extends AppController
 							'inventory_transfer' => 'no',
 							'rate' => $item_amount,
 							'transaction_date'=>$transaction_date,
-							'order_id'=>$walkin_id,
+							'order_id'=>0,
+							'walkin_sales_id'=>$walkin_id,
 							'status'=>'out'
 							])
 					        ->execute(); 
