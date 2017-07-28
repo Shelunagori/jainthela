@@ -177,6 +177,7 @@ $(document).ready(function() {
 			if(virtual=='yes'){
 				var data=$("#fetch").html();
  				$(".set2").html(data);
+				$('.virtual_box').select2();
 			}else{
 				$(".set2").html('');
 			}
@@ -198,5 +199,5 @@ $(document).ready(function() {
 </div>
 
 <div id="fetch" style="display:none;">
-	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs, 'class'=>'form-control input-sm ']); ?>
+	<?php echo $this->Form->control('parent_item_id', ['options' => $item_fetchs, 'class'=>'form-control input-sm virtual_box']); ?>
 </div>
