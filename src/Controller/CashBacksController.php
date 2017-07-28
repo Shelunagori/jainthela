@@ -389,10 +389,11 @@ class CashBacksController extends AppController
 		 
 					
 						 $updating_details=$this->CashBacks->find()->where(['ready_to_win' => 'yes', 'won' => 'no'])->Order(['id'=>'ASC'])->first();
+						 $today=date('Y-m-d');
 							$final_update_id=$updating_details->id;
 							$query = $this->CashBacks->query();
 							$result = $query->update()
-								->set(['won' => 'yes', 'flag'=>2])
+								->set(['won' => 'yes', 'flag'=>2, 'winning_date'=>$today])
 								->where(['id' => $final_update_id])
 								->execute();
 							 
