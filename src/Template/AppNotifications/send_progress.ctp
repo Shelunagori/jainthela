@@ -36,7 +36,6 @@ function convert_csv_data_ajax(){
 			url: url,
 			dataType: 'json'
 			}).done(function(response){
-				
 				$('#result').html(response);
 
 				if(response.again_call_ajax=="YES"){

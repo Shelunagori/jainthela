@@ -21,7 +21,7 @@ class AppNotificationsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $appNotifications = $this->AppNotifications->find()->contain(['AppNotificationCustomers' => function($q) {
+        $appNotifications = $this->AppNotifications->find()->order(['created_on'=>'DESC'])->contain(['AppNotificationCustomers' => function($q) {
 								$q->select([
 									 'AppNotificationCustomers.app_notification_id',
 									 'count_customer' => $q->func()->count('AppNotificationCustomers.app_notification_id')
@@ -205,17 +205,14 @@ class AppNotificationsController extends AppController
     }
 	public function checkNotify($id)
     {
-		
 		$this->viewBuilder()->layout(null);
 		$appNotifications = $this->AppNotifications->AppNotificationCustomers->find()->where(['sent'=>0,'app_notification_id'=>$id])->contain(['Customers'])->limit(1);
-		
-		
 		$appNotifications_data = $this->AppNotifications->find()->where(['id'=>$id])->first();
 		
-
 		$screen_type=$appNotifications_data->screen_type;
+		 
 		$item_id=$appNotifications_data->item_id;
-		if(!empty($screen_type)){
+		if($screen_type=='Product Description'){
 
 			$created_link=$appNotifications_data->app_link.'?item_id='.$item_id;
 			
@@ -227,9 +224,9 @@ class AppNotificationsController extends AppController
 			  $API_ACCESS_KEY=$appNotification->customer->notification_key;
 				$device_token=$appNotification->customer->device_token;
 				  $device_token1=rtrim($device_token);
-				
-                if(!empty($device_token))
 					
+                if(!empty($device_token))
+					 
 					$msg = array
 							(
 							'message'     =>$appNotifications_data->message,

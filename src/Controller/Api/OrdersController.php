@@ -908,6 +908,57 @@ curl_close($ch);
                return $q->select(['image_path' => $q->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])->contain('Units')->autoFields(true);
 			}]]]);	
 			
+			$order_detail_fetch=$this->Orders->get($order_id);
+			$customer_id=$order_detail_fetch->customer_id;
+			 $customer_details=$this->Orders->Customers->find()
+                    ->where(['Customers.id' => $customer_id])->first();
+                    $mobile=$customer_details->mobile;
+                    $API_ACCESS_KEY=$customer_details->notification_key;
+                    $device_token=$customer_details->device_token;
+                    $device_token1=rtrim($device_token);
+                    $time1=date('Y-m-d G:i:s');
+
+    if(!empty($device_token1))
+    {
+
+    $msg = array
+    (
+    'message'     => 'Your order has been ready to delivery',
+    'image'     => '',
+    'button_text'    => 'Track Your Order',
+    'link' => 'jainthela://track_order?id='.$order_id,
+    'notification_id'    => 1,
+    );
+
+$url = 'https://fcm.googleapis.com/fcm/send';
+$fields = array
+(
+    'registration_ids'     => array($device_token1),
+    'data'            => $msg
+);
+$headers = array
+(
+    'Authorization: key=' .$API_ACCESS_KEY,
+    'Content-Type: application/json'
+);
+
+  //echo json_encode($fields);
+  $ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+$result001 = curl_exec($ch);
+if ($result001 === FALSE) {
+    die('FCM Send Error: ' . curl_error($ch));
+}
+curl_close($ch);
+        }
+			
+			
 			
 		$status=true;
 		$error="Thank You";
