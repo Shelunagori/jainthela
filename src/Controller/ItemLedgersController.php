@@ -577,6 +577,7 @@ class ItemLedgersController extends AppController
 						@$order_online_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
 						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
 						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
+						
 						//pr($order_online);
 					}
 					if($order->order_type == 'Bulkorder'){

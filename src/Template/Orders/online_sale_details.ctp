@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($onlineSales as $onlineSale){ echo $onlineSale->item->name.'('.$onlineSale->item->alias_name.')'; break; } ?>"</span> <br/>
+			<span class="caption-subject font-blue-steel ">Online Sale For "<?php foreach ($ItemLedgers as $ItemLedger){ echo $ItemLedger->item->name.'('.$ItemLedger->item->alias_name.')'; break; } ?>"</span> <br/>
 			<span class="caption-subject" align="right" style="margin-left: 406px;"><b> <?php echo date('d-m-Y',strtotime(@$from_date)); ?> To <?php echo  date('d-m-Y',strtotime(@$to_date)); ?></b></span>
 		</div>
 		<div class="portlet-body">
@@ -18,26 +18,25 @@
 							<th>Quantity</th>
 						</tr>
 					</thead>
-					<?php if(sizeof($onlineSales->toArray())>0){ ?>
+					<?php if(sizeof($ItemLedgers->toArray())>0){ ?>
 					<tbody>
-						<?php $unit; $total=0; $i=1; foreach($onlineSales as $onlineSale){ 
-						$onlineItemId = $onlineSale->item_id;
-						//if(in_array($onlineItemId , $Itemsexists))
-						{  ?>
+						<?php $unit; $total=0; $i=1; foreach($ItemLedgers as $ItemLedger){ 
+						 if($ItemLedger->order->order_type!='Bulkorder'){?>
 						<tr>
-							<td><?= h($onlineItemId) ?></td>
-							<td><?= h(@$onlineSale->order->order_no) ?></td>
-							<td><?= h(@$onlineSale->quantity).@$onlineSale->item->unit->unit_name;
-								@$total+=@$onlineSale->quantity; 
-								@$unit = @$onlineSale->item->unit->unit_name?></td>
+							<td><?= h($i++) ?></td>
+							<td><?= h(@$ItemLedger->order->order_no) ?></td>
+							<td><?= h(@$ItemLedger->quantity).' '.$ItemLedger->item->unit->unit_name;
+								@$total+=@$ItemLedger->quantity;
+								@$unit = @$ItemLedger->item->unit->unit_name;								
+								?></td>
 						</tr>
-						<?php } }?>
+						 <?php  }}?>
 						<tr>
 							<td colspan="2" align="right"><b>Total</b></td>
-							<td><b><?php  echo $this->Number->format(@$total).@$unit ?></b></td>
+							<td><b><?php  echo $this->Number->format(@$total).' '.@$unit ?></b></td>
 						</tr>
 					</tbody>
-					<?php }else{ ?>
+						<?php  }else{ ?>
 					<tbody>
 					<tr>
 							<td colspan="3">No Data Found</td>

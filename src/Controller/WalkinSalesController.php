@@ -367,9 +367,23 @@ class WalkinSalesController extends AppController
 		if(!empty($to_date)){
 			$where['WalkinSales.transaction_date <=']=date('Y-m-d',strtotime($to_date));
 		}
-		$walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
+		
+		$item_ids=[];
+		$items=$this->WalkinSales->WalkinSaleDetails->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
+		foreach($items as $item){
+			$item_ids[]=$item->id;
+		}
+		$item_ids[]=$item_id;
+		
+		$walkinSales=$this->WalkinSales->ItemLedgers->find()
+					->where(['item_id IN'=>$item_ids,'walkin_sales_id !='=>0,'order_id'=>0])
+					->contain(['WalkinSales'=>function($q) use($where){
+						return $q->contain(['Drivers','Warehouses'])->where($where)->order(['WalkinSales.id'=>'Desc']);
+					},'Items'=>['Units']]);
+		
+		/* $walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
 				return $q->contain(['Drivers','Warehouses'])->where($where);
-			},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id'=>$item_id])->order(['WalkinSales.id'=>'DESC']);
+			},'Items'=>['Units']])->where(['WalkinSaleDetails.item_id IN'=>$item_ids])->order(['WalkinSales.id'=>'DESC']); */
 		
 	//	pr($walkinSales->toArray());
 		 $this->set(compact('walkinSales','from_date','to_date'));

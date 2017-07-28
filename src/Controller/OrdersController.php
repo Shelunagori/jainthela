@@ -429,29 +429,28 @@ class OrdersController extends AppController
 			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 		
-		$Itemsexists=[];
-		$items = $this->Orders->Items->find()->where(['Items.parent_item_id'=>$item_id]);
-			foreach($items as $item){
-				$Itemsexists[$item->parent_item_id]= $item->parent_item_id;
-			}
-			
-			$onlineSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q) use($where) {
-				return $q->where(['order_type IN'=>['Cod','Online','Wallet','cod','Offline']])->where($where)
-				;
-			},'Items'=>function ($q) {
-				return $q->contain(['Units']);
-			}])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
-			//--------
-		foreach($onlineSales as $onlineSale){ 
-		
-			echo $onlineItemId = $onlineSale->item_id;
-		
+		$item_ids=[];
+		$items=$this->Orders->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
+		foreach($items as $item){
+			$item_ids[]=$item->id;
 		}
-		//exit;
-		//----
+		$item_ids[]=$item_id;
 		
-		 $this->set(compact('onlineSales','from_date','to_date','items','Itemsexists'));
-        $this->set('_serialize', ['onlineSales']);
+		$ItemLedgers=$this->Orders->ItemLedgers->find()
+					->where(['item_id IN'=>$item_ids,'order_id !='=>0])
+					->contain(['Orders'=>function($q) use($where){
+						return $q->where($where)->order(['Orders.id'=>'Desc']);
+					},'Items'=>['Units']]);
+					
+		/* $SumQty=0;
+		foreach($ItemLedgers as $ItemLedger){
+			if($ItemLedger->order->order_type!='Bulkorder '){
+				$SumQty+=$ItemLedger->quantity;
+			}
+		} 
+		 */
+		$this->set(compact('ItemLedgers','from_date','to_date'));
+		
 	}
 	
 	public function bulkSaleDetails($item_id=null,$from_date=null,$to_date=null){
@@ -465,13 +464,25 @@ class OrdersController extends AppController
 			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 		
+		$item_ids=[];
+		$items=$this->Orders->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
+		foreach($items as $item){
+			$item_ids[]=$item->id;
+		}
+		$item_ids[]=$item_id;
 		
-			$bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q)use($where) {
+		$ItemLedgers=$this->Orders->ItemLedgers->find()
+					->where(['item_id IN'=>$item_ids,'order_id !='=>0])
+					->contain(['Orders'=>function($q) use($where){
+						return $q->where(['order_type IN'=>['Bulkorder']])->where($where)->order(['Orders.id'=>'Desc']);
+					},'Items'=>['Units']]);
+		
+			/* $bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q)use($where) {
 				return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
-			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']);
+			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']); */
 		
 		//pr($bulkSales->toArray());exit;
-		 $this->set(compact('bulkSales','from_date','to_date'));
+		 $this->set(compact('ItemLedgers','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
 	}
 }
