@@ -83,14 +83,15 @@
 								
 							<?php } }?>
 							</td>
-							<?php  if(($status=='In Process') || ($status=='In process') || ($order_date == $current_date) || ($order_date == $prev_date)){ ?>
+							<?php  if(($status=='In Process') || ($status=='In process')){ 
+							if(( $order_date == $current_date ) || ($order_date == $prev_date  )){?>
 								<td>
 									<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
 								</td>
-							<?php 	}else {?>
-								<td>
-									
-								</td>
+							<?php 	}else{ ?>
+								<td></td>
+							<?php }}else {?>
+								<td></td>
 							 <?php } ?>
 							
 						</tr>
