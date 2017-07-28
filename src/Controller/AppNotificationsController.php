@@ -21,7 +21,7 @@ class AppNotificationsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $appNotifications = $this->AppNotifications->find()->contain(['AppNotificationCustomers' => function($q) {
+        $appNotifications = $this->AppNotifications->find()->order(['created_on'=>'DESC'])->contain(['AppNotificationCustomers' => function($q) {
 								$q->select([
 									 'AppNotificationCustomers.app_notification_id',
 									 'count_customer' => $q->func()->count('AppNotificationCustomers.app_notification_id')
