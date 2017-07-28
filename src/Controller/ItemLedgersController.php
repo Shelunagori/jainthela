@@ -553,21 +553,15 @@ class ItemLedgersController extends AppController
 		}
 		if(!empty($where)){
 			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
-				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units'])->order(['Items.name'=>'ASC']);
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no','freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
 			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where);
 		}else{
 			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
-				return $q->where(['is_combo'=>'no','is_virtual'=>'no'])->contain(['Units'])->order(['Items.name'=>'ASC']);
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no','freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
 			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where1);
 		}	
-		$order_online = []; $order_online_name=[];
-		$order_bulk = [];
-		$walkins_sales = [];
-		$order_online_rate = [];
-		$order_bulk_rate = [];
-		$walkins_sales_rate = [];
-		$Itemsexists=[]; $qty=0;
-		$units=[];
+		$order_online = []; $order_online_name=[]; $order_bulk = []; $walkins_sales = []; $order_online_rate = [];
+		$order_bulk_rate = []; $walkins_sales_rate = []; $Itemsexists=[]; $qty=0; $units=[];
 		foreach($itemLedgers as $itemLedger){ 
 			$Orders = $this->ItemLedgers->Orders->find()->where(['id'=>$itemLedger->order_id])->toArray();
 			if(sizeof($Orders)>0){ 

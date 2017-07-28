@@ -21,7 +21,7 @@
 					<?php if(sizeof($ItemLedgers->toArray())>0){ ?>
 					<tbody>
 						<?php $unit; $total=0; $i=1; foreach($ItemLedgers as $ItemLedger){ 
-						 if($ItemLedger->order->order_type!='Bulkorder'){?>
+						 if(@$ItemLedger->order->order_type!='Bulkorder'){?>
 						<tr>
 							<td><?= h($i++) ?></td>
 							<td><?= h(@$ItemLedger->order->order_no) ?></td>

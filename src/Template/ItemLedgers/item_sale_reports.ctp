@@ -61,16 +61,18 @@
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h($itemLedger->name).'('.$itemLedger->alias_name.')'  ?></td>
+							<td>
+								<?= h($itemLedger->name).'('.$itemLedger->alias_name.')'  ?>
+							</td>
 							<?php if(!empty(@$walkins_sales[$itemLedger->id])){ ?>
 							<td>
-							<?php if(!empty($from_date)){ ?>
-							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_date,$to_date ],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php }else{ ?>
-							<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php } ?>
+								<?php if(!empty($from_date)){ ?>
+								<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_date,$to_date ],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php }else{ ?>
+								<?= $this->Html->link(@$walkins_sales[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'WalkinSales', 'action' => 'walkinSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php } ?>
 							</td>
-							<?php }else{ ?> 
+								<?php }else{ ?> 
 							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
 							<?php } ?>
 							<?php if(!empty(@$order_online[$itemLedger->id])){ ?>

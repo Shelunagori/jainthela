@@ -360,26 +360,12 @@ class WalkinSalesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$where =[];
-		if(!empty($from_date)){
-			$where['WalkinSales.transaction_date >=']=date('Y-m-d',strtotime($from_date));
-		}
-		if(!empty($to_date)){
-			$where['WalkinSales.transaction_date <=']=date('Y-m-d',strtotime($to_date));
-		}
-		
-		$item_ids=[];
-		$items=$this->WalkinSales->WalkinSaleDetails->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
-		foreach($items as $item){
-			$item_ids[]=$item->id;
-		}
-		$item_ids[]=$item_id;
-		
 		$walkinSales=$this->WalkinSales->ItemLedgers->find()
-					->where(['item_id IN'=>$item_ids,'walkin_sales_id !='=>0,'order_id'=>0])
-					->contain(['WalkinSales'=>function($q) use($where){
-						return $q->contain(['Drivers','Warehouses'])->where($where)->order(['WalkinSales.id'=>'Desc']);
-					},'Items'=>['Units']]);
+					->where(['item_id'=>$item_id,'walkin_sales_id !='=>0,'order_id'=>0,'ItemLedgers.transaction_date >='=>$from_date,'ItemLedgers.transaction_date <='=>$to_date])
+					->contain(['WalkinSales'=>function($q){
+						return $q->contain(['Drivers','Warehouses']);
+					},'Items'=>['Units']])
+					->order(['WalkinSales.id'=>'DESC']);
 		
 		/* $walkinSales = $this->WalkinSales->WalkinSaleDetails->find()->contain(['WalkinSales'=>function ($q) use($where){
 				return $q->contain(['Drivers','Warehouses'])->where($where);

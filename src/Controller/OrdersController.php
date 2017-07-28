@@ -418,25 +418,18 @@ class OrdersController extends AppController
     }
 	
 	public function onlineSaleDetails($item_id=null,$from_date=null,$to_date=null){
-		$this->viewBuilder()->layout('index_layout');
+				$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		$where =[];
-		if(!empty($from_date)){
-			$where['Orders.curent_date >=']=date('Y-m-d',strtotime($from_date));
-		}
-		if(!empty($to_date)){
-			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
-		}
 		
 		
 		
 		$ItemLedgers=$this->Orders->ItemLedgers->find()
 					->where(['item_id'=>$item_id,'order_id !='=>0,'transaction_date >='=>$from_date,'transaction_date <='=>$to_date])
-					->contain(['Orders'=>function($q) use($where){
-						return $q->where($where)->order(['Orders.id'=>'Desc']);
-					},'Items'=>['Units']]);
+					->contain(['Orders','Items'=>['Units']])
+					->order(['Orders.id'=>'DESC']);
 					
+					//pr($ItemLedgers->toArray());exit;
 		/* $SumQty=0;
 		foreach($ItemLedgers as $ItemLedger){
 			if($ItemLedger->order->order_type!='Bulkorder '){
@@ -449,35 +442,22 @@ class OrdersController extends AppController
 	}
 	
 	public function bulkSaleDetails($item_id=null,$from_date=null,$to_date=null){
+		
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		$where =[];
-		if(!empty($from_date)){
-			$where['Orders.curent_date >=']=date('Y-m-d',strtotime($from_date));
-		}
-		if(!empty($to_date)){
-			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
-		}
 		
-		$item_ids=[];
-		$items=$this->Orders->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
-		foreach($items as $item){
-			$item_ids[]=$item->id;
-		}
-		$item_ids[]=$item_id;
 		
 		$ItemLedgers=$this->Orders->ItemLedgers->find()
-					->where(['item_id IN'=>$item_ids,'order_id !='=>0])
-					->contain(['Orders'=>function($q) use($where){
-						return $q->where(['order_type IN'=>['Bulkorder']])->where($where)->order(['Orders.id'=>'Desc']);
-					},'Items'=>['Units']]);
+					->where(['item_id'=>$item_id,'order_id !='=>0,'transaction_date >='=>$from_date,'transaction_date <='=>$to_date])
+					->contain(['Orders','Items'=>['Units']])
+					->order(['Orders.id'=>'DESC']);
 		
 			/* $bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q)use($where) {
 				return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
 			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']); */
 		
 		//pr($bulkSales->toArray());exit;
-		 $this->set(compact('ItemLedgers','from_date','to_date'));
+		$this->set(compact('ItemLedgers','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
 	}
 }
