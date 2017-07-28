@@ -83,7 +83,7 @@ class WalkinSalesController extends AppController
 		 
 		
 		$where3 =[];
-		if($from_date=='1970-01-01'){ 
+		if($from_date=='1970-01-01'){  
 			$from_date=date("Y-m-d"); 
 			$where3['Orders.curent_date >=']=$from_date;
 		}
@@ -94,19 +94,19 @@ class WalkinSalesController extends AppController
 		
 		
 		if(!empty($where)){
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>				$jain_thela_admin_id])
+			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
 					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 		}else{
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>				$jain_thela_admin_id])
+			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
 					   ->where($where1)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 		}
-		
+		//pr($where3); exit;
 		if(!empty($where2)){
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where2);
+					->where($where2)->where(['Orders.status NOT IN'=>'Cancel']);
 		}else{
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where3);
+					->where($where3)->where(['Orders.status NOT IN'=>'Cancel']);
 		}			
 		
 		$Drivers = $this->WalkinSales->Drivers->find('list');
