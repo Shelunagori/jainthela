@@ -68,7 +68,10 @@
 							<td><?= h($i++) ?></td>
 							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo "-"; }?></td>
 							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo $walkinSale->driver->name ;} else { echo "-"; }?></td>
-							<td align="center"><?= h(@$walkinSale->order_no) ?></td>
+							
+							<td align="center">
+								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
+							</td>
 							<td align="center"><?= h(@$walkinSale->created_on) ?></td>
 							<td align="center">Walkin</td>
 							<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
@@ -81,7 +84,9 @@
 							<td><?= h($i++) ?></td>
 							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
 							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
-							<td align="center"><?= h(@$order->order_no) ?></td>
+							<td align="center">
+								<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+							</td>
 							<td align="center"><?= h(@$order->order_date) ?></td>
 							<td align="center">
 							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
@@ -122,3 +127,50 @@ var $rows = $('#main_tble tbody tr');
 		}
 	});
 </script>
+<script>
+$(document).ready(function() {
+	$('.view_order').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+		$('#popup').find('div.modal-body').html('Loading...');	 
+			var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "view"]); ?>";			 
+			url=url+'/'+order_id;  
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});
+	});
+	$('.view_walk').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+		$('#popup').find('div.modal-body').html('Loading...');	 
+			var url="<?php echo $this->Url->build(["controller" => "WalkinSales", "action" => "ajaxView"]); ?>";
+			url=url+'/'+order_id;  
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});
+	});
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
+});
+</script>
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
+<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body" >
+				<p >
+					 Body goes here...
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
