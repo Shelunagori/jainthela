@@ -52,6 +52,31 @@ class CustomerAddressesController extends AppController
 
 	public function saveAddress($customer_id,$name,$mobile,$house_no,$address,$locality,$default_address){
 		
+		
+		$customerAddressexists = $this->CustomerAddresses->find()->where(['customer_id'=>$customer_id]);
+		
+		if(sizeof($customerAddressexists->toArray())>0){
+			$customerAddress = $this->CustomerAddresses->newEntity();
+				  $customerAddress = $this->CustomerAddresses->patchEntity($customerAddress, $this->request->getData());
+						$query = $this->CustomerAddresses->query();
+					$query->update()
+						->set(['default_address' => 0])
+						->where(['customer_id' => $customer_id])
+						->execute();
+						$query = $this->CustomerAddresses->query();
+						$query->insert(['customer_id', 'name', 'mobile', 'house_no','address','locality','default_address'])
+									->values([
+										'customer_id' => $customer_id,
+										'name' => $name,
+										'mobile' => $mobile,
+										'house_no' => $house_no,
+										'address' => $address,
+										'locality' => $locality,
+										'default_address' => 1
+									]);
+					$query->execute();	
+					
+		}else{
 		$customerAddress = $this->CustomerAddresses->newEntity();
 				  $customerAddress = $this->CustomerAddresses->patchEntity($customerAddress, $this->request->getData());
 						$query = $this->CustomerAddresses->query();
@@ -63,11 +88,27 @@ class CustomerAddressesController extends AppController
 										'house_no' => $house_no,
 										'address' => $address,
 										'locality' => $locality,
-										'default_address' => $default_address
+										'default_address' => 1
 									]);
 					$query->execute();	
-					
+		}			
 				exit;
+	}
+	
+	
+	public function adddefaultAddress($customer_id,$address_id){
+		$query = $this->CustomerAddresses->query();
+				$query->update()
+						->set(['default_address' => 0])
+						->where(['customer_id'=>$customer_id])
+						->execute();
+						
+		$query = $this->CustomerAddresses->query();
+					$query->update()
+						->set(['default_address' => 1])
+						->where(['id'=>$address_id])
+						->execute();
+						exit;
 	}
     /**
      * View method

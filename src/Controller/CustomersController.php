@@ -171,7 +171,7 @@ class CustomersController extends AppController
 		if(empty($id)){
 			echo ''; exit;
 		}
-		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->first();
+		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->order(['CustomerAddresses.id'=>'DESC'])->first();
 		if(!empty($defaultAddress)){
 			echo $defaultAddress->house_no.$defaultAddress->address." - ".$defaultAddress->locality; exit;
 		}else{

@@ -46,7 +46,19 @@
 				<?php } ?>
 				-->
 				</div><br/>
-				
+				<div class="row">
+					<div class="col-md-6">
+						<label class="control-label">Address</label>
+							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5']); ?>
+							
+							<a href="#" role="button" class="pull-right select_address" >
+							Select Address </a>
+							
+						
+					</div>
+				</div>
+				<div class="col-md-12"><br/></div>
 				<div class="row">
 					
 					<div class="col-md-8">
@@ -365,7 +377,64 @@ $(document).ready(function() {
 		$('#del_time').val(raw_time_name);
 		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
 	});
+	////
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
+    });
 	
+	$('.select_address').on("click",function() { 
+		open_address();
+    });
+	
+	function open_address(){
+		var customer_id=$('select[name="customer_id"]').val();
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
+		url=url+'/'+customer_id,
+		$("#myModal1").show();
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	}
+	
+	$('.insert_address').die().live("click",function() { 
+		var addr=$(this).text();
+		var addr_id=$(this).attr('addressid');
+		$('textarea[name="customer_address"]').val(addr);
+		$('input[name="customer_address_id"]').val(addr_id);
+		$("#myModal1").hide();
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'adddefaultAddress']); ?>";
+		url=url+'/'+customer_id+'/'+addr_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+		});
+    });
+	///
+	$('.customer_id').on("change",function() {
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+		
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
+		url=url+'/'+customer_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			if(response == ' '){
+				$('#address').modal({ keyboard: false, backdrop: 'static'}).show();
+				var validator = $( "#myForm1" ).validate();
+			$('#form1')[0].reset();
+			$("label.error").hide();
+			$(".error").removeClass("error");
+			validator.reset();
+			}else{	
+				$('textarea[name="customer_address"]').val(response);
+			}
+		});
+	});
 });
 </script>
 <table id="sample_table" style="display:none;" >
@@ -395,4 +464,15 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
-
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: ; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				
+			</div>
+			 <div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -83,9 +83,16 @@
 								
 							<?php } }?>
 							</td>
-							<td>
-								<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
-							</td>
+							<?php  if(($status=='In Process') || ($status=='In process') || ($order_date == $current_date) || ($order_date == $prev_date)){ ?>
+								<td>
+									<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
+								</td>
+							<?php 	}else {?>
+								<td>
+									
+								</td>
+							 <?php } ?>
+							
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

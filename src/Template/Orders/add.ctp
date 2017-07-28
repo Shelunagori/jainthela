@@ -389,42 +389,56 @@ $(document).ready(function() {
     });
 	
 	$('.add_address').on("click",function() {
-			$('#address').modal('show');
+			var customer_id=$('select[name="customer_id"]').val();
+			if(customer_id == ""){
+				alert("Please Select Customer First");
+			}else{
+				$('#address').modal('show');
+				var validator = $( "#myForm1" ).validate();
+				//$('#form1')[0].reset();
+				$("label.error").hide();
+				$(".error").removeClass("error");
+			}
+			
+			//validator.reset();
 			
 	});
 	
 	$('.btnsubmit').on("click",function(e) {
-//	var validator = $("#form1").validate();
-
-    $("#form1").validate({ 
-        submitHandler: function(form) {
-				$("#form1").submit(function(e) {
-					e.preventDefault();
-				});
-				var customer_id=$('select[name="customer_id"]').val();
-				if(customer_id == ""){
-					alert("Please Select Customer First");
-				}
-				var name=$('input[name="name"]').val();
-				var mobile=$('input[name="mobile"]').val();
-				var house_no=$('input[name="house_no"]').val();
-				var address=$('textarea[name="address"]').val();
-				var locality=$('input[name="locality"]').val();
-				var default_address=$('input[name="default_address"]:checked').val();
-				var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'saveAddress']); ?>";
-				url=url+'/'+customer_id+'/'+name+'/'+mobile+'/'+house_no+'/'+address+'/'+locality+'/'+default_address,
-				$.ajax({
-					url: url,
-				}).done(function(response,e) {
-					$('#address').hide();
-				});
-        }
-    });		
-		
-		
-
-
-		
+		$("#form1").validate({ 
+			submitHandler: function(form) {
+					$("#form1").submit(function(e) {
+						e.preventDefault();
+					});
+					var customer_id=$('select[name="customer_id"]').val();
+					if(customer_id == ""){
+						alert("Please Select Customer First");
+					}
+					var name=$('input[name="name"]').val();
+					var mobile=$('input[name="mobile"]').val();
+					var house_no=$('input[name="house_no"]').val();
+					var address=$('textarea[name="address"]').val();
+					var locality=$('input[name="locality"]').val();
+					var default_address=$('input[name="default_address"]:checked').val();
+					var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'saveAddress']); ?>";
+					url=url+'/'+customer_id+'/'+name+'/'+mobile+'/'+house_no+'/'+address+'/'+locality+'/'+default_address,
+					$.ajax({
+						url: url,
+					}).done(function(response) {
+						$('#address').hide();
+						var customer_id=$('select[name="customer_id"] option:selected').val();
+						var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
+						url=url+'/'+customer_id,	
+						$.ajax({
+							url: url,
+						}).done(function(response) { 
+							$('textarea[name="customer_address"]').val(response);
+							$('#address').modal('toggle');
+							$('#address input').val('');
+							$('#address textarea').val('');
+						});
+					});
+		}});		
 	});
 	
 	
@@ -448,6 +462,13 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$('input[name="customer_address_id"]').val(addr_id);
 		$("#myModal1").hide();
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'CustomerAddresses','action'=>'adddefaultAddress']); ?>";
+		url=url+'/'+customer_id+'/'+addr_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+		});
     });
 	
 	
@@ -461,7 +482,12 @@ $(document).ready(function() {
 			url: url,
 		}).done(function(response) { 
 			if(response == ' '){
-				alert("plese enter Address !!!! then you Create Order")
+				$('#address').modal({ keyboard: false, backdrop: 'static'}).show();
+				var validator = $( "#myForm1" ).validate();
+			$('#form1')[0].reset();
+			$("label.error").hide();
+			$(".error").removeClass("error");
+			validator.reset();
 			}else{	
 				$('textarea[name="customer_address"]').val(response);
 			}
@@ -546,24 +572,7 @@ $(document).ready(function() {
 					
 				</div>
 				
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Default Address<span class="required" aria-required="true">*</span></label>
-							<div class="radio-list">
-								<div class="radio-inline" style="padding-left: 0px;">
-									<?php echo $this->Form->radio(
-									'default_address',
-									[
-										['value' => '0', 'text' => 'No','class' => 'radio-task virt','checked' => 'checked'],
-										['value' => '1', 'text' => 'Yes','class' => 'radio-task virt']
-									]
-									); ?>
-								</div>
-						</div>
-					</div>
-					</div>
-				</div>
+				
 			
 			</div>
 			<div class="modal-footer">
