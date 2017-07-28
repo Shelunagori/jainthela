@@ -429,15 +429,10 @@ class OrdersController extends AppController
 			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 		
-		$item_ids=[];
-		$items=$this->Orders->Items->find()->where(['parent_item_id'=>$item_id,'freeze'=>0]);
-		foreach($items as $item){
-			$item_ids[]=$item->id;
-		}
-		$item_ids[]=$item_id;
+		
 		
 		$ItemLedgers=$this->Orders->ItemLedgers->find()
-					->where(['item_id IN'=>$item_ids,'order_id !='=>0])
+					->where(['item_id'=>$item_id,'order_id !='=>0,'transaction_date >='=>$from_date,'transaction_date <='=>$to_date])
 					->contain(['Orders'=>function($q) use($where){
 						return $q->where($where)->order(['Orders.id'=>'Desc']);
 					},'Items'=>['Units']]);
@@ -448,7 +443,7 @@ class OrdersController extends AppController
 				$SumQty+=$ItemLedger->quantity;
 			}
 		} 
-		 */
+		*/
 		$this->set(compact('ItemLedgers','from_date','to_date'));
 		
 	}
