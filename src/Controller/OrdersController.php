@@ -221,7 +221,11 @@ class OrdersController extends AppController
 			$order->order_no=$exact_order_no;
  			$order->curent_date=$curent_date;
 			$order->get_auto_no=$next_get_auto_no;
-			$order->order_type=$order_type;
+			if($order_type == 'Bulkorder'){
+				$order->order_type=$order_type;
+			}else{
+				$order->order_type='Cod';
+			}
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
