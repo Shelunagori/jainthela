@@ -449,7 +449,8 @@ class OrdersController extends AppController
 		$ItemLedgers=$this->Orders->ItemLedgers->find()
 					->where(['item_id'=>$item_id,'order_id !='=>0,'transaction_date >='=>$from_date,'transaction_date <='=>$to_date])
 					->contain(['Orders','Items'=>['Units']])
-					->order(['Orders.id'=>'DESC']);
+					->order(['Orders.id'=>'DESC'])
+					->where(['order_type IN'=>['Bulkorder']]);
 		
 			/* $bulkSales = $this->Orders->OrderDetails->find()->contain(['Orders'=>function ($q)use($where) {
 				return $q->where(['order_type IN'=>['Bulkorder']])->where($where);
