@@ -118,15 +118,15 @@
 					</thead>
 					<tbody>
 						<?php
-						$sr_no=0; foreach ($pushNotifications as $pushNotification): $sr_no++;
+						$sr_no=0; foreach ($appNotifications as $appNotification): $sr_no++;
 						?>
 						<tr>
 							<td><?= $sr_no ?></td>
-							<td><?= $pushNotification->created_on ?></td>
-							<td><?php if (!empty($pushNotification->image)) { ?><img src="<?php echo $pushNotification->image; ?>" style="width:100px; height:100px"><?php } else { echo 'No Image'; } ?></td>
-							<td><?= h($pushNotification->message) ?></td> 
-							<td><?= h($pushNotification->screen_type) ?></td>
-							<td><?=($pushNotification->app_notification_customers[0]->count_customer) ?></td>
+							<td><?= $appNotification->created_on ?></td>
+							<td><?php if (!empty($appNotification->image)) { ?><img src="<?php echo $appNotification->image; ?>" style="width:100px; height:100px"><?php } else { echo 'No Image'; } ?></td>
+							<td><?= h($appNotification->message) ?></td> 
+							<td><?= h($appNotification->screen_type) ?></td>
+							<td><?= h(@$appNotification->app_notification_customers[0]->count_customer) ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

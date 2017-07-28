@@ -29,7 +29,7 @@ $( document ).ready(function() {
 });
 function convert_csv_data_ajax(){
 		var id=$("#id1").val();
-		var url="<?php echo $this->Url->build(['controller'=>'PushNotifications','action'=>'checkNotify']);?>";
+		var url="<?php echo $this->Url->build(['controller'=>'AppNotifications','action'=>'checkNotify']);?>";
 		url=url+'/'+id;
 	
 		$.ajax({

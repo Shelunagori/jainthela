@@ -97,7 +97,7 @@ class PushNotificationsController extends AppController
 					$pushNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
 			}
 			
-			$pushNotification->created_link = $deepLinks->link_url;
+			$pushNotification->link_url = $deepLinks->link_url;
 			$pushNotification->type = $deepLinks->link_name; 
 			if ($push_data=$this->PushNotifications->save($pushNotification))
 			  {
@@ -176,7 +176,7 @@ class PushNotificationsController extends AppController
 			{
 			$pushNotification = $this->PushNotifications->patchEntity($pushNotification, $this->request->data);
             
-			$pushNotification->created_link = $deepLinks->link_url;
+			$pushNotification->link_url = $deepLinks->link_url;
 			$pushNotification->type = 'Product Description';
 		
 			if ($push_data=$this->PushNotifications->save($pushNotification))

@@ -90,6 +90,7 @@ class AppNotificationsController extends AppController
 					$appNotification->image = 'http://localhost'.$this->request->webroot.'Notify_images/jainthela.jpg';
 			}
 			
+
 			$appNotification->app_link = $deepLinks->link_url;
 			$appNotification->screen_type = $deepLinks->link_name; 
 			if ($push_data=$this->AppNotifications->save($appNotification))
@@ -211,14 +212,15 @@ class AppNotificationsController extends AppController
 		
 		$appNotifications_data = $this->AppNotifications->find()->where(['id'=>$id])->first();
 		
-		
+
 		$screen_type=$appNotifications_data->screen_type;
 		$item_id=$appNotifications_data->item_id;
 		if(!empty($screen_type)){
-			$created_link=$appNotifications_data->created_link.'?item_id='.$item_id;
+
+			$created_link=$appNotifications_data->app_link.'?item_id='.$item_id;
 			
 		}else{
-			$created_link=$appNotifications_data->created_link;
+			$created_link=$appNotifications_data->app_link;
 		}
 		foreach($appNotifications as $appNotification)
 		{
