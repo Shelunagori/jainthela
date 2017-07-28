@@ -418,7 +418,7 @@ class OrdersController extends AppController
     }
 	
 	public function onlineSaleDetails($item_id=null,$from_date=null,$to_date=null){
-		$this->viewBuilder()->layout('index_layout');
+				$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
 		
@@ -436,12 +436,13 @@ class OrdersController extends AppController
 				$SumQty+=$ItemLedger->quantity;
 			}
 		} 
-		 */
+		*/
 		$this->set(compact('ItemLedgers','from_date','to_date'));
 		
 	}
 	
 	public function bulkSaleDetails($item_id=null,$from_date=null,$to_date=null){
+		
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
@@ -457,7 +458,7 @@ class OrdersController extends AppController
 			},'Items'=>['Units']])->where(['OrderDetails.item_id'=>$item_id])->order(['Orders.id'=>'Desc']); */
 		
 		//pr($bulkSales->toArray());exit;
-		 $this->set(compact('ItemLedgers','from_date','to_date'));
+		$this->set(compact('ItemLedgers','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
 	}
 }

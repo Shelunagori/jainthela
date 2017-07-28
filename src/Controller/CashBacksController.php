@@ -112,7 +112,7 @@ class CashBacksController extends AppController
 					}
 					curl_close($ch);
 					
-					$sms=str_replace(' ', '+', 'Congratulation '.$name.' ,you won Rs'.$cashback_amount.'Cashback. For Claim your Amount go to jainthela app .');
+					$sms=str_replace(' ', '+', 'Congratulation '.$name.' ,you won Rs'.$cashback_amount.'Cashback. For Claim your cashback go to jainthela app . ');
 					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 					$sms_sender='JAINTE';
 					$sms=str_replace(' ', '+', $sms);
