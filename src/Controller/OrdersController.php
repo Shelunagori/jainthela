@@ -229,8 +229,11 @@ class OrdersController extends AppController
             if ($orderDetails = $this->Orders->save($order)) {
 				$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
-            $customer_id=$order_detail_fetch->customer_id;
-             $customer_details=$this->Orders->Customers->find()
+				$order_no=$order_detail_fetch->order_no;
+				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
+			
+				$customer_id=$order_detail_fetch->customer_id;
+				$customer_details=$this->Orders->Customers->find()
                     ->where(['Customers.id' => $customer_id])->first();
                     $mobile=$customer_details->mobile;
                     $API_ACCESS_KEY=$customer_details->notification_key;
@@ -243,7 +246,7 @@ class OrdersController extends AppController
 
 					$msg = array
 					(
-					'message'     => 'Your order has been ready to delivery',
+					'message'     => 'Thank you, Your order has been successfully placed.',
 					'image'     => '',
 					'button_text'    => 'Track Your Order',
 					'link' => 'jainthela://track_order?id='.$send_data,
