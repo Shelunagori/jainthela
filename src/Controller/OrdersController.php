@@ -94,7 +94,12 @@ class OrdersController extends AppController
 		foreach($Customers as $Customer){
 			$Customer_data[]= $Customer->name.'('.$Customer->mobile.')';
 		}
-        $this->set(compact('orders','Customer_data'));
+		$order_type=[];
+		$order_type=[['text'=>'Bulkorder','value'=>'Bulkorder'],['text'=>'Cod','value'=>'Cod'],['text'=>'Offline','value'=>'Offline'],['text'=>'Online','value'=>'Online'],['text'=>'Wallet','value'=>'Wallet']];
+		
+		$OrderStatus=[];
+		$OrderStatus=[['text'=>'Cancel','value'=>'Cancel'],['text'=>'Delivered','value'=>'Delivered'],['text'=>'In Process','value'=>'In Process']];
+        $this->set(compact('orders','Customer_data','order_type','OrderStatus'));
         $this->set('_serialize', ['orders']);
     }
 

@@ -21,10 +21,15 @@
 				<table width="50%" class="table table-condensed">
 					<tbody>
 						<tr>
+							<td width="7%">
+								<?php echo $this->Form->input('warehouse', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Order No','value'=> h(@$customer_id) ]); ?>
+							</td>
 							<td width="2%">
 								<?php echo $this->Form->input('warehouse', ['empty'=>'--Customers--','options' => $Customer_data,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$customer_id) ]); ?>
 							</td>
-							
+							<td width="2%">
+								<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$order_type) ]); ?>
+							</td>
 							<td width="5%">
 							<?php if(!empty($from_date)){ ?>
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
