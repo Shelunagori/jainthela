@@ -61,7 +61,7 @@
 							
 						
 					</div>
-				<div>
+				</div>
 				<div class="col-md-12"><br/></div>
 				<div class="row">
 					

@@ -63,7 +63,7 @@ class CustomersController extends AppController
 		
 		$wallet_advances=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.order_id ='=>0])->contain(['Customers', 'Orders', 'Plans']);
 		$wallet_consumes=$this->Customers->Wallets->find()->where(['Wallets.customer_id'=>$id,'Wallets.plan_id ='=> 0])->contain(['Customers', 'Orders']);
-		$Orders=$this->Customers->Orders->find()->where(['orders.customer_id'=>$id]);
+		$Orders=$this->Customers->Orders->find()->where(['Orders.customer_id'=>$id]);
         $this->set(compact('Customers', 'status', 'id', 'jain_cash_gains', 'jain_cash_uses', 'wallet_advances', 'wallet_consumes', 'Orders'));
         $this->set('_serialize', ['Customers', 'jain_cash_gains', 'jain_cash_uses', 'wallet_advances', 'wallet_consumes', 'Orders']);
     }

@@ -138,7 +138,7 @@
 							<tr>
 								<td><?= $s ?></td>
 								<td>
-									<?= h('#'.str_pad($this->Number->format(@$wallet_consume->order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+									<?= h(@$wallet_consume->order->order_no) ?>
 								</td>
 								<td>
 									<?= h(@$wallet_consume->consumed) ?>
@@ -171,7 +171,6 @@
 					<th>Order</th>
 					<th>Date</th>
 					<th>Total</th>
-					<th>Action</th>
 					<th>Status</th>
 				</tr>
 			</thead>
@@ -183,7 +182,7 @@
 					<tr>
 						<td><?= $t ?></td>
 						<td>
-							<?= h('#'.str_pad($this->Number->format(@$Order->order_no), 4, '0', STR_PAD_LEFT)) ?>
+							<?= h(@$Order->order_no) ?>
 						</td>
 						<td>
 							<?= h(date('d-M-Y', strtotime(@$Order->order_date))) ?>
@@ -191,9 +190,7 @@
 						<td>
 							<?= h(@$Order->total_amount) ?>
 						</td>
-						<td>
-							<?= $this->Html->link(__('View'), ['action' => 'view', $Order->id]) ?>
-						</td>
+						
 						<td>
 							<?= h(@$Order->status) ?>
 						</td>
