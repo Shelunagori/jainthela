@@ -107,7 +107,12 @@ class OrdersController extends AppController
  		
    
 				$odrer_datas=$this->Orders->get($order_id);
- 				$o_date=$odrer_datas->otder_date;
+ 				$o_date=$odrer_datas->order_date;
+ 				$amount_from_wallet=$odrer_datas->amount_from_wallet;
+ 				$amount_from_jain_cash=$odrer_datas->amount_from_jain_cash;
+ 				$amount_from_promo_code=$odrer_datas->amount_from_promo_code;
+ 				$online_amount=$odrer_datas->online_amount;
+				$return_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
 				
 				$order_cancel = $this->Orders->query();
 					$result = $order_cancel->update()
@@ -115,6 +120,17 @@ class OrdersController extends AppController
 						'cancel_id' => $cancel_id, 'order_date' => $o_date])
 						->where(['id' => $order_id])
 						->execute();
+						
+						
+					$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $return_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $order_id
+							])
+					->execute();
 //end tis code///		
 
 		
