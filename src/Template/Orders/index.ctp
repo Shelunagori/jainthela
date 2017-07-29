@@ -93,7 +93,7 @@
 							<td><?= h(@$order->customer_address->locality) ?></td>
 							<td align="right"><?= $this->Number->format($order->grand_total) ?></td>
 							<td><?= h($order->order_type) ?></td>
-							<td><?= h($order_date) ?></td>
+							<td><?= h($order->order_date) ?></td>
 							<td><?= h($delivery_date) ?></td>
 							<td><?= h($order->delivery_time) ?></td>
 							<td><?= h($status) ?></td>
