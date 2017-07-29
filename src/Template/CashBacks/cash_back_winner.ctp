@@ -46,7 +46,7 @@
 						
 						?>
 						<tr >
-							<td><?php if($cb->claim=='yes'){ ?><?php echo '<span class="badge badge-success tooltips">'?><?php } else {?><?php echo '<span class="badge badge-warning tooltips">'?><?php } ?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
+							<td><?php echo '<span class="badge tooltips random">'?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
 							<td><?= h(ucwords($customer_name).' ('.$customer_mobile.')') ?></td>
 							<td><?= h('#'.str_pad($cb->cash_back_no, 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($cb->order_no) ?></td>
@@ -81,6 +81,12 @@ $(document).ready(function() {
 			$rows.show();
 		}
 	});
+
+    
+        $('.random').each(function() {
+            $(this).css('background',randomColor());
+        });
+    
 });
 </script>				 
 				
