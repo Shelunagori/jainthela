@@ -22,13 +22,16 @@
 					<tbody>
 						<tr>
 							<td width="7%">
-								<?php echo $this->Form->input('warehouse', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Order No','value'=> h(@$customer_id) ]); ?>
+								<?php echo $this->Form->input('order_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Order No','value'=> h(@$order_no) ]); ?>
 							</td>
 							<td width="2%">
-								<?php echo $this->Form->input('warehouse', ['empty'=>'--Customers--','options' => $Customer_data,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$customer_id) ]); ?>
+								<?php echo $this->Form->input('customer', ['empty'=>'--Customers--','options' => $Customer_data,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$customer_id) ]); ?>
 							</td>
 							<td width="2%">
 								<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$order_type) ]); ?>
+							</td>
+							<td width="2%">
+								<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$orderstatus) ]); ?>
 							</td>
 							<td width="5%">
 							<?php if(!empty($from_date)){ ?>
@@ -47,9 +50,7 @@
 							<td width="10%">
 								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
 							</td>
-							<td width="2%" align="right">
-								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
-							</td>
+							
 						</tr>
 					</tbody>
 				</table>

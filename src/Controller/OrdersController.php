@@ -81,12 +81,41 @@ class OrdersController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$curent_date=date('Y-m-d');
 		
+		$order_no = $this->request->query('order_no');
+		$customer_id = $this->request->query('customer');
+		$order_type = $this->request->query('order_type');
+		$orderstatus = $this->request->query('orderstatus');
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		
+		if(!empty($order_no)){
+			$where['Orders.order_no Like']='%'.$order_no.'%';
+		}
+		if(!empty($customer_id)){
+			$where['Customers.id']=$customer_id;
+		}
+		if(!empty($order_type)){
+			$where['Orders.order_type']='%'.$order_type.'%';
+		}
+		if(!empty($orderstatus)){
+			$where['Orders.status']='%'.$orderstatus.'%';
+		}
+		if(!empty($from_date)){
+			$where['Orders.curent_date <=']=$orderstatus;
+		}
+		if(!empty($to_date)){
+			$where['Orders.curent_date >=']=$to_date;
+		}
+		
 		$this->paginate = [
             'contain' => ['Customers']
         ];
         $orders = $this->paginate($this->Orders->find('all')
-		->order(['Orders.id'=>'DESC'])
+		->order(['Orders.id'=>'DESC'])->where($where)
 		->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
+		
 		->contain(['CustomerAddresses']));
 		
 		$Customers = $this->Orders->Customers->find();
@@ -99,7 +128,7 @@ class OrdersController extends AppController
 		
 		$OrderStatus=[];
 		$OrderStatus=[['text'=>'Cancel','value'=>'Cancel'],['text'=>'Delivered','value'=>'Delivered'],['text'=>'In Process','value'=>'In Process']];
-        $this->set(compact('orders','Customer_data','order_type','OrderStatus'));
+        $this->set(compact('orders','Customer_data','order_type','OrderStatus','order_no','customer_id','order_type','orderstatus','from_date','to_date'));
         $this->set('_serialize', ['orders']);
     }
 
