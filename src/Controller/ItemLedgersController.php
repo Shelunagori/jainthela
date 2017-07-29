@@ -568,7 +568,7 @@ class ItemLedgersController extends AppController
 				foreach($Orders as $order){
 					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'|| $order->order_type =='Offline'){
 						@$order_online[$itemLedger->item_id] += $itemLedger->quantity; 
-						@$order_online_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+						@$order_online_rate[$itemLedger->item_id] += $itemLedger->amount; 
 						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
 						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
 						
@@ -576,7 +576,7 @@ class ItemLedgersController extends AppController
 					}
 					if($order->order_type == 'Bulkorder'){
 						@$order_bulk[$itemLedger->item_id] += $itemLedger->quantity;
-						@$order_bulk_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+						@$order_bulk_rate[$itemLedger->item_id] += $itemLedger->amount; 
 						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
 						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
 					}
@@ -585,7 +585,7 @@ class ItemLedgersController extends AppController
 		$WalkinSales = $this->ItemLedgers->WalkinSales->find()->where(['id'=>$itemLedger->walkin_sales_id]);	
 		  foreach($WalkinSales as $WalkinSale){
 				@$walkins_sales[$itemLedger->item_id] += $itemLedger->quantity; 
-				@$walkins_sales_rate[$itemLedger->item_id] += ($itemLedger->quantity*$itemLedger->rate); 
+				@$walkins_sales_rate[$itemLedger->item_id] += @$itemLedger->amount; 
 				@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
 				@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
 		  }

@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id','id'=>'customer_id','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id cstmr','id'=>'customer_id','label'=>false]); ?>
 					</div>
 					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
@@ -105,7 +105,7 @@
 									Amount From Wallet
 									</td>
 									<td>
-									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
+									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount amount_from_wallet','label'=>false,'type'=>'text','value'=>0]); ?>
 									</td>
 									<td></td>
 								</tr>
@@ -492,6 +492,19 @@ $(document).ready(function() {
 				$('textarea[name="customer_address"]').val(response);
 			}
 		});
+	});
+	///wallet
+	$('.cstmr').on("click",function() {
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+	
+		var url="<?php echo $this->Url->build(['controller'=>'Wallets','action'=>'checksubtract']); ?>";
+		url=url+'/'+customer_id,
+			$.ajax({
+				url: url,
+				type: 'GET',
+			}).done(function(response) { 
+				$('.amount_from_wallet').attr('max',response);
+			});
 	});
 });
 </script>

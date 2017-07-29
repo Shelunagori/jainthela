@@ -75,11 +75,11 @@ class WalkinSalesController extends AppController
 		
 		$where2 =[];
 		if(!empty($from_date)){
-			$from_date=date("Y-m-d H:i:s",strtotime($this->request->query('From')));
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
 			$where2['Orders.delivery_date >=']=$from_date;
 		}
 		if(!empty($to_date)){
-			$to_date=date("Y-m-d H:i:s",strtotime($this->request->query('To')));
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
 			$where2['Orders.delivery_date <=']=$to_date;
 		}
 		if(!empty($drivers_id)){
@@ -92,11 +92,11 @@ class WalkinSalesController extends AppController
 		
 		$where3 =[];
 		if($from_date=='1970-01-01'){  
-			$from_date=date("Y-m-d H:i:s"); 
+			$from_date=date("Y-m-d"); 
 			$where3['Orders.delivery_date >=']=$from_date;
 		}
 		if($to_date=='1970-01-01'){
-			$to_date=date('Y-m-d H:i:s');
+			$to_date=date('Y-m-d');
 			$where3['Orders.delivery_date <=']=$to_date;
 		}
 		

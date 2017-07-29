@@ -43,13 +43,13 @@
 						<?php $i=0; foreach ($items as $item): ?>	
 						<tr class="main_tr">
 							<td><?php echo ++$i; $i--; ?></td>
-							<td><?= h($item->item_category->name) ?></td>
+							<td><?= h(@$item->item_category->name) ?></td>
                             <td>
 								<?php
 								$item_name=$item->name;
 								$alias_name=$item->alias_name;
 								?>
-								<?= h($item_name. ' ('.$alias_name.')') ?>
+								<?= h(@$item_name. ' ('.$alias_name.')') ?>
 								
 								<?php echo  $this->Form->control('items['.$i.'][item_id]',['type'=>'hidden','class'=>'form-control input-sm input-small', 'value'=>$item->id]); ?>
 							</td>

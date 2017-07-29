@@ -40,7 +40,7 @@ class ItemsTable extends Table
 
         $this->belongsTo('ItemCategories', [
             'foreignKey' => 'item_category_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Units', [
             'foreignKey' => 'unit_id'

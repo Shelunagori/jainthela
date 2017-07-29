@@ -42,8 +42,10 @@ class ItemsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$items = $this->Items->newEntity();
+		
 		if ($this->request->is(['post', 'put'])) {
 			$items=$this->request->getData('items');
+			
 			foreach($items as $item){
 				$item=(object)$item;
 				$query = $this->Items->query();
@@ -62,6 +64,7 @@ class ItemsController extends AppController
 			$this->Flash->success(__('Item rates have updated successfully.'));
 		 }
 		$items = $this->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.freeze'=>0])->contain(['ItemCategories', 'Units']);
+		//pr($items->toArray());exit;
 		$this->set(compact('items', 'itemCategories', 'units'));
         $this->set('_serialize', ['items']);
     }
