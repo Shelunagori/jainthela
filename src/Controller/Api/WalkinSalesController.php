@@ -144,7 +144,7 @@ class WalkinSalesController extends AppController
 					
 					
 					$query = $this->WalkinSales->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','rate', 'amount', 'transaction_date','order_id', 'walkin_sales_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','rate', 'amount', 'transaction_date','order_id', 'walkin_sales_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
