@@ -89,7 +89,12 @@ class OrdersController extends AppController
 		->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
 		->contain(['CustomerAddresses']));
 		
-        $this->set(compact('orders'));
+		$Customers = $this->Orders->Customers->find();
+		$Customer_data=[];
+		foreach($Customers as $Customer){
+			$Customer_data[]= $Customer->name.'('.$Customer->mobile.')';
+		}
+        $this->set(compact('orders','Customer_data'));
         $this->set('_serialize', ['orders']);
     }
 
