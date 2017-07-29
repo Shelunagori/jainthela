@@ -73,14 +73,15 @@ class WalkinSalesController extends AppController
 					
 					
 					$query = $this->WalkinSales->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','rate', 'amount', 'transaction_date','order_id', 'walkin_sales_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $item_id,
 							'quantity' => $item_quantity,
 							'inventory_transfer' => 'no',
-							'rate' => $item_amount,
+							'rate' => $item_rate,
+							'amount' => $item_amount,
 							'transaction_date'=>$transaction_date,
 							'order_id'=>0,
 							'walkin_sales_id'=>$walkin_id,
@@ -143,14 +144,15 @@ class WalkinSalesController extends AppController
 					
 					
 					$query = $this->WalkinSales->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','rate', 'amount', 'transaction_date','order_id', 'walkin_sales_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $item_id,
 							'quantity' => $item_quantity,
 							'inventory_transfer' => 'no',
-							'rate' => $item_amount,
+							'rate' => $item_rate,
+							'amount' => $item_amount,
 							'transaction_date'=>$transaction_date,
 							'order_id'=>0,
 							'walkin_sales_id'=>$walkin_id,

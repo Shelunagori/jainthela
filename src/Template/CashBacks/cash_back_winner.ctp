@@ -45,14 +45,17 @@
 						}
 						$sr_no=0; foreach ($fetch_cashback_win_details as $cb): 
 						$color=intval(256*$sr_no/($num_rows-1));
+						
 						$sr_no++;
 						$customer_name=$cb->customer->name;
 						$customer_mobile=$cb->customer->mobile;
 						$firstCharacter = substr($customer_name, 0, 1);
 						
 						?>
-						<tr >
-							<td><?php echo '<span class="badge tooltips"  style="background:rgb(256,<? echo $color.','.$color;>);">'?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
+						<tr>
+							<td><?php if($cb->claim=='yes'){ ?><?php echo '<span class="badge badge-success tooltips">'?>
+							<?php } else {?><?php echo '<span class="badge badge-warning tooltips">'?>
+							<?php } ?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
 							<td><?= h(ucwords($customer_name).' ('.$customer_mobile.')') ?></td>
 							<td><?= h('#'.str_pad($cb->cash_back_no, 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($cb->order_no) ?></td>
@@ -87,12 +90,6 @@ $(document).ready(function() {
 			$rows.show();
 		}
 	});
-
-    
-        $('.random').each(function() {
-            $(this).css('background',randomColor());
-        });
-    
 });
 </script>				 
 				

@@ -107,7 +107,12 @@ class OrdersController extends AppController
  		
    
 				$odrer_datas=$this->Orders->get($order_id);
- 				$o_date=$odrer_datas->otder_date;
+ 				$o_date=$odrer_datas->order_date;
+ 				$amount_from_wallet=$odrer_datas->amount_from_wallet;
+ 				$amount_from_jain_cash=$odrer_datas->amount_from_jain_cash;
+ 				$amount_from_promo_code=$odrer_datas->amount_from_promo_code;
+ 				$online_amount=$odrer_datas->online_amount;
+				$return_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
 				
 				$order_cancel = $this->Orders->query();
 					$result = $order_cancel->update()
@@ -115,6 +120,17 @@ class OrdersController extends AppController
 						'cancel_id' => $cancel_id, 'order_date' => $o_date])
 						->where(['id' => $order_id])
 						->execute();
+						
+						
+					$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $return_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $order_id
+							])
+					->execute();
 //end tis code///		
 
 		
@@ -169,12 +185,13 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date', 'order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date', 'order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
 							'rate' => $deliver_data->rate,
+							'amount' => $deliver_data->amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -185,12 +202,13 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount','quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
 							'rate' => $deliver_data->rate,
+							'amount' => $deliver_data->amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -277,12 +295,13 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate','amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
 							'rate' => $deliver_data->rate,
+							'amount' => $deliver_data->amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -293,12 +312,13 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate','quantity', 'inventory_transfer','transaction_date','order_id','status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate', 'amount','quantity', 'inventory_transfer','transaction_date','order_id','status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
 							'rate' => $deliver_data->rate,
+							'amount' => $deliver_data->amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
