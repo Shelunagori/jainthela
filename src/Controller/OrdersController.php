@@ -138,6 +138,14 @@ class OrdersController extends AppController
 		$order_date=$order->order_date;
 		$delivery_date=$order->delivery_date;
 		$curent_date=$order->curent_date;
+		
+		$amount_from_wallet=$order->amount_from_wallet;
+		$online_amount=$order->online_amount;
+		$amount_from_jain_cash=$order->amount_from_jain_cash;
+		$amount_from_promo_code=$order->amount_from_promo_code;
+		$return_amount=$amount_from_wallet+$online_amount+$amount_from_jain_cash+$amount_from_promo_code;
+		$online_amount=$order->online_amount;
+		$customer_id=$order->customer_id;
 		$CancelReasons=$this->Orders->CancelReasons->find('list');
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$cancel_id=$this->request->data['cancel_id'];
@@ -148,6 +156,17 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
+			
+			$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $return_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $id
+							])
+					->execute();
+					
 
 			return $this->redirect(['action' => 'index']);
 		}
@@ -395,11 +414,12 @@ class OrdersController extends AppController
 		
 		$amount_from_wallet=$order->amount_from_wallet;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
-		$amount_from_promo_code=$order->amount_from_promo_code;
+		$amount_from_promo_code=$order->amount_from_promo_code; 
+		$online_amount=$order->online_amount; 
 		$customer_id=$order->customer_id;
 		$order_date=$order->order_date;
 		
-		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code;
+		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
 			$total_amount=$this->request->data['total_amount'];
