@@ -28,24 +28,17 @@
 								<?php echo $this->Form->input('customer', ['empty'=>'--Customers--','options' => $Customer_data,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$customer_id) ]); ?>
 							</td>
 							<td width="2%">
-								<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$order_type) ]); ?>
+								<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$cur_type) ]); ?>
 							</td>
 							<td width="2%">
-								<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$orderstatus) ]); ?>
+								<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$cur_status) ]); ?>
 							</td>
 							<td width="5%">
-							<?php if(!empty($from_date)){ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
-							<?php }else{ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
-							<?php } ?>	
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Order From" value="<?php echo @$cur_date;  ?>"  data-date-format="dd-mm-yyyy">
 							</td>	
 							<td width="5%">
-							<?php if(!empty($to_date)){ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php }else{ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php } ?>	
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Order To" value="<?php echo @$cur_date;  ?>"  data-date-format="dd-mm-yyyy" >
+								
 							</td>
 							<td width="10%">
 								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>

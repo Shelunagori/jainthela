@@ -27,9 +27,11 @@
 							<h5> Total Amount : <?php if($totalOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '. $totalOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
-					<a class="more" href="index">
+					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
+					status=yes',array('escape'=>false,'class'=>'more')); ?>
+					<!--<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>
+					</a>-->
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -48,9 +50,10 @@
 							<h5> Total Amount : <?php if($inProcessOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $inProcessOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
-					<a class="more" href="index">
+					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?status=process',array('escape'=>false,'class'=>'more')); ?>
+					<!--<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>
+					</a>-->
 				</div>
 			</div>
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -69,9 +72,11 @@
 							<h5> Total Amount : <?php if($deliveredOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.   $deliveredOrder->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
-					<a class="more" href="index">
+					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
+					status=delivered',array('escape'=>false,'class'=>'more')); ?>
+					<!--<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>
+					</a>-->
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -91,9 +96,11 @@
 						
 						</div>
 					</div>
-					<a class="more" href="index">
+					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
+					status=cancel',array('escape'=>false,'class'=>'more')); ?>
+					<!--<a class="more" href="index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>
+					</a>-->
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -112,9 +119,11 @@
 							<h5> Total Amount : <?php if($walkinsales->total_amount) { echo '<i class="fa fa-rupee"> </i>'.' '.  $walkinsales->total_amount; } else { echo  '0';}?></h5>
 						</div>
 					</div>
-					<a class="more" href="../WalkinSales/index">
+					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/WalkinSales/index?
+					status=yes',array('escape'=>false,'class'=>'more')); ?>
+					<!--<a class="more" href="../WalkinSales/index">
 					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>
+					</a>-->
 				</div>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -134,9 +143,11 @@
 						
 					</div>
 				</div>
-				<a class="more" href="index">
+				<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
+					type=bulkorder',array('escape'=>false,'class'=>'more')); ?>
+				<!--<a class="more" href="index">
 				View more <i class="m-icon-swapright m-icon-white"></i>
-				</a>
+				</a>-->
 			</div>
 			</div>
 		</div>

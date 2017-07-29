@@ -75,60 +75,119 @@ class OrdersController extends AppController
         $this->set('_serialize', ['orders']);
     }
 	
-    public function index()
+    public function index($status=null,$type=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$curent_date=date('Y-m-d');
-		
+		$status = $this->request->query('status');
+		$type = $this->request->query('type');
 		$order_no = $this->request->query('order_no');
 		$customer_id = $this->request->query('customer');
-		$order_type = $this->request->query('order_type');
+		$order_types = $this->request->query('order_type');
 		$orderstatus = $this->request->query('orderstatus');
 		$from_date = $this->request->query('From');
 		$to_date = $this->request->query('To');
-		
 		$where =[];
 		
 		if(!empty($order_no)){
 			$where['Orders.order_no Like']='%'.$order_no.'%';
 		}
 		if(!empty($customer_id)){
-			$where['Customers.id']=$customer_id;
+			$where['Orders.customer_id']=$customer_id;
+			
 		}
-		if(!empty($order_type)){
-			$where['Orders.order_type']='%'.$order_type.'%';
+		if(!empty($order_types)){
+			$where['Orders.order_type']=$order_types;
 		}
 		if(!empty($orderstatus)){
-			$where['Orders.status']='%'.$orderstatus.'%';
+			$where['Orders.status']=$orderstatus;
 		}
-		if(!empty($from_date)){
-			$where['Orders.curent_date <=']=$orderstatus;
+		if(!empty($from_date)){ 
+			$where['Orders.curent_date >=']=date('Y-m-d',strtotime($from_date));
 		}
 		if(!empty($to_date)){
-			$where['Orders.curent_date >=']=$to_date;
+			$where['Orders.curent_date <=']=date('Y-m-d',strtotime($to_date));
 		}
-		
-		$this->paginate = [
+		//pr($where); exit;
+		//pr($where);exit;
+		 $this->paginate = [
             'contain' => ['Customers']
         ];
-        $orders = $this->paginate($this->Orders->find('all')
-		->order(['Orders.id'=>'DESC'])->where($where)
-		->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
 		
-		->contain(['CustomerAddresses']));
-		
+		if($status == 'process'){ 
+							$where['Orders.status']='In Process';
+							$cur_date = date('d-m-Y');
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->contain(['CustomerAddresses']));
+							$cur_status = 'In Process';
+							 $this->set(compact('orders','cur_status','cur_date'));
+		}else if($status == 'delivered'){
+							$where['Orders.status']='Delivered';
+							$cur_date = date('d-m-Y');
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->contain(['CustomerAddresses']));
+							$cur_status = 'Delivered';
+							
+							 $this->set(compact('orders','cur_status','cur_date'));
+		}else
+			 if($status == 'cancel'){
+							$where['Orders.status']='Cancel';
+							$cur_date = date('d-m-Y');
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->contain(['CustomerAddresses']));
+							$cur_status = 'Cancel';
+			
+							$this->set(compact('orders','cur_status','cur_date'));
+		}else if($type == 'bulkorder'){ 
+							$where['Orders.order_type']='Bulkorder';
+							$cur_date = date('d-m-Y');
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->contain(['CustomerAddresses']));
+							$cur_type = 'Bulkorder';
+							
+							 $this->set(compact('orders','cur_date','cur_type'));
+		}else if($status == 'yes'){
+							$cur_date = date('d-m-Y');
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->contain(['CustomerAddresses']));
+							$this->set(compact('orders','cur_date','cur_type'));
+		}else{
+							
+							$orders =$this->paginate($this->Orders->find('all')
+							->where($where)
+							->order(['Orders.id'=>'DESC'])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
+							->contain(['CustomerAddresses']));
+		}
+       
+		//pr($orders->toArray()); exit;
 		$Customers = $this->Orders->Customers->find();
 		$Customer_data=[];
 		foreach($Customers as $Customer){
-			$Customer_data[]= $Customer->name.'('.$Customer->mobile.')';
+			$Customer_data[$Customer->id]= $Customer->name.'('.$Customer->mobile.')';
 		}
 		$order_type=[];
 		$order_type=[['text'=>'Bulkorder','value'=>'Bulkorder'],['text'=>'Cod','value'=>'Cod'],['text'=>'Offline','value'=>'Offline'],['text'=>'Online','value'=>'Online'],['text'=>'Wallet','value'=>'Wallet']];
 		
 		$OrderStatus=[];
 		$OrderStatus=[['text'=>'Cancel','value'=>'Cancel'],['text'=>'Delivered','value'=>'Delivered'],['text'=>'In Process','value'=>'In Process']];
-        $this->set(compact('orders','Customer_data','order_type','OrderStatus','order_no','customer_id','order_type','orderstatus','from_date','to_date'));
+        $this->set(compact('orders','Customer_data','order_type','OrderStatus','order_no','customer_id','order_types','orderstatus','from_date','to_date'));
         $this->set('_serialize', ['orders']);
     }
 
