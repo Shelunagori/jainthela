@@ -45,7 +45,7 @@ class DriversController extends AppController
 		}
 		
 		$driver_details = $this->Drivers->DriverLocations->find()
-							->where(['DriverLocations.id IN'=>$ids])
+							->where(['DriverLocations.id IN'=>$ids,'lattitude !='=>'','longitude !='=>''])
 							->contain(['Drivers']);
  
 		$drivers=$this->Drivers->find('list');

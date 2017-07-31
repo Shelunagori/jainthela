@@ -170,6 +170,7 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Sales Rate Update','/Items/define_sale_rate',['escape'=>false]) ?>
 								</li>
+								
 							</ul>
 						</li>
 						<li class="classic-menu-dropdown" >
@@ -203,7 +204,9 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
 								</li>
-								
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Items/define_sale_rate',['escape'=>false]) ?>
+								</li>
 								
 							</ul>
 						</li>
