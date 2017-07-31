@@ -205,7 +205,7 @@
 									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Item Wise Sales Report','/itemLedgers/itemSaleReports',['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Items/define_sale_rate',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Drivers/driver_location',['escape'=>false]) ?>
 								</li>
 								
 							</ul>
