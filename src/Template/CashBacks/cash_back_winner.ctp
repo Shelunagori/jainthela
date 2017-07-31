@@ -25,7 +25,7 @@
 				<table class="table table-bordered table-condensed" id="main_tble">
 					<thead>
 						<tr>
-							
+							<th>Sr No</th>
 							<th scope="col">#</th>
 							<th scope="col">Customer Name</th>
 							<th scope="col">Cash Back No.</th>
@@ -39,7 +39,7 @@
 					<tbody>
 						
 						<?php
-						$num_rows=1;
+						$num_rows=1; $i=1;
 						foreach($fetch_cashback_win_details as $cb){
 						$num_rows++;
 						}
@@ -53,6 +53,7 @@
 						
 						?>
 						<tr>
+							<td><?php echo $i++;?></td>
 							<td><?php if($cb->claim=='yes'){ ?><?php echo '<span class="badge badge-success tooltips">'?>
 							<?php } else {?><?php echo '<span class="badge badge-warning tooltips">'?>
 							<?php } ?><?= h(ucwords($firstCharacter)) ?><?php echo '</span>'; ?></td>
