@@ -412,6 +412,7 @@ class ItemLedgersController extends AppController
 		}
 		$where['driver_id !=']=0;
 		$where['order_id =']=0;
+		$where['inventory_transfer']='yes';
 		//pr($where); exit;
  				 
 		$item_ledgers=$this->paginate(
