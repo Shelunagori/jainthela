@@ -219,6 +219,17 @@ class OrdersController extends AppController
         $this->set('_serialize', ['order']);
     }
 	
+	  public function report($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+        $order = $this->Orders->get($id, [
+            'contain' => ['Customers', 'PromoCodes', 'OrderDetails'=>['Items'=>['Units']], 'CustomerAddresses']
+        ]);
+		
+        $this->set('order', $order);
+        $this->set('_serialize', ['order']);
+    }
+	
 	public function cancelBox($id = null)
     {
 		$this->viewBuilder()->layout('');
@@ -312,6 +323,167 @@ class OrdersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+	 
+	public function bulkorderAdd($order_type = Null,$bulkorder_id = Null)
+    {
+		@$bulkorder_id;
+		$this->viewBuilder()->layout('index_layout');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+        $order = $this->Orders->newEntity();
+        if ($this->request->is('post')) {
+            $order = $this->Orders->patchEntity($order, $this->request->getData());
+			$curent_date=date('Y-m-d');
+
+			$last_order_no = $this->Orders->find()->select(['order_no', 'get_auto_no'])->order(['order_no'=>'DESC'])->where(['jain_thela_admin_id'=>$jain_thela_admin_id, 'curent_date'=>$curent_date])->first();
+
+			if(!empty($last_order_no)){
+			$get_auto_no = h(str_pad(number_format($last_order_no->get_auto_no+1),6, '0', STR_PAD_LEFT));
+			$next_get_auto_no=$last_order_no->get_auto_no+1;
+			}else{
+		    $get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
+			echo $next_get_auto_no=1;
+			}
+			$get_date=str_replace('-','',$curent_date);
+			$exact_order_no=h('W'.$get_date.$get_auto_no);//orderno///
+			
+			$order->order_no=$exact_order_no;
+ 			$order->curent_date=$curent_date;
+			$order->get_auto_no=$next_get_auto_no;
+			if($order_type == 'Bulkorder'){
+				$order->order_type=$order_type;
+			}else{
+				$order->order_type='Cod';
+			}
+			$order->jain_thela_admin_id=$jain_thela_admin_id;
+			$order->grand_total=$this->request->data['total_amount'];
+			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
+			
+            if ($orderDetails = $this->Orders->save($order)) {
+				$send_data = $orderDetails->id ;
+				$order_detail_fetch=$this->Orders->get($send_data);
+				$order_no=$order_detail_fetch->order_no;
+				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
+			
+				$customer_id=$order_detail_fetch->customer_id;
+				$customer_details=$this->Orders->Customers->find()
+                    ->where(['Customers.id' => $customer_id])->first();
+                    $mobile=$customer_details->mobile;
+                    $API_ACCESS_KEY=$customer_details->notification_key;
+                    $device_token=$customer_details->device_token;
+                    $device_token1=rtrim($device_token);
+                    $time1=date('Y-m-d G:i:s');
+
+					if(!empty($device_token1))
+					{
+
+					$msg = array
+					(
+					'message'     => 'Thank you, Your order has been successfully placed.',
+					'image'     => '',
+					'button_text'    => 'Track Your Order',
+					'link' => 'jainthela://track_order?id='.$send_data,
+					'notification_id'    => 1,
+					);
+
+					$url = 'https://fcm.googleapis.com/fcm/send';
+					$fields = array
+					(
+						'registration_ids'     => array($device_token1),
+						'data'            => $msg
+					);
+					$headers = array
+					(
+						'Authorization: key=' .$API_ACCESS_KEY,
+						'Content-Type: application/json'
+					);
+
+					  //echo json_encode($fields);
+					  $ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url);
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+					$result001 = curl_exec($ch);
+					if ($result001 === FALSE) {
+						die('FCM Send Error: ' . curl_error($ch));
+					}
+					curl_close($ch);
+				}
+				
+				$customer = $this->Orders->Customers->get($order->customer_id);
+				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
+				$ledgerAccount->name = $customer->name.$customer->mobile;
+				$ledgerAccount->customer_id = $order->customer_id;
+				$ledgerAccount->account_group_id = '5';
+				$ledgerAccount->jain_thela_admin_id = $jain_thela_admin_id;
+				$this->Orders->LedgerAccounts->save($ledgerAccount);
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = $ledgerAccount->id;
+					$ledgers->debit = $order->grand_total;
+					$ledgers->credit = '0';
+					$this->Orders->Ledgers->save($ledgers);
+
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = 9;
+					$ledgers->debit = $order->amount_from_wallet;
+					$ledgers->credit = '0';
+					if($order->amount_from_wallet > 0){
+					$this->Orders->Ledgers->save($ledgers);
+					}
+					
+					$ledgers = $this->Orders->Ledgers->newEntity();
+					$ledgers->ledger_account_id	 = 8;
+					$ledgers->debit = '0';
+					$ledgers->credit = ($order->grand_total+$order->amount_from_wallet);
+					$this->Orders->Ledgers->save($ledgers);
+				
+				$this->Flash->success(__('The order has been saved.'));
+				if($order_type == 'Bulkorder'){
+					return $this->redirect(['action' => 'report/'.$send_data]);
+				}else{
+					return $this->redirect(['action' => 'index']);
+				}
+               
+            }
+
+            $this->Flash->error(__('The order could not be saved. Please, try again.'));
+        }
+        $customer_fetchs = $this->Orders->Customers->find('all');
+		foreach($customer_fetchs as $customer_fetch){
+			$customer_name=$customer_fetch->name;
+			$customer_mobile=$customer_fetch->mobile;
+			$customers[]= ['value'=>$customer_fetch->id,'text'=>$customer_name." (".$customer_mobile.")"];
+		}
+		$deliverytime_fetchs = $this->Orders->DeliveryTimes->find('all');
+		foreach($deliverytime_fetchs as $deliverytime_fetch){
+			$time_id=$deliverytime_fetch->id;
+			$time_from=$deliverytime_fetch->time_from;
+			$time_to=$deliverytime_fetch->time_to;
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+		}
+       // $promoCodes = $this->Orders->PromoCodes->find('list');
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
+
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			@$unit_name=$item_fetch->unit->unit_name;
+			$print_quantity=$item_fetch->print_quantity;
+			$rates=$item_fetch->offline_sales_rate;
+			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
+			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
+		}
+		$this->loadModel('BulkBookingLeads');
+        $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
+
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax'));
+        $this->set('_serialize', ['order']);
+    }
+	
     public function add($order_type = Null,$bulkorder_id = Null)
     {
 		
@@ -409,8 +581,6 @@ class OrdersController extends AppController
 				$ledgerAccount->account_group_id = '5';
 				$ledgerAccount->jain_thela_admin_id = $jain_thela_admin_id;
 				$this->Orders->LedgerAccounts->save($ledgerAccount);
-				
-			
 					$ledgers = $this->Orders->Ledgers->newEntity();
 					$ledgers->ledger_account_id	 = $ledgerAccount->id;
 					$ledgers->debit = $order->grand_total;
@@ -430,13 +600,14 @@ class OrdersController extends AppController
 					$ledgers->debit = '0';
 					$ledgers->credit = ($order->grand_total+$order->amount_from_wallet);
 					$this->Orders->Ledgers->save($ledgers);
-			
-
-
 				
-                $this->Flash->success(__('The order has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				$this->Flash->success(__('The order has been saved.'));
+				if($order_type == 'Bulkorder'){
+					return $this->redirect(['action' => 'report/'.$send_data]);
+				}else{
+					return $this->redirect(['action' => 'index']);
+				}
+               
             }
 
             $this->Flash->error(__('The order could not be saved. Please, try again.'));
@@ -470,7 +641,7 @@ class OrdersController extends AppController
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
 
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time'));
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax'));
         $this->set('_serialize', ['order']);
     }
 	/**
