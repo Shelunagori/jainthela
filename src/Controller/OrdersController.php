@@ -518,9 +518,9 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			
+			pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
-				$send_data = $orderDetails->id ;
+			/* 	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
 				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
@@ -572,7 +572,7 @@ class OrdersController extends AppController
 						die('FCM Send Error: ' . curl_error($ch));
 					}
 					curl_close($ch);
-				}
+				} */
 				
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
@@ -670,7 +670,7 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id, [
             'contain' => ['Customers'=>['CustomerAddresses']]
         ]);
-		
+		//pr($order->customer->customer_addresses[0]['address']); exit;
 		$amount_from_wallet=$order->amount_from_wallet;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
 		$amount_from_promo_code=$order->amount_from_promo_code; 
@@ -704,7 +704,7 @@ class OrdersController extends AppController
 			$order->grand_total=$grand_total;
 			$order->order_date=$order_date;
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-
+			//pr($order);exit;
             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 

@@ -49,8 +49,8 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label class="control-label">Address</label>
-							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
-							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5']); ?>
+							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address','value'=>@$customer_address_id]); ?>
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','rows'=>'5','cols'=>'5','value'=>ucwords(@$order->customer->customer_addresses[0]['house_no']).ucwords(@$order->customer->customer_addresses[0]['address']).'-'.ucwords(@$order->customer->customer_addresses[0]['locality'])]); ?>
 							
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>

@@ -63,56 +63,32 @@ class WalkinSalesController extends AppController
 		}
 		
 		
-		$where2 =[];
+		$where1 =[];
 		if(!empty($from_date)){
 			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
 			$from_date= $from_date.' 00:00:00';
-			$where2['Orders.delivery_date >=']=$from_date;
+			$where1['Orders.delivery_date >=']=$from_date;
 		}
 		if(!empty($to_date)){
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
 			$to_date= $to_date.' 23:59:59';
-			$where2['Orders.delivery_date <=']=$to_date;
+			$where1['Orders.delivery_date <=']=$to_date;
 		}
 		if(!empty($drivers_id)){
-			$where2['Drivers.id']=$drivers_id;
+			$where1['Drivers.id']=$drivers_id;
 		}
 		if(!empty($warehouse_id)){
-			$where2['Warehouses.id']=$warehouse_id;
+			$where1['Warehouses.id']=$warehouse_id;
 		}
-<<<<<<< HEAD
-		//pr($where2);exit;
-		 //pr(date('Y-m-d',strtotime('Orders.delivery_date')));exit;
-		
-		$where3 =[];
-		if($from_date=='1970-01-01'){  
-			$from_date=date("Y-m-d"); 
-			$where3['Orders.curent_date >=']=$from_date;
-		}
-		if($to_date=='1970-01-01'){
-			$to_date=date('Y-m-d');
-			$where3['Orders.curent_date <=']=$to_date;
-		}
-=======
-		//pr($where2); exit;
-		
->>>>>>> 8d24d5acbf55176c5c067b6524645cb1fb05c798
-		
-		
+
 		if(!empty($where)){
 			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
 					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 		}
 		
-		if(!empty($where2)){
+		if(!empty($where1)){
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where2)->where(['Orders.status IN'=>'Delivered']);
-<<<<<<< HEAD
-		}else{ 
-			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where3)->where(['Orders.status IN'=>'Delivered']);
-=======
->>>>>>> 8d24d5acbf55176c5c067b6524645cb1fb05c798
+					->where($where1)->where(['Orders.status IN'=>'Delivered']);
 		}			
 		
 		//pr($Orders->toArray());exit;
@@ -122,6 +98,12 @@ class WalkinSalesController extends AppController
 		$this->set('_serialize', ['walkinSales']);
     }
 
+	public function showSearch(){
+		$this->viewBuilder()->layout('');
+		$Drivers = $this->WalkinSales->Drivers->find('list');
+		$Warehouses = $this->WalkinSales->Warehouses->find('list');
+		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id'));
+	}
 	
     /**
      * View method

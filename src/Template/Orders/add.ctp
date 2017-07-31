@@ -490,6 +490,7 @@ $(document).ready(function() {
 			validator.reset();
 			}else{	
 				$('textarea[name="customer_address"]').val(response);
+				$('input[name="customer_address_id"]').val(response);
 			}
 		});
 	});

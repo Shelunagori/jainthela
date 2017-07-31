@@ -59,7 +59,7 @@ class OrderDetailsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
+        /* $validator
             ->decimal('quantity')
             ->requirePresence('quantity', 'create')
             ->notEmpty('quantity');
@@ -72,7 +72,7 @@ class OrderDetailsTable extends Table
         $validator
             ->decimal('amount')
             ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->notEmpty('amount'); */
 
         return $validator;
     }

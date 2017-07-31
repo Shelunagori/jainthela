@@ -15,40 +15,9 @@
 				</div>
 				
 			<div class="portlet-body form">
-				<form method="GET" >
-				<table width="50%" class="table table-condensed">
-					<tbody>
-						<tr>
-							<td width="2%">
-								<?php echo $this->Form->input('warehouse', ['empty'=>'--Warehouses--','options' => $Warehouses,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$warehouse_id) ]); ?>
-							</td>
-							<td width="2%">
-								<?php echo $this->Form->input('drivers', ['empty'=>'--Drivers--','options' => $Drivers,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$drivers_id) ]); ?>
-							</td>
-							<td width="5%">
-							<?php if(!empty($from_date)){ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
-							<?php }else{ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
-							<?php } ?>	
-							</td>	
-							<td width="5%">
-							<?php if(!empty($to_date)){ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php }else{ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php } ?>	
-							</td>
-							<td width="10%">
-								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
-							</td>
-							<td width="2%" align="right">
-								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
+				<form method="GET" id="showsearch">
+					
+				</form>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
 						<tr> 
@@ -129,6 +98,20 @@ var $rows = $('#main_tble tbody tr');
 </script>
 <script>
 $(document).ready(function() {
+	
+		var url="<?php echo $this->Url->build(["controller" => "WalkinSales", "action" => "showSearch"]); ?>";	
+//alert(url);		
+		url=url;  
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) { 
+			$('#showsearch').append('#showdata').html(response).select2();
+		});
+	
+	
+	
 	$('.view_order').die().live('click',function() {
 		$('#popup').show();
 		var order_id=$(this).attr('order_id');
@@ -160,6 +143,8 @@ $(document).ready(function() {
 	$('.close').die().live('click',function() {
 		$('#popup').hide();
 	});
+	///search 
+	
 });
 </script>
 <div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
