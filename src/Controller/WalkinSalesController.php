@@ -62,24 +62,16 @@ class WalkinSalesController extends AppController
 			$where['Warehouses.id']=$warehouse_id;
 		}
 		
-		$where1 =[];
-		if(empty($from_date)){
-			$from_date=date("Y-m-d");
-			$where1['WalkinSales.transaction_date >=']=$from_date;
-		}
-		if(empty($to_date)){
-			$to_date=date('Y-m-d');
-			$where1['WalkinSales.transaction_date <=']=$to_date;
-		}
-		
 		
 		$where2 =[];
 		if(!empty($from_date)){
 			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$from_date= $from_date.' 00:00:00';
 			$where2['Orders.delivery_date >=']=$from_date;
 		}
 		if(!empty($to_date)){
 			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$to_date= $to_date.' 23:59:59';
 			$where2['Orders.delivery_date <=']=$to_date;
 		}
 		if(!empty($drivers_id)){
@@ -88,34 +80,18 @@ class WalkinSalesController extends AppController
 		if(!empty($warehouse_id)){
 			$where2['Warehouses.id']=$warehouse_id;
 		}
-		pr($where2);exit;
-		 //pr(date('Y-m-d',strtotime('Orders.delivery_date')));exit;
+		//pr($where2); exit;
 		
-		$where3 =[];
-		if($from_date=='1970-01-01'){  
-			$from_date=date("Y-m-d"); 
-			$where3['Orders.delivery_date >=']=$from_date;
-		}
-		if($to_date=='1970-01-01'){
-			$to_date=date('Y-m-d');
-			$where3['Orders.delivery_date <=']=$to_date;
-		}
 		
 		
 		if(!empty($where)){
 			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
 					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
-		}else{
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
-					   ->where($where1)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 		}
-		//pr($where3); exit;
+		
 		if(!empty($where2)){
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
 					->where($where2)->where(['Orders.status IN'=>'Delivered']);
-		}else{ 
-			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where3)->where(['Orders.status NOT IN'=>['Cancel','In Process']]);
 		}			
 		
 		//pr($Orders->toArray());exit;
