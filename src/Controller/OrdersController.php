@@ -518,7 +518,7 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			pr($order);exit;
+			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
 			/* 	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);

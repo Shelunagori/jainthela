@@ -173,7 +173,24 @@ class CustomersController extends AppController
 		}
 		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->order(['CustomerAddresses.id'=>'DESC'])->first();
 		if(!empty($defaultAddress)){
-			echo $defaultAddress->house_no.$defaultAddress->address." - ".$defaultAddress->locality; exit;
+			echo $defaultAddress->house_no.$defaultAddress->address." - ".$defaultAddress->locality;
+			exit;
+		}else{
+			echo " ";   exit;
+		}
+    }
+	
+	public function defaultAddress1($id = null)
+    { 
+		$this->viewBuilder()->layout('');
+		
+		if(empty($id)){
+			echo ''; exit;
+		}
+		$defaultAddress = $this->Customers->CustomerAddresses->find('all')->where(['customer_id' => $id,'default_address' => 1])->order(['CustomerAddresses.id'=>'DESC'])->first();
+		if(!empty($defaultAddress)){
+			echo $defaultAddress->id;			
+			exit;
 		}else{
 			echo " ";   exit;
 		}

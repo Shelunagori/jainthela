@@ -488,8 +488,28 @@ $(document).ready(function() {
 			$("label.error").hide();
 			$(".error").removeClass("error");
 			validator.reset();
-			}else{	
+			}else{	alert(response);
 				$('textarea[name="customer_address"]').val(response);
+			}
+		});
+	});
+	$('.customer_id').on("change",function() {
+		var customer_id=$('select[name="customer_id"] option:selected').val();
+		
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress1']); ?>";
+		url=url+'/'+customer_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			if(response == ' '){
+				$('#address').modal({ keyboard: false, backdrop: 'static'}).show();
+				var validator = $( "#myForm1" ).validate();
+			$('#form1')[0].reset();
+			$("label.error").hide();
+			$(".error").removeClass("error");
+			validator.reset();
+			}else{	alert(response);
 				$('input[name="customer_address_id"]').val(response);
 			}
 		});
