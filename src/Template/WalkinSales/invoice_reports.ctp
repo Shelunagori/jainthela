@@ -66,8 +66,8 @@
 						?>
 						<tr>
 							<td><?= h($i++) ?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo $walkinSale->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo $walkinSale->driver->name ;} else { echo "-"; }?></td>
+							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?></td>
+							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?></td>
 							
 							<td align="center">
 								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>

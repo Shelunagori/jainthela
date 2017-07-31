@@ -497,7 +497,7 @@ class OrdersController extends AppController
 		$curent_date=date('Y-m-d');
 		
         $order = $this->Orders->get($id, [
-            'contain' => []
+            'contain' => ['Customers'=>['CustomerAddresses']]
         ]);
 		
 		$amount_from_wallet=$order->amount_from_wallet;

@@ -84,7 +84,7 @@
 		<tr>
 			<td width="50%" valign="top" align="left" style="background-color: rgba(228, 226, 226, 0.38);">
 				<table class="table table-condensed table-bordered" id="main_tble">
-					<caption style="text-align:center;font-size:20px;">Advance Wallet</caption>
+					<caption style="text-align:center;font-size:20px;">Advance In Wallet</caption>
 					<thead>
 						
 						<tr>
@@ -120,7 +120,7 @@
 			</td>
 			<td width="50%" valign="top" align="right" style="background-color: rgba(228, 226, 226, 0.38);">
 				<table class="table table-condensed  table-bordered" id="main_tble2">
-					<caption style="text-align:center;font-size:20px;">Consumed Wallet</caption>
+					<caption style="text-align:center;font-size:20px;">Consumed From Wallet</caption>
 					<thead>
 						<tr>
 							<th>Sr</th>

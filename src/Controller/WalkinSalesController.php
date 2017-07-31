@@ -88,6 +88,7 @@ class WalkinSalesController extends AppController
 		if(!empty($warehouse_id)){
 			$where2['Warehouses.id']=$warehouse_id;
 		}
+		pr($where2);exit;
 		 //pr(date('Y-m-d',strtotime('Orders.delivery_date')));exit;
 		
 		$where3 =[];
@@ -111,12 +112,13 @@ class WalkinSalesController extends AppController
 		//pr($where3); exit;
 		if(!empty($where2)){
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where2)->where(['Orders.status NOT IN'=>'Cancel']);
-		}else{
+					->where($where2)->where(['Orders.status IN'=>'Delivered']);
+		}else{ 
 			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where3)->where(['Orders.status NOT IN'=>'Cancel']);
+					->where($where3)->where(['Orders.status NOT IN'=>['Cancel','In Process']]);
 		}			
 		
+		//pr($Orders->toArray());exit;
 		$Drivers = $this->WalkinSales->Drivers->find('list');
 		$Warehouses = $this->WalkinSales->Warehouses->find('list');
 		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id'));
