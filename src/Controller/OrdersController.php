@@ -705,7 +705,7 @@ class OrdersController extends AppController
 			$grand_total=$total_amount+$delivery_charge;
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;
-			if($remaining_amount>0){
+			if($remaining_amount>=0){
 				$order->pay_amount=$remaining_amount;
 			}
 			else if($remaining_paid_amount>0){
