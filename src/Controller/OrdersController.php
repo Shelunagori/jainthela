@@ -657,9 +657,9 @@ class OrdersController extends AppController
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
-
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax'));
-        $this->set('_serialize', ['order']);
+		$warehouses = $this->Orders->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax', 'warehouses'));
+        $this->set('_serialize', ['order', 'warehouses']);
     }
 	/**
      * Ajax method
