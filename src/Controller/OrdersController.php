@@ -274,12 +274,23 @@ class OrdersController extends AppController
 	public function ajaxDeliver($id = null)
     {
 		$this->viewBuilder()->layout('');
-         $order = $this->Orders->get($id, [
-            'contain' => ['Customers']
+         $Orders = $this->Orders->get($id, [
+            'contain' => ['Customers', 'OrderDetails'=>['Items'=>['Units']]]
         ]);
-        $this->set('order', $order);
-        $this->set('_serialize', ['order']);
+		
+        $this->set('Orders', $Orders);
+        $this->set('_serialize', ['Orders']);
     }
+	
+	public function updateOrders($order_id = null,$item_id = null,$actual_quantity=null){
+		
+		$query = $this->Orders->OrderDetails->query();
+				$query->update()
+						->set(['actual_quantity' => $actual_quantity])
+						->where(['item_id'=>$item_id,'order_id'=>$order_id])
+						->execute();
+		exit;
+	}
 	
 	public function undoBox($id = null)
     {

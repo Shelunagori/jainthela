@@ -299,32 +299,63 @@ $(document).ready(function() {
 			}	
 		});	
 	});
+	////
 	
+	////
 	$('.get_order').die().live('click',function() {
+						
 		var order_id=$(this).attr('order_id');
-		var m_data = new FormData();
-		m_data.append('order_id',order_id);
- 		$.ajax({
-			url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			dataType:'text',
-			success: function(data)   // A function to be called if request succeeds
-			{
-				location.reload();
- 				//$('.setup').html(data);
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+			var actual_quantity = $(this).find("td:nth-child(4) .actual_quantity").val();
+			if(actual_quantity == 0){
+					var msg = "Enter Actual Quantity";
+					$('.error').html(msg).css('color','#a94442');
+			}else{
+					$('.get_order').prop('disabled', true);
+					$('.get_order').text('Delivered.....');
+					
+					
+					var item_id = $(this).find("td:nth-child(2) .item_id").val();
+					var url="<?php echo $this->Url->build(['controller'=>'Orders','action'=>'updateOrders']); ?>";
+					url=url+'/'+order_id+'/'+item_id+'/'+actual_quantity,
+					$.ajax({
+						url: url,
+						type: 'POST',
+					}).done(function(response) { 
+						
+						var order_id=$('.get_order').attr('order_id');
+						var m_data = new FormData();
+						m_data.append('order_id',order_id);
+						
+						$.ajax({
+						url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
+						data: m_data,
+						processData: false,
+						contentType: false,
+						type: 'POST',
+						dataType:'text',
+						success: function(data)   // A function to be called if request succeeds
+						{
+							location.reload();
+							//$('.setup').html(data);
+						}
+					});
+				});
 			}
+			
+			
 		});
+		
+		
 	});
 });
 </script>
 <div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
 <div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content" style="border:0px;">
-			<div class="modal-body" >
+			<div class="modal-body flip-scroll" style="height: auto;
+    overflow-y: auto;" >
 				<p >
 					 Body goes here...
 				</p>
