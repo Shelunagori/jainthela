@@ -157,6 +157,7 @@ $(document).ready(function() {
 				add_row();
 		});
 		
+		
 	add_row();
 		function add_row(){
 				var tr=$("#sample_table tbody tr.main_tr").clone();
@@ -179,7 +180,15 @@ $(document).ready(function() {
 					i++;
 				});
 			}	
-	  
+	  ///
+	 
+		
+		  $("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+				 var remaning = $(this).find("td:nth-child(3) .remaining").val();
+				alert(remaning);
+			});
+		
+		
 	$(document).on('keyup', '.number', function(e)
     { 
             var mdl=$(this).val();
@@ -211,7 +220,24 @@ $(document).ready(function() {
 			success: function(data)   // A function to be called if request succeeds
 			{
 				$('#data').html(data);
-				 
+				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+				 var remaning = $(this).find("td:nth-child(3) .remaining").val();
+				 var quantity = $(this).find("td:nth-child(4) .quantity").val();
+				 var wieght  = parseFloat(remaning - quantity);
+				 $('.quant').val(parseFloat(wieght.toFixed()));
+				 $('.quantity').live('keyup',function(){
+					 $("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+					  var quantity = $(this).find("td:nth-child(4) .quantity").val();
+					   var remaning = $(this).find("td:nth-child(3) .remaining").val();
+					var wieght  = remaning - quantity;
+					
+					$(this).find("td:nth-child(5) .quant").val(wieght);
+					 });	
+				 });	
+				
+			});
+				
+			 	
 			}	
 		});	
 	});

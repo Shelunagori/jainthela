@@ -2,8 +2,16 @@
 .table>thead>tr>th{
 	font-size:12px !important;
 }
+
+ @media print
+   {
+     .printdata{
+		 display:none;
+	 }
+   }
+
 </style>
-<div class="row hidden-print">
+<div class="row printdata">
 	<div class="col-md-12">
 		<div class="portlet light bordered">
 			<div class="portlet-title">
@@ -177,6 +185,7 @@
 			
 		</div>
 	</div>
+</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>

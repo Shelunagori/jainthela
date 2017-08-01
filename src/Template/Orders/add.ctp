@@ -433,6 +433,14 @@ $(document).ready(function() {
 							url: url,
 						}).done(function(response) { 
 							$('textarea[name="customer_address"]').val(response);
+							var customer_id=$('select[name="customer_id"] option:selected').val();
+							var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress1']); ?>";
+							url=url+'/'+customer_id,
+							$.ajax({
+								url: url,
+							}).done(function(response) { 
+								$('input[name="customer_address_id"]').val(response);
+							});
 							$('#address').modal('toggle');
 							$('#address input').val('');
 							$('#address textarea').val('');

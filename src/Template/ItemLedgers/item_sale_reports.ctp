@@ -56,8 +56,10 @@
 					$id=$itemLedger->id;
 					$from_dates = date('d-m-Y');
 					$to_dates = date('d-m-Y');
+					$total_amount = @$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id];
 					if(in_array($id , $Itemsexists))
 					{
+						if(@$total_amount != 0){
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
@@ -73,37 +75,47 @@
 								<?php } ?>
 							</td>
 								<?php }else{ ?> 
-							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
-							<?php } ?>
-							<?php if(!empty(@$order_online[$itemLedger->id])){ ?>
 							<td>
-							<?php if(!empty($from_date)){ ?>
-							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php }else{ ?>
-							<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php } ?>
+								<?php echo $this->Number->format(0,['places'=>2])?>
+							</td>
+								<?php } ?>
+								<?php if(!empty(@$order_online[$itemLedger->id])){ ?>
+							<td>
+								<?php if(!empty($from_date)){ ?>
+									<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php }else{ ?>
+									<?= $this->Html->link(@$order_online[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'onlineSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php } ?>
 							</td>
 							<?php }else{ ?> 
-							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
-							<?php } ?>
-							<?php if(!empty(@$order_bulk[$itemLedger->id])){ ?>
 							<td>
-							<?php if(!empty($from_date)){ ?>
-							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php }else{ ?>
-							<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
-							<?php } ?>
+								<?php echo $this->Number->format(0,['places'=>2])?>
 							</td>
-							<?php }else{ ?> 
-							<td><?php echo $this->Number->format(0,['places'=>2])?></td>
-							<?php } ?>
-							<td><?php echo $this->Number->format(@$order_online[$itemLedger->id]+@$order_bulk[$itemLedger->id]+@$walkins_sales[$itemLedger->id],['places'=>2]);?></td>
-							<td align="right"><?php echo $this->Number->format(@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id],['places'=>2]);
-							$amount_total+=@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id]?></td>
+								<?php } ?>
+								<?php if(!empty(@$order_bulk[$itemLedger->id])){ ?>
+							<td>
+								<?php if(!empty($from_date)){ ?>
+									<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_date,$to_date],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php }else{ ?>
+									<?= $this->Html->link(@$order_bulk[$itemLedger->id].$units[$itemLedger->id], ['controller' => 'Orders', 'action' => 'bulkSaleDetails',$itemLedger->id,$from_dates,$to_dates],array('escape'=>false,'target'=>'_blank')) ?>
+								<?php } ?>
+							</td>
+								<?php }else{ ?> 
+							<td>
+								<?php echo $this->Number->format(0,['places'=>2])?>
+							</td>
+								<?php } ?>
+							<td>
+								<?php echo $this->Number->format(@$order_online[$itemLedger->id]+@$order_bulk[$itemLedger->id]+@$walkins_sales[$itemLedger->id],['places'=>2]);?>
+							</td>
+							<td align="right">
+								<?php echo $this->Number->format(@$total_amount,['places'=>2]);
+								$amount_total+=@$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id]?>
+							</td>
 						</tr>
 						
 					<?php
-					}
+					}}
 						endforeach;?>
 					<tr>
 						<td align="right" colspan="6"><b>Total</b></td>

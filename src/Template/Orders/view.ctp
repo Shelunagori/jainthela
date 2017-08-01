@@ -1,11 +1,10 @@
 <style>
+
 @media print{
 	.maindiv{
 		width:100% !important;
 	}	
-	.hidden-print{
-		display:none;
-	}
+	
 }
 p{
 margin-bottom: 0;
@@ -15,6 +14,7 @@ margin-bottom: 0;
 	font-family:Lato !important;
 }
 </style>
+
 <style type="text/css" media="print">
 @page {
     size: auto;   /* auto is the initial value */

@@ -30,15 +30,17 @@
 				$unit_name=$itemLedger->item->unit->unit_name;
 				@$i++;
 		?>
-			<tr class="main_tr" class="tab">
+			<tr class="main_tr tab">
 				<td align="center" width="1px"><?= $i ?>.</td>
 				<td>
 					<?= $itemLedger->item->name ?>
 					<?php echo $this->Form->input('item_ledgers['.$k.'][item_id]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number','value'=> $item_id]); ?>
 				</td>	
-				<td align="center"><?= h($remaining) ?></td>
+				<td align="center">
+					<?php echo $this->Form->input('item_ledgers['.$k.'][remaining]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm remaining','value'=> $remaining]); ?>
+				<?= h($remaining) ?></td>
 				<td>
-					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number','value'=> $remaining, 'max'=>$remaining]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number quantity','value'=> $remaining, 'max'=>$remaining]); ?>
 					<span class="msg_shw" style="color:green;font-size:10px;">
 						quantity in <?= $unit_name ?>
 					</span>
