@@ -254,7 +254,7 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
-			
+			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
 							->values([
@@ -264,6 +264,7 @@ class OrdersController extends AppController
 							'return_order_id' => $id
 							])
 					->execute();
+			}
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);
