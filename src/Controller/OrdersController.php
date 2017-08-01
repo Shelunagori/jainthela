@@ -357,7 +357,8 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			
+			pr($order->toArray());
+			exit;
             if ($orderDetails = $this->Orders->save($order)) {
 				$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
@@ -634,9 +635,11 @@ class OrdersController extends AppController
 			@$unit_name=$item_fetch->unit->unit_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
+			$sales_rates=$item_fetch->sales_rate;
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
 			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
+			$is_combo=$item_fetch->is_combo;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates,'sales_rate' =>$sales_rates,'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase,'is_combo' => $is_combo];
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();

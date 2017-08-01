@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id cstmr','id'=>'customer_id','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id','id'=>'customer_id','label'=>false]); ?>
 					</div>
 					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
@@ -58,33 +58,50 @@
 							 Add Address </a>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
-							
-						
+					</div>
+					<div class="col-md-6" align="center">
+						<?php if(!empty($bulkorder_id)){ ?>
+						<?php echo $this->Html->image('/img/bulkbookingimages/'.$bulk_image.'', ['height' => '200px','width' => '320px']); ?>
+						<?php } ?>
 					</div>
 				</div>
 				<div class="col-md-12"><br/></div>
 				<div class="row">
 					
-					<div class="col-md-8">
-						<table id="main_table" class="table table-condensed table-bordered">
+					<div class="col-md-12">
+						<table id="main_table" class="table table-condensed table-bordered" width="100%">
 							<thead>
 								<tr align="center">
-									<td width="5%">
+									<td width="3%">
 										<label>Sr<label>
 									</td>
-									<td width="30%">
+									<td width="25%">
 										<label>item<label>
 									</td>
-									<td width="20%">
+									<td width="10%">
 										<label>Quantity<label>
 									</td>
-									<td width="20%">
+									<td width="10%">
 										<label>Rate<label>
 									</td>
-									<td width="20%">
+									<td width="10%">
 										<label>Amount<label>
 									</td>
-									<td></td>
+									<td width="10%">
+										<label>CGST Rate</label>
+									</td>
+									<td width="10%">
+										<label>CGST Amount</label>
+									</td>
+									<td width="10%">
+										<label>SGST Rate</label>
+									</td>
+									<td width="10%">
+										<label>SGST Amount</label>
+									</td>
+									<td>
+										<label></label>
+									</td>
 								</tr>
 							</thead>
 							<tbody id='main_tbody' class="tab">
@@ -92,37 +109,54 @@
 							</tbody>
 							<tfoot>
 								<tr>
-									<td colspan="4" style="text-align:right;">
+									<td colspan="7" style="text-align:right;">
 									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
 									Grand Total</td>
-									<td>
+									<td colspan="2">
 									<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
 									</td>
 									<td></td>
 								</tr>
 								<tr>
-									<td colspan="4" style="text-align:right;">
-									Amount From Wallet
-									</td>
-									<td>
-									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount amount_from_wallet','label'=>false,'type'=>'text','value'=>0]); ?>
+									<td colspan="7" style="text-align:right;">
+									 Total CGST</td>
+									<td colspan="2">
+									<?php echo $this->Form->input('total_cgst_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total CGST','type'=>'text','readonly']); ?>
 									</td>
 									<td></td>
 								</tr>
 								<tr>
-									<td colspan="4" style="text-align:right;">
+									<td colspan="7" style="text-align:right;">
+									 Total RGST</td>
+									<td colspan="2">
+									<?php echo $this->Form->input('total_sgst_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total RGST','type'=>'text','readonly']); ?>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="7" style="text-align:right;">
+									Amount From Wallet
+									</td>
+									<td colspan="2">
+									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount','label'=>false,'type'=>'text','value'=>0]); ?>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan="7" style="text-align:right;">
 									Delivery Charge
 									</td>
-									<td>
+									<td colspan="2">
 									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>0,'readonly']); ?>
 									</td>
 									<td></td>
 								</tr>
+								
 								<tr>
-									<td colspan="4" style="text-align:right;">
+									<td colspan="7" style="text-align:right;">
 									Paid Amount
 									</td>
-									<td>
+									<td colspan="2">
 									<?php echo $this->Form->input('pay_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
 									</td>
 									<td></td>
@@ -130,11 +164,7 @@
 							</tfoot>
 						</table>
 					</div>
-					<div class="col-md-4">
-						<?php if(!empty($bulkorder_id)){ ?>
-						<?php echo $this->Html->image('/img/bulkbookingimages/'.$bulk_image.'', ['height' => '200px','width' => '320px']); ?>
-						<?php } ?>
-					</div>
+					
 				</div>
 				<div class="row">
 					<div class="col-md-2">
@@ -239,67 +269,25 @@ $(document).ready(function() {
 			
 		});
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
-		//var total_amount=total_amount-amount_from_wallet;
-		//$('input[name=total_amount]').val(total_amount);
-		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
-		
-		var grand_total=total_amount-amount_from_wallet+delivery_charge;
-		$('input[name=total_amount]').val(total_amount);
-		$('input[name=pay_amount]').val(grand_total);	 
+		var grand_total=total_amount-amount_from_wallet;
+		$('input[name=total_amount]').val(grand_total);
+			 
 		}
 		rename_rows();
-		calculate_total();
     });
 
 	$('.add_row').click(function(){
 		add_row();
-		calculate_total();
 	});
 
 	add_row();
-	calculate_total();
 	function add_row(){
 		var tr=$("#sample_table tbody tr.main_tr").clone();
 		$("#main_table tbody#main_tbody").append(tr);
 		
 		rename_rows();
-		
 	}
 
-	function calculate_total(){
-		var total=0;
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-		
-		var obj=$(this).closest('tr');
-		var qty=obj.find('td:nth-child(3) input').val();
-		var rate=obj.find('td:nth-child(4) input').val();
-		var amount=qty*rate;
-		var rate=obj.find('td:nth-child(5) input').val(amount);
-		var total_amount=0;
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
-		});
-		if($('input[name=discount_percent]').val())
-		{
-		var discount_percent=parseFloat($('input[name=discount_percent]').val());
-		var discount_amount=total_amount*(discount_percent/100);
-		total_amount-=discount_amount;
-		}
-		if(total_amount<100){
-			$('input[name=delivery_charge]').val(100);
-		}else{
-			$('input[name=delivery_charge]').val(0);
-		}
-		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
-		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
-		
-		var grand_total=total_amount-amount_from_wallet+delivery_charge;
-		$('input[name=total_amount]').val(total_amount);
-		$('input[name=pay_amount]').val(grand_total);
-		
-		});
-	}
-	
 	function rename_rows(){
 		var i=0; 
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
@@ -319,11 +307,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr({name:"order_details["+i+"][amount]", id:"order_details-"+i+"-amount"}).rules('add', {
 				required: true
 			});
-			$(this).find("td:nth-child(6) input[type=hidden]").attr({name:"order_details["+i+"][is_combo]", id:"order_details-"+i+"-is_combo"});
-			
 			i++;
 		});
-		calculate_total();
 	}
 	<?php
 	if($order_type=='Bulkorder')
@@ -383,22 +368,15 @@ $(document).ready(function() {
 
 	$(".attribute").die().live('change',function(){
 		var raw_attr_name = $('option:selected', this).attr('print_quantity');
-		var raw_attr_rates = $('option:selected', this).attr('sales_rate');
+		var raw_attr_rates = $('option:selected', this).attr('rates');
 		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
 		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');
 		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');
-		var amount=raw_attr_minimum_quantity_factor*raw_attr_rates;
-		var is_combo=$('option:selected', this).attr('is_combo');
-		
 		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
-		$(this).closest('tr').find('.is_combo').val(is_combo);
-		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
-		$(this).closest('tr').find('.quant').val(raw_attr_minimum_quantity_factor);
+		//$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
-		$(this).closest('tr').find('.show_amount').val(amount);
 		//$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
-		calculate_total();
 	});
 
 	$(".quant").die().live('keyup',function(){
@@ -540,44 +518,10 @@ $(document).ready(function() {
 			$("label.error").hide();
 			$(".error").removeClass("error");
 			validator.reset();
-			}else{	alert(response);
+			}else{	
 				$('textarea[name="customer_address"]').val(response);
 			}
 		});
-	});
-	$('.customer_id').on("change",function() {
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		
-		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress1']); ?>";
-		url=url+'/'+customer_id,
-		
-		$.ajax({
-			url: url,
-		}).done(function(response) { 
-			if(response == ' '){
-				$('#address').modal({ keyboard: false, backdrop: 'static'}).show();
-				var validator = $( "#myForm1" ).validate();
-			$('#form1')[0].reset();
-			$("label.error").hide();
-			$(".error").removeClass("error");
-			validator.reset();
-			}else{	alert(response);
-				$('input[name="customer_address_id"]').val(response);
-			}
-		});
-	});
-	///wallet
-	$('.cstmr').on("click",function() {
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-	
-		var url="<?php echo $this->Url->build(['controller'=>'Wallets','action'=>'checksubtract']); ?>";
-		url=url+'/'+customer_id,
-			$.ajax({
-				url: url,
-				type: 'GET',
-			}).done(function(response) { 
-				$('.amount_from_wallet').attr('max',response);
-			});
 	});
 });
 </script>
@@ -588,7 +532,7 @@ $(document).ready(function() {
 				    <td>
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute']); ?>
 						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
-						</td>
+					</td>
 					<td>
 						<?php echo $this->Form->input('show_quantity', ['label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity','value'=>0]); ?>
 						
@@ -600,15 +544,20 @@ $(document).ready(function() {
 						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount rat_value','placeholder'=>'Rate','value'=>0]); ?>	
 					</td>
 					<td>
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount show_amount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
+						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
 					</td>
 					<td>
-						<?php echo $this->Form->input('is_combo', ['label' => false,'class' => 'form-control input-sm is_combo','type'=>'hidden']); ?>	
+						<?php echo $this->Form->input('cgst_rate', ['label' => false,'class' => 'form-control input-sm number cal_amount cgst_rate','placeholder'=>'Rate','value'=>0]); ?>	
+					</td><td>
+						<?php echo $this->Form->input('cgst_amount', ['label' => false,'class' => 'form-control input-sm number cal_cgstamount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
+					</td><td>
+						<?php echo $this->Form->input('sgst_rate', ['label' => false,'class' => 'form-control input-sm number cal_amount sgst_rate','placeholder'=>'Rate','value'=>0]); ?>	
+					</td><td>
+						<?php echo $this->Form->input('sgst_amount', ['label' => false,'class' => 'form-control input-sm number cal_sgstamount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
 					</td>
-					
 				</tr>
 			</tbody>
 		</table>

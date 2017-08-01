@@ -250,7 +250,7 @@ $(".dscnt").die().live('keyup',function(){
 			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
 			var total_amount = $(this).find("td:nth-child(5) input").val();
 		}); 
-		$(".grnd_ttl").val(grand_total.toFixed(2));
+		//$(".grnd_ttl").val(grand_total.toFixed(2));
 	}
 					  
 	$(document).on('keyup', '.number', function(e)
@@ -296,7 +296,7 @@ $(".dscnt").die().live('keyup',function(){
 		var g_total =  parseFloat($('.grnd_ttl').val());
 		if(!g_total){ g_total=0; }
 		var final_val = g_total+rate;
-		$('.grnd_ttl').val(final_val);
+		//$('.grnd_ttl').val(final_val);
 	});
 });
 
