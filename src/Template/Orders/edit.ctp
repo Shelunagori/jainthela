@@ -248,6 +248,8 @@ $(document).ready(function() {
 		}
 
 	});
+	
+	
 	//--	 END OF VALIDATION
 	$('.delete-tr').live('click',function() 
 	{
@@ -281,6 +283,7 @@ $(document).ready(function() {
 		rename_rows();
 	}
 
+	
 	function rename_rows(){
 		var i=0; 
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
@@ -303,6 +306,7 @@ $(document).ready(function() {
 			i++;
 		});
 	}
+	
 	
 	
 	$(document).on('keyup','.cal_amount',function(){ 
