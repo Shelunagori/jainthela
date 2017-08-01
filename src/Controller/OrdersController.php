@@ -264,8 +264,6 @@ class OrdersController extends AppController
 							'return_order_id' => $id
 							])
 					->execute();
-					
-
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);
@@ -292,19 +290,23 @@ class OrdersController extends AppController
 		$Orders->cancel_id=0;
 		 if ($this->Orders->save($Orders)) {
 			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
+			$wallet=$this->Orders->Wallets->find()->where(['order_id'=>$Orders->id]);
+			pr($wallet->toArray());
+			exit;
             $this->Flash->success(__('The Order has been reopened.'));
         } else {
             $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));
         }
 		return $this->redirect(['action' => 'index']);
     }
+	
 	public function ajaxOrderView()
     {
 		$order_id=$this->request->data['odr_id'];
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		$order_details=$this->Orders->OrderDetails->find()->where(['order_id'=>$order_id])->contain(['Items'=>['Units']]);
 
-		pr($order_details->toArray());  
+		//pr($order_details->toArray());  
  		$this->set('order_details', $order_details);
  		$this->set('order_id', $order_id);
         $this->set('_serialize', ['order_details', 'order_id']);
