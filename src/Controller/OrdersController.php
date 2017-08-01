@@ -254,7 +254,7 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
-			
+			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
 							->values([
@@ -264,6 +264,7 @@ class OrdersController extends AppController
 							'return_order_id' => $id
 							])
 					->execute();
+			}
 			return $this->redirect(['action' => 'index']);
 		}
         $this->set('order', $order);
@@ -492,8 +493,10 @@ class OrdersController extends AppController
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
-
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax'));
+		
+		$warehouses = $this->Orders->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+       
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','warehouses'));
         $this->set('_serialize', ['order']);
     }
 	
@@ -667,9 +670,9 @@ class OrdersController extends AppController
 		}
 		$this->loadModel('BulkBookingLeads');
         $bulk_Details = $this->BulkBookingLeads->find()->where(['id' => $bulkorder_id])->toArray();
-
-        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax'));
-        $this->set('_serialize', ['order']);
+		$warehouses = $this->Orders->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('order', 'customers', 'items', 'order_type', 'bulk_Details', 'bulkorder_id','delivery_time','tax', 'warehouses'));
+        $this->set('_serialize', ['order', 'warehouses']);
     }
 	/**
      * Ajax method
@@ -697,6 +700,7 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id, [
             'contain' => ['Customers'=>['CustomerAddresses']]
         ]);
+		 
 		//pr($order->customer->customer_addresses[0]['address']); exit;
 		$amount_from_wallet=$order->amount_from_wallet;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
@@ -704,7 +708,6 @@ class OrdersController extends AppController
 		$online_amount=$order->online_amount; 
 		$customer_id=$order->customer_id;
 		$order_date=$order->order_date;
-		
 		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $order = $this->Orders->patchEntity($order, $this->request->getData());
@@ -713,7 +716,7 @@ class OrdersController extends AppController
 			$grand_total=$total_amount+$delivery_charge;
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;
-			if($remaining_amount>0){
+			if($remaining_amount>=0){
 				$order->pay_amount=$remaining_amount;
 			}
 			else if($remaining_paid_amount>0){
@@ -748,9 +751,11 @@ class OrdersController extends AppController
 			@$unit_name=$item_fetch->unit->unit_name;
 			$print_quantity=$item_fetch->print_quantity;
 			$rates=$item_fetch->offline_sales_rate;
+			$sales_rates=$item_fetch->sales_rate;
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
 			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
-			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase];
+			$is_combo=$item_fetch->is_combo;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates,'sales_rate' =>$sales_rates,'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase,'is_combo' => $is_combo];
 		}
         $customer_fetchs = $this->Orders->Customers->find('all');
 		foreach($customer_fetchs as $customer_fetch){
@@ -766,9 +771,12 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
 		}
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
-        $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time'));
-        $this->set('_serialize', ['order']);
+
+        $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id])->contain(['Items'=>['Units']]);
+		$warehouses = $this->Orders->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time', 'warehouses'));
+        $this->set('_serialize', ['order', 'warehouses']);
+
     }
 
     /**

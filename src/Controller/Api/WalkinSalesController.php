@@ -189,7 +189,7 @@ class WalkinSalesController extends AppController
 		    $get_auto_no=h(str_pad(number_format(1),6, '0', STR_PAD_LEFT));
 			}
 			$get_date=str_replace('-','',$curent_date);
-			$order_no=h('W'.$driver_warehouse_id.$get_date.$get_auto_no);//orderno///
+			$order_no=h('WS'.$driver_warehouse_id.$get_date.$get_auto_no);//orderno///
 	}
 	else if($is_login=='driver')
 	{
