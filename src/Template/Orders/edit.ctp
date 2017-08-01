@@ -111,7 +111,7 @@
 						<?php echo $this->Form->input('order_details.'.$k.'.id', ['value' => $fetch_id]); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','value'=>$actual_quantity]); ?>
+						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','value'=>$actual_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name]); ?>
 						
 						<span class="msg_shw2" style="color:blue;font-size:12px;"><?php echo $msg_box_show.' '.$unit_name; ?></span>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains', 'type'=>'hidden','value'=>$fetch_quantity]); ?>
