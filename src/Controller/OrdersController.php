@@ -290,7 +290,7 @@ class OrdersController extends AppController
 		$Orders->cancel_id=0;
 		 if ($this->Orders->save($Orders)) {
 			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
-			$wallet=$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
+			$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
 			
             $this->Flash->success(__('The Order has been reopened.'));
         } else {
