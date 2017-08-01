@@ -290,9 +290,8 @@ class OrdersController extends AppController
 		$Orders->cancel_id=0;
 		 if ($this->Orders->save($Orders)) {
 			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
-			$wallet=$this->Orders->Wallets->find()->where(['order_id'=>$Orders->id]);
-			pr($wallet->toArray());
-			exit;
+			$wallet=$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
+			
             $this->Flash->success(__('The Order has been reopened.'));
         } else {
             $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));
@@ -489,7 +488,6 @@ class OrdersController extends AppController
 	
     public function add($order_type = Null,$bulkorder_id = Null)
     {
-		
 		@$bulkorder_id;
 		$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
