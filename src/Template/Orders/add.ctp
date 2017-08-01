@@ -390,10 +390,13 @@ $(document).ready(function() {
 		var amount=raw_attr_minimum_quantity_factor*raw_attr_rates;
 		var is_combo=$('option:selected', this).attr('is_combo');
 		
-		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_unit_name3);
+		$(this).closest('tr').find('.msg_shw').html("selling factor in : "+ raw_attr_minimum_quantity_factor +" "+ raw_attr_unit_name3);
 		$(this).closest('tr').find('.is_combo').val(is_combo);
 		$(this).closest('tr').find('.rat_value').val(raw_attr_rates);
-		$(this).closest('tr').find('.quant').val(raw_attr_minimum_quantity_factor);
+		$(this).closest('tr').find('.quant').val(1);
+		
+		$(this).closest('tr').find('.msg_shw2').html(raw_attr_minimum_quantity_factor+" "+raw_attr_unit_name3);
+		$(this).closest('tr').find('.mains').val(raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
 		$(this).closest('tr').find('.show_amount').val(amount);
@@ -409,7 +412,7 @@ $(document).ready(function() {
 		var unit_name = $(this).attr('unit_name');
 		if(!unit_name){ unit_name=0; }
 		var g_total = quant*minimum_quantity_factor;
-		$(this).closest('tr').find('.msg_shw2').html(quant+" "+unit_name);
+		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
 		$(this).closest('tr').find('.mains').val(g_total);
 	});
 	
