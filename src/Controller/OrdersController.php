@@ -237,7 +237,6 @@ class OrdersController extends AppController
 		$order_date=$order->order_date;
 		$delivery_date=$order->delivery_date;
 		$curent_date=$order->curent_date;
-		
 		$amount_from_wallet=$order->amount_from_wallet;
 		$online_amount=$order->online_amount;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
@@ -292,6 +291,7 @@ class OrdersController extends AppController
 		$Orders->order_date=$order_date;
 		$Orders->cancel_id=0;
 		 if ($this->Orders->save($Orders)) {
+			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
             $this->Flash->success(__('The Order has been reopened.'));
         } else {
             $this->Flash->error(__('The Order could not be Reopened. Please, try again.'));

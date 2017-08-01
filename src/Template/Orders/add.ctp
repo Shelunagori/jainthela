@@ -540,7 +540,7 @@ $(document).ready(function() {
 			$("label.error").hide();
 			$(".error").removeClass("error");
 			validator.reset();
-			}else{	alert(response);
+			}else{	
 				$('textarea[name="customer_address"]').val(response);
 			}
 		});
@@ -561,7 +561,7 @@ $(document).ready(function() {
 			$("label.error").hide();
 			$(".error").removeClass("error");
 			validator.reset();
-			}else{	alert(response);
+			}else{	
 				$('input[name="customer_address_id"]').val(response);
 			}
 		});
