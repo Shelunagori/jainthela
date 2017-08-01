@@ -687,6 +687,7 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id, [
             'contain' => ['Customers'=>['CustomerAddresses']]
         ]);
+		 
 		//pr($order->customer->customer_addresses[0]['address']); exit;
 		$amount_from_wallet=$order->amount_from_wallet;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
@@ -757,9 +758,10 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
 		}
         $promoCodes = $this->Orders->PromoCodes->find('list', ['limit' => 200]);
-        $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id]);
-        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time'));
-        $this->set('_serialize', ['order']);
+        $OrderDetails = $this->Orders->OrderDetails->find()->where(['order_id'=>$id])->contain(['Items'=>['Units']]);
+		$warehouses = $this->Orders->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+        $this->set(compact('order', 'customers', 'promoCodes', 'OrderDetails', 'items','delivery_time', 'warehouses'));
+        $this->set('_serialize', ['order', 'warehouses']);
     }
 
     /**

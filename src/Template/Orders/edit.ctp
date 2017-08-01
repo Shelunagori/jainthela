@@ -23,15 +23,21 @@
 						$bulk_delivery_time=$bulk_Detail->delivery_time;
 					}
 				}
+				
+				$order_date=date('d-m-Y', strtotime($order->order_date));
 					?>
 				<div class="row">
 					<div class="col-md-4">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me','id'=>'customer_id','label'=>false]); ?>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-3">
+						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','id'=>'customer_id','label'=>false]); ?>
+					</div>
+					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
-						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>$order_date]); ?>
 					</div>
 				<!--
 				<?php if(!empty($bulkorder_id)){ ?>
@@ -91,19 +97,23 @@
 									$fetch_quantity=$OrderDetail->quantity;
 									$fetch_rate=$OrderDetail->rate;
 									$fetch_amount=$OrderDetail->amount;
+									$minimum_quantity_factor=$OrderDetail->item->minimum_quantity_factor;
+									$unit_name=$OrderDetail->item->unit->unit_name;
+									$actual_quantity=$fetch_quantity/$minimum_quantity_factor;
+									$msg_box_show=$actual_quantity*$minimum_quantity_factor;
 									?>
 									
 				<tr class="main_tr" class="tab">
 					<td align="center" width="1px"></td>
 				    <td>
 						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute', 'value'=>$fetch_item_id]); ?>
-						<span class="msg_shw" style="color:blue;font-size:12px;"></span>
+						<span class="msg_shw" style="color:blue;font-size:12px;">selling factor in : <?php echo $minimum_quantity_factor.' '.$unit_name; ?></span>
 						<?php echo $this->Form->input('order_details.'.$k.'.id', ['value' => $fetch_id]); ?>
 					</td>
 					<td>
-						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','placeholder'=>'Quantity']); ?>
+						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','value'=>$actual_quantity]); ?>
 						
-						<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
+						<span class="msg_shw2" style="color:blue;font-size:12px;"><?php echo $msg_box_show.' '.$unit_name; ?></span>
 						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains', 'type'=>'hidden','value'=>$fetch_quantity]); ?>
 					</td>
 					<td>
@@ -189,6 +199,7 @@
 <script>
 $(document).ready(function() {
   //--------- FORM VALIDATION
+  calculate_total();
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -283,6 +294,40 @@ $(document).ready(function() {
 		rename_rows();
 	}
 
+	function calculate_total(){
+		var total=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+		
+		var obj=$(this).closest('tr');
+		var qty=obj.find('td:nth-child(3) input').val();
+		var rate=obj.find('td:nth-child(4) input').val();
+		var amount=qty*rate;
+		var rate=obj.find('td:nth-child(5) input').val(amount);
+		var total_amount=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
+		});
+		if($('input[name=discount_percent]').val())
+		{
+		var discount_percent=parseFloat($('input[name=discount_percent]').val());
+		var discount_amount=total_amount*(discount_percent/100);
+		total_amount-=discount_amount;
+		}
+		if(total_amount<100){
+			$('input[name=delivery_charge]').val(100);
+		}else{
+			$('input[name=delivery_charge]').val(0);
+		}
+		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
+		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
+		
+		var grand_total=total_amount-amount_from_wallet+delivery_charge;
+		$('input[name=total_amount]').val(total_amount);
+		$('input[name=pay_amount]').val(grand_total);
+		
+		});
+	}
+	
 	
 	function rename_rows(){
 		var i=0; 
@@ -305,9 +350,10 @@ $(document).ready(function() {
 			});
 			i++;
 		});
+		calculate_total();
 	}
 	
-	
+
 	
 	$(document).on('keyup','.cal_amount',function(){ 
 		var obj=$(this).closest('tr');
@@ -334,7 +380,7 @@ $(document).ready(function() {
 		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
 		 
 		var grand_total=total_amount-amount_from_wallet+delivery_charge;
-		alert(delivery_charge);
+		 
 		$('input[name=total_amount]').val(total_amount);
 		
 		if(grand_total<=0){
