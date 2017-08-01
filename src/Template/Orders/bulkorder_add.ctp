@@ -30,13 +30,16 @@
 				<div class="row">
 					<div class="col-md-3">
 						<label class=" control-label">Customer <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id','id'=>'customer_id','label'=>false]); ?>
+						<?php echo $this->Form->control('customer_id',['empty'=>'--Select Customer--','options' => $customers,'class'=>'form-control input-sm select2me customer_id cstmr','id'=>'customer_id','label'=>false]); ?>
+					</div>
+					<div class="col-md-3">
+						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','id'=>'customer_id','label'=>false]); ?>
 					</div>
 					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
 						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
 					</div>
-					
 				<!--<?php if(!empty($bulkorder_id)){ ?>
 					<div class="col-md-4" align="center">
 						<label class=" control-label">Delivery Date</label><br>
