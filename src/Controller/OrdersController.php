@@ -521,6 +521,16 @@ class OrdersController extends AppController
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
+				
+				$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'consumed', 'order_id'])
+							->values([
+							'customer_id' => $order->customer_id,
+							'consumed' => $order->amount_from_wallet,
+							'order_id' => $orderDetails->id
+							])
+					->execute();
+					
 			/* 	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
@@ -582,6 +592,9 @@ class OrdersController extends AppController
 				$ledgerAccount->account_group_id = '5';
 				$ledgerAccount->jain_thela_admin_id = $jain_thela_admin_id;
 				$this->Orders->LedgerAccounts->save($ledgerAccount);
+				
+				
+				
 					$ledgers = $this->Orders->Ledgers->newEntity();
 					$ledgers->ledger_account_id	 = $ledgerAccount->id;
 					$ledgers->debit = $order->grand_total;
