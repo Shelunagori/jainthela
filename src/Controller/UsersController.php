@@ -43,7 +43,7 @@ class UsersController extends AppController
 				
                 $this->Auth->setUser($user);
 				//pr($user);exit;
-				@header('location: Orders/dashboard');
+				//@header('location: Orders/dashboard');
 				//return $this->redirect(['controller'=>'Homes','action' => 'index']);
 				return $this->redirect(['controller'=>'Orders','action' => 'dashboard']);
             }
