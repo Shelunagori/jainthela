@@ -82,7 +82,7 @@ class ComboOffersController extends AppController
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/item_images/'.$img_name);
 				  }
 					$query = $this->ComboOffers->ComboOfferDetails->Items->query();
-					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate', 'is_combo', 'combo_offer_id', 'print_rate', 'discount_per', 'image', 'item_category_id', 'unit_id','minimum_quantity_factor'])
+					$query->insert(['name', 'jain_thela_admin_id', 'sales_rate', 'is_combo', 'combo_offer_id', 'print_rate', 'discount_per', 'image', 'item_category_id', 'unit_id','minimum_quantity_factor','print_quantity','minimum_quantity_purchase'])
 							->values([
 							'name' => $ComboOffers_name,
 							'jain_thela_admin_id' => $jain_thela_admin_id,
@@ -94,7 +94,9 @@ class ComboOffersController extends AppController
 							'image' => $ComboOffers_image,
 							'item_category_id' => 1,
 							'unit_id' => 7,
-							'minimum_quantity_factor' => 1
+							'minimum_quantity_factor' => 1,
+							'print_quantity' => '1 Combo',
+							'minimum_quantity_purchase' => 1
 							])
 					->execute();
                 $this->Flash->success(__('The combo offer has been saved.'));

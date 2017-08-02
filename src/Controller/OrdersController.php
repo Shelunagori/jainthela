@@ -236,12 +236,14 @@ class OrdersController extends AppController
         $order = $this->Orders->get($id);
 		$order_date=$order->order_date;
 		$delivery_date=$order->delivery_date;
+		$delivery_charge=$order->delivery_charge;
+		$total_amount=$order->total_amount;
 		$curent_date=$order->curent_date;
 		$amount_from_wallet=$order->amount_from_wallet;
 		$online_amount=$order->online_amount;
 		$amount_from_jain_cash=$order->amount_from_jain_cash;
 		$amount_from_promo_code=$order->amount_from_promo_code;
-		$return_amount=$amount_from_wallet+$online_amount+$amount_from_jain_cash+$amount_from_promo_code;
+		$paid_amount=$amount_from_wallet+$online_amount+$amount_from_jain_cash+$amount_from_promo_code;
 		$online_amount=$order->online_amount;
 		$customer_id=$order->customer_id;
 		$CancelReasons=$this->Orders->CancelReasons->find('list');
@@ -254,8 +256,18 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
+			$grand_total=$total_amount+$delivery_charge;
+			$remaining_amount=$grand_total-$paid_amount;
+			$remaining_paid_amount=$paid_amount-$grand_total;
 			
 			$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
+			
+			if($remaining_amount>=0){
+				$return_amount=$paid_amount;
+			}
+			else if($remaining_paid_amount>0){
+				$return_amount=$remaining_paid_amount;
+			}
 			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
