@@ -86,6 +86,7 @@
 									<td width="20%">
 										<label>Amount<label>
 									</td>
+									<td width="0%"></td>
 									<td></td>
 								</tr>
 							</thead>
@@ -97,6 +98,7 @@
 									$fetch_quantity=$OrderDetail->quantity;
 									$fetch_rate=$OrderDetail->rate;
 									$fetch_amount=$OrderDetail->amount;
+									$fetch_combo=$OrderDetail->is_combo;
 									$minimum_quantity_factor=$OrderDetail->item->minimum_quantity_factor;
 									$unit_name=$OrderDetail->item->unit->unit_name;
 									$actual_quantity=$fetch_quantity/$minimum_quantity_factor;
@@ -119,6 +121,9 @@
 										</td>
 										<td>
 											<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>$fetch_amount]); ?>	
+										</td>
+										<td>
+										<?php echo $this->Form->input('is_combo', ['label' => false,'class' => 'form-control input-sm is_combo','type'=>'hidden','value'=>$fetch_combo]); ?>	
 										</td>
 										<td>
 											<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
@@ -342,6 +347,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr({name:"order_details["+i+"][amount]", id:"order_details-"+i+"-amount"}).rules('add', {
 				required: true
 			});
+			$(this).find("td:nth-child(6) input[type=hidden]").attr({name:"order_details["+i+"][is_combo]", id:"order_details-"+i+"-is_combo"});
+			
 			i++;
 		});
 		calculate_total();
@@ -505,6 +512,9 @@ $(document).ready(function() {
 					</td>
 					<td>
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>0]); ?>	
+					</td>
+					<td>
+						<?php echo $this->Form->input('is_combo', ['label' => false,'class' => 'form-control input-sm is_combo','type'=>'hidden']); ?>	
 					</td>
                     <td>
 						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
