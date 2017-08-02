@@ -43,11 +43,10 @@ class DriversController extends AppController
 		foreach($query as $data){
 			$ids[]=$data->id;
 		}
-		
 		$driver_details = $this->Drivers->DriverLocations->find()
-							->where(['DriverLocations.id IN'=>$ids,'lattitude !='=>'','longitude !='=>''])
+							->where(['DriverLocations.id IN'=>$ids,'DriverLocations.lattitude !='=>'','DriverLocations.longitude !='=>''])
 							->contain(['Drivers']);
- 
+		
 		$drivers=$this->Drivers->find('list');
         $this->set(compact('driver_details', 'drivers'));
         $this->set('_serialize', ['driver_details', 'drivers']);
