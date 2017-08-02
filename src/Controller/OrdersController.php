@@ -343,11 +343,10 @@ class OrdersController extends AppController
 		 if ($this->Orders->save($Orders)) {
 			 
 			if($remaining_amount>=0){
-				$return_amount=$paid_amount;
+				$return_amount=0;
 			}
 			else if($remaining_paid_amount>0){
 				$return_amount=$remaining_paid_amount;
-			}
 			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
@@ -358,6 +357,7 @@ class OrdersController extends AppController
 							'return_order_id' => $id
 							])
 					->execute();
+			}
 			}
 			
 			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
