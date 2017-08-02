@@ -285,11 +285,19 @@ class OrdersController extends AppController
 	
 	public function updateOrders($order_id = null,$item_id = null,$actual_quantity=null){
 		
-		$query = $this->Orders->OrderDetails->query();
-				$query->update()
-						->set(['actual_quantity' => $actual_quantity])
-						->where(['item_id'=>$item_id,'order_id'=>$order_id])
-						->execute();
+		$quantity=explode(',',$actual_quantity);
+		$items=explode(',',$item_id);
+		$x=0;
+		foreach($items as $item){ 
+			$qty = $quantity[$x];
+				$query = $this->Orders->OrderDetails->query();
+					$query->update()
+							->set(['actual_quantity' => $qty])
+							->where(['item_id'=>$item,'order_id'=>$order_id])
+							->execute();
+				$x++;		
+		}
+		
 		exit;
 	}
 	
@@ -370,10 +378,9 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			pr($order->toArray());
-			exit;
+			
             if ($orderDetails = $this->Orders->save($order)) {
-				$send_data = $orderDetails->id ;
+				/* $send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
 				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
@@ -425,7 +432,7 @@ class OrdersController extends AppController
 						die('FCM Send Error: ' . curl_error($ch));
 					}
 					curl_close($ch);
-				}
+				} */
 				
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();

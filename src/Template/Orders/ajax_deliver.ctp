@@ -16,6 +16,7 @@ label{
 					<td align="left" colspan="5">
 						<b>
 							<?php 
+								
 								$order_id=$Orders->id;
 								$order_no=$Orders->order_no;
 								$customer_name=$Orders->customer->name;
@@ -31,7 +32,9 @@ label{
 					<tr>
 						<td>
 							<div class="portlet-body">
+							
 								<table class="table table-condensed table-bordered" id="main_table">
+									
 									<thead>
 										<tr align="center">
 											<td width="12%">
@@ -50,6 +53,7 @@ label{
 										</tr>
 									</thead>
 									<tbody id='main_tbody' class="tab">
+										
 										<?php $i=1; $k=0;  foreach($Orders->order_details as $order_detail){ ?>
 											<tr class="main_tr tab">
 												<td align="center">
@@ -63,13 +67,20 @@ label{
 													<?php echo $this->Form->input('order_details['.$k.'][quantity]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number ','value'=>@$order_detail->quantity]); ?>
 													<?= h(@$order_detail->quantity)?>
 												</td>
+												<?php if(@$order_detail->actual_quantity == 0){ ?>
 												<td align="center">
-													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','max'=>.01,'value'=>@$order_detail->actual_quantity]); ?>
+													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1]); ?>
 													<label class="error"></label>
 												</td>
-												
+												<?php }else{ ?>
+												<td align="center">
+													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1,'value'=>@$order_detail->actual_quantity]); ?>
+													<label class="error"></label>
+												</td>
+												<?php } ?>
 											</tr>
 										<?php $k++; }  ?>	
+										
 									</tbody>
 								</table>		
 						
@@ -83,6 +94,7 @@ label{
 							<a class="btn blue get_order" id="submits" order_id="<?php echo $order_id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a>
 						</td>
 					</tr>
-				</tfoot>						
+				</tfoot>	
 		</table>
+		
 </div>

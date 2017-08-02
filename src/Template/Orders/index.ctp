@@ -206,6 +206,65 @@ var $rows = $('#main_tble tbody tr');
 </script>
 <script>
 $(document).ready(function() {
+	
+	var form3 = $('#content');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+				
+			},
+
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+		},
+
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
+
+		submitHandler: function (form) {
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
+		}
+
+	});
+	////
 	$('.view_order').die().live('click',function() {
 		$('#popup').show();
 		var order_id=$(this).attr('order_id');
@@ -300,54 +359,68 @@ $(document).ready(function() {
 		});	
 	});
 	////
+	$('.get_order').die().live('click',function(event) {
+				 //event.preventDefault();		
+		var order_id=$(this).attr('order_id');
+		var s1 = [];
+		var s2 = [];
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
+			 var row = [];
+			 var items = [];
+			var actual_quantity = $(this).find("td:nth-child(4) .actual_quantity").val();
+			var item_id = $(this).find("td:nth-child(2) .item_id").val();
+			row.push(actual_quantity);
+			 s1.push(row);
+			 items.push(item_id);
+			 s2.push(items);
+		});
+			$('.get_order').prop('disabled', true);
+			$('.get_order').text('Delivered.....');
+		var output=multiply(s1);
+		if(output){
+			if(output!=0){ 
+						var url="<?php echo $this->Url->build(['controller'=>'Orders','action'=>'updateOrders']); ?>";
+						url=url+'/'+order_id+'/'+s2+'/'+s1,
+						$.ajax({
+							url: url,
+						}).done(function(response) { 
+							
+							var order_id=$('.get_order').attr('order_id');
+							var m_data = new FormData();
+							m_data.append('order_id',order_id);
+							
+							$.ajax({
+							url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
+							data: m_data,
+							processData: false,
+							contentType: false,
+							type: 'POST',
+							dataType:'text',
+							success: function(data)   // A function to be called if request succeeds
+							{
+								location.reload();
+								//$('.setup').html(data);
+							}
+							});
+						});	
+			}
+		}else{
+			alert('fill all actual quantity.');
+		}
+		
+	});	
+	
+	function multiply(array) {
+    var sum = 1;
+    for (var i = 0; i < array.length; i++) {
+        sum = sum * array[i];
+    }
+    return sum;
+}
+
 	
 	////
-	$('.get_order').die().live('click',function() {
-						
-		var order_id=$(this).attr('order_id');
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-			var actual_quantity = $(this).find("td:nth-child(4) .actual_quantity").val();
-			if(actual_quantity == 0){
-					var msg = "Enter Actual Quantity";
-					$('.error').html(msg).css('color','#a94442');
-			}else{
-					$('.get_order').prop('disabled', true);
-					$('.get_order').text('Delivered.....');
-					
-					
-					var item_id = $(this).find("td:nth-child(2) .item_id").val();
-					var url="<?php echo $this->Url->build(['controller'=>'Orders','action'=>'updateOrders']); ?>";
-					url=url+'/'+order_id+'/'+item_id+'/'+actual_quantity,
-					$.ajax({
-						url: url,
-						type: 'POST',
-					}).done(function(response) { 
-						
-						var order_id=$('.get_order').attr('order_id');
-						var m_data = new FormData();
-						m_data.append('order_id',order_id);
-						
-						$.ajax({
-						url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_deliver_api"]); ?>",
-						data: m_data,
-						processData: false,
-						contentType: false,
-						type: 'POST',
-						dataType:'text',
-						success: function(data)   // A function to be called if request succeeds
-						{
-							location.reload();
-							//$('.setup').html(data);
-						}
-					});
-				});
-			}
-			
-			
-		});
-		
-		
-	});
+
 });
 </script>
 <div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
