@@ -254,6 +254,8 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
+			
+			$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
 			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
@@ -535,7 +537,7 @@ class OrdersController extends AppController
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
-				if($$order->amount_from_wallet>0){
+				if($order->amount_from_wallet>0){
 				$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'consumed', 'order_id'])
 							->values([
@@ -721,6 +723,7 @@ class OrdersController extends AppController
 			}
 			else if($remaining_paid_amount>0){
 				$order->pay_amount=0;
+				$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
 				$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
 							->values([
