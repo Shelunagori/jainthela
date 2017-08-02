@@ -67,17 +67,12 @@ label{
 													<?php echo $this->Form->input('order_details['.$k.'][quantity]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number ','value'=>@$order_detail->quantity]); ?>
 													<?= h(@$order_detail->quantity)?>
 												</td>
-												<?php if(@$order_detail->actual_quantity == 0){ ?>
-												<td align="center">
-													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1]); ?>
-													<label class="error"></label>
-												</td>
-												<?php }else{ ?>
+												
 												<td align="center">
 													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1,'value'=>@$order_detail->actual_quantity]); ?>
 													<label class="error"></label>
 												</td>
-												<?php } ?>
+												
 											</tr>
 										<?php $k++; }  ?>	
 										
