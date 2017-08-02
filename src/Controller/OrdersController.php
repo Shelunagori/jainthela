@@ -254,6 +254,8 @@ class OrdersController extends AppController
 			$Orders->status='Cancel';
 			$Orders->cancel_id=$cancel_id;
 			$this->Orders->save($Orders);
+			
+			$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
 			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
@@ -542,7 +544,7 @@ class OrdersController extends AppController
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
-				
+				if($order->amount_from_wallet>0){
 				$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'consumed', 'order_id'])
 							->values([
@@ -551,7 +553,7 @@ class OrdersController extends AppController
 							'order_id' => $orderDetails->id
 							])
 					->execute();
-					
+				}
 			/* 	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
@@ -717,7 +719,7 @@ class OrdersController extends AppController
 		$order_date=$order->order_date;
 		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $order = $this->Orders->patchEntity($order, $this->request->getData());
+             $order = $this->Orders->patchEntity($order, $this->request->getData());
 			$total_amount=$this->request->data['total_amount'];
 			$delivery_charge=$this->request->data['delivery_charge'];
 			$grand_total=$total_amount+$delivery_charge;
@@ -728,6 +730,7 @@ class OrdersController extends AppController
 			}
 			else if($remaining_paid_amount>0){
 				$order->pay_amount=0;
+				$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
 				$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
 							->values([
@@ -741,8 +744,7 @@ class OrdersController extends AppController
 			$order->grand_total=$grand_total;
 			$order->order_date=$order_date;
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			//pr($order);exit;
-            if ($this->Orders->save($order)) {
+             if ($this->Orders->save($order)) {
                 $this->Flash->success(__('The order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

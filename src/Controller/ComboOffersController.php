@@ -92,8 +92,8 @@ class ComboOffersController extends AppController
 							'print_rate' => $ComboOffers_print_rate,
 							'discount_per' => $ComboOffers_discount_per,
 							'image' => $ComboOffers_image,
-							'item_category_id' => 2,
-							'unit_id' => 5,
+							'item_category_id' => 1,
+							'unit_id' => 7,
 							'minimum_quantity_factor' => 1
 							])
 					->execute();
@@ -172,8 +172,8 @@ class ComboOffersController extends AppController
 							'print_rate' => $ComboOffers_print_rate,
 							'discount_per' => $ComboOffers_discount_per,
 							'image' => $ComboOffers_image,
-							'item_category_id' => 9,
-							'unit_id' => 8
+							'item_category_id' => 1,
+							'unit_id' => 7
 							])
                     ->where(['combo_offer_id' => $ComboOffers_id])
                     ->execute();

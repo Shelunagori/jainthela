@@ -1,7 +1,7 @@
 <div class="col-md-12">
 		
 			
-				<div class="caption" >
+				<!--div class="caption" >
 					<i class="font-purple-intense"></i>
 					<span class="caption-subject font-purple-intense ">
 						<h4><i class="fa fa-book"></i> Today's Order Summary</h4></span>
@@ -29,9 +29,7 @@
 					</div>
 					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
 					status=yes',array('escape'=>false,'class'=>'more')); ?>
-					<!--<a class="more" href="index">
-					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>-->
+					 
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -51,9 +49,7 @@
 						</div>
 					</div>
 					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?status=process',array('escape'=>false,'class'=>'more')); ?>
-					<!--<a class="more" href="index">
-					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>-->
+					 
 				</div>
 			</div>
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -74,9 +70,7 @@
 					</div>
 					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
 					status=delivered',array('escape'=>false,'class'=>'more')); ?>
-					<!--<a class="more" href="index">
-					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>-->
+					 
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -98,9 +92,7 @@
 					</div>
 					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
 					status=cancel',array('escape'=>false,'class'=>'more')); ?>
-					<!--<a class="more" href="index">
-					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>-->
+					 
 				</div>
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -121,9 +113,7 @@
 					</div>
 					<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/WalkinSales/index?
 					status=yes',array('escape'=>false,'class'=>'more')); ?>
-					<!--<a class="more" href="../WalkinSales/index">
-					View more <i class="m-icon-swapright m-icon-white"></i>
-					</a>-->
+					 
 				</div>
 		</div>
 		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
@@ -145,15 +135,13 @@
 				</div>
 				<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> View more','/Orders/index?
 					type=bulkorder',array('escape'=>false,'class'=>'more')); ?>
-				<!--<a class="more" href="index">
-				View more <i class="m-icon-swapright m-icon-white"></i>
-				</a>-->
+				 
 			</div>
 			</div>
 		</div>
 			</div>
 		</div>
 	</div>
-</div>
+</div-->
 </div>
 			
