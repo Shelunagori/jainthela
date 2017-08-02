@@ -101,13 +101,13 @@ margin-bottom: 0;
 					<td align="center"><b><?= h(@$total_rate) ?></b></td>
 				</tr>
 				
-				<?php if(!empty($delivery_charge)){ ?>
+				
 				<tr style="background-color:#fff;">
 					<td colspan="4">&nbsp;</td>
 					<td align="right"><b>Delivery Charge</b></td>
 					<td align="center"><b><?= h($delivery_charge) ?></b></td>
 				</tr>
-				<?php } ?>
+				
 				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
 					<td colspan="4">&nbsp;</td>
 					<td align="right"><b>Total Amount</b></td>
@@ -133,7 +133,7 @@ margin-bottom: 0;
 				<?php if(!empty($amount_from_wallet)){ ?>
 				<tr style="background-color:#fff;">
 					<td colspan="4">&nbsp;</td>
-					<td align="right"><b>Wallet Payment</b></td>
+					<td align="right"><b>Payment From Wallet </b></td>
 					<td align="center"><b><?= h($amount_from_wallet) ?></b></td>
 				</tr>
 				<?php } ?>
@@ -151,9 +151,9 @@ margin-bottom: 0;
 					<td align="right">
 						<b>
 						<?php if(($status=='Delivered') || ($status==' Delivered')){ ?>
-							Total Paid
+							Total Paid Amount
 						<?php }else{ ?>
-							Due
+							Due Amount
 						<?php } ?>
 						</b></td>
 					<td align="center"><b><?= h($pay_amount) ?></b></td>
