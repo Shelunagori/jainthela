@@ -266,7 +266,7 @@ class OrdersController extends AppController
 				$return_amount=$paid_amount;
 			}
 			else if($remaining_paid_amount>0){
-				$return_amount=$remaining_paid_amount;
+				$return_amount=$paid_amount;
 			}
 			if($return_amount>0){
 			$query = $this->Orders->Wallets->query();
@@ -322,9 +322,45 @@ class OrdersController extends AppController
 		$Orders->status='In Process';
 		$Orders->order_date=$order_date;
 		$Orders->cancel_id=0;
+		
+		$delivery_date=$Orders->delivery_date;
+		$delivery_charge=$Orders->delivery_charge;
+		$total_amount=$Orders->total_amount;
+		$curent_date=$Orders->curent_date;
+		$amount_from_wallet=$Orders->amount_from_wallet;
+		$online_amount=$Orders->online_amount;
+		$amount_from_jain_cash=$Orders->amount_from_jain_cash;
+		$amount_from_promo_code=$Orders->amount_from_promo_code;
+		$paid_amount=$amount_from_wallet+$online_amount+$amount_from_jain_cash+$amount_from_promo_code;
+		$online_amount=$Orders->online_amount;
+		$customer_id=$Orders->customer_id;
+		
+			$grand_total=$total_amount+$delivery_charge;
+			$remaining_amount=$grand_total-$paid_amount;
+			$remaining_paid_amount=$paid_amount-$grand_total;
+ 			$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
+			
 		 if ($this->Orders->save($Orders)) {
+			 
+			if($remaining_amount>=0){
+				$return_amount=$paid_amount;
+			}
+			else if($remaining_paid_amount>0){
+				$return_amount=$remaining_paid_amount;
+			}
+			if($return_amount>0){
+			$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $return_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $id
+							])
+					->execute();
+			}
+			
 			$this->Orders->ItemLedgers->deleteAll(['order_id'=>$Orders->id]);
-			$this->Orders->Wallets->deleteAll(['return_order_id'=>$Orders->id]);
 			
             $this->Flash->success(__('The Order has been reopened.'));
         } else {
@@ -687,6 +723,7 @@ class OrdersController extends AppController
 			$minimum_quantity_factor=$item_fetch->minimum_quantity_factor;
 			$minimum_quantity_purchase=$item_fetch->minimum_quantity_purchase;
 			$is_combo=$item_fetch->is_combo;
+			
 			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")", 'print_quantity'=>$print_quantity, 'rates'=>$rates,'sales_rate' =>$sales_rates,'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name, 'minimum_quantity_purchase'=>$minimum_quantity_purchase,'is_combo' => $is_combo];
 		}
 		$this->loadModel('BulkBookingLeads');
