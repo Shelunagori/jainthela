@@ -102,32 +102,28 @@
 									$actual_quantity=$fetch_quantity/$minimum_quantity_factor;
 									$msg_box_show=$actual_quantity*$minimum_quantity_factor;
 									?>
-									
-				<tr class="main_tr" class="tab">
-					<td align="center" width="1px"></td>
-				    <td>
-						<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute', 'value'=>$fetch_item_id]); ?>
-						<span class="msg_shw" style="color:blue;font-size:12px;">selling factor in : <?php echo $minimum_quantity_factor.' '.$unit_name; ?></span>
-						<?php echo $this->Form->input('order_details.'.$k.'.id', ['value' => $fetch_id]); ?>
-					</td>
-					<td>
-						<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','value'=>$actual_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name]); ?>
-						
-						<span class="msg_shw2" style="color:blue;font-size:12px;"><?php echo $msg_box_show.' '.$unit_name; ?></span>
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains', 'type'=>'hidden','value'=>$fetch_quantity]); ?>
-					</td>
-					<td>
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount rat_value','placeholder'=>'Rate','value'=>$fetch_rate]); ?>	
-					</td>
-					<td>
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>$fetch_amount]); ?>	
-					</td>
-                    <td>
-						<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
-					</td>
-				</tr>
-				
-									
+									<tr class="main_tr" class="tab">
+										<td align="center" width="1px"></td>
+										<td>
+											<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$items,'label' => false,'class' => 'form-control input-sm attribute', 'value'=>$fetch_item_id]); ?>
+											<span class="msg_shw" style="color:blue;font-size:12px;">selling factor in : <?php echo $minimum_quantity_factor.' '.$unit_name; ?></span>
+										</td>
+										<td>
+											<?php echo $this->Form->input('show_quantity', ['value'=> $fetch_quantity,'label' => false,'class' => 'form-control input-sm number cal_amount quant','value'=>$actual_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'unit_name'=>$unit_name]); ?>
+											
+											<span class="msg_shw2" style="color:blue;font-size:12px;"><?php echo $msg_box_show.' '.$unit_name; ?></span>
+											<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number mains', 'type'=>'hidden','value'=>$fetch_quantity]); ?>
+										</td>
+										<td>
+											<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm number cal_amount rat_value','placeholder'=>'Rate','value'=>$fetch_rate]); ?>	
+										</td>
+										<td>
+											<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Amount','readonly','value'=>$fetch_amount]); ?>	
+										</td>
+										<td>
+											<a class="btn btn-default delete-tr input-sm" href="#" role="button" ><i class="fa fa-times"></i></a>
+										</td>
+									</tr>
 							<?php $k++;	} ?>
 							</tbody>
 							<tfoot>
@@ -334,10 +330,10 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").select2().attr({name:"order_details["+i+"][item_id]", id:"order_details-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
-			$(this).find("td:nth-child(3) input").attr({name:"order_details["+i+"][show_quantity]", id:"order_details-"+i+"-show_quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input.quant").attr({name:"order_details["+i+"][show_quantity]", id:"order_details-"+i+"-show_quantity"}).rules('add', {
 						required: true
 					});
-			$(this).find(".mains").attr({name:"order_details["+i+"][quantity]", id:"order_details-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input.mains").attr({name:"order_details["+i+"][quantity]", id:"order_details-"+i+"-quantity"}).rules('add', {
 						required: true
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"order_details["+i+"][rate]", id:"order_details-"+i+"-rate"}).rules('add', {
