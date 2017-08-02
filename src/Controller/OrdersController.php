@@ -774,12 +774,13 @@ class OrdersController extends AppController
 			$grand_total=$total_amount+$delivery_charge;
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;
+			$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
 			if($remaining_amount>=0){
 				$order->pay_amount=$remaining_amount;
 			}
 			else if($remaining_paid_amount>0){
 				$order->pay_amount=0;
-				$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
+				
 				$query = $this->Orders->Wallets->query();
 					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
 							->values([
