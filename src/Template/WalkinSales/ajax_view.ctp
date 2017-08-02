@@ -5,11 +5,7 @@
 		<tr>
 			<td width="50%" valign="top" align="left">
 				<table>
-					<tr>
-						<td>Name</td>
-						<td width="20" align="center">:</td>
-						<td><?= h($walkinSales->name).'('. h($walkinSales->mobile).')' ?></td>
-					</tr>
+					
 					<tr>
 						<td>Transaction Date</td>
 						<td width="20" align="center">:</td>
