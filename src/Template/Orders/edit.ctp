@@ -9,7 +9,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="font-purple-intense"></i>
-					<span class="caption-subject font-purple-intense "><i class="fa fa-plus"></i> Create Order </span>
+					<span class="caption-subject font-purple-intense "><i class="fa fa-plus"></i> Edit Order </span>
 				</div>
 
 			</div>

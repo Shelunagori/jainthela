@@ -70,7 +70,7 @@
 							<td><?= h($cb->order_no) ?></td>
 							<td align="right"><?= h($cb->amount) ?></td>
 							<td><?= h($cb->cash_back_percentage . '%') ?></td>
-							<td><?= h('After '.$cb->cash_back_limit . ' Logins') ?></td>
+							<td><?= h('After '.$cb->cash_back_limit . ' Cashback ids') ?></td>
 							<td class="<?php echo $winner;?>"><b><?= h($winner) ?></b></td>
 							<td class="<?php echo $claimed;?>"><b><?= h($claimed) ?></b></td>
 							<td><?= $created_on ?></td>
