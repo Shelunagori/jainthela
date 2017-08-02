@@ -118,7 +118,7 @@
 						$current_date=date('d-m-Y');
 						$status=$order->status;
 						?>
-						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#D0D0D0; "<?php } ?> >
+						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#ffe4e4; "<?php } ?> >
 							<td><?= ++$page_no ?></td>
 							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>
