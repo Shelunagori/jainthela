@@ -243,17 +243,16 @@ $(".dscnt").die().live('keyup',function(){
 			var amount =0;
 			var quantity = parseFloat($(this).find("td:nth-child(3) input").val());
 			if(!quantity){ quantity=0; }
-			alert(quantity);
 			var price = parseFloat($(this).find("td:nth-child(3) input").attr("price"));
 			if(!price){ price=0; }
+			alert(quantity);
 			alert(price);
 			amount = quantity*price;
 			grand_total=grand_total+amount;
-			
-		}); 
+		});
 		$(".grnd_ttl").val(grand_total.toFixed(2));
 	}
-					  
+
 	$(document).on('keyup', '.number', function(e)
     { 
 		var mdl=$(this).val();
@@ -310,11 +309,11 @@ $(".dscnt").die().live('keyup',function(){
 					<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number quant','placeholder'=>'Quantity']); ?>
+					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number quant calculation_amount','placeholder'=>'Quantity']); ?>
 					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<a class="btn btn-default delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
+					<a class="btn btn-default delete-tr input-sm calculation_amount" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 				</td>
 			</tr>
 		</tbody>
