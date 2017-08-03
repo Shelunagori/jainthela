@@ -1,4 +1,16 @@
-<div class="portlet light bordered">
+<style>
+.table>thead>tr>th, .table > tbody > tr > td{
+	font-size:12px !important;
+}
+ @media print
+   {
+     .printdata{
+		 display:none;
+	 }
+   }
+
+</style>
+<div class="portlet light bordered printdata">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
@@ -38,7 +50,7 @@
 								 <?php }else{ echo "-"; }?>
 							</td>
 							<td>
-								<?= h(@$walkinSale->walkin_sale->order_no) ?>
+								<a class="view_walk" order_id="<?php echo @$walkinSale->walkin_sale->id; ?>" ><?= h(@$walkinSale->walkin_sale->order_no) ?></a>
 							</td>
 							<td>
 								<?= h(@$walkinSale->walkin_sale->transaction_date) ?>
@@ -66,6 +78,42 @@
 				</table>
 				
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	$('.view_walk').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+		$('#popup').find('div.modal-body').html('Loading...');	 
+			var url="<?php echo $this->Url->build(["controller" => "WalkinSales", "action" => "ajaxView"]); ?>";
+			url=url+'/'+order_id;  
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});
+	});
+	///
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
+});	
+</script>
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
+<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body" >
+				<p >
+					 Body goes here...
+				</p>
 			</div>
 		</div>
 	</div>

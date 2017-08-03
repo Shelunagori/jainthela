@@ -37,7 +37,7 @@ margin-bottom: 0;
 				</tr>
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
-					<b>Address: </b><?= h(@$order->customer_address->name) ?><br><b>Mobile:</b> <?= h(@$order->customer_address->mobile) ?><br><?= h(@$order->customer_address->house_no) ?> &nbsp;<?= h(@$order->customer_address->address) ?>,&nbsp;<?= h(@$order->customer_address->locality) ?><br>	
+					<b>Address: </b><?= h(ucwords(@$order->customer_address->name)) ?><br><?= h(@$order->customer_address->house_no) ?> &nbsp;<?= h(ucfirst(@$order->customer_address->address)) ?>,&nbsp;<br/><?= h(ucwords(@$order->customer_address->locality)) ?><br><b>Mobile:</b> <?= h(@$order->customer_address->mobile) ?>	
 					</td>
 				</tr>
 				<tr style="background-color:#F98630; color:#fff;">

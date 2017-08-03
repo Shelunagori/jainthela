@@ -13,7 +13,7 @@ label{
 		<table class=" table-striped table-condensed table-hover  scroll" width="100%" border="0">
 			<thead>
 				<tr style="background-color:#fff; color:#000;">
-					<td align="left" colspan="5">
+					<td align="left" class="modal-header" colspan="5">
 						<b>
 							<?php 
 								
@@ -23,9 +23,10 @@ label{
 								$customer_mobile=$Orders->customer->mobile;
 								$order_date=date('d-m-Y h:i a', strtotime($Orders->order_date));
 							?>								
-							Deliver Order of Customer: <?= h($customer_name.' ('.$customer_mobile.')') ?>
+							Deliver Order of Customer: <?= h(ucwords($customer_name).' ('.$customer_mobile.')') ?>
 						</b>
 					</td>
+					
 				</tr>
 				</thead>
 				<tbody>
@@ -83,7 +84,9 @@ label{
 						</td>
 					</tr>
 				</tbody>
+				
 				<tfoot>
+					
 					<tr>
 						<td align="right">
 							<a class="btn blue get_order" id="submits" order_id="<?php echo $order_id; ?>" ><i class="fa fa-shopping-cart"></i> Deliver</a>

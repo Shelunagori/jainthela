@@ -1,4 +1,16 @@
-<div class="portlet light bordered">
+<style>
+.table>thead>tr>th, .table > tbody > tr > td{
+	font-size:12px !important;
+}
+ @media print
+   {
+     .printdata{
+		 display:none;
+	 }
+   }
+
+</style>
+<div class="portlet light bordered printdata">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
@@ -23,7 +35,9 @@
 						<?php $unit; $total=0; $i=1; foreach($ItemLedgers as $ItemLedger){ ?> 
 						<tr>
 							<td><?= h($i++) ?></td>
-							<td><?= h(@$ItemLedger->order->order_no) ?></td>
+							<td>
+								<a class="view_order" order_id="<?php echo @$ItemLedger->order->id; ?>" ><?= h(@$ItemLedger->order->order_no) ?></a>
+							</td>
 							<td><?= h(@$ItemLedger->quantity).$ItemLedger->item->unit->unit_name;
 							@$total+=@$ItemLedger->quantity; 
 							@$unit = @$ItemLedger->item->unit->unit_name;?></td>
@@ -48,4 +62,38 @@
 		</div>
 	</div>
 </div>
-
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	$('.view_order').die().live('click',function() {
+		$('#popup').show();
+		var order_id=$(this).attr('order_id');
+		$('#popup').find('div.modal-body').html('Loading...');	 
+			var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "view"]); ?>";			 
+			url=url+'/'+order_id;  
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			$('#popup').find('div.modal-body').html(response);
+		});
+	});
+	//
+	$('.close').die().live('click',function() {
+		$('#popup').hide();
+	});
+});
+</script>
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
+<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body" >
+				<p >
+					 Body goes here...
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -374,11 +374,12 @@ $(document).ready(function() {
 			 items.push(item_id);
 			 s2.push(items);
 		});
-			$('.get_order').prop('disabled', true);
-			$('.get_order').text('Delivered.....');
+			
 		var output=multiply(s1);
 		if(output){
 			if(output!=0){ 
+			$('.get_order').prop('disabled', true);
+			$('.get_order').text('Delivered.....');
 						var url="<?php echo $this->Url->build(['controller'=>'Orders','action'=>'updateOrders']); ?>";
 						url=url+'/'+order_id+'/'+s2+'/'+s1,
 						$.ajax({

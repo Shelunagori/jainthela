@@ -22,16 +22,43 @@ class WalkinSalesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
 		$status = $this->request->query('status');
-		$today = date('Y-m-d');
-		if($status=='yes'){
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today])->order(['transaction_date'=>'Desc'])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
-		}else{
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->order(['transaction_date'=>'Desc'])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]]);
+		$order_no = $this->request->query('order_no');
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$drivers_id = $this->request->query('drivers');
+		 $this->set(compact('order_no','from_date','to_date','drivers_id'));
+		$where=[];
+		
+		if(!empty($order_no)){
+			$where['WalkinSales.order_no Like'] = '%'.$order_no.'%';
+		}
+		if(!empty($from_date)){ 
+			
+		$where['WalkinSales.transaction_date >=']=date("Y-m-d",strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			
+			$where['WalkinSales.transaction_date <='] = date("Y-m-d",strtotime($to_date));
+		}
+		/* if(!empty($seller)){
+			$where[''] = '%'.$seller.'%';
+		} */
+		if(!empty($drivers_id)){
+			$where['Drivers.id'] = $drivers_id;
 		}
 		
+		if($status=='yes'){$today = date('Y-m-d');
+			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today])->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+		}else{
+			$walkinSales = $this->WalkinSales->find()->where($where)->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+		}
 		
-	   $this->set(compact('walkinSales'));
+		$Drivers = $this->WalkinSales->Drivers->find('list');
+		
+	   $this->set(compact('walkinSales','Drivers','order_no','from_date','to_date','drivers_id'));
         $this->set('_serialize', ['walkinSales']);
     }
 
@@ -44,8 +71,9 @@ class WalkinSalesController extends AppController
 		$warehouse_id = $this->request->query('warehouse');
 		$drivers_id = $this->request->query('drivers');
 		$from_date = $this->request->query('From');
+		$type = $this->request->query('type');
 		$to_date = $this->request->query('To');
-		
+		//pr($type);exit;
 		$where =[];
 		if(!empty($from_date)){
 			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
@@ -80,21 +108,43 @@ class WalkinSalesController extends AppController
 		if(!empty($warehouse_id)){
 			$where1['Warehouses.id']=$warehouse_id;
 		}
-
-		if(!empty($where)){
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
-					   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+		
+		
+			if($type == 'Walkin'){
+				if(!empty($where)){
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+				}
+				
+		}else if($type == 'Online'){  //pr($type);exit;
+			if(!empty($where1)){ //echo"sdf";exit;
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+			}			
 		}
+		else if($type == 'Bulkorder'){  //pr($type);exit;
+			if(!empty($where1)){ //echo"sdf";exit;
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type IN'=>'Bulkorder']);
+			}			
+		}
+		else{ 
+				if(!empty($where)){
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+				}
+				if(!empty($where1)){
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+			}
+			
+		}	
 		
-		if(!empty($where1)){
-			$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-					->where($where1)->where(['Orders.status IN'=>'Delivered']);
-		}			
-		
-		//pr($Orders->toArray());exit;
 		$Drivers = $this->WalkinSales->Drivers->find('list');
 		$Warehouses = $this->WalkinSales->Warehouses->find('list');
-		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id'));
+		$types=[];
+		$types=[['text'=>'Walkin','value'=>'Walkin'],['text'=>'Online','value'=>'Online'],['text'=>'Bulkorder','value'=>'Bulkorder']];
+		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id','type','types'));
 		$this->set('_serialize', ['walkinSales']);
     }
 
