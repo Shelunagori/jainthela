@@ -73,116 +73,137 @@
 					</thead>
 					<tbody>
 						<?php $amount_total=0; $i=0;
-						if(@$type=='Walkin'){
-						  foreach ($walkinSales as $walkinSale){ 
-						?>
+							if(@$type=='Walkin'){
+								foreach ($walkinSales as $walkinSale){ ?>
 						<tr>
-							<td><?= h(++$i) ?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?></td>
-							
+							<td>
+								<?= h(++$i) ?>
+							</td>
+							<td align="center">
+								<?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?>
+							</td>
+							<td align="center">
+								<?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?>
+							</td>
 							<td align="center">
 								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
 							</td>
-							<td align="center"><?= h(@$walkinSale->created_on) ?></td>
+							<td align="center">
+								<?= h(@$walkinSale->created_on) ?>
+							</td>
 							<td align="center">Walkin</td>
-							<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
-							$amount_total+=$walkinSale->total_amount;
-							?></td>
+							<td align="right">
+								<?= $this->Number->precision(@$walkinSale->total_amount,2); 
+								$amount_total+=$walkinSale->total_amount;?>
+							</td>
 						</tr>
 						<?php }}else if(@$type == 'Online'){
 							 $i=$i; foreach($Orders as $order){ ?>
 							<tr>
-							<td><?= h(++$i) ?></td>
-							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
-							<td align="center">
-								<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
-							</td>
-							<td align="center"><?= h(@$order->order_date) ?></td>
-							<td align="center">
-							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
-								echo "Online";
-							}?>
-							</td>
-							<td align="right"><?= $this->Number->precision($order->total_amount,2); 
-							$amount_total+=$order->total_amount;
-							?></td>
-						</tr>
-							 <?php }}
+								<td>
+									<?= h(++$i) ?>
+								</td>
+								<td align="center">
+									<?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?>
+								</td>
+								<td align="center">
+									<?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?>
+								</td>
+								<td align="center">
+									<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+								</td>
+								<td align="center">
+									<?= h(@$order->order_date) ?>
+								</td>
+								<td align="center">
+									<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
+										echo "Online";
+									}?>
+								</td>
+								<td align="right">
+									<?= $this->Number->precision($order->total_amount,2); 
+									$amount_total+=$order->total_amount;?>
+								</td>
+							</tr>
+							<?php }}
 							 else if($type == 'Bulkorder'){
-							 $i=$i; foreach($Orders as $order){ ?>
-							<tr>
-							<td><?= h(++$i) ?></td>
-							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
-							<td align="center">
-								<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
-							</td>
-							<td align="center"><?= h(@$order->order_date) ?></td>
-							<td align="center">
-							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
-								echo "Online";
-							}else {
-								echo "BulkOrder";
-							}?>
-							</td>
-							<td align="right"><?= $this->Number->precision($order->total_amount,2); 
-							$amount_total+=$order->total_amount;
-							?></td>
-						</tr>
+								$i=$i; foreach($Orders as $order){ ?>
+								<tr>
+									<td>
+										<?= h(++$i) ?>
+									</td>
+									<td align="center">
+										<?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?>
+									</td>
+									<td align="center">
+										<?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?>
+									</td>
+									<td align="center">
+										<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+									</td>
+									<td align="center">
+										<?= h(@$order->order_date) ?>
+									</td>
+									<td align="center">
+										<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
+											echo "Online";
+										}else {
+											echo "BulkOrder";
+										}?>
+									</td>
+									<td align="right">
+										<?= $this->Number->precision($order->total_amount,2); 
+										$amount_total+=$order->total_amount;?>
+									</td>
+								</tr>
 							 <?php }}
-							 
-							 
-							 
-							 else{
-								 foreach ($walkinSales as $walkinSale){ 
-						?>
-						<tr>
-							<td><?= h(++$i) ?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?></td>
-							
-							<td align="center">
-								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
-							</td>
-							<td align="center"><?= h(@$walkinSale->created_on) ?></td>
-							<td align="center">Walkin</td>
-							<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
-							$amount_total+=$walkinSale->total_amount;
-							?></td>
-						</tr>
-							 <?php }
-							foreach($Orders as $order){ ?>
-							<tr>
-							<td><?= h(++$i) ?></td>
-							<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
-							<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
-							<td align="center">
-								<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
-							</td>
-							<td align="center"><?= h(@$order->order_date) ?></td>
-							<td align="center">
-							<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
-								echo "Online";
-							}else {
-								echo "BulkOrder";
-							}?>
-							</td>
-							<td align="right"><?= $this->Number->precision($order->total_amount,2); 
-							$amount_total+=$order->total_amount;
-							?></td>
-							</tr><?php }} ?>
-						<tr>
-						<td align="right" colspan="6"><b>Total</b></td>
-						<td align="right"><b><?php echo $this->Number->format($amount_total,['places'=>2]); ?></b></td>
-					<tr>
-					</tbody>
-				</table>
+									else{
+										foreach ($walkinSales as $walkinSale){ ?>
+									<tr>
+										<td><?= h(++$i) ?></td>
+										<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?></td>
+										<td align="center"><?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?></td>
+										
+										<td align="center">
+											<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
+										</td>
+										<td align="center"><?= h(@$walkinSale->created_on) ?></td>
+										<td align="center">Walkin</td>
+										<td align="right"><?= $this->Number->precision(@$walkinSale->total_amount,2); 
+										$amount_total+=$walkinSale->total_amount;
+										?></td>
+									</tr>
+									 <?php }
+									foreach($Orders as $order){ ?>
+									<tr>
+										<td><?= h(++$i) ?></td>
+										<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
+										<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
+										<td align="center">
+											<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+										</td>
+										<td align="center"><?= h(@$order->order_date) ?></td>
+										<td align="center">
+										<?php if(@$order->order_type == 'Wallet' || @$order->order_type == 'Cod' || @$order->order_type == 'Online' || @$order->order_type == 'Offline' ){
+											echo "Online";
+										}else {
+											echo "BulkOrder";
+										}?>
+										</td>
+										<td align="right"><?= $this->Number->precision($order->total_amount,2); 
+										$amount_total+=$order->total_amount;
+										?></td>
+									</tr><?php }} ?>
+									<tr>
+										<td align="right" colspan="6"><b>Total</b></td>
+										<td align="right"><b><?php echo $this->Number->format($amount_total,['places'=>2]); ?></b></td>
+									<tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 			</div>
 		</div>
-	</div>
-</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
