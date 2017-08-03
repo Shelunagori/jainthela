@@ -159,7 +159,7 @@ class OrdersController extends AppController
 		if($is_login=='warehouse')
 		{
  			    $odrer_datas=$this->Orders->get($order_id);
-				$o_date=$odrer_datas->otder_date;
+				$o_date=$odrer_datas->order_date;
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
 						->set(['status' => 'Delivered',
@@ -271,10 +271,13 @@ class OrdersController extends AppController
 		}
 		else if($is_login=='driver')
 		{
-			        
+			        $odrer_datas=$this->Orders->get($order_id);
+					$o_date=$odrer_datas->order_date;
+				
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
-						->set(['status' => 'Delivered'])
+						->set(['status' => 'Delivered',
+						'order_date' => $o_date])
 						->where(['id' => $order_id])
 						->execute();
                     
