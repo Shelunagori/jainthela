@@ -305,6 +305,9 @@
 								<?php echo $this->Html->link('<i class="fa fa-tasks"></i> Bulk Order','/Orders/add/Bulkorder',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-life-ring"></i> Walkin Sales Register','/WalkinSales/index',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-file"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
 							<li>
