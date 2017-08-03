@@ -137,9 +137,9 @@
 							<td><?= h(@$order->customer_address->locality) ?></td>
 							<td align="right"><?= $this->Number->format($order->grand_total) ?></td>
 							<td><?= h($order->order_type) ?></td>
-							<td><?php $q=explode(' ',$order->order_date); ?> <?php echo $q[0] ?></td>
-							<td><?= h($delivery_date) ?></td>
-							<td><?= h($order->delivery_time) ?></td>
+							<td><?php $q=explode(' ',$order->order_date); ?> <span style="font-size:11px;"><?php echo $q[0] ?></span></td>
+							<td><span style="font-size:11px;"><?= h($delivery_date) ?></span></td>
+							<td><span style="font-size:11px;"><?= h($order->delivery_time) ?></span></td>
 							<td><?= h($status) ?></td>
 							
 							<td class="actions">
