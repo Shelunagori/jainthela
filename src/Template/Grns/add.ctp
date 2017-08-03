@@ -31,6 +31,14 @@
 					</div>
 				</div><br/>
 				<div class="row">
+							<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-md-6 control-label">Additional Note<span class="required" 	aria-required="true">*</span></label>
+										 <?= $this->Form->input('additional_note',['class'=>'form-control input-sm','id'=>'msg','label'=>false,'placeholder'=>'','rows'=>'3','style'=>'resize: none;']) ?>
+									</div>	 
+								</div>
+				</div>
+				<div class="row">
 					<div class="col-md-1"></div>
 					<div class="col-md-8">
 						<table id="main_table" class="table table-condensed table-bordered">
@@ -52,6 +60,7 @@
 								
 							</tbody>
 							<tfoot>
+								
 								<tr>
 									<td colspan="4"><a class="btn btn-default input-sm add_row" href="#" role="button" ><i class="fa fa-plus"></i> Add Row</a></td>
 								</tr>
@@ -59,6 +68,7 @@
 						</table>
 					</div>
 					<div class="col-md-1"></div>
+					
 				</div>
 				 
 				<br/>

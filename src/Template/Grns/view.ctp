@@ -44,6 +44,16 @@ margin-bottom: 0;
 						<td width="20" align="center">:</td>
 						<td><?= h('#'.str_pad($this->Number->format($grn->id), 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
+					<tr>
+						<td>Vendor</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($grn->vendor->name)  ?></td>
+						
+					</tr>
+					<tr><td>Note</td>
+					<td width="20" align="center">:</td><td><?= h($grn->additional_note) ?></td>
+		
+		</tr>
 				</table>
 			</td>
 			<td width="50%" valign="top" align="right">
@@ -57,20 +67,12 @@ margin-bottom: 0;
 						<td>Created On</td>
 						<td width="20" align="center">:</td>
 						<td ><?= h($grn->created_on) ?></td>
-						
-					</tr>
-					<tr>
-						<td>Vendor</td>
-						<td width="20" align="center">:</td>
-						<td ><?= h($grn->vendor->name)  ?></td>
-						
 					</tr>
 				</table>
 			</td>
 		</tr>
+		
 	</table>
-	
-	
 	<br/>
 	<table width="100%" class="table" style="font-size:12px">
 		<tr>
@@ -99,25 +101,23 @@ margin-bottom: 0;
 		<?php } ?>
 	</table>
 	
-	
-	
-		<div style="border:solid 1px ;"></div>
-	<table width="100%" class="divFooter">
-		<tr align="right">
-			 <td align="right" valign="top" width="35%">
-				<table style="margin-top:3px;">
-					<tr>
-					   <td width="15%" align="right"> 
-						<br>
-						<br>
-						 <span>Prepared By</span><br/>
-						 <span><b><?= __('Jain Thela') ?></b></span><br/>
-						</td>
-					</tr>
-				</table>
-			 </td>
-			
-		    
-		</tr>
-	</table>
-</div></div>
+	<div style="border:solid 1px ;"></div>
+			<table width="100%" class="divFooter">
+				<tr align="right">
+					 <td align="right" valign="top" width="35%">
+						<table style="margin-top:3px;">
+							<tr>
+							   <td width="15%" align="right"> 
+								<br>
+								<br>
+								 <span>Prepared By</span><br/>
+								 <span><b><?= __('Jain Thela') ?></b></span><br/>
+								</td>
+							</tr>
+						</table>
+					 </td>
+					
+					
+				</tr>
+			</table>
+	</div></div>

@@ -159,11 +159,10 @@ class OrdersController extends AppController
 		if($is_login=='warehouse')
 		{
  			    $odrer_datas=$this->Orders->get($order_id);
-				$o_date=$odrer_datas->order_date;
+				$o_date=$odrer_datas->otder_date;
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
-						->set(['status' => 'Delivered',
-						'order_date' => $o_date])
+						->set(['status' => 'Delivered'])
 						->where(['id' => $order_id])
 						->execute();
 		//end tis code///
@@ -271,13 +270,10 @@ class OrdersController extends AppController
 		}
 		else if($is_login=='driver')
 		{
-			        $odrer_datas=$this->Orders->get($order_id);
-					$o_date=$odrer_datas->order_date;
-				
+			        
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
-						->set(['status' => 'Delivered',
-						'order_date' => $o_date])
+						->set(['status' => 'Delivered'])
 						->where(['id' => $order_id])
 						->execute();
                     
@@ -769,7 +765,7 @@ curl_close($ch);
 		{
 		$pending_order_data = $this->Orders->find()
 						->where(['Orders.warehouse_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status' =>'In Process'])
-						->order(['order_date' => 'DESC'])
+						->order(['Orders.id' => 'DESC'])
 						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
 						}])
@@ -799,7 +795,7 @@ curl_close($ch);
 		$pending_order_data = $this->Orders->find()
 						->select(['created_date' => $this->Orders->find()->func()->concat(['order_date' => 'identifier' ])])
 						->where(['Orders.driver_id' => $driver_warehouse_id, 'Orders.jain_thela_admin_id' => $jain_thela_admin_id, 'Orders.status NOT IN' => array('Cancel','Delivered') ])
-						->order(['order_date' => 'DESC'])
+						->order(['Orders.id' => 'DESC'])
 						->contain(['Customers','CustomerAddresses','OrderDetails'=>function($q){
 							return $q->contain(['Items'])->limit(1);
 						}])

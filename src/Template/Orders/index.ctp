@@ -137,9 +137,9 @@
 							<td><?= h(@$order->customer_address->locality) ?></td>
 							<td align="right"><?= $this->Number->format($order->grand_total) ?></td>
 							<td><?= h($order->order_type) ?></td>
-							<td><?= h($order->order_date) ?></td>
-							<td><?= h($delivery_date) ?></td>
-							<td><?= h($order->delivery_time) ?></td>
+							<td><?php $q=explode(' ',$order->order_date); ?> <span style="font-size:11px;"><?php echo $q[0] ?></span></td>
+							<td><span style="font-size:11px;"><?= h($delivery_date) ?></span></td>
+							<td><span style="font-size:11px;"><?= h($order->delivery_time) ?></span></td>
 							<td><?= h($status) ?></td>
 							
 							<td class="actions">
@@ -321,7 +321,7 @@ $(document).ready(function() {
 		
 		var order_id=$(this).attr('order_id');
 		
-		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "undoBox"]); ?>";
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "undo_box"]); ?>";
 		url=url+'/'+order_id;
 		
 		$.ajax({

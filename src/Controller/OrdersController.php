@@ -590,6 +590,7 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
+			$order->order_date=date('Y-m-d');
 			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
 				if($order->amount_from_wallet>0){
@@ -627,7 +628,7 @@ class OrdersController extends AppController
 					'link' => 'jainthela://track_order?id='.$send_data,
 					'notification_id'    => 1,
 					);
-
+					
 					$url = 'https://fcm.googleapis.com/fcm/send';
 					$fields = array
 					(
@@ -641,7 +642,7 @@ class OrdersController extends AppController
 					);
 
 					  //echo json_encode($fields);
-					  $ch = curl_init();
+					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_URL, $url);
 					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -650,6 +651,7 @@ class OrdersController extends AppController
 					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 					$result001 = curl_exec($ch);
+					
 					if ($result001 === FALSE) {
 						die('FCM Send Error: ' . curl_error($ch));
 					}
@@ -688,7 +690,8 @@ class OrdersController extends AppController
 				
 				$this->Flash->success(__('The order has been saved.'));
 				if($order_type == 'Bulkorder'){
-					return $this->redirect(['action' => 'report/'.$send_data]);
+					//return $this->redirect(['action' => 'report/'.$send_data]);
+					return $this->redirect(['action' => 'index']);
 				}else{
 					return $this->redirect(['action' => 'index']);
 				}
