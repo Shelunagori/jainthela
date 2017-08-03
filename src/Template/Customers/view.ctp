@@ -132,7 +132,7 @@
 					</thead>
 					<tbody>
 						<?php 
-						foreach($wallet_consumes as $wallet_consume){  pr($wallet_consume);
+						foreach($wallet_consumes as $wallet_consume){  
 						@$s++;
 						if($wallet_consume->consumed == 0){
 							?>
