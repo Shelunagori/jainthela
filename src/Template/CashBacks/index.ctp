@@ -25,7 +25,6 @@
 					<thead>
 						<tr>
 							<th scope="col">S.No</th>
-							<th scope="col">Cash Back Login Id</th>
 							<th scope="col">Customer Name</th>
 							<th scope="col">Order No.</th>
 							<th style="text-align:right;" scope="col">Amount</th>
@@ -65,7 +64,6 @@
 						?>
 						<tr >
 							<td><?= h($sr_no) ?></td>
-							<td><?= h($cb->cash_back_no) ?></td>
 							<td><?= h($customer_name.' ('.$customer_mobile.')') ?></td>
 							<td><?= h($cb->order_no) ?></td>
 							<td align="right"><?= h($cb->amount) ?></td>

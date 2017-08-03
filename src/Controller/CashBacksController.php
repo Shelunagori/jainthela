@@ -33,7 +33,7 @@ class CashBacksController extends AppController
     {
        	$this->viewBuilder()->layout('index_layout');
 
-		$cashBacks = $this->CashBacks->find()->order(['created_on' => 'DESC'])
+		$cashBacks = $this->CashBacks->find()->order(['cash_back_no' => 'DESC'])
 		->where(['ready_to_win'=>'yes'])
 		->contain(['Customers']);
 		foreach($cashBacks->toArray() as $data)
