@@ -1,6 +1,6 @@
 <div class="row">
-		<div class="col-md-12">
-			<div class="portlet">
+<div class="col-md-12">
+	<div class="portlet">
 		<div class="portlet-body"> 
 			<?= $this->Form->create($comboOffer,['type'=>'file','id'=>'form_sample_3']) ?>
 				<div class="portlet light bordered">
@@ -243,14 +243,15 @@ $(".dscnt").die().live('keyup',function(){
 			var amount =0;
 			var quantity = parseFloat($(this).find("td:nth-child(3) input").val());
 			if(!quantity){ quantity=0; }
-			var price = parseFloat($(this).find("td:nth-child(4) input").val());
+			alert(quantity);
+			var price = parseFloat($(this).find("td:nth-child(3) input").attr("price"));
 			if(!price){ price=0; }
+			alert(price);
 			amount = quantity*price;
 			grand_total=grand_total+amount;
-			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
-			var total_amount = $(this).find("td:nth-child(5) input").val();
+			
 		}); 
-		//$(".grnd_ttl").val(grand_total.toFixed(2));
+		$(".grnd_ttl").val(grand_total.toFixed(2));
 	}
 					  
 	$(document).on('keyup', '.number', function(e)
@@ -277,8 +278,7 @@ $(".dscnt").die().live('keyup',function(){
 		$(this).closest('tr').find('.msg_shw').html("selling factor: "+raw_attr_name);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
-		$(this).closest('tr').find('.quant').attr('max', +raw_attr_minimum_quantity_purchase);
-		$(this).closest('tr').find('.quant').attr('price', +raw_attr_rates);
+ 		$(this).closest('tr').find('.quant').attr('price', +raw_attr_rates);
 	});
 	
 	$(".quant").die().live('keyup',function(){
@@ -296,7 +296,7 @@ $(".dscnt").die().live('keyup',function(){
 		var g_total =  parseFloat($('.grnd_ttl').val());
 		if(!g_total){ g_total=0; }
 		var final_val = g_total+rate;
-		//$('.grnd_ttl').val(final_val);
+		$('.grnd_ttl').val(final_val);
 	});
 });
 
