@@ -321,7 +321,7 @@ $(document).ready(function() {
 		
 		var order_id=$(this).attr('order_id');
 		
-		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "undo_box"]); ?>";
+		var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "undoBox"]); ?>";
 		url=url+'/'+order_id;
 		
 		$.ajax({
