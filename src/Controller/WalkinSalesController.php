@@ -219,12 +219,10 @@ class WalkinSalesController extends AppController
 				if(!empty($where)){
 					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
 							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
-							  // pr($walkinSales->toArray());exit;
 				}
 				if(!empty($where1)){
 				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
 						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
-						//pr($Orders->toArray());exit;
 			}
 			
 		}	

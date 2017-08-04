@@ -1,3 +1,4 @@
+<?php $url_excel="/?".$url; ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light">
@@ -8,8 +9,10 @@
 						<i class="fa fa-plus"></i> STOCK REPORT
 					</span>
 				</div>
-				<div class="actions">
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3" style="width: 200px;">	
+				<div class="actions"> 
+					<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Export-Excel-Stock/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;margin-right: 5px;">
+					
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -45,7 +48,7 @@
 								}
 								$driver_stock=$itemLedger->totalInDriver-$itemLedger->totalOutDriver;
 								$warehouse_stock=$itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse;
-								@$i++;3
+								@$i++;
 								?>
 									<tr class="main_tr" class="tab">
 										<td width="1px"><?= $i ?>.</td>

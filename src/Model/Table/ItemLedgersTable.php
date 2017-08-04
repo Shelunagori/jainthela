@@ -79,7 +79,7 @@ class ItemLedgersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
+       /*  $validator
             ->decimal('rate')
             ->requirePresence('rate', 'create')
             ->notEmpty('rate');
@@ -96,7 +96,7 @@ class ItemLedgersTable extends Table
         $validator
             ->date('transaction_date')
             ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
+            ->notEmpty('transaction_date'); */
 
         return $validator;
     }

@@ -1,3 +1,4 @@
+<?php $url_excel="/?".$url; ?>
 <style>
 .table>thead>tr>th{
 	font-size:12px !important;
@@ -12,6 +13,10 @@
 					<span class="caption-subject font-purple-intense">
 						<i class="fa fa-plus"></i> Item Issue Report
 					</span>
+				</div>
+				<div class="actions"> 
+					<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Export-Excel-Item/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+					
 				</div>
 				
 			</div>

@@ -311,6 +311,9 @@
 								<?php echo $this->Html->link('<i class="fa fa-file"></i> Walkin Sales','/WalkinSales/add',['escape'=>false]) ?>
 							</li>
 							<li>
+								<?php echo $this->Html->link('<i class="fa fa-gear"></i> Wastage Vouchers','/itemLedgers/wastageVouchers',['escape'=>false]) ?>
+							</li>
+							<li>
 								<?php echo $this->Html->link('<i class="fa fa-tree"></i> Combo Offer','/ComboOffers',['escape'=>false]) ?>
 							</li>
 

@@ -391,6 +391,9 @@ class ItemLedgersController extends AppController
 
 	 public function itemIssueReport()
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
 		
@@ -430,11 +433,57 @@ class ItemLedgersController extends AppController
 			$alias_name=$item_fetch->alias_name;
 			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")"];
 		}
-		$this->set(compact('item_ledgers','from','to', 'drivers', 'items','driver_id','item_id'));
+		$this->set(compact('item_ledgers','from','to', 'drivers', 'items','driver_id','item_id','url'));
     }
+	
+	public function exportExcelItem(){
+		$this->viewBuilder()->layout(''); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		
+		$from=$this->request->query('from');
+		$to=$this->request->query('to');
+		$item_id=$this->request->query('item_id');
+		$driver_id=$this->request->query('driver_id');
+		if(!empty($from)){
+			$where['transaction_date >=']=date('Y-m-d',strtotime($from));
+		}
+		if(!empty($to)){
+			$where['transaction_date <=']=date('Y-m-d',strtotime($to));
+		}
+		if(!empty($item_id)){
+			$where['item_id']=$item_id;
+		}
+		if(!empty($driver_id)){
+			$where['driver_id']=$driver_id;
+		}
+		$where['driver_id !=']=0;
+		$where['order_id =']=0;
+		$where['inventory_transfer']='yes';
+		//pr($where); exit;
+ 				 
+		$item_ledgers=$this->paginate(
+			$this->ItemLedgers->find()
+			->where($where)
+			->order(['transaction_date'=> 'DESC'])
+			->contain(['Drivers', 'Items'=>['Units','itemCategories']])
+		);
+		$drivers=$this->ItemLedgers->Drivers->find('list');
+		
+		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1]);
+
+		foreach($item_fetchs as $item_fetch){
+			$item_name=$item_fetch->name;
+			$alias_name=$item_fetch->alias_name;
+			$items[]= ['value'=>$item_fetch->id,'text'=>$item_name." (".$alias_name.")"];
+		}
+		$this->set(compact('item_ledgers','from','to', 'drivers', 'items','driver_id','item_id'));
+	}
 	
 	public function reportShow()
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$this->viewBuilder()->layout('index_layout');
 
@@ -477,9 +526,55 @@ class ItemLedgersController extends AppController
 
 		$itemLedgers=$query;
 
-		$this->set(compact('itemLedgers'));
+		$this->set(compact('itemLedgers','url'));
     }
 
+	public function exportExcelStock(){
+		$this->viewBuilder()->layout(''); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id'); 
+		
+		$query = $this->ItemLedgers->find();
+
+		$totalInWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In', 'warehouse_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'warehouse_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalInDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In', 'driver_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'driver_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'totalInWarehouse' => $query->func()->sum($totalInWarehouseCase),
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),
+			'totalInDriver' => $query->func()->sum($totalInDriverCase),
+			'totalOutDriver' => $query->func()->sum($totalOutDriverCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units','itemCategories']]);
+
+		$itemLedgers=$query;
+
+		$this->set(compact('itemLedgers','url'));
+	}
+	
 	public function itemStockUpdate()
     {
 		$this->viewBuilder()->layout('index_layout'); 
@@ -527,6 +622,8 @@ class ItemLedgersController extends AppController
     }
 
 	public function itemSaleReports(){
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
@@ -596,9 +693,84 @@ class ItemLedgersController extends AppController
 		$ItemList =  $this->ItemLedgers->Items->find()->order(['Items.name'=>'ASC']);
 		
 		$this->set(compact('itemLedgers','ItemList','from_date','to_date','order_online','order_bulk','order_offline'
-		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units'));
+		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units','url'));
 		 $this->set('_serialize', ['itemLedgers']);
 	}
+	
+	public function exportExcel()
+	{
+		$this->viewBuilder()->layout('');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['ItemLedgers.transaction_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['ItemLedgers.transaction_date <=']=$to_date;
+		}
+		
+		$where1 =[];
+		if(empty($from_date)){
+			$from_date=date("Y-m-d");
+			$where1['ItemLedgers.transaction_date >=']=$from_date;
+		}
+		if(empty($to_date)){
+			$to_date=date("Y-m-d");
+			$where1['ItemLedgers.transaction_date <=']=$to_date;
+		}
+		if(!empty($where)){
+			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no','freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
+			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where);
+		}else{
+			$itemLedgers = $this->ItemLedgers->find()->contain(['Items'=> function ($q) {
+				return $q->where(['is_combo'=>'no','is_virtual'=>'no','freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
+			}])->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])->where($where1);
+		}	
+		$order_online = []; $order_online_name=[]; $order_bulk = []; $walkins_sales = []; $order_online_rate = [];
+		$order_bulk_rate = []; $walkins_sales_rate = []; $Itemsexists=[]; $qty=0; $units=[];
+		foreach($itemLedgers as $itemLedger){ 
+			$Orders = $this->ItemLedgers->Orders->find()->where(['id'=>$itemLedger->order_id])->toArray();
+			if(sizeof($Orders)>0){ 
+				foreach($Orders as $order){
+					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'|| $order->order_type =='Offline'){
+						@$order_online[$itemLedger->item_id] += $itemLedger->quantity; 
+						@$order_online_rate[$itemLedger->item_id] += $itemLedger->amount; 
+						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
+						
+						//pr($order_online);
+					}
+					if($order->order_type == 'Bulkorder'){
+						@$order_bulk[$itemLedger->item_id] += $itemLedger->quantity;
+						@$order_bulk_rate[$itemLedger->item_id] += $itemLedger->amount; 
+						@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+						@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
+					}
+				}
+			}
+		$WalkinSales = $this->ItemLedgers->WalkinSales->find()->where(['id'=>$itemLedger->walkin_sales_id]);	
+		  foreach($WalkinSales as $WalkinSale){
+				@$walkins_sales[$itemLedger->item_id] += $itemLedger->quantity; 
+				@$walkins_sales_rate[$itemLedger->item_id] += @$itemLedger->amount; 
+				@$Itemsexists[$itemLedger->item_id] = $itemLedger->item_id;
+				@$units[$itemLedger->item_id] = $itemLedger->item->unit->unit_name;
+		  }
+		}
+		//pr($Itemsexists);exit;
+		
+		$ItemList =  $this->ItemLedgers->Items->find()->order(['Items.name'=>'ASC']);
+		
+		$this->set(compact('itemLedgers','ItemList','from_date','to_date','order_online','order_bulk','order_offline'
+		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units','url'));
+		 $this->set('_serialize', ['itemLedgers']);
+	}	
+	
 	
 	public function ajaxItemDetails($id = null)
     {
@@ -683,6 +855,79 @@ class ItemLedgersController extends AppController
         $this->set('_serialize', ['itemLedger']);
     }
 
+	public function itemstockAvailable(){
+		$item_id=$this->request->data['itm_val'];
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		 
+ 		$query = $this->ItemLedgers->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items']);
+        $itemLedgers = ($query);
+		  foreach($itemLedgers as $itemLedger){
+			   $available_stock=$itemLedger->total_in;
+			   $stock_issue=$itemLedger->total_out;
+			 echo @$remaining=$available_stock-$stock_issue;
+		  }
+		  exit;
+	}
+	public function wastageVouchers(){
+		$this->viewBuilder()->layout('index_layout'); 
+        $itemLedger = $this->ItemLedgers->newEntity();
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		 if ($this->request->is('post')) {
+			 $itemLedger = $this->ItemLedgers->patchEntity($itemLedger, $this->request->getData());
+			 
+			$transaction_date=date('Y-m-d', strtotime($itemLedger->transaction_date)); 
+			
+			$query = $this->ItemLedgers->query();
+				$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'warehouse_id','wastage','usable_wastage'])
+						->values([
+						'transaction_date' => $transaction_date,
+						'item_id' => $itemLedger->item_id,
+						'quantity' => $itemLedger->quantity,
+						'status' => 'out',
+						'jain_thela_admin_id' => $jain_thela_admin_id,
+						'warehouse_id' => 1,
+						'wastage' => 1,
+						'usable_wastage' => 0,
+						])
+				->execute();
+			$this->Flash->success(__('The Wastage Vouchers has been saved.'));	
+			return $this->redirect(['action' => 'wastageVouchers']);
+		 }
+		
+		$Item_datas = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no', 'Items.freeze'=>0])->contain(['Units']);
+		$Items=[];
+			foreach($Item_datas as $Item){
+				$item_name=$Item->name;
+				$alias_name=$Item->alias_name;
+				$Items[]= ['value'=>$Item->id,'text'=>$item_name." (".$alias_name.")"];
+			}
+		
+		
+		
+		$this->set(compact('itemLedger', 'Items'));
+        $this->set('_serialize', ['itemLedger']);
+	}
     /**
      * Delete method
      *
