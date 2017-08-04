@@ -336,7 +336,7 @@ class WalkinSalesController extends AppController
 				$itemledgers->item_id = $walkin_sale_detail['item_id'];
 				$itemledgers->quantity = $walkin_sale_detail['quantity'];
 				$itemledgers->rate = $walkin_sale_detail['rate'];
-				$itemledgers->status = 'Out';
+				$itemledgers->status = 'out';
 				$itemledgers->transaction_date = $walkinSale->transaction_date;
 				
 				$this->WalkinSales->ItemLedgers->save($itemledgers);
