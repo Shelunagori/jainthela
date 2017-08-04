@@ -50,12 +50,22 @@ label{
 											<td width="20%">
 												<label>Actual Quantity<label>
 											</td>
+											<td width="20%">
+												<label>Amount<label>
+											</td>
 											
 										</tr>
 									</thead>
 									<tbody id='main_tbody' class="tab">
 										
-										<?php $i=1; $k=0;  foreach($Orders->order_details as $order_detail){ ?>
+										<?php $i=1; $k=0;  
+										
+										foreach($Orders->order_details as $order_detail){ 
+										
+											 $minimum_quantity_factor=$order_detail->item->minimum_quantity_factor;
+											 $price=$order_detail->rate;
+											 $real_amount=$order_detail->amount;
+										?>
 											<tr class="main_tr tab">
 												<td align="center">
 													<?= h($i++)?>
@@ -70,10 +80,14 @@ label{
 												</td>
 												
 												<td align="center">
-													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1,'value'=>@$order_detail->actual_quantity]); ?>
+													<?php echo $this->Form->input('order_details['.$k.'][actual_quantity]', ['label' => false,'class' => 'form-control input-sm number actual_quantity','min'=>1,'value'=>@$order_detail->actual_quantity, 'minimum_quantity_factor'=>$minimum_quantity_factor, 'price' => $price]); ?>
 													<label class="error"></label>
 												</td>
 												
+												<td align="center">
+													<?php echo $this->Form->input('order_details['.$k.'][amount]', ['label' => false,'class' => 'form-control input-sm number amount','min'=>0.01,'value'=>$real_amount]); ?>
+													<label class="error"></label>
+												</td>
 											</tr>
 										<?php $k++; }  ?>	
 										

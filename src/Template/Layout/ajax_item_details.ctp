@@ -59,7 +59,7 @@
 								<?= h($name.''.$driver) ?>
 							 </td>
 							<td>
-								<?= @$remaining.' '.@$warehpouse_itemLedger->item->unit->shortname;?>
+								<?= $remaining.' '.$warehpouse_itemLedger->item->unit->shortname;?>
 							</td>
 							
 						</tr>

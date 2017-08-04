@@ -265,6 +265,19 @@ $(document).ready(function() {
 
 	});
 	////
+	$('.actual_quantity').die().live('keyup',function() {
+	var actual_quantity=parseFloat($(this).val());
+	if(!actual_quantity){ actual_quantity=0; }
+	var minimum_quantity_factor=parseFloat($(this).attr('minimum_quantity_factor'));
+	if(!minimum_quantity_factor){ minimum_quantity_factor=0; }
+	var price=parseFloat($(this).attr('price'));
+	if(!price){ price=0; }
+	var total_quantity=Math.round((actual_quantity/minimum_quantity_factor)*price);
+	
+ 	$(this).closest('tr').find('.amount').val(total_quantity);
+ 	});
+	
+	
 	$('.view_order').die().live('click',function() {
 		$('#popup').show();
 		var order_id=$(this).attr('order_id');
@@ -353,7 +366,6 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{
-				alert(data);
 				$('#data').html(data);
 			}	
 		});	
@@ -364,15 +376,20 @@ $(document).ready(function() {
 		var order_id=$(this).attr('order_id');
 		var s1 = [];
 		var s2 = [];
+		var s3 = [];
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			 var row = [];
 			 var items = [];
+			 var amounts = [];
 			var actual_quantity = $(this).find("td:nth-child(4) .actual_quantity").val();
+			var amount = $(this).find("td:nth-child(5) .amount").val();
 			var item_id = $(this).find("td:nth-child(2) .item_id").val();
 			row.push(actual_quantity);
 			 s1.push(row);
 			 items.push(item_id);
 			 s2.push(items);
+			 amounts.push(amount);
+			 s3.push(amounts);
 		});
 			
 		var output=multiply(s1);
@@ -381,11 +398,10 @@ $(document).ready(function() {
 			$('.get_order').prop('disabled', true);
 			$('.get_order').text('Delivered.....');
 						var url="<?php echo $this->Url->build(['controller'=>'Orders','action'=>'updateOrders']); ?>";
-						url=url+'/'+order_id+'/'+s2+'/'+s1,
+						url=url+'/'+order_id+'/'+s2+'/'+s1+'/'+s3,
 						$.ajax({
 							url: url,
-						}).done(function(response) { 
-							
+						}).done(function(response) {
 							var order_id=$('.get_order').attr('order_id');
 							var m_data = new FormData();
 							m_data.append('order_id',order_id);

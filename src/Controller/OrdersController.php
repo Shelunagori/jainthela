@@ -292,25 +292,75 @@ class OrdersController extends AppController
          $Orders = $this->Orders->get($id, [
             'contain' => ['Customers', 'OrderDetails'=>['Items'=>['Units']]]
         ]);
-		
         $this->set('Orders', $Orders);
         $this->set('_serialize', ['Orders']);
     }
 	
-	public function updateOrders($order_id = null,$item_id = null,$actual_quantity=null){
+	public function updateOrders($order_id = null,$item_id = null,$actual_quantity=null,$amount = null){
 		
 		$quantity=explode(',',$actual_quantity);
 		$items=explode(',',$item_id);
+		$item_amount=explode(',',$amount);
 		$x=0;
+		$final_amount=0;
 		foreach($items as $item){ 
 			$qty = $quantity[$x];
+			$amt = $item_amount[$x];
+			$final_amount+=$amt;
 				$query = $this->Orders->OrderDetails->query();
 					$query->update()
-							->set(['actual_quantity' => $qty])
+							->set(['actual_quantity' => $qty, 'amount' => $amt])
 							->where(['item_id'=>$item,'order_id'=>$order_id])
 							->execute();
 				$x++;		
 		}
+		$Orders = $this->Orders->get($order_id);
+		$customer_id=$Orders->customer_id;
+		$amount_from_wallet=$Orders->amount_from_wallet;
+		$amount_from_jain_cash=$Orders->amount_from_jain_cash;
+		$amount_from_promo_code=$Orders->amount_from_promo_code;
+		$online_amount=$Orders->online_amount;
+		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
+		
+		$total_amount=$final_amount;
+		if($total_amount<100){
+			$delivery_charge=100;
+		}else{
+			$delivery_charge=0;
+		}
+		$pay_amount=$Orders->pay_amount;
+		$final_amount;
+		
+			$grand_total=$total_amount+$delivery_charge;
+			$remaining_amount=$grand_total-$paid_amount;
+			$remaining_paid_amount=$paid_amount-$grand_total;
+ 			$this->Orders->Wallets->deleteAll(['return_order_id'=>$order_id]);
+			
+			if($remaining_amount>=0){
+				$return_amount=0;
+				$real_pay_amount=$remaining_amount;
+			}
+			else if($remaining_paid_amount>0){
+				$return_amount=$remaining_paid_amount;
+				$real_pay_amount=0;
+				
+			if($return_amount>0){
+			$query = $this->Orders->Wallets->query();
+					$query->insert(['customer_id', 'advance', 'narration', 'return_order_id'])
+							->values([
+							'customer_id' => $customer_id,
+							'advance' => $return_amount,
+							'narration' => 'Amount Return form Order',
+							'return_order_id' => $order_id
+							])
+					->execute();
+			}
+			}
+				$query = $this->Orders->query();
+					$query->update()
+							->set(['total_amount' => $total_amount,'grand_total' => $grand_total,'delivery_charge' => $delivery_charge,'pay_amount' => $real_pay_amount])
+							->where(['id' => $order_id])
+							->execute();
 		
 		exit;
 	}

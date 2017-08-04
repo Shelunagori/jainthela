@@ -426,7 +426,7 @@ class ItemLedgersController extends AppController
 		);
 		$drivers=$this->ItemLedgers->Drivers->find('list');
 		
-		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1]);
+		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.is_virtual'=>'no']);
 
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
