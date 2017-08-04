@@ -98,10 +98,15 @@
 					<tbody>
 						<?php 
 						foreach($wallet_advances as $wallet_advance){ 
-						@$m++;
+						
+						if($wallet_advance->advance == 0){
 							?>
+							<tr></tr>
+							
+						<?php }else{@$m++; ?>
+							
 							<tr>
-								<td><?= $m ?></td>
+								<td><?php echo $m; ?></td>
 								<td>
 									<?= h(@$wallet_advance->plan->name) ?>
 								</td>
@@ -114,7 +119,7 @@
 								<td>
 									<?= h(date('d-M-Y', strtotime(@$wallet_advance->updated_on))) ?>
 								</td>
-						<?php } ?>														 
+						<?php }} ?>														 
 					</tbody>
 				</table>
 			</td>
@@ -133,12 +138,12 @@
 					<tbody>
 						<?php 
 						foreach($wallet_consumes as $wallet_consume){  
-						@$s++;
+						
 						if($wallet_consume->consumed == 0){
 							?>
 							<tr></tr>
 							
-						<?php }else{ ?>
+						<?php }else{ @$s++;?>
 							<tr>
 								<td><?= $s ?></td>
 								<td>

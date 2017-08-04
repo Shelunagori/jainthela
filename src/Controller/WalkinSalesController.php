@@ -64,6 +64,9 @@ class WalkinSalesController extends AppController
 
 	public function invoiceReports()
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
 		$this->viewBuilder()->layout('index_layout');
         $jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
@@ -144,10 +147,96 @@ class WalkinSalesController extends AppController
 		$Warehouses = $this->WalkinSales->Warehouses->find('list');
 		$types=[];
 		$types=[['text'=>'Walkin','value'=>'Walkin'],['text'=>'Online','value'=>'Online'],['text'=>'Bulkorder','value'=>'Bulkorder']];
-		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id','type','types'));
 		$this->set('_serialize', ['walkinSales']);
+		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id','type','types','url'));
+		
     }
 
+	public function exportExcel()
+	{
+		$this->viewBuilder()->layout('');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$warehouse_id = $this->request->query('warehouse');
+		$drivers_id = $this->request->query('drivers');
+		$from_date = $this->request->query('From');
+		$type = $this->request->query('type');
+		$to_date = $this->request->query('To');
+		//pr($type);exit;
+		$where =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['WalkinSales.transaction_date >=']=$from_date;
+		}
+		if(!empty($to_date)){ 
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['WalkinSales.transaction_date <=']=$to_date;
+		}
+		if(!empty($drivers_id)){
+			$where['Drivers.id']=$drivers_id;
+		}
+		if(!empty($warehouse_id)){
+			$where['Warehouses.id']=$warehouse_id;
+		}
+		
+		
+		$where1 =[];
+		if(!empty($from_date)){
+			$from_date=date("Y-m-d",strtotime($this->request->query('From')));
+			$from_date= $from_date.' 00:00:00';
+			$where1['Orders.delivery_date >=']=$from_date;
+		}
+		if(!empty($to_date)){
+			$to_date=date("Y-m-d",strtotime($this->request->query('To')));
+			$to_date= $to_date.' 23:59:59';
+			$where1['Orders.delivery_date <=']=$to_date;
+		}
+		if(!empty($drivers_id)){
+			$where1['Drivers.id']=$drivers_id;
+		}
+		if(!empty($warehouse_id)){
+			$where1['Warehouses.id']=$warehouse_id;
+		}
+		
+			if($type == 'Walkin'){
+				if(!empty($where)){
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+				}
+				
+		}else if($type == 'Online'){  //pr($type);exit;
+			if(!empty($where1)){ //echo"sdf";exit;
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+			}			
+		}
+		else if($type == 'Bulkorder'){  //pr($type);exit;
+			if(!empty($where1)){ //echo"sdf";exit;
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type IN'=>'Bulkorder']);
+			}			
+		}
+		else{ 
+				if(!empty($where)){
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
+							  // pr($walkinSales->toArray());exit;
+				}
+				if(!empty($where1)){
+				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
+						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+						//pr($Orders->toArray());exit;
+			}
+			
+		}	
+		
+		$Drivers = $this->WalkinSales->Drivers->find('list');
+		$Warehouses = $this->WalkinSales->Warehouses->find('list');
+		$types=[];
+		$types=[['text'=>'Walkin','value'=>'Walkin'],['text'=>'Online','value'=>'Online'],['text'=>'Bulkorder','value'=>'Bulkorder']];
+		$this->set(compact('walkinSales','Orders','from_date','to_date','Warehouses','Drivers','drivers_id','warehouse_id','type','types'));
+		$this->set('_serialize', ['walkinSales']);
+	}
+	
 	public function showSearch(){
 		$this->viewBuilder()->layout('');
 		$Drivers = $this->WalkinSales->Drivers->find('list');
