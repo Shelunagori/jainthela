@@ -31,7 +31,7 @@
 								 <div class="col-md-12">
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Print Rate<span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate']) ?>
+										<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate','Readonly'=>'Readonly']) ?>
 									</div>
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Discount (%)<span class="required" aria-required="true">*</span></label>
@@ -210,6 +210,9 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(3) input").attr({name:"combo_offer_details["+i+"][quantity]", id:"combo_offer_details-"+i+"-quantity"}).rules('add', {
 								required: true
 							});
+					$(this).find("td:nth-child(4) input").attr({name:"combo_offer_details["+i+"][amount]", id:"combo_offer_details-"+i+"-amount"}).rules('add', {
+								required: true
+							});
 					i++;
 				});
 			}
@@ -224,19 +227,13 @@ $(document).ready(function() {
 		$(".sls_rat").val(sales_amount);
 		
 	});	
-	
-$(".dscnt").die().live('keyup',function(){
-		var total=$(".grnd_ttl").val();
-		var discount=$(this).val();
-		var final_amount=((total*discount)/100);
-		var sales_amount=total-final_amount;
-		$(".sls_rat").val(sales_amount.toFixed(2));
-	});
-
+	 
 	$(".calculation_amount").die().live('keyup',function(){
 		calculation();				
 	});	
-	
+	$(".del_calculation").die().live('click',function(){
+		calculation();				
+	});
 	function calculation(){
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
@@ -244,13 +241,20 @@ $(".dscnt").die().live('keyup',function(){
 			var quantity = parseFloat($(this).find("td:nth-child(3) input").val());
 			if(!quantity){ quantity=0; }
 			var price = parseFloat($(this).find("td:nth-child(3) input").attr("price"));
-			if(!price){ price=0; }
-			alert(quantity);
-			alert(price);
+			if(!price){ price=0; }			
+			var unit_name = parseFloat($(this).find("td:nth-child(3) input").attr("unit_name"));
+			if(!unit_name){ unit_name=0; }
 			amount = quantity*price;
 			grand_total=grand_total+amount;
+			
+			$(this).find("td:nth-child(4) input").val(amount);
 		});
 		$(".grnd_ttl").val(grand_total.toFixed(2));
+		var total=$(".grnd_ttl").val();
+		var discount=$(".dscnt").val();
+		var final_amount=((total*discount)/100);
+		var sales_amount=total-final_amount;
+		$(".sls_rat").val(sales_amount.toFixed(2));
 	}
 
 	$(document).on('keyup', '.number', function(e)
@@ -278,9 +282,10 @@ $(".dscnt").die().live('keyup',function(){
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
 		$(this).closest('tr').find('.quant').attr('unit_name', ''+raw_attr_unit_name3+'');
  		$(this).closest('tr').find('.quant').attr('price', +raw_attr_rates);
+ 		$(this).closest('tr').find('.amnt').val(raw_attr_rates);
 	});
 	
-	$(".quant").die().live('keyup',function(){
+ $(".quant").die().live('keyup',function(){
 		var quant = parseFloat($(this).val());
 		if(!quant){ quant=0; }
 		var minimum_quantity_factor = parseFloat($(this).attr('minimum_quantity_factor'));
@@ -291,12 +296,13 @@ $(".dscnt").die().live('keyup',function(){
 		if(!price){ price=0; }
 		var g_total = quant*minimum_quantity_factor;
 		var rate = quant*price;
+		$(this).closest('tr').find('.amnt').val(rate);
 		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
 		var g_total =  parseFloat($('.grnd_ttl').val());
 		if(!g_total){ g_total=0; }
 		var final_val = g_total+rate;
-		$('.grnd_ttl').val(final_val);
-	});
+		//$('.grnd_ttl').val(final_val);
+	});  
 });
 
 </script>
@@ -313,7 +319,11 @@ $(".dscnt").die().live('keyup',function(){
 					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<a class="btn btn-default delete-tr input-sm calculation_amount" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number amnt','placeholder'=>'Amount']); ?>
+					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
+				</td>
+				<td>
+					<a class="btn btn-default delete-tr input-sm del_calculation" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
 				</td>
 			</tr>
 		</tbody>
