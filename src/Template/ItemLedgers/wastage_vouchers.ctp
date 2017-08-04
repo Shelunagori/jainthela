@@ -18,18 +18,18 @@
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="control-label">Date <span class="required" aria-require>*</span></label>
-										<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
+										<?php echo $this->Form->control('transaction_date',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y'),'required']); ?>
 										
 									</div>
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Items <span class="required" 	aria-required="true">*</span></label>
-										<?php echo $this->Form->control('item_id',['empty'=>'---Select---','options' => $Items,'class'=>'form-control input-sm select2me items','id'=>'item_id','label'=>false]); ?>
+										<?php echo $this->Form->control('item_id',['empty'=>'---Select---','options' => $Items,'class'=>'form-control input-sm select2me items','id'=>'item_id','label'=>false,'required']); ?>
 										<?= $this->Form->input('stock',array('type'=>'hidden','class'=>'form-control input-sm stock','label'=>false)) ?>
 									</div>
 									
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Quantity <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('quantity',array('class'=>'form-control input-sm quantity','label'=>false)) ?>
+										<?= $this->Form->input('quantity',array('class'=>'form-control input-sm quantity','label'=>false,'required')) ?>
 									</div>
 									
 								 </div>
