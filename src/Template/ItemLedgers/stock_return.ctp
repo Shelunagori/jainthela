@@ -231,7 +231,7 @@ $(document).ready(function() {
 					   var remaning = $(this).find("td:nth-child(3) .remaining").val();
 					var wieght  = remaning - quantity;
 					
-					$(this).find("td:nth-child(5) .quant").val(wieght);
+					$(this).find("td:nth-child(5) .quant").val(wieght.toFixed(2));
 					 });	
 				 });	
 				

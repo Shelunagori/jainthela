@@ -163,22 +163,23 @@ class ItemLedgersController extends AppController
 						'inventory_transfer' => 'yes'
 						])
 				->execute();
-				
-				$query = $this->ItemLedgers->query();
-				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id','different_driver_id', 'weight_variation', 'inventory_transfer'])
-						->values([
-						'driver_id' => 0,
-						'warehouse_id' => 0,
-						'transaction_date' => $transaction_date,
-						'item_id' => $item_id,
-						'quantity' => $waste,
-						'status' => '',
-						'jain_thela_admin_id' => $jain_thela_admin_id,
-						'different_driver_id' => $driver_id,
-						'weight_variation' => 1,
-						'inventory_transfer' => 'yes'
-						])
-				->execute();
+				if($waste>0){
+					$query = $this->ItemLedgers->query();
+					$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id','different_driver_id', 'weight_variation', 'inventory_transfer'])
+							->values([
+							'driver_id' => 0,
+							'warehouse_id' => 0,
+							'transaction_date' => $transaction_date,
+							'item_id' => $item_id,
+							'quantity' => $waste,
+							'status' => '',
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'different_driver_id' => $driver_id,
+							'weight_variation' => 1,
+							'inventory_transfer' => 'yes'
+							])
+					->execute();
+				}
 			}
 			
 			$this->Flash->success(__('The item ledger has been saved.'));
