@@ -4,18 +4,28 @@
 	$time=date('h:i:a',time());
 
 	$filename="Invoice_report_".$date.'_'.$time;
-
-	header ("Expires: 0");
+	$from_date=date('d-m-Y',strtotime($from_date));
+	$to_date=date('d-m-Y',strtotime($to_date));
+	
+	 header ("Expires: 0");
 	header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
 	header ("Cache-Control: no-cache, must-revalidate");
 	header ("Pragma: no-cache");
 	header ("Content-type: application/vnd.ms-excel");
 	header ("Content-Disposition: attachment; filename=".$filename.".xls");
-	header ("Content-Description: Generated Report" );
+	header ("Content-Description: Generated Report" ); 
 
 ?>		
 				<table border="1">
 					<thead>
+						<tr>
+							<td colspan="7" align="center">Invoice Report From <?php echo $from_date; ?> TO <?php echo $to_date; ?></td>
+							
+						</tr>
+						<tr>
+							<td>Type :</td>
+							<td><?php echo $type; ?></td>
+						</tr>
 						<tr> 
 							<th>Sr</th>
 							<th style="text-align:center;">Warehouse</th>
@@ -41,7 +51,7 @@
 								<?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?>
 							</td>
 							<td align="center">
-								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
+								<?= h(@$walkinSale->order_no) ?>
 							</td>
 							<td align="center">
 								<?= h(@$walkinSale->created_on) ?>

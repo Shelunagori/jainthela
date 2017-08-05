@@ -621,6 +621,8 @@ class ItemLedgersController extends AppController
          $this->set(compact('itemLedgers'));
     }
 
+	
+	
 	public function itemSaleReports(){
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
@@ -899,14 +901,13 @@ class ItemLedgersController extends AppController
 			$transaction_date=date('Y-m-d', strtotime($itemLedger->transaction_date)); 
 			
 			$query = $this->ItemLedgers->query();
-				$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'warehouse_id','wastage','usable_wastage'])
+				$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'wastage','usable_wastage'])
 						->values([
 						'transaction_date' => $transaction_date,
 						'item_id' => $itemLedger->item_id,
 						'quantity' => $itemLedger->quantity,
-						'status' => 'out',
+						'status' => ' ',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
-						'warehouse_id' => 1,
 						'wastage' => 1,
 						'usable_wastage' => 0,
 						])
@@ -927,6 +928,36 @@ class ItemLedgersController extends AppController
 		
 		$this->set(compact('itemLedger', 'Items'));
         $this->set('_serialize', ['itemLedger']);
+	}
+	
+	public function wastageReport(){
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$query =$this->ItemLedgers->find();
+		   
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['wastage' => '1','item_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+	
+		$query->select([
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'wastage'=>'1'])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units']]);
+        $wastageItems = ($query);
+		
+		$this->set(compact('wastageItems','url'));
+        $this->set('_serialize', ['wastageItems']);
+		
 	}
     /**
      * Delete method

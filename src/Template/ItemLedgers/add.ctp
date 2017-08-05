@@ -225,7 +225,7 @@ $(document).ready(function() {
 	$('.itm_chng').die().live('change',function() 
 	{ 
 		$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
-		var update = $(this);
+		vv
 		var itm_val = $(this).val();
 		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
 		
