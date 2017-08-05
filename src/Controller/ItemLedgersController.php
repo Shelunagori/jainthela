@@ -858,35 +858,39 @@ class ItemLedgersController extends AppController
     }
 
 	public function itemstockAvailable(){
-		$item_id=$this->request->data['itm_val'];
+		$warehouse_id=$this->request->data['warehouse_val'];
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		 
- 		$query = $this->ItemLedgers->find();
-		$totalInCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'In']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$totalOutCase = $query->newExpr()
-			->addCase(
-				$query->newExpr()->add(['status' => 'out']),
-				$query->newExpr()->add(['quantity']),
-				'integer'
-			);
-		$query->select([
-			'total_in' => $query->func()->sum($totalInCase),
-			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
-		])
-		->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item_id])
-		->group('item_id')
-		->autoFields(true)
-		->contain(['Items']);
-        $itemLedgers = ($query);
+		 $Items = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no', 'Items.freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
+		 foreach ($Items as $item){
+				$query = $this->ItemLedgers->find();
+				$totalInCase = $query->newExpr()
+					->addCase(
+						$query->newExpr()->add(['status' => 'In','warehouse_id']),
+						$query->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalOutCase = $query->newExpr()
+					->addCase(
+						$query->newExpr()->add(['status' => 'out','warehouse_id']),
+						$query->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$query->select([
+					'total_in' => $query->func()->sum($totalInCase),
+					'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+				])
+				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.warehouse_id' => $warehouse_id, 'ItemLedgers.item_id' => $item->id])
+				->group('warehouse_id')
+				->autoFields(true)
+				->contain(['Items']);
+				$itemLedgers = ($query);
+		 }		
+		$remainingStock=[];
 		  foreach($itemLedgers as $itemLedger){
 			   $available_stock=$itemLedger->total_in;
 			   $stock_issue=$itemLedger->total_out;
-			 echo @$remaining=$available_stock-$stock_issue;
+			 echo @$remainingStock[$itemLedger->item->id]=$available_stock-$stock_issue;
 		  }
 		  exit;
 	}
@@ -895,38 +899,80 @@ class ItemLedgersController extends AppController
         $itemLedger = $this->ItemLedgers->newEntity();
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		 if ($this->request->is('post')) {
-			 $itemLedger = $this->ItemLedgers->patchEntity($itemLedger, $this->request->getData());
-			 
-			$transaction_date=date('Y-m-d', strtotime($itemLedger->transaction_date)); 
+		 if ($this->request->is(['post', 'put'])) {
+			 $ItemLedgers = $this->request->getData()['item_ledgers'];
+			$transaction_date=date('Y-m-d', strtotime($this->request->getData()['transaction_date'])); 
+			//$warehouse_id=$this->request->getData()['warehouse_id']; 
+			foreach($ItemLedgers as $itemledger){ 
+				if($itemledger['quantity'] > 0){
+					 $query = $this->ItemLedgers->query();
+					$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id','usable_wastage','warehouse_id'])
+							->values([
+							'transaction_date' => $transaction_date,
+							'item_id' => $itemledger['item_id'],
+							'quantity' => $itemledger['quantity'],
+							'status' => 'out',
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'usable_wastage' => 0,
+							'warehouse_id'=> 1
+							])
+					->execute();
 			
-			$query = $this->ItemLedgers->query();
-				$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'wastage','usable_wastage'])
-						->values([
-						'transaction_date' => $transaction_date,
-						'item_id' => $itemLedger->item_id,
-						'quantity' => $itemLedger->quantity,
-						'status' => ' ',
-						'jain_thela_admin_id' => $jain_thela_admin_id,
-						'wastage' => 1,
-						'usable_wastage' => 0,
-						])
-				->execute();
+				$query = $this->ItemLedgers->query();
+					$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'wastage','usable_wastage'])
+							->values([
+							'transaction_date' => $transaction_date,
+							'item_id' => $itemledger['item_id'],
+							'quantity' => $itemledger['quantity'],
+							'status' => ' ',
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'wastage' => 1,
+							'usable_wastage' => 0,
+							])
+					->execute();
+				}
+			}
 			$this->Flash->success(__('The Wastage Vouchers has been saved.'));	
 			return $this->redirect(['action' => 'wastageVouchers']);
 		 }
+		 
+		$Items = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no', 'Items.freeze'=>0])->contain(['Units'])->order(['Items.name'=>'ASC']);
 		
-		$Item_datas = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.is_virtual'=>'no', 'Items.freeze'=>0])->contain(['Units']);
-		$Items=[];
-			foreach($Item_datas as $Item){
-				$item_name=$Item->name;
-				$alias_name=$Item->alias_name;
-				$Items[]= ['value'=>$Item->id,'text'=>$item_name." (".$alias_name.")"];
-			}
+		 $remainingStock=[];$itemUnit=[];
+		foreach ($Items as $item){
+			$query = $this->ItemLedgers->find();
+			$totalInCase = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['status' => 'In','warehouse_id']),
+					$query->newExpr()->add(['quantity']),
+					'integer'
+				);
+			$totalOutCase = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['status' => 'out','warehouse_id']),
+					$query->newExpr()->add(['quantity']),
+					'integer'
+				);
+			$query->select([
+				'total_in' => $query->func()->sum($totalInCase),
+				'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+			])
+			->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item->id])
+			->group('item_id')
+			->autoFields(true)
+			->contain(['Items'=>['Units']]);
+			$itemLedgers = ($query);
+			foreach($itemLedgers as $itemLedger){
+				$available_stock=$itemLedger->total_in;
+				$stock_issue=$itemLedger->total_out;
+				$remainingStock[$itemLedger->item->id]=$available_stock-$stock_issue;
+				$itemUnit[$itemLedger->item->id]=$itemLedger->item->unit->unit_name;
+		  }
+		} 
 		
+		$warehouses = $this->ItemLedgers->Warehouses->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
 		
-		
-		$this->set(compact('itemLedger', 'Items'));
+		$this->set(compact('itemLedger', 'Items','warehouses','remaining','remainingStock','itemUnit'));
         $this->set('_serialize', ['itemLedger']);
 	}
 	
@@ -936,6 +982,19 @@ class ItemLedgersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$this->set(compact('from_date', 'to_date'));
+		
+		$where=[];
+		if(!empty($from_date)){
+			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
 		
 		$query =$this->ItemLedgers->find();
 		   
@@ -950,14 +1009,57 @@ class ItemLedgersController extends AppController
 			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
 		])
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'wastage'=>'1'])
+		->where($where)
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units']]);
         $wastageItems = ($query);
 		
+		
 		$this->set(compact('wastageItems','url'));
         $this->set('_serialize', ['wastageItems']);
 		
+	}
+	
+	public function excelWastage(){
+		$this->viewBuilder()->layout(''); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$this->set(compact('from_date', 'to_date'));
+		
+		$where=[];
+		if(!empty($from_date)){
+			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
+		
+		$query =$this->ItemLedgers->find();
+		   
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['wastage' => '1','item_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+	
+		$query->select([
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'wastage'=>'1'])
+		->where($where)
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units']]);
+        $wastageItems = ($query);
+		
+		
+		$this->set(compact('wastageItems','url'));
+        $this->set('_serialize', ['wastageItems']);
 	}
     /**
      * Delete method

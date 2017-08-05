@@ -6,7 +6,7 @@
 			<span class="caption-subject font-blue-steel uppercase">Wastage Item Report</span>
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Excel-Wastage/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 		</div>
 		<div class="portlet-body form">
 			<form method="GET" >
@@ -51,7 +51,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($wastageItems as $wastageItem): ?>
+						<?php foreach ($wastageItems as $wastageItem):  ?>
 							<tr>
 								<td>
 									<?= h(++$page_no) ?>
@@ -60,7 +60,7 @@
 									<?= h($wastageItem->item->name).'('.$wastageItem->item->alias_name.')'  ?>
 								</td>
 								<td>
-									<?= h($wastageItem->totalOutWarehouse)?>
+									<?= h($wastageItem->totalOutWarehouse.$wastageItem->item->unit->unit_name)?>
 								</td>
 							</tr>
 							
