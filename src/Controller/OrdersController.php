@@ -640,7 +640,7 @@ class OrdersController extends AppController
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
 			$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
-			$order->order_date=date('Y-m-d');
+			$order->order_date=date('Y-m-d H:i:s');
 			//pr($order);exit;
             if ($orderDetails = $this->Orders->save($order)) {
 				if($order->amount_from_wallet>0){
