@@ -218,7 +218,8 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.driver_id' => $driver_id,'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])
+		->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		//
 		$count=$itemLedgers->count();
