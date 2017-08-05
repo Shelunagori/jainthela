@@ -172,7 +172,7 @@ class ItemLedgersController extends AppController
 						'transaction_date' => $transaction_date,
 						'item_id' => $item_id,
 						'quantity' => $waste,
-						'status' => 'In',
+						'status' => '',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
 						'different_driver_id' => $driver_id,
 						'weight_variation' => 1,
