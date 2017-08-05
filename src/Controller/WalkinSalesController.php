@@ -122,13 +122,13 @@ class WalkinSalesController extends AppController
 		}else if($type == 'Online'){  //pr($type);exit;
 			if(!empty($where1)){ //echo"sdf";exit;
 				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+						->where($where1)->where(['Orders.jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
 			}			
 		}
 		else if($type == 'Bulkorder'){  //pr($type);exit;
 			if(!empty($where1)){ //echo"sdf";exit;
 				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type IN'=>'Bulkorder']);
+						->where($where1)->where(['Orders.jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.status IN'=>'Delivered','order_type IN'=>'Bulkorder']);
 			}			
 		}
 		else{ 
@@ -138,7 +138,7 @@ class WalkinSalesController extends AppController
 				}
 				if(!empty($where1)){
 				$Orders = 	$this->WalkinSales->Orders->find()->contain(['Drivers','Warehouses','OrderDetails'])
-						->where($where1)->where(['Orders.status IN'=>'Delivered','order_type NOT IN'=>'Bulkorder']);
+						->where($where1)->where(['Orders.jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.status IN'=>'Delivered']);
 			}
 			
 		}	

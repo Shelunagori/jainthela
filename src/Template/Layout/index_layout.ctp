@@ -210,6 +210,9 @@
 									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Wastage Item Report','/itemLedgers/wastageReport',['escape'=>false]) ?>
 								</li>
 								<li>
+									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Weight Variation Report','/itemLedgers/weightVariationReport',['escape'=>false]) ?>
+								</li>
+								<li>
 									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Drivers/driver_location',['escape'=>false]) ?>
 								</li>
 								

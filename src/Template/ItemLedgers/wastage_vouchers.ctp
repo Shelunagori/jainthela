@@ -64,12 +64,21 @@
 									echo "-";
 								} ?>
 							</td>
-							<td>
-								<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>@$remainingStock[$item->id],'label'=>false,'placeholder'=>'Actual Quantity']); ?>
-							</td>
-							<td>
-								<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>@$remainingStock[$item->id]]); ?>
-							</td>
+							<?php if(@$remainingStock[$item->id] > 0){ ?>
+								<td>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>@$remainingStock[$item->id],'label'=>false,'placeholder'=>'Actual Quantity']); ?>
+								</td>
+								<td>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>@$remainingStock[$item->id]]); ?>
+								</td>
+							<?php }else{ ?>
+								<td>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>@$remainingStock[$item->id],'label'=>false,'placeholder'=>'Actual Quantity','disabled'=>'disabled']); ?>
+								</td>
+								<td>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>@$remainingStock[$item->id],'disabled'=>'disabled']); ?>
+								</td>
+							<?php } ?>
 						</tr>
 						<?php $i++; endforeach; ?>
 						
@@ -159,6 +168,7 @@ $(document).ready(function(){
 
 			var remainingStock = $(this).find("td:nth-child(3) .remainingStock").val();
 			var modified_qty = $(this).find("td:nth-child(4) input").val();
+			
 			
 			if(modified_qty >= remainingStock){ 
 				var result = parseInt(0);

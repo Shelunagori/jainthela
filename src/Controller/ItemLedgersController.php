@@ -1021,6 +1021,51 @@ class ItemLedgersController extends AppController
 		
 	}
 	
+	public function weightVariationReport(){
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		$this->set(compact('from_date', 'to_date'));
+		
+		$where=[];
+		if(!empty($from_date)){
+			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
+		
+		$query =$this->ItemLedgers->find();
+		   
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['wastage' => '1','item_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+	
+		$query->select([
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'wastage'=>'1'])
+		->where($where)
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units']]);
+        $wastageItems = ($query);
+		
+		$drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+
+		$this->set(compact('wastageItems','url','drivers'));
+        $this->set('_serialize', ['wastageItems']);
+	}
+	
 	public function excelWastage(){
 		$this->viewBuilder()->layout(''); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
