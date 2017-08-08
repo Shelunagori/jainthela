@@ -67,7 +67,7 @@
 							<th >Seller</th>
 							<th>Driver Name</th>
 							<th style="text-align:right;">Total Amount</th>
-							<!-- <th class="actions"><?= __('Actions') ?></th> -->
+							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -91,13 +91,9 @@
 							<td align="right">
 								<?= $this->Number->precision($walkinSale->total_amount,2) ?>
 							</td>
-						   <!--
-							<td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $walkinSale->id]) ?>
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $walkinSale->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $walkinSale->id], ['confirm' => __('Are you sure you want to delete # {0}?', $walkinSale->id)]) ?>
+						   <td class="actions">
+							 	 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $walkinSale->id], ['confirm' => __('Are you sure you want to delete Order {0}?', $walkinSale->order_no)]) ?>
 							</td>
-							-->
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
