@@ -6,17 +6,17 @@
 			<span class="caption-subject font-blue-steel uppercase">Weight Variation Item Report</span>
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Excel-Wastage/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/Excel-Weight-Variation/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 		</div>
 		<div class="portlet-body form">
 			<form method="GET" >
 				<table width="50%" class="table table-condensed">
 					<tbody>
 						<tr>
-							<td width="2%">
-								<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+							<td width="5%">
+								<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'form-control input-sm select2me','empty' => 'Select','label'=>false,'value'=>$driver_id)) ?>
 							</td>
-							<td width="2%">
+							<td width="5%">
 							
 							<?php if(!empty($from_date)){ ?>
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
@@ -24,7 +24,7 @@
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
 							<?php } ?>	
 							</td>	
-							<td width="2%">
+							<td width="5%">
 							<?php if(!empty($to_date)){ ?>
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
 							<?php }else{ ?>
@@ -33,16 +33,17 @@
 							</td>
 							
 							<td width="10%">
-								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
+								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> GO</button>
 							</td>
-							<td width="2%" align="right">
+							<!--<td width="2%" align="right">
 								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
-							</td>
+							</td>-->
 						</tr>
 					</tbody>
 				</table>
 			</form>
 		<!-- BEGIN FORM-->
+		<?php  if(sizeof($weightvariationItems->toArray()) > 0){ ?>
 		<div class="row ">
 			<div class="col-md-12">
 			<?php $page_no=0; ?>
@@ -51,20 +52,20 @@
 						<tr>
 							<th>Sr.No.</th>
 							<th>Item Name</th>
-							<th>Wastage Quantity</th>
+							<th>Weight Variation Quantity</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($wastageItems as $wastageItem):  ?>
+						<?php foreach ($weightvariationItems as $weightvariationItem):  ?>
 							<tr>
 								<td>
 									<?= h(++$page_no) ?>
 								</td>
 								<td>
-									<?= h($wastageItem->item->name).'('.$wastageItem->item->alias_name.')'  ?>
+									<?= h($weightvariationItem->item->name).'('.$weightvariationItem->item->alias_name.')'  ?>
 								</td>
 								<td>
-									<?= h($wastageItem->totalOutWarehouse.$wastageItem->item->unit->unit_name)?>
+									<?= h($weightvariationItem->totalOutWarehouse.$weightvariationItem->item->unit->unit_name)?>
 								</td>
 							</tr>
 							
@@ -73,6 +74,9 @@
 				</table>
 			</div>
 		</div>
+		<?php }else{ 
+			echo "No Data Found";
+		 } ?>
 	</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>

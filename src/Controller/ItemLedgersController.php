@@ -1030,12 +1030,15 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout'); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
+		$driver_id = $this->request->query('driver_id');
 		$from_date = $this->request->query('From');
 		$to_date = $this->request->query('To');
 		
-		$this->set(compact('from_date', 'to_date'));
+		
+		$this->set(compact('from_date', 'to_date','driver_id'));
 		
 		$where=[];
+		
 		if(!empty($from_date)){
 			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
 		}
@@ -1047,7 +1050,7 @@ class ItemLedgersController extends AppController
 		   
 		$totalOutWarehouseCase = $query->newExpr()
 			->addCase(
-				$query->newExpr()->add(['wastage' => '1','item_id']),
+				$query->newExpr()->add(['weight_variation' => '1','item_id']),
 				$query->newExpr()->add(['quantity']),
 				'integer'
 			);
@@ -1055,19 +1058,63 @@ class ItemLedgersController extends AppController
 		$query->select([
 			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
 		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'wastage'=>'1'])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1','different_driver_id'=>$driver_id])
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units']]);
-        $wastageItems = ($query);
-		
+        $weightvariationItems = ($query);
+		//pr($weightvariationItems->toArray());exit;
 		$drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
 
-		$this->set(compact('wastageItems','url','drivers'));
-        $this->set('_serialize', ['wastageItems']);
+		$this->set(compact('weightvariationItems','url','drivers'));
+        $this->set('_serialize', ['weightvariationItems']);
 	}
 	
+	public function excelWeightVariation(){
+		$this->viewBuilder()->layout(''); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		
+		$driver_id = $this->request->query('driver_id');
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
+		
+		
+		$this->set(compact('from_date', 'to_date','driver_id'));
+		
+		$where=[];
+		
+		if(!empty($from_date)){
+			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
+		
+		$query =$this->ItemLedgers->find();
+		   
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['weight_variation' => '1','item_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+	
+		$query->select([
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1','different_driver_id'=>$driver_id])
+		->where($where)
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units']]);
+        $weightvariationItems = ($query);
+		//pr($weightvariationItems->toArray());exit;
+		$drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+
+		$this->set(compact('weightvariationItems','url','drivers'));
+        $this->set('_serialize', ['weightvariationItems']);
+	}
 	public function excelWastage(){
 		$this->viewBuilder()->layout(''); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
