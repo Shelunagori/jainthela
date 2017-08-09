@@ -30,7 +30,7 @@
 							<th width="100">Unit</th>
 							<th>Print Rate</th>
 							<th>Item Discount %</th>
-							<th>Sale Rate</th>
+							<th>Online Sale Rate</th>
 							<th>Offline Sale Rate</th>
 							<th width="100">
 								Ready to Sale

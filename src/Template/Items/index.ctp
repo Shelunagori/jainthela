@@ -41,7 +41,7 @@
 							<th>Unit</th>
 							<th>Item Category</th>
 							<th>Minimum Stock</th>
-							<th>Minimum Quantity Factor</th>
+							<th>Selling Factor</th>
 							<th>Out Of Stock</th>
 							<th>Freeze</th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
