@@ -25,9 +25,7 @@
 						$class2="btn btn-xs blue";
 					}
 					 ?>
-						<?php echo $this->Html->link('Open',['controller'=>'Grns','action' => 'index/open'],['escape'=>false,'class'=>$class1]); ?>
-						<?php echo $this->Html->link('Closed',['controller'=>'Grns','action' => 'index/closed'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
-				
+						
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -59,9 +57,7 @@
 							
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
-								<?php if($status=='open'){ ?>
-								<?= $this->Html->link(__('Book Invoice'), ['controller'=>'PurchaseBookings', 'action' => 'add', $grn->id]) ?>
-								<?php } ?>
+								
 							</td>
 							
 						</tr>
