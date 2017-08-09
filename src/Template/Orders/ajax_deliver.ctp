@@ -72,7 +72,7 @@ label{
 												</td>
 												<td align="center">
 													<?php echo $this->Form->input('order_details['.$k.'][item_id]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number item_id','value'=>@$order_detail->item_id]); ?>
-													<?= h(@$order_detail->item->name)?>
+													<?= h(@$order_detail->item->name.'('.$order_detail->item->alias_name.')')?>
 												</td>
 												<td align="center">
 													<?php echo $this->Form->input('order_details['.$k.'][quantity]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number ','value'=>@$order_detail->quantity]); ?>
