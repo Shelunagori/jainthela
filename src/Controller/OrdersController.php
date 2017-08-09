@@ -586,7 +586,7 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
 		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
 
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
@@ -764,7 +764,7 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
 		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1])->contain(['Units']);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
 
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
