@@ -68,6 +68,11 @@ margin-bottom: 0;
 						<td width="20" align="center">:</td>
 						<td ><?= h($grn->created_on) ?></td>
 					</tr>
+					<tr>
+						<td>Warehouse</td>
+						<td width="20" align="center">:</td>
+						<td ><?= h($grn->warehouse->name) ?></td>
+					</tr>
 				</table>
 			</td>
 		</tr>

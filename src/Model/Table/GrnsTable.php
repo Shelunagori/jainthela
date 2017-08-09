@@ -58,6 +58,8 @@ class GrnsTable extends Table
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'grn_id'
         ]);
+		
+		$this->belongsTo('Warehouses');
     }
 	
 	public function beforeMarshal(Event $event, ArrayObject $data)

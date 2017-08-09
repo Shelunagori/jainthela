@@ -25,13 +25,14 @@ class GrnsController extends AppController
         
 		if($status=='open' || $status=='')
 		{	$status='open';
-			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'No'])->contain(['Vendors']);
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'No'])->contain(['Vendors', 'Warehouses']);
 		} 
 		elseif($status=='closed')
 		{
 			$status='closed';
-			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'Yes'])->contain(['Vendors']);
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'Yes'])->contain(['Vendors', 'Warehouses']);
 		}
+		
         $this->set(compact(['grns','status']));
         $this->set('_serialize', ['grns']);
     }
@@ -49,10 +50,9 @@ class GrnsController extends AppController
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
         $grn = $this->Grns->get($id, [
-            'contain' => ['Vendors','GrnDetails'=>['Items'=>['Units']]]
+            'contain' => ['Vendors','Warehouses','GrnDetails'=>['Items'=>['Units']]]
         ]);
 		
- 
         $this->set('grn', $grn);
 		
         $this->set('_serialize', ['grn']);

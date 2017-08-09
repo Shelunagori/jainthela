@@ -37,9 +37,10 @@
 							<tr>
 								<th>Sr</th>
 								<th>Grn No</th>
+								<th>Vendor</th>
+								<th>Warehouse</th>
 								<th>Transaction Date</th>
 								<th>Created On</th>
-								<th>Vendor</th>
 								
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 								
@@ -51,9 +52,10 @@
 						<tr>
 							<td><?= $this->Number->format(++$sr_no) ?></td>
 							<td><?= h('#'.str_pad($this->Number->format($grn->grn_no), 4, '0', STR_PAD_LEFT)) ?></td>
+							<td><?= h($grn->vendor->name) ?></td>
+							<td><?= h($grn->warehouse->name) ?></td>
 							<td><?= h($grn->transaction_date) ?></td>
 							<td><?= h($grn->created_on) ?></td>
-							<td><?= h($grn->vendor->name) ?></td>
 							
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
