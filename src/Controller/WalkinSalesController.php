@@ -371,8 +371,8 @@ class WalkinSalesController extends AppController
             }
             $this->Flash->error(__('The walkin sale could not be saved. Please, try again.'));
         }
-      //  $items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
-		$item_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.is_virtual'=>'no'])->contain(['Units']);
+      //$items_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
+		$item_fetchs = $this->WalkinSales->WalkinSaleDetails->Items->find()->where(['Items.jain_thela_admin_id'=>$jain_thela_admin_id, 'Items.is_combo'=>'no', 'Items.freeze'=>0, 'Items.is_virtual'=>'no', 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
 		$items=[];
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;

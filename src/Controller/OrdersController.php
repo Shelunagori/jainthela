@@ -653,7 +653,7 @@ class OrdersController extends AppController
 							])
 					->execute();
 				}
-			  	/* $send_data = $orderDetails->id ;
+			   $send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
 				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
@@ -706,7 +706,7 @@ class OrdersController extends AppController
 						die('FCM Send Error: ' . curl_error($ch));
 					}
 					curl_close($ch);
-				}   */
+				}   
 				
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();

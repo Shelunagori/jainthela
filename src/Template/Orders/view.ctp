@@ -46,6 +46,7 @@ margin-bottom: 0;
 					<th style="text-align:left;">Item Name</th>
 					<th style="text-align:center;">QTY</th>
 					<th style="text-align:center;">Actual QTY</th>
+					<th style="text-align:center;">Rate</th>
 					<th style="text-align:center;">Amount</th>
 				</tr>
 				
@@ -60,6 +61,7 @@ margin-bottom: 0;
 					$unit_name=$order_detail->item->unit->unit_name;
 					$image=$order_detail->item->image;
 					$item_name=$order_detail->item->name;
+					$sales_rate=$order_detail->rate;
 					$alias_name=$order_detail->item->alias_name;
 					$show_quantity=$quantity.' '.$unit_name;
 					if(!empty($actual_quantity)){
@@ -83,6 +85,7 @@ margin-bottom: 0;
 					<td style="text-align:left;"><?= h($show_item) ?></td>
 					<td style="text-align:center;"><?= h($show_quantity) ?></td>
 					<td style="text-align:center;"><?= h($show_actual_quantity) ?></td>
+					<td style="text-align:center;"><?= h($sales_rate) ?></td>
 					<td style="text-align:center;"><?= h($amount) ?></td>
 				</tr>
 				<?php } ?>
@@ -97,26 +100,26 @@ margin-bottom: 0;
 				$grand_total=@$total_rate+$delivery_charge;
 				?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
-					<td colspan="4">&nbsp;</td><td align="right"><b>Amount</b></td>
+					<td colspan="5">&nbsp;</td><td align="right"><b>Amount</b></td>
 					<td align="center"><b><?= h(@$total_rate) ?></b></td>
 				</tr>
 				
 				
 				<tr style="background-color:#fff;">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Delivery Charge</b></td>
 					<td align="center"><b><?= h($delivery_charge) ?></b></td>
 				</tr>
 				
 				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Total Amount</b></td>
 					<td align="center"><b><?= h($grand_total) ?></b></td>
 				</tr>
 			
 				<?php if(!empty($amount_from_jain_cash)){ ?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Jain Cash</b></td>
 					<td align="center"><b><?= h($amount_from_jain_cash) ?></b></td>
 				</tr>
@@ -124,7 +127,7 @@ margin-bottom: 0;
 				
 				<?php if(!empty($online_amount)){ ?>
 				<tr style="background-color:#fff;">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Online Payment</b></td>
 					<td align="center"><b><?= h($online_amount) ?></b></td>
 				</tr>
@@ -132,7 +135,7 @@ margin-bottom: 0;
 				
 				<?php if(!empty($amount_from_wallet)){ ?>
 				<tr style="background-color:#fff;">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Payment From Wallet </b></td>
 					<td align="center"><b><?= h($amount_from_wallet) ?></b></td>
 				</tr>
@@ -140,14 +143,14 @@ margin-bottom: 0;
 				
 				<?php if(!empty($amount_from_promo_code)){ ?>
 				<tr style="background-color:#fff;">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Promo code</b></td>
 					<td align="center"><b><?= h($amount_from_promo_code)?></b></td>
 				</tr>
 				<?php } ?>
 			
 				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
-					<td colspan="4">&nbsp;</td>
+					<td colspan="5">&nbsp;</td>
 					<td align="right">
 						<b>
 						<?php if(($status=='Delivered') || ($status==' Delivered')){ ?>
@@ -161,8 +164,8 @@ margin-bottom: 0;
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="2"><b>Deliver Time Between:-</b></td>
-					<td colspan="2"><b><?= h($order->delivery_time) ?></b></td>
+					<td colspan="2"><b>Deliver Between:-</b></td>
+					<td colspan="2"><b><?php echo $order->delivery_time;?></b></td>
 				</tr>
 				<tr>
 				<td colspan="6"><a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
