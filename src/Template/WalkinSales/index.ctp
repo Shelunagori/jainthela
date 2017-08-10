@@ -92,7 +92,7 @@
 								<?= $this->Number->precision($walkinSale->total_amount,2) ?>
 							</td>
 						   <td class="actions">
-							 	 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $walkinSale->id], ['confirm' => __('Are you sure you want to delete Order {0}?', $walkinSale->order_no)]) ?>
+							 	 <?= $this->Form->postLink(__('Cancel'), ['action' => 'cancelBox', $walkinSale->id], ['confirm' => __('Are you sure you want to Cancel Order {0}?', $walkinSale->order_no)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

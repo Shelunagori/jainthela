@@ -51,9 +51,9 @@ class WalkinSalesController extends AppController
 		}
 		
 		if($status=='yes'){$today = date('Y-m-d');
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today])->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today,'WalkinSales.cancel_id'=>0])->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
 		}else{
-			$walkinSales = $this->WalkinSales->find()->where($where)->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+			$walkinSales = $this->WalkinSales->find()->where($where)->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.cancel_id'=>0])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
 		}
 		
 		$Drivers = $this->WalkinSales->Drivers->find('list');
@@ -115,7 +115,7 @@ class WalkinSalesController extends AppController
 		
 			if($type == 'Walkin'){
 				if(!empty($where)){
-					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.cancel_id'=>0])
 							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 				}
 				
@@ -133,7 +133,7 @@ class WalkinSalesController extends AppController
 		}
 		else{ 
 				if(!empty($where)){
-					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id])
+					$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.cancel_id'=>0])
 							   ->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails']);
 				}
 				if(!empty($where1)){
@@ -501,4 +501,19 @@ class WalkinSalesController extends AppController
 		 $this->set(compact('walkinSales','from_date','to_date'));
         $this->set('_serialize', ['walkinSales']);
 	}
+	
+	public function cancelBox($id = null)
+    {
+		$walkinSale = $this->WalkinSales->get($id);
+		$walkinSale->cancel_id=1;
+		if ($this->WalkinSales->save($walkinSale)) {
+			 
+		$this->WalkinSales->ItemLedgers->deleteAll(['walkin_sales_id'=>$walkinSale->id]);
+		$this->Flash->success(__('The Walkin sale has been Cancel.'));
+        } else {
+            $this->Flash->error(__('The Walkin sale could not be Cancel. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
+    }
+	
 }
