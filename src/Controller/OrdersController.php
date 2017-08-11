@@ -966,7 +966,12 @@ class OrdersController extends AppController
 				->where(['first_time_win_status'=> 'No']);
 		
 		 foreach($customer_details as $customer_detail){
-				$customer_id=$customer_detail->id;
+					$customer_id=$customer_detail->id;
+					$mobile=$customer_detail->mobile;
+					$API_ACCESS_KEY=$customer_detail->notification_key;
+					$device_token=$customer_detail->device_token;
+					$device_token1=rtrim($device_token);
+					$time1=date('Y-m-d G:i:s');
 				
 				  $order_count=$this->Orders->find()
 					->where(['customer_id'=>$customer_id, 
@@ -1006,6 +1011,56 @@ class OrdersController extends AppController
 						->set(['first_order_discount_flag' => 'Yes'])
 						->where(['id' => $order_id])
 						->execute();
+						 
+					if(!empty($device_token1))
+					{
+					
+						$msg = array
+						(
+						'message' 	=> 'Congratulations You Won Rs. 100 Cash Back for Your First Order',
+						'image' 	=> '',
+						'button_text'	=> 'Check Wallet',
+						'link' => 'jainthela://home',	
+						'notification_id'	=> 1,
+						);
+
+						$url = 'https://fcm.googleapis.com/fcm/send';
+						$fields = array
+						(
+							'registration_ids' 	=> array($device_token1),
+							'data'			=> $msg
+						);
+						$headers = array
+						(
+							'Authorization: key=' .$API_ACCESS_KEY,
+							'Content-Type: application/json'
+						);
+
+						  //echo json_encode($fields);
+						  $ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+						$result001 = curl_exec($ch);
+						if ($result001 === FALSE) {
+							die('FCM Send Error: ' . curl_error($ch));
+						}
+						curl_close($ch);
+					}
+					
+					
+				$sms=str_replace(' ', '+', 'Congratulations You Won Rs. 100 Cash Back for Your First Order');
+				$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+				$sms_sender='JAINTE';
+				$sms=str_replace(' ', '+', $sms);
+				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
+
+	    /////SMS AND NOTIFICATIONS///////////////////
+					 	
 			 }
 		 }
 		 exit;
