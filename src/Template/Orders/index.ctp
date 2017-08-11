@@ -173,7 +173,8 @@
 							<?php  if(($status=='In Process') || ($status=='In process')){ 
 							if(( $order_date == $current_date ) || ($order_date == $prev_date  )){?>
 								<td>
-									<a href="Orders/edit/<?php echo $order->id; ?>" >Edit</a>
+									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $order->id]) ?>
+								
 								</td>
 							<?php 	}else{ ?>
 								<td></td>

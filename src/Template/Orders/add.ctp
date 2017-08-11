@@ -289,8 +289,8 @@ $(document).ready(function() {
 		var discount_amount=total_amount*(discount_percent/100);
 		total_amount-=discount_amount;
 		}
-		if(total_amount<100){
-			$('input[name=delivery_charge]').val(100);
+		if(total_amount<100 && total_amount>0){
+			$('input[name=delivery_charge]').val(50);
 		}else{
 			$('input[name=delivery_charge]').val(0);
 		}
@@ -371,8 +371,8 @@ $(document).ready(function() {
 		var discount_amount=total_amount*(discount_percent/100);
 		total_amount-=discount_amount;
 		}
-		if(total_amount<100){
-			$('input[name=delivery_charge]').val(100);
+		if(total_amount<100 && total_amount>0){
+			$('input[name=delivery_charge]').val(50);
 		}else{
 			$('input[name=delivery_charge]').val(0);
 		}
