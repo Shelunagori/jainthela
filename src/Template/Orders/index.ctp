@@ -26,16 +26,17 @@
 					<?php if($status=='process'){
 						$class1="btn btn-xs blue";
 						$class2="btn btn-default";
-					}else{
+					}else if ($status==''){
 						$class1="btn btn-default";
 						$class2="btn btn-xs blue";
 					}
-					 ?>
+					 ?> 
 						<?php echo $this->Html->link('Pending',['controller'=>'Orders','action' => 'index?status=process'],['escape'=>false,'class'=>$class1]); ?>
 						<?php echo $this->Html->link('All',['controller'=>'Orders','action' => 'index'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
 				
 				</div>
 			<div class="portlet-body">
+			<?php if($status=='') { ?>
 			<form method="GET" >
 				<table width="50%" class="table table-condensed">
 					<tbody>
@@ -104,6 +105,7 @@
 					</tbody>
 				</table>
 			</form>
+			<?php } ?>
 			<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
