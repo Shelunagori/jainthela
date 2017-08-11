@@ -955,4 +955,59 @@ class OrdersController extends AppController
 		$this->set(compact('ItemLedgers','from_date','to_date'));
         $this->set('_serialize', ['bulkSales']);
 	}
+	
+	public function firstOrderDiscount(){
+		
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->loadModel('Users');
+		$user_deatils=$this->Users->get($jain_thela_admin_id);
+		$first_order_discount_amount=$user_deatils->first_order_discount_amount;
+		$customer_details=$this->Orders->Customers->find()
+				->where(['first_time_win_status'=> 'No']);
+		
+		 foreach($customer_details as $customer_detail){
+				$customer_id=$customer_detail->id;
+				
+				  $order_count=$this->Orders->find()
+					->where(['customer_id'=>$customer_id, 
+							'grand_total >='=>100,
+							'status'=> 'Delivered'])
+							->count();
+							
+					$order_details=$this->Orders->find()
+					->where(['customer_id'=>$customer_id, 
+							'grand_total >='=>100,
+							'status'=> 'Delivered'])
+							->select(['id'])
+							->order(['id'=>'ASC'])
+							->first();
+					@$order_id=$order_details->id;
+					
+			 if($order_count>0){
+						$query=$this->Orders->Wallets->query();
+						$query->insert(['customer_id', 'return_order_id', 'narration', 'plan_id', 'advance'])
+						->values([
+							'customer_id' => $customer_id,
+							'return_order_id' => $order_id,
+							'narration' => 'First Order Discount',
+							'plan_id' => 19,
+							'advance' => $first_order_discount_amount
+						]);
+						$query->execute();
+						
+						$query1=$this->Orders->Customers->query();
+						$result = $query1->update()
+						->set(['first_time_win_status' => 'Yes'])
+						->where(['id' => $customer_id])
+						->execute();
+						
+						$query2=$this->Orders->query();
+						$result1 = $query2->update()
+						->set(['first_order_discount_flag' => 'Yes'])
+						->where(['id' => $order_id])
+						->execute();
+			 }
+		 }
+		 exit;
+	}
 }
