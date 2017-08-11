@@ -67,7 +67,7 @@
 													Wastage Quantity
 												</td>
 												<td>
-													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount','placeholder'=>'Quantity','value'=>0]); ?>
+													<?php echo $this->Form->input('waste_quantity', ['label' => false,'class' => 'form-control input-sm number valid calculation_amount remaining','placeholder'=>'Quantity','value'=>0, 'min'=>0]); ?>
 												</td>
 												<td></td>
 											</tr>
@@ -237,7 +237,7 @@ $(document).ready(function() {
 			var final_val=quantity*minimum_quantity_factor;
 			grand_total=grand_total+final_val;
 			$(this).find("td:nth-child(4) input").val(final_val.toFixed(2));
-		}); 
+		});
 	var main_quantity = parseFloat($(".main_quantity").val());
 			if(!main_quantity){ main_quantity=0; }
 		var remaining = main_quantity-grand_total;
@@ -281,6 +281,7 @@ $(document).ready(function() {
 			success: function(data)   // A function to be called if request succeeds
 			{
 				$("#set").html(data+" "+unit_name);
+				$(".main_quantity ").attr('max', +data);
 				//$('.valid').attr('max',data);
 				/* $(update).closest('div').find('#set').html(data);
 				$(update).closest('tr').find('.stock_available').html(data);

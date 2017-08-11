@@ -898,7 +898,7 @@ curl_close($ch);
 		$total_amount=$this->request->data('total_amount');
 		$pay_amount=$this->request->data('pay_amount');
 		$delivery_charge=$this->request->data('delivery_charge');
-		//$driver_id=$this->request->data('driver_id');
+		$first_order_discount_amount=$this->request->data('first_order_discount_amount');
 		$order_id=$this->request->data('order_id');
 		
 		$total_ids=sizeof($id);
@@ -906,6 +906,7 @@ curl_close($ch);
 		
 		
 		$grand_total=$total_amount+$delivery_charge;
+		
 		$fetchs=$this->Orders->find()->where(['id' =>$order_id])->first();
 			$query = $this->Orders->query();
 				$result = $query->update()

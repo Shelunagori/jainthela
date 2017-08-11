@@ -218,7 +218,7 @@ $(document).ready(function() {
 			type: 'POST',
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
-			{
+			{ 
 				$('#data').html(data);
 				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 				 var remaning = $(this).find("td:nth-child(3) .remaining").val();

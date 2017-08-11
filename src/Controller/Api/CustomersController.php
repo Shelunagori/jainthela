@@ -106,6 +106,7 @@ class CustomersController extends AppController
 				{
 					$customerDetails = $this->Customers->get($customerDetails->id);
 				    $customerDetails->status='completed';
+				    $customerDetails->first_time_win_status='No';
 					$customerDetails->notification_key='AAAAXmNqxY4:APA91bG0X6RHVhwJKXUQGNSSCas44hruFdR6_CFd6WHPwx9abUr-WsrfEzsFInJawElgrp24QzaE4ksfmXu6kmIL6JG3yP487fierMys5byv-I1agRtMPIoSqdgCZf8R0iqsnds-u4CU';
 					$customerDetails->referral_code=$customerDetails->id;
 					$this->Customers->save($customerDetails);
@@ -321,12 +322,12 @@ class CustomersController extends AppController
 		$customer_id=$this->request->data('customer_id');
 		$device_token=$this->request->data('device_token');
 		
-		$query = $this->Customers->query();
-				$result = $query->update()
-                    ->set([ 'device_token' => $device_token
-							])
-					->where(['id' => $customer_id])
-					->execute();
+			$query = $this->Customers->query();
+					$result = $query->update()
+						->set([ 'device_token' => $device_token
+								])
+						->where(['id' => $customer_id])
+						->execute();
 		
 		$status=true;
 		$error="Token Updated Successfully";
