@@ -121,10 +121,10 @@ class OrdersController extends AppController
 							$orders =$this->paginate($this->Orders->find('all')
 							->where($where)
 							->order(['Orders.id'=>'DESC'])
-							->where(['jain_thela_admin_id'=>$jain_thela_admin_id,'Orders.curent_date'=>$cur_date])
+							->where(['jain_thela_admin_id'=>$jain_thela_admin_id])
 							->contain(['CustomerAddresses']));
 							$cur_status = 'In Process';
-							 $this->set(compact('orders','cur_status','cur_date'));
+							 $this->set(compact('orders','cur_status','cur_date','status'));
 		}else if($status == 'delivered'){
 							$where['Orders.status']='Delivered';
 							$cur_date = date('d-m-Y');
@@ -135,7 +135,7 @@ class OrdersController extends AppController
 							->contain(['CustomerAddresses']));
 							$cur_status = 'Delivered';
 							
-							 $this->set(compact('orders','cur_status','cur_date'));
+							 $this->set(compact('orders','cur_status','cur_date','status'));
 		}else
 			 if($status == 'cancel'){
 							$where['Orders.status']='Cancel';
@@ -147,7 +147,7 @@ class OrdersController extends AppController
 							->contain(['CustomerAddresses']));
 							$cur_status = 'Cancel';
 			
-							$this->set(compact('orders','cur_status','cur_date'));
+							$this->set(compact('orders','cur_status','cur_date','status'));
 		}else if($type == 'bulkorder'){ 
 							$where['Orders.order_type']='Bulkorder';
 							$cur_date = date('d-m-Y');
@@ -187,7 +187,7 @@ class OrdersController extends AppController
 		
 		$OrderStatus=[];
 		$OrderStatus=[['text'=>'Cancel','value'=>'Cancel'],['text'=>'Delivered','value'=>'Delivered'],['text'=>'In Process','value'=>'In Process']];
-        $this->set(compact('orders','Customer_data','order_type','OrderStatus','order_no','customer_id','order_types','orderstatus','from_date','to_date'));
+        $this->set(compact('orders','Customer_data','order_type','OrderStatus','order_no','customer_id','order_types','orderstatus','from_date','to_date','status'));
         $this->set('_serialize', ['orders']);
     }
 

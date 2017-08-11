@@ -20,90 +20,9 @@
 					<span class="caption-subject font-purple-intense ">
 						<i class="fa fa-book"></i> Order</span>
 				</div>
-				<div class="actions">
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Orders/Add/Offline',['escape'=>false,'class'=>'btn btn-default']) ?>
-					&nbsp;
-					<?php if($status=='process'){
-						$class1="btn btn-xs blue";
-						$class2="btn btn-default";
-					}else{
-						$class1="btn btn-default";
-						$class2="btn btn-xs blue";
-					}
-					 ?>
-						<?php echo $this->Html->link('Pending',['controller'=>'Orders','action' => 'index?status=process'],['escape'=>false,'class'=>$class1]); ?>
-						<?php echo $this->Html->link('All',['controller'=>'Orders','action' => 'index'],['escape'=>false,'class'=>$class2]); ?>&nbsp;
 				
-				</div>
 			<div class="portlet-body">
-			<form method="GET" >
-				<table width="50%" class="table table-condensed">
-					<tbody>
-						<tr>
-							<td width="7%">
-								<?php echo $this->Form->input('status', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm','placeholder'=>'Order No','value'=> h(@$status) ]); ?>
-								<?php echo $this->Form->input('order_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Order No','value'=> h(@$order_no) ]); ?>
-							</td>
-							<td width="2%">
-								<?php echo $this->Form->input('customer', ['empty'=>'--Customers--','options' => $Customer_data,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$customer_id) ]); ?>
-							</td>
-							<?php if(@$cur_type){ ?>
-								<td width="2%">
-									<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$cur_type) ]); ?>
-								</td>
-							<?php }else if(@$order_types){ ?>
-								<td width="2%">
-									<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$order_types) ]); ?>
-								</td>
-							<?php } else{ ?>
-								<td width="2%">
-									<?php echo $this->Form->input('order_type', ['empty'=>'--Type--','options' => $order_type,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$order_types) ]); ?>
-								</td>
-							<?php  } ?>	
-							<?php if(@$cur_status){ ?>
-							<td width="2%">
-								<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$cur_status) ]); ?>
-							</td>
-							<?php }else if(@$orderstatus){ ?>
-								<td width="2%">
-								<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$orderstatus) ]); ?>
-							</td>
-							<?php } else{ ?>
-								<td width="2%">
-									<?php echo $this->Form->input('orderstatus', ['empty'=>'--Status--','options' => $OrderStatus,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$orderstatus) ]); ?>
-								</td>
-							<?php } ?>	
-							<?php if(@$cur_date){ ?>
-							<td width="5%">
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Order From"  data-date-format="dd-mm-yyyy">
-							</td>	
-							<td width="5%">
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Order To"   data-date-format="dd-mm-yyyy" >
-								
-							</td>
-							<?php }else if((@$from_date) || (@$to_date)){ ?>
-								<td width="5%">
-									<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Order From" value="<?php echo @$from_date;  ?>"  data-date-format="dd-mm-yyyy">
-								</td>	
-								<td width="5%">
-									<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Order To" value="<?php echo @$to_date;  ?>"  data-date-format="dd-mm-yyyy" >
-									
-								</td>
-							<?php }else{ ?>
-								<td width="5%">
-									<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Order From" value="<?php echo @$from_date;  ?>"  data-date-format="dd-mm-yyyy">
-								</td>	
-								<td width="5%">
-									<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Order To" value="<?php echo @$to_date;  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php } ?>
-							<td width="10%">
-								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
-							</td>
-							
-						</tr>
-					</tbody>
-				</table>
-			</form>
+			
 			<?php $page_no=$this->Paginator->current('Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
@@ -130,7 +49,8 @@
 						$current_date=date('d-m-Y');
 						$status=$order->status;
 						?>
-						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#ffe4e4; "<?php } ?> >
+						<tr <?php if((($status=='In Process') || ($status=='In process')) && ($order->customer->first_time_win_status=='Yes')){ ?>style="background-color:#ffe4e4; "<?php } else 
+						if(($order->customer->first_time_win_status == 'No') && ($order->total_amount >= 100) ) { ?>style="background-color:#9ED4FA;"<?php } ?> >
 							<td><?= ++$page_no ?></td>
 							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
 							<td>

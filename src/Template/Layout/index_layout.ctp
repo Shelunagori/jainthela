@@ -271,7 +271,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-dashboard" ></i> <span >Dashboard</span>',array('controller'=>'Orders','action'=>'dashboard'),['escape'=>false]); ?>
 							</li>
 							<li>
-								<?php echo $this->Html->link('<i class="fa fa-reorder"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index'),['escape'=>false]); ?>
+								<?php echo $this->Html->link('<i class="fa fa-reorder"></i> <span>Manage Orders</span>',array('controller'=>'Orders','action'=>'index?status=process'),['escape'=>false]); ?>
 							</li>
 							<li>
 								<?php echo $this->Html->link('<i class="fa fa-bell"></i> <span>Push Notification</span>',array('controller'=>'AppNotifications','action'=>'index'),['escape'=>false]); ?>
