@@ -333,7 +333,9 @@ $(document).ready(function() {
 		}
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
 		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
-		
+		if(!amount_from_wallet){
+		amount_from_wallet=0;
+		}
 		var grand_total=total_amount-amount_from_wallet+delivery_charge;
 		$('input[name=total_amount]').val(total_amount);
 		$('input[name=pay_amount]').val(grand_total);
@@ -390,7 +392,9 @@ $(document).ready(function() {
 		}
 		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
 		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
-		 
+		if(!amount_from_wallet){
+		amount_from_wallet=0;
+		}
 		var grand_total=total_amount-amount_from_wallet+delivery_charge;
 		 
 		$('input[name=total_amount]').val(total_amount);
