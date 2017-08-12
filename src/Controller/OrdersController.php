@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
-
+use Cake\Event\Event;
+use Cake\View\View;
+use Cake\Routing\Router;
 use App\Controller\AppController;
 
 /**
@@ -12,7 +14,21 @@ use App\Controller\AppController;
  */
 class OrdersController extends AppController
 {
-
+	public function initialize()
+	{
+		parent::initialize();
+		$this->Auth->allow(['logout']);
+		$role_id=$this->Auth->User('role_id');
+		$this->set(compact(['role_id']));
+	}
+	public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        // Allow users to register and logout.
+        // You should not add the "login" action to allow list. Doing so would
+        // cause problems with normal functioning of AuthComponent.
+        $this->Auth->allow([ 'logout', 'login']);
+    }
     /**
      * Index method
      *
@@ -20,7 +36,7 @@ class OrdersController extends AppController
      */
 	 
 	public function dashboard()
-    {
+    { 
 		$this->viewBuilder()->layout('index_layout');
 		$curent_date=date('Y-m-d');
 		$query = $this->Orders->find();

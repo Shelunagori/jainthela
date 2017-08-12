@@ -7,6 +7,8 @@ use Cake\ORM\TableRegistry;
 use Cake\Validation\Validation;
 use Cake\Routing\Router;
 use Cake\Mailer\Email;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
 class UsersController extends AppController
 {
 	public function initialize()
@@ -22,7 +24,7 @@ class UsersController extends AppController
         // Allow users to register and logout.
         // You should not add the "login" action to allow list. Doing so would
         // cause problems with normal functioning of AuthComponent.
-        $this->Auth->allow([ 'logout', 'login']);
+        $this->Auth->allow(['logout','login']);
     }
 	
 	public function logout()
@@ -30,25 +32,20 @@ class UsersController extends AppController
 		//$this->Flash->success('You are now logged out.');
 		return $this->redirect($this->Auth->logout());
 	}
-	
     public function login()
     {
 		$this->viewBuilder()->layout('login_layout');
         if ($this->request->is('post')) 
 		{
-              $user = $this->Auth->identify();
-		 
-            if ($user) 
+           $user = $this->Auth->identify();
+			if ($user) 
 			{
-				
-                $this->Auth->setUser($user);
-				//pr($user);exit;
-				//@header('location: Orders/dashboard');
-				//return $this->redirect(['controller'=>'Homes','action' => 'index']);
-				return $this->redirect(['controller'=>'Orders','action' => 'dashboard']);
-            }
+				$this->Auth->setUser($user);
+				return $this->redirect(['controller'=>'Orders','action'=>'index']);
+			}
+			
             $this->Flash->error_login(__('Invalid Username or Password'));
-        }
+		}
     }
 	public function index()
 	{

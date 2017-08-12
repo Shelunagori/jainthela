@@ -50,29 +50,31 @@ class AppController extends Controller
 		//FrozenDate::setJsonEncodeFormat('yyyy-MM-dd');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-		$this->loadComponent('Auth', [
+		
+			$this->loadComponent('Auth', [
 		 'authenticate' => [
                 'Form' => [
-					'finder' => 'auth',
                     'fields' => [
                         'username' => 'username',
                         'password' => 'password'
                     ],
-                      'userModel' => 'Users'
+					  'userModel' => 'Users'
+					  
                 ],
                 
             ],
+			'loginRedirect' => [
+                'controller'=>'Orders',
+                'action'=>'index'
+            ],
             'logoutRedirect' => [
                 'controller' => 'Users',
-                'action' => 'login',
-                'home'
+                'action' => 'login'
             ],
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
-		$this->loadModel('Orders');
 		
-
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html
