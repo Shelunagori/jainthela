@@ -98,6 +98,7 @@ margin-bottom: 0;
 				$pay_amount=$order->pay_amount;
 				$status=$order->status;
 				$grand_total=@$total_rate+$delivery_charge;
+				$discount_per=$order->discount_percent;
 				?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
 					<td colspan="5">&nbsp;</td><td align="right"><b>Amount</b></td>
@@ -117,6 +118,15 @@ margin-bottom: 0;
 					<td align="center"><b><?= h($grand_total) ?></b></td>
 				</tr>
 			
+			
+				<?php if(!empty($discount_per)){ ?>
+				<tr style="background-color:#fff; border-top:1px solid #000">
+					<td colspan="5">&nbsp;</td>
+					<td align="right"><b>Discount</b></td>
+					<td align="center"><b><?= h($discount_per) ?><?php echo '%'; ?></b></td>
+				</tr>
+				<?php } ?>
+				
 				<?php if(!empty($amount_from_jain_cash)){ ?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
 					<td colspan="5">&nbsp;</td>

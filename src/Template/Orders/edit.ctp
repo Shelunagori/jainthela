@@ -21,6 +21,7 @@
 						$bulk_image=$bulk_Detail->image;
 						$bulk_delivery_date=date('d-M-Y', strtotime($bulk_Detail->delivery_date));
 						$bulk_delivery_time=$bulk_Detail->delivery_time;
+						
 					}
 				}
 				
@@ -132,6 +133,14 @@
 							<?php $k++;	} ?>
 							</tbody>
 							<tfoot>
+								<?php if($order->discount_percent>0){ ?>
+								<tr id="discount">
+									<td colspan="4" style="text-align:right;">Discount in Percent</td>
+									<td><?php echo $this->Form->control('discount_percent',['placeholder'=>'Discount','class'=>'form-control input-sm','label'=>false,'type'=>'text','value'=>$order->discount_percent,'readonly']); ?>
+									
+									</td>
+								</tr>
+								<?php } ?>
 								<tr>
 									<td colspan="4" style="text-align:right;">
 									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
@@ -159,6 +168,7 @@
 									</td>
 									<td></td>
 								</tr>
+								
 								<tr>
 									<td colspan="4" style="text-align:right;">
 									Paid Amount
@@ -168,6 +178,9 @@
 									</td>
 									<td></td>
 								</tr>
+								
+	<td></td>
+</tr>
 							</tfoot>
 						</table>
 					</div>

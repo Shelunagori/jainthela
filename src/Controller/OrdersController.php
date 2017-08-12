@@ -835,6 +835,7 @@ class OrdersController extends AppController
 		$online_amount=$order->online_amount; 
 		$customer_id=$order->customer_id;
 		$order_date=$order->order_date;
+		$discount_perc=$order->discount_percent;
 		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
         if ($this->request->is(['patch', 'post', 'put'])) {
              $order = $this->Orders->patchEntity($order, $this->request->getData());
