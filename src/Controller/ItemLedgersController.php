@@ -423,9 +423,11 @@ class ItemLedgersController extends AppController
 		$item_ledgers=$this->paginate(
 			$this->ItemLedgers->find()
 			->where($where)
-			->order(['transaction_date'=> 'DESC'])
+			->order(['ItemLedgers.id'=> 'DESC'])
 			->contain(['Drivers', 'Items'=>['Units','itemCategories']])
 		);
+		
+		//pr($item_ledgers->toArray());
 		$drivers=$this->ItemLedgers->Drivers->find('list');
 		
 		$item_fetchs = $this->ItemLedgers->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.is_virtual'=>'no']);
