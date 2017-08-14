@@ -43,9 +43,9 @@
 					
 					<?php foreach($driver_itemLedgers as $driver_itemLedger){
 
-					$total_in=$driver_itemLedger->totalInDriver;
-					$total_out=$driver_itemLedger->totalOutDriver;
-					$remaining=$total_in-$total_out;
+					$total_in=number_format($driver_itemLedger->totalInDriver, 2);
+					$total_out=number_format($driver_itemLedger->totalOutDriver, 2);
+					$remaining=number_format($total_in-$total_out, 2);
 					$item_id=$driver_itemLedger->item_id;
 					if($remaining>0){
 					@$i++;
