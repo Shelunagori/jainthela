@@ -21,7 +21,9 @@
 					$total_out=number_format($warehpouse_itemLedger->totalOutWarehouse, 2);
 					$remaining=number_format($total_in-$total_out, 2);
 					$item_id=$warehpouse_itemLedger->item_id;
-					if($remaining>0){
+					if($remaining==0){
+						
+					}else{
 					@$i++;
 						$name=@$warehpouse_itemLedger->warehouse->name;
 						$warehouse_name=' (Warehouse) ';
@@ -48,6 +50,8 @@
 					$remaining=number_format($total_in-$total_out, 2);
 					$item_id=$driver_itemLedger->item_id;
 					if($remaining>0){
+						
+					}else{
 					@$i++;
 					 
 						$name=$driver_itemLedger->driver->name;
