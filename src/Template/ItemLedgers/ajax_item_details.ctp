@@ -17,9 +17,9 @@
 				<tbody id='main_tbody' class="tab">
 					<?php foreach($warehpouse_itemLedgers as $warehpouse_itemLedger){
 
-					$total_in=$warehpouse_itemLedger->totalInWarehouse;
-					$total_out=$warehpouse_itemLedger->totalOutWarehouse;
-					$remaining=$total_in-$total_out;
+					$total_in=number_format($warehpouse_itemLedger->totalInWarehouse, 2);
+					$total_out=number_format($warehpouse_itemLedger->totalOutWarehouse, 2);
+					$remaining=number_format($total_in-$total_out, 2);
 					$item_id=$warehpouse_itemLedger->item_id;
 					if($remaining>0){
 					@$i++;
