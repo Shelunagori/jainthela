@@ -62,6 +62,7 @@
 						$created_on=$item_ledger->created_on;
 						
 						$order_time=date('h:i a', strtotime($created_on));
+						$actual_date=date('d-M-Y', strtotime($transaction_date));
 						$status=$item_ledger->status;
 						$quantity=$item_ledger->quantity;
 						@$driver_name=$item_ledger->driver->name;
@@ -71,7 +72,7 @@
 						?>
 						<tr>
 							<td><?= $this->Number->format(++$sr_no) ?></td>
-							<td><?= h($org_transaction_date) ?></td>
+							<td><?= h($actual_date) ?></td>
 							<td><?= h($order_time) ?></td>
 							<td><?= h($driver_name) ?></td>
 							<td><?= h($item_name) ?></td>
