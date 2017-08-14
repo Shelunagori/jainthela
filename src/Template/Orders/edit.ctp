@@ -149,10 +149,20 @@
 									<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly','value'=>$order->total_amount]); ?>
 									</td>
 									<td></td>	</tr>
+								
 								<tr>
+									<td colspan="4" style="text-align:right;">
+									Delivery Charge
+									</td>
+									<td>
+									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>0,'readonly']); ?>
+									</td>
+									<td></td>
+								</tr>
+								
 								<tr>
-								<td colspan="4" style="text-align:right;">Grand Total</td>
-								<td><?php echo $this->Form->input('grand_total', ['label' => false,'class' => 'form-control input-sm number ','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
+									<td colspan="4" style="text-align:right;">Grand Total</td>
+									<td><?php echo $this->Form->input('grand_total', ['label' => false,'class' => 'form-control input-sm number ','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
 									</td>
 								</tr>
 									<td colspan="4" style="text-align:right;">
@@ -163,15 +173,7 @@
 									</td>
 									<td></td>
 								</tr>
-								<tr>
-									<td colspan="4" style="text-align:right;">
-									Delivery Charge
-									</td>
-									<td>
-									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>0,'readonly']); ?>
-									</td>
-									<td></td>
-								</tr>
+								
 								
 								<tr>
 									<td colspan="4" style="text-align:right;">
