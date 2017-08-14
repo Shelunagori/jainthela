@@ -39,10 +39,10 @@
 					<?php echo $this->Form->input('item_ledgers['.$k.'][item_id]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm number','value'=> $item_id]); ?>
 				</td>	
 				<td align="center">
-					<?php echo $this->Form->input('item_ledgers['.$k.'][remaining]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm remaining','value'=> $remaining]); ?>
-				<?= h($remaining) ?></td>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][remaining]', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm remaining','value'=> number_format($remaining, 2)]); ?>
+				<?php echo number_format($remaining, 2) ?></td>
 				<td>
-					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number quantity','value'=> $remaining, 'max'=>$remaining]); ?>
+					<?php echo $this->Form->input('item_ledgers['.$k.'][quantity]', ['label' => false,'class' => 'form-control input-sm number quantity','value'=> number_format($remaining, 2), 'max'=>number_format($remaining, 2)]); ?>
 					<span class="msg_shw" style="color:green;font-size:10px;">
 						quantity in <?= $unit_name ?>
 					</span>

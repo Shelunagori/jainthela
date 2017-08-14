@@ -347,7 +347,7 @@ class ItemLedgersController extends AppController
 		  foreach($itemLedgers as $itemLedger){
 			   $available_stock=$itemLedger->total_in;
 			   $stock_issue=$itemLedger->total_out;
-			 echo @$remaining=$available_stock-$stock_issue;
+			 echo @$remaining=number_format($available_stock-$stock_issue, 2);
 		  }
 		  exit;
      }
@@ -529,7 +529,6 @@ class ItemLedgersController extends AppController
 		->contain(['Items'=>['Units','itemCategories']]);
 
 		$itemLedgers=$query;
-
 		$this->set(compact('itemLedgers','url'));
     }
 

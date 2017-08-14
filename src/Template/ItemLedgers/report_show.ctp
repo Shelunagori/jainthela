@@ -46,8 +46,8 @@
 								if($item_freeze==1){
 									continue;
 								}
-								$driver_stock=$itemLedger->totalInDriver-$itemLedger->totalOutDriver;
-								$warehouse_stock=$itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse;
+								$driver_stock=number_format($itemLedger->totalInDriver-$itemLedger->totalOutDriver, 2);
+								$warehouse_stock=number_format($itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse, 2);
 								@$i++;
 								?>
 									<tr class="main_tr" class="tab">
@@ -62,7 +62,7 @@
 											<?= $warehouse_stock.' '.$itemLedger->item->unit->shortname ?>
 										</td>
 										<td>
-											<?= $driver_stock+$warehouse_stock.' '.$itemLedger->item->unit->shortname ?>
+											<?= number_format($driver_stock+$warehouse_stock, 2).' '.$itemLedger->item->unit->shortname ?>
 										</td>
 									</tr>
 								<?php } ?>
