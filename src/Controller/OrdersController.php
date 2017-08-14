@@ -654,7 +654,7 @@ class OrdersController extends AppController
 				$order->order_type='Cod';
 			}
 			$order->jain_thela_admin_id=$jain_thela_admin_id;
-			$order->grand_total=$this->request->data['total_amount'];
+			//$order->grand_total=$this->request->data['total_amount'];
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			$order->order_date=date('Y-m-d H:i:s');
 			//pr($order);exit;
@@ -669,7 +669,7 @@ class OrdersController extends AppController
 							])
 					->execute();
 				}
-			  	/* $send_data = $orderDetails->id ;
+			  	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
 				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
@@ -707,7 +707,7 @@ class OrdersController extends AppController
 						'Content-Type: application/json'
 					);
 
-					  //echo json_encode($fields);
+					json_encode($fields);
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_URL, $url);
 					curl_setopt($ch, CURLOPT_POST, true);
@@ -722,7 +722,7 @@ class OrdersController extends AppController
 						die('FCM Send Error: ' . curl_error($ch));
 					}
 					curl_close($ch);
-				}   */
+				}  
 				
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
@@ -841,7 +841,7 @@ class OrdersController extends AppController
              $order = $this->Orders->patchEntity($order, $this->request->getData());
 			$total_amount=$this->request->data['total_amount'];
 			$delivery_charge=$this->request->data['delivery_charge'];
-			$grand_total=$total_amount+$delivery_charge;
+			$grand_total=$this->request->data['grand_total'];
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;
 			$this->Orders->Wallets->deleteAll(['return_order_id'=>$id]);
@@ -861,7 +861,7 @@ class OrdersController extends AppController
 							])
 					->execute();
 			}
-			$order->grand_total=$grand_total;
+			//$order->grand_total=$grand_total;
 			$order->order_date=$order_date;
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
              if ($this->Orders->save($order)) {

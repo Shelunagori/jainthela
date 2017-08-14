@@ -98,11 +98,16 @@
 								<tr>
 									<td colspan="4" style="text-align:right;">
 									<a class="btn btn-default input-sm add_row" href="#" role="button"  style="float: left;"><i class="fa fa-plus"></i> Add Row</a>
-									Grand Total</td>
+									 Total Amount</td>
 									<td>
 									<?php echo $this->Form->input('total_amount', ['label' => false,'class' => 'form-control input-sm number cal_amount','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
 									</td>
 									<td></td>
+								</tr>
+								<tr>
+								<td colspan="4" style="text-align:right;">Grand Total</td>
+								<td><?php echo $this->Form->input('grand_total', ['label' => false,'class' => 'form-control input-sm number ','placeholder'=>'Total Amount','type'=>'text','readonly']); ?>
+									</td>
 								</tr>
 								<tr>
 									<td colspan="4" style="text-align:right;">
@@ -283,11 +288,12 @@ $(document).ready(function() {
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 		});
+		var display_amount=total_amount;
 		if($('input[name=discount_percent]').val())
 		{
 		var discount_percent=parseFloat($('input[name=discount_percent]').val());
 		var discount_amount=total_amount*(discount_percent/100);
-		total_amount-=discount_amount;
+		var total_amount=total_amount-discount_amount;
 		}
 		if(total_amount<100 && total_amount>0){
 			$('input[name=delivery_charge]').val(50);
@@ -299,9 +305,12 @@ $(document).ready(function() {
 		if(!amount_from_wallet){
 		amount_from_wallet=0;
 		}
-		var grand_total=total_amount-amount_from_wallet+delivery_charge;
-		$('input[name=total_amount]').val(total_amount);
-		$('input[name=pay_amount]').val(grand_total);
+		
+		var grand_total=total_amount+delivery_charge;
+		var paid_amount=grand_total-amount_from_wallet;
+		$('input[name=grand_total]').val(grand_total);
+		$('input[name=total_amount]').val(display_amount);
+		$('input[name=pay_amount]').val(paid_amount);
 		
 		});
 	}
@@ -358,34 +367,7 @@ $(document).ready(function() {
 	}
 	?>
 	$(document).on('keyup','.cal_amount',function(){ 
-		var obj=$(this).closest('tr');
-		var qty=obj.find('td:nth-child(3) input').val();
-		var rate=obj.find('td:nth-child(4) input').val();
-		var amount=qty*rate;
-		var rate=obj.find('td:nth-child(5) input').val(amount);
-		var total_amount=0;
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
-		});
-		if($('input[name=discount_percent]').val())
-		{
-		var discount_percent=parseFloat($('input[name=discount_percent]').val());
-		var discount_amount=total_amount*(discount_percent/100);
-		total_amount-=discount_amount;
-		}
-		if(total_amount<100 && total_amount>0){
-			$('input[name=delivery_charge]').val(50);
-		}else{
-			$('input[name=delivery_charge]').val(0);
-		}
-		var amount_from_wallet=parseFloat($('input[name=amount_from_wallet]').val());
-		var delivery_charge=parseFloat($('input[name=delivery_charge]').val());
-		if(!amount_from_wallet){
-		amount_from_wallet=0;
-		}
-		var grand_total=total_amount-amount_from_wallet+delivery_charge;
-		$('input[name=total_amount]').val(total_amount);
-		$('input[name=pay_amount]').val(grand_total);
+	calculate_total();
 		
 	});
 
@@ -422,6 +404,7 @@ $(document).ready(function() {
 		var g_total = quant*minimum_quantity_factor;
 		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
 		$(this).closest('tr').find('.mains').val(g_total);
+		calculate_total();
 	});
 	
 	$(document).on('keyup', '.number', function(e)
