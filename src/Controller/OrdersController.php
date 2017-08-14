@@ -669,6 +669,7 @@ class OrdersController extends AppController
 							])
 					->execute();
 				}
+				/*
 			  	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
@@ -723,7 +724,7 @@ class OrdersController extends AppController
 					}
 					curl_close($ch);
 				}  
-				
+				*/
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
 				$ledgerAccount->name = $customer->name.$customer->mobile;
