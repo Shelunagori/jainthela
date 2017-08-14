@@ -19,11 +19,9 @@
 
 					$total_in=number_format($warehpouse_itemLedger->totalInWarehouse, 2);
 					$total_out=number_format($warehpouse_itemLedger->totalOutWarehouse, 2);
-					$remaining=number_format($total_in-$total_out, 2);
+					$remaining=number_format($total_in-$total_out;
 					$item_id=$warehpouse_itemLedger->item_id;
-					if($remaining==0){
-						
-					}else{
+					if(!empty($remaining)){
 					@$i++;
 						$name=@$warehpouse_itemLedger->warehouse->name;
 						$warehouse_name=' (Warehouse) ';
@@ -49,9 +47,7 @@
 					$total_out=number_format($driver_itemLedger->totalOutDriver, 2);
 					$remaining=number_format($total_in-$total_out, 2);
 					$item_id=$driver_itemLedger->item_id;
-					if($remaining>0){
-						
-					}else{
+					if(!empty($remaining)){
 					@$i++;
 					 
 						$name=$driver_itemLedger->driver->name;
