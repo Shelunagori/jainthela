@@ -21,6 +21,7 @@
 					$total_out=$warehpouse_itemLedger->totalOutWarehouse;
 					$remaining=$total_in-$total_out;
 					$item_id=$warehpouse_itemLedger->item_id;
+					if($remaining>0){
 					@$i++;
 						$name=@$warehpouse_itemLedger->warehouse->name;
 						$warehouse_name=' (Warehouse) ';
@@ -38,7 +39,7 @@
 							</td>
 							
 						</tr>
-					<?php } ?>
+					<?php } } ?>
 					
 					<?php foreach($driver_itemLedgers as $driver_itemLedger){
 
@@ -46,6 +47,7 @@
 					$total_out=$driver_itemLedger->totalOutDriver;
 					$remaining=$total_in-$total_out;
 					$item_id=$driver_itemLedger->item_id;
+					if($remaining>0){
 					@$i++;
 					 
 						$name=$driver_itemLedger->driver->name;
@@ -63,7 +65,7 @@
 							</td>
 							
 						</tr>
-					<?php } ?>
+					<?php }	} ?>
 					
 					
 				</tbody>

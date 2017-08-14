@@ -67,6 +67,7 @@
 						@$driver_name=$item_ledger->driver->name;
 						$item_name=$item_ledger->item->name;
 						$unit_name=$item_ledger->item->unit->unit_name;
+						if($quantity>0){
 						?>
 						<tr>
 							<td><?= $this->Number->format(++$sr_no) ?></td>
@@ -82,7 +83,9 @@
 								<td align="right"><?= h($quantity.' '.$unit_name) ?></td>
 							<?php } ?>
 						</tr>
-						<?php endforeach; ?>
+						<?php 
+							}
+						endforeach; ?>
 					</tbody>
 				</table>
 				<div class="paginator">

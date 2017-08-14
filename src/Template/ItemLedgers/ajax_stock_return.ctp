@@ -28,8 +28,9 @@
 				$total_out=$itemLedger->total_out;
 				$remaining=$total_in-$total_out;
 				$unit_name=$itemLedger->item->unit->unit_name;
-				@$i++;
+				
 				if($remaining>0){
+					@$i++;
 		?>
 			<tr class="main_tr tab">
 				<td align="center" width="1px"><?= $i ?>.</td>
