@@ -1,42 +1,36 @@
-<div class="login-box" style="">
-	<?php $this->Form->templates([
-			'inputContainer' => '{{content}}'
-		]); 
-			
-	?>
-	<div class="login-logo">
-		
+<?php
+/**
+ * @Author: PHP Poets IT Solutions Pvt. Ltd.
+ */
+
+$this->set('title', 'Login | Jainthela');
+?>
+<!-- BEGIN LOGIN FORM -->
+<?= $this->Form->create($user,['class'=>'login-form']) ?>
+	<?php $this->Flash->render() ?>
+	<h3 class="form-title">Login to your account</h3>
+	<div class="alert alert-danger display-hide">
+		<button class="close" data-close="alert"></button>
+		<span>
+		Enter any username and password. </span>
 	</div>
-   <div class="login-box-body">
-   
-    <p class="login-box-msg">  
-		<?= $this->Form->create() ?>  
-		<h3 class="form-title">Login to your account</h3>
-        <?= $this->Flash->render() ?>
-		<div class="form-group">
-			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-			<label class="control-label visible-ie8 visible-ie9">Username</label>
-			<div class="input-icon">
-				<i class="fa fa-user"></i>
-				<?php echo $this->Form->input('username', ['label'=>false,'class' => 'form-control','placeholder'=>'Username']); ?>
-			</div>
+	<div class="form-group">
+		<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+		<label class="control-label visible-ie8 visible-ie9">Username</label>
+		<div class="input-icon">
+			<?php  echo $this->Form->control('username',['label'=>false,'class'=>'form-control placeholder-no-fix','autocomplete'=>'off','placeholder'=>'Username','autocomplete'=>'off']); ?>
 		</div>
-		<div class="form-group">
-			<label class="control-label visible-ie8 visible-ie9">Password</label>
-			<div class="input-icon">
-				<i class="fa fa-lock"></i>
-				<?php echo $this->Form->input('password', ['label'=>false,'class' => 'form-control','placeholder'=>'Password']); ?>
-			</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label visible-ie8 visible-ie9">Password</label>
+		<div class="input-icon">
+			<?php  echo $this->Form->control('password',['label'=>false,'class'=>'form-control placeholder-no-fix','autocomplete'=>'off','placeholder'=>'Password','autocomplete'=>'off']); ?>
 		</div>
-        
-		<div class="form-actions">
-			<label class="checkbox">
-			<input type="hidden" name="remember" value="1"/> </label>
-			<button type="submit" name="login_submit" class="btn green-haze pull-right">
-			Login <i class="m-icon-swapright m-icon-white"></i>
-			</button>
-		</div>
-		<?= $this->Form->end() ?>
-	</form>
-  </div>
-</div>
+	</div>
+	<div class="form-actions">
+		<label class="checkbox">
+		<input type="checkbox" name="remember" value="1"/> Remember me </label>
+		<?= $this->Form->button(__('Login'),['class'=>'btn green-haze pull-right']) ?>
+	</div>
+<?= $this->Form->end() ?>
+<!-- END LOGIN FORM -->

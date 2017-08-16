@@ -18,7 +18,6 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
-
 /**
  * Application Controller
  *
@@ -30,7 +29,6 @@ use Cake\I18n\FrozenTime;
 class AppController extends Controller
 {
 
-	
     /**
      * Initialization hook method.
      *
@@ -43,29 +41,20 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-		
+
 		FrozenTime::setToStringFormat('dd-MM-yyyy hh:mm a');  // For any immutable DateTime
 		FrozenDate::setToStringFormat('dd-MM-yyyy');  // For any immutable Date
-		//FrozenTime::setJsonEncodeFormat('yyyy-MM-dd HH:mm:ss'); 
-		//FrozenDate::setJsonEncodeFormat('yyyy-MM-dd');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
-		
-			$this->loadComponent('Auth', [
+		$this->loadComponent('Auth', [
 		 'authenticate' => [
                 'Form' => [
                     'fields' => [
                         'username' => 'username',
                         'password' => 'password'
                     ],
-					  'userModel' => 'Users'
-					  
-                ],
-                
-            ],
-			'loginRedirect' => [
-                'controller'=>'Orders',
-                'action'=>'index'
+                      'userModel' => 'Users'
+                ]
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
@@ -73,8 +62,7 @@ class AppController extends Controller
             ],
 			'unauthorizedRedirect' => $this->referer(),
         ]);
-		
-		
+
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html

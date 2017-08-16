@@ -5,14 +5,12 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\Utility\Text;
-use Cake\Event\Event;
 
 /**
  * Users Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Franchises
+ * @property \App\Model\Table\CitiesTable|\Cake\ORM\Association\BelongsTo $Cities
+ * @property \App\Model\Table\JainThelaAdminsTable|\Cake\ORM\Association\BelongsTo $JainThelaAdmins
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -40,16 +38,17 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
         $this->addBehavior('Timestamp');
-        $this->belongsTo('Franchises', [
-            'foreignKey' => 'franchise_id',
+
+        $this->belongsTo('Cities', [
+            'foreignKey' => 'city_id',
             'joinType' => 'INNER'
         ]);
-		
-		  $this->belongsTo('TermConditions');
-		  $this->belongsTo('CompanyDetails');
-		  $this->belongsTo('SupplierAreas');
-		  $this->belongsTo('ApiVersions');
+        $this->belongsTo('JainThelaAdmins', [
+            'foreignKey' => 'jain_thela_admin_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -63,21 +62,10 @@ class UsersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-/*
+
         $validator
             ->allowEmpty('username')
             ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-			*/
-			$validator
-			->allowEmpty('username')
-			->add(
-				'username', 
-				['unique' => [
-					'rule' => 'validateUnique', 
-					'provider' => 'table', 
-					'message' => 'Not unique']
-				]
-			);
 
         $validator
             ->allowEmpty('password');
@@ -87,6 +75,35 @@ class UsersTable extends Table
 
         $validator
             ->allowEmpty('status');
+
+        $validator
+            ->decimal('jain_cash_limit')
+            ->requirePresence('jain_cash_limit', 'create')
+            ->notEmpty('jain_cash_limit');
+
+        $validator
+            ->decimal('cash_back_percentage')
+            ->requirePresence('cash_back_percentage', 'create')
+            ->notEmpty('cash_back_percentage');
+
+        $validator
+            ->decimal('cash_back_amount')
+            ->requirePresence('cash_back_amount', 'create')
+            ->notEmpty('cash_back_amount');
+
+        $validator
+            ->integer('cash_back_limit')
+            ->requirePresence('cash_back_limit', 'create')
+            ->notEmpty('cash_back_limit');
+
+        $validator
+            ->decimal('first_order_discount_amount')
+            ->requirePresence('first_order_discount_amount', 'create')
+            ->notEmpty('first_order_discount_amount');
+
+        $validator
+            ->requirePresence('cashback_message', 'create')
+            ->notEmpty('cashback_message');
 
         return $validator;
     }
@@ -98,17 +115,11 @@ class UsersTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-	public function findAuth(\Cake\ORM\Query $query, array $options)
-	{
-		$query
-			->where(['Users.status' => 'Active']);
-
-		return $query;
-	}
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['username']));
-        $rules->add($rules->existsIn(['franchise_id'], 'Franchises'));
+        $rules->add($rules->existsIn(['city_id'], 'Cities'));
+        $rules->add($rules->existsIn(['jain_thela_admin_id'], 'JainThelaAdmins'));
 
         return $rules;
     }
