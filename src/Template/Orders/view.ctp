@@ -175,7 +175,7 @@ margin-bottom: 0;
 			<tfoot>
 				<tr>
 					<td colspan="2"><b>Deliver Between:-</b></td>
-					<td colspan="2"><b><?php echo $order->delivery_time;?></b></td>
+					<td colspan="2"><b><?php echo $order->delivery_time ;?></b></td>
 				</tr>
 				<tr>
 				<td colspan="6"><a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>

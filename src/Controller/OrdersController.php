@@ -778,7 +778,7 @@ class OrdersController extends AppController
 			$time_id=$deliverytime_fetch->id;
 			$time_from=$deliverytime_fetch->time_from;
 			$time_to=$deliverytime_fetch->time_to;
-			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
+			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from. " - " .$time_to];
 		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
 		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);

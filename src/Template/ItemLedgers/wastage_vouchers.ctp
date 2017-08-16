@@ -81,8 +81,7 @@
 							<?php } ?>
 						</tr>
 						<?php $i++; endforeach; ?>
-						
-						
+					
 					</tbody>
 				</table>
 				<div align="center">
@@ -94,7 +93,6 @@
 	</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-
 <script>
 $(document).ready(function(){
 	var form3 = $('#form_sample_3');
@@ -164,32 +162,51 @@ $(document).ready(function(){
 	});
 	/////
 	$('.quantity').die().live('keyup',function(){
+	
+			var modified_qty =  parseFloat($(this).val());
+			if(!modified_qty){ modified_qty=0; }
+			var remainingStock = parseFloat($(this).closest('tr').find('.remainingStock').val());
+			if(!remainingStock){ remainingStock=0; }
+			var actual_wastage =  remainingStock - modified_qty;
+			$(this).closest('tr').find('.wastage').val(actual_wastage.toFixed(2));
+	/*
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-
-			var remainingStock = $(this).find("td:nth-child(3) .remainingStock").val();
-			var modified_qty = $(this).find("td:nth-child(4) input").val();
-			
-			
-			if(modified_qty >= remainingStock){ 
+			var obj=$(this).closest('tr');
+			var remainingStock = obj.find("td:nth-child(3) .remainingStock").val();
+			var modified_qty = obj.find("td:nth-child(4) .quantity").val();
+			if(modified_qty > remainingStock){ 
 				var result = parseInt(0);
 				$(this).find("td:nth-child(5) .wastage").val(result);
 			}
 			else if(!modified_qty == ' ' ){
-				var total = remainingStock-modified_qty;
+				var total = parseInt(remainingStock-modified_qty);
 				if(isNaN(total)) {
 					total=0;
-					$(this).find("td:nth-child(5) .wastage").val(total.toFixed(2));
+					obj.find("td:nth-child(5) .wastage").val(total.toFixed(2));
 					alert("These Item not in Stock");
 				}else{
-					$(this).find("td:nth-child(5) .wastage").val(total.toFixed(2));
+					obj.find("td:nth-child(5) .wastage").val(total.toFixed(2));
 				}
 			}
 		});
+		*/
+		
+		
+		
 	});
 	
 	$('.wastage').die().live('keyup',function(){
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
-
+	
+			var actual_wastage =  parseFloat($(this).val());
+			if(!actual_wastage){ actual_wastage=0; }
+			var remainingStock = parseFloat($(this).closest('tr').find('.remainingStock').val());
+			if(!remainingStock){ remainingStock=0; }
+			var modified_qty =  remainingStock - actual_wastage;
+			$(this).closest('tr').find('.quantity').val(modified_qty.toFixed(2));
+	
+	
+		/*
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var remainingStock = $(this).find("td:nth-child(3) .remainingStock").val();
 			var wastage = $(this).find("td:nth-child(5) input").val();
 			if(wastage >= remainingStock){ 
@@ -206,12 +223,10 @@ $(document).ready(function(){
 					$(this).find("td:nth-child(4) .quantity").val(total.toFixed(2));
 				}
 			}
-			
-		
 		});
+		*/
+		
 	});
-	
-	
 	
 	///
 	var $rows = $('#main_table tbody tr');

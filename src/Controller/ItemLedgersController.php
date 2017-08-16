@@ -906,9 +906,10 @@ class ItemLedgersController extends AppController
 			 $ItemLedgers = $this->request->getData()['item_ledgers'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->getData()['transaction_date'])); 
 			//$warehouse_id=$this->request->getData()['warehouse_id']; 
+			
 			foreach($ItemLedgers as $itemledger){ 
-				if($itemledger['quantity'] > 0){
-					 $query = $this->ItemLedgers->query();
+				if( !empty($itemledger['quantity'])){
+					$query = $this->ItemLedgers->query();
 					$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id','usable_wastage','warehouse_id'])
 							->values([
 							'transaction_date' => $transaction_date,
@@ -921,7 +922,7 @@ class ItemLedgersController extends AppController
 							])
 					->execute();
 			
-				$query = $this->ItemLedgers->query();
+					$query = $this->ItemLedgers->query();
 					$query->insert(['transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'wastage','usable_wastage'])
 							->values([
 							'transaction_date' => $transaction_date,
@@ -1116,6 +1117,7 @@ class ItemLedgersController extends AppController
 		$this->set(compact('weightvariationItems','url','drivers'));
         $this->set('_serialize', ['weightvariationItems']);
 	}
+	
 	public function excelWastage(){
 		$this->viewBuilder()->layout(''); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
