@@ -155,7 +155,7 @@
 									Delivery Charge
 									</td>
 									<td>
-									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>0,'readonly']); ?>
+									<?php echo $this->Form->control('delivery_charge',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount dlvry','label'=>false,'type'=>'text','value'=>$order->delivery_charge,'readonly']); ?>
 									</td>
 									<td></td>
 								</tr>
@@ -169,7 +169,8 @@
 									Amount From Wallet
 									</td>
 									<td>
-									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'number form-control input-sm cal_amount','label'=>false,'type'=>'text','readonly']); ?>
+									<?php echo $this->Form->control('amount_from_wallet',['placeholder'=>'Amount From Wallet','class'=>'
+									form-control input-sm cal_amount','label'=>false,'type'=>'text','readonly']); ?>
 									</td>
 									<td></td>
 								</tr>
@@ -330,12 +331,12 @@ $(document).ready(function() {
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 		});
-		var display_amount=total_amount;
+		var display_amount=Math.round(total_amount);
 		if($('input[name=discount_percent]').val())
 		{
 		var discount_percent=parseFloat($('input[name=discount_percent]').val());
-		var discount_amount=total_amount*(discount_percent/100);
-		total_amount-=discount_amount;
+		var discount_amount=Math.round(total_amount*(discount_percent/100));
+		var total_amount=Math.round(total_amount-discount_amount);
 		}
 		if(total_amount<100 && total_amount>0){
 			$('input[name=delivery_charge]').val(50);
@@ -348,8 +349,8 @@ $(document).ready(function() {
 		amount_from_wallet=0;
 		}
 		
-		var grand_total=total_amount+delivery_charge;
-		var paid_amount=grand_total-amount_from_wallet;
+		var grand_total=Math.round(total_amount+delivery_charge);
+		var paid_amount=Math.round(grand_total-amount_from_wallet);
 		$('input[name=grand_total]').val(grand_total);
 		$('input[name=total_amount]').val(display_amount);
 		$('input[name=pay_amount]').val(paid_amount);
@@ -425,6 +426,20 @@ $(document).ready(function() {
 		$(this).closest('tr').find('.mains').val(g_total);
 		calculate_total();
 	});
+	
+	$(document).on('keyup', '.number', function(e)
+    { 
+		var mdl=$(this).val();
+		var numbers =  /^[0-9]*$/;
+		if(mdl.match(numbers))
+		{
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
+    });
 	
 	$("#delivery_id").die().live('change',function(){
 		var raw_time_name = $('option:selected', this).text();

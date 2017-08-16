@@ -284,17 +284,17 @@ $(document).ready(function() {
 		var qty=obj.find('td:nth-child(3) input').val();
 		var rate=obj.find('td:nth-child(4) input').val();
 		var amount=qty*rate;
-		var rate=obj.find('td:nth-child(5) input').val(amount);
+		var rate=Math.round(obj.find('td:nth-child(5) input').val(amount));
 		var total_amount=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 			total_amount+=parseFloat($(this).find("td:nth-child(5) input").val());
 		});
-		var display_amount=total_amount;
+		var display_amount=Math.round(total_amount);
 		if($('input[name=discount_percent]').val())
 		{
 		var discount_percent=parseFloat($('input[name=discount_percent]').val());
-		var discount_amount=total_amount*(discount_percent/100);
-		var total_amount=total_amount-discount_amount;
+		var discount_amount=Math.round(total_amount*(discount_percent/100));
+		var total_amount=Math.round(total_amount-discount_amount);
 		}
 		if(total_amount<100 && total_amount>0){
 			$('input[name=delivery_charge]').val(50);
@@ -307,8 +307,8 @@ $(document).ready(function() {
 		amount_from_wallet=0;
 		}
 		
-		var grand_total=total_amount+delivery_charge;
-		var paid_amount=grand_total-amount_from_wallet;
+		var grand_total=Math.round(total_amount+delivery_charge);
+		var paid_amount=Math.round(grand_total-amount_from_wallet);
 		$('input[name=grand_total]').val(grand_total);
 		$('input[name=total_amount]').val(display_amount);
 		$('input[name=pay_amount]').val(paid_amount);
@@ -411,7 +411,7 @@ $(document).ready(function() {
 	$(document).on('keyup', '.number', function(e)
     { 
 		var mdl=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		var numbers =  /^[0-9]*$/;
 		if(mdl.match(numbers))
 		{
 		}
@@ -421,6 +421,7 @@ $(document).ready(function() {
 			return false;
 		}
     });
+	
 	$("#delivery_id").die().live('change',function(){
 		var raw_time_name = $('option:selected', this).text();
 		$('#del_time').val(raw_time_name);

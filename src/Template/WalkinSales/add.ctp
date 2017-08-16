@@ -245,7 +245,7 @@ $(document).ready(function() {
 			var price = parseFloat($(this).find("td:nth-child(4) input").val());
 			if(!price){ price=0; }
 			amount = quantity*price;
-			grand_total=grand_total+amount;
+			grand_total=Math.round(grand_total+amount);
 			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
 			var total_amount = $(this).find("td:nth-child(5) input").val();
 		}); 
@@ -255,7 +255,7 @@ $(document).ready(function() {
 	$(document).on('keyup', '.number', function(e)
     { 
 		var mdl=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		var numbers =  /^[0-9]*$/;
 		if(mdl.match(numbers))
 		{
 		}

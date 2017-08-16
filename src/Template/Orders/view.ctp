@@ -102,7 +102,7 @@ margin-bottom: 0;
 				?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
 					<td colspan="5">&nbsp;</td><td align="right"><b>Amount</b></td>
-					<td align="center"><b><?= h(@$total_rate) ?></b></td>
+					<td align="center"><b><?= h(@$order->total_amount) ?></b></td>
 				</tr>
 				
 				
@@ -115,7 +115,7 @@ margin-bottom: 0;
 				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
 					<td colspan="5">&nbsp;</td>
 					<td align="right"><b>Total Amount</b></td>
-					<td align="center"><b><?= h($grand_total) ?></b></td>
+					<td align="center"><b><?= h(@$order->grand_total) ?></b></td>
 				</tr>
 			
 			
