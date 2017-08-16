@@ -9,7 +9,7 @@ class ComboOffersController extends AppController
 		$customer_id=$this->request->query('customer_id');
 		
 		$combo_lists = $this->ComboOffers->Items->find()
-		->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo' => 'yes'])
+		->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.is_combo' => 'yes', 'Items.ready_to_sale' => 'Yes', 'Items.freeze' => 0])
 		->contain(['Carts'=>function($q) use($customer_id){
 				return $q->where(['customer_id'=>$customer_id]);
 			}]);
