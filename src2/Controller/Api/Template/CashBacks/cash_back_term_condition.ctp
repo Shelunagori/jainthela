@@ -1,1 +1,0 @@
-<div align="center"><h3>UPDATING SOON</h3></div>
