@@ -99,12 +99,12 @@ class WalkinSalesController extends AppController
 			->first();
 			if(!empty($last_order_no))
 			{
-			$getno=$last_order_no->get_auto_no+1;	
+				$getno=$last_order_no->get_auto_no+1;	
 			}
 			else{
 				$getno=1;
 			}
-	$query = $this->WalkinSales->query();
+					$query = $this->WalkinSales->query();
 					$query->insert(['driver_id', 'jain_thela_admin_id', 'total_amount', 'transaction_date','order_no','get_auto_no'])
 							->values([
 							'driver_id' => $driver_warehouse_id,
