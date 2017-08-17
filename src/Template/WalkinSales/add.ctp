@@ -255,7 +255,7 @@ $(document).ready(function() {
 	$(document).on('keyup', '.number', function(e)
     { 
 		var mdl=$(this).val();
-		var numbers =  /^[0-9]*$/;
+		var numbers =   /^[0-9]*\.?[0-9]*$/;
 		if(mdl.match(numbers))
 		{
 		}
