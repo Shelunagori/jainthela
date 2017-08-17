@@ -24,8 +24,9 @@
 						<!-- <div class="col-md-2">
 							<label class="control-label">Transaction Date <span class="required" aria-require>*</span></label>
 						</div> -->
+						<?php $today=date('d-m-Y'); ?>
 						<div class="col-md-3">	
-							<?php echo $this->Form->control('transaction_date',['placeholder'=>'Transaction Date','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','required']); ?>
+							<?php echo $this->Form->control('transaction_date',['placeholder'=>'Transaction Date','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','required', 'value' => $today]); ?>
 							
 						</div>
 						
@@ -58,25 +59,25 @@
 							
 							<td align="center">
 								<?php if(!empty(@$remainingStock[$item->id])){
-									echo @$remainingStock[$item->id].$itemUnit[$item->id];
-									 echo  $this->Form->control('item_ledgers['.$i.'][remainingStock]',['class'=>'form-control input-sm remainingStock','value'=>@$remainingStock[$item->id],'label'=>false,'type'=>'hidden']); 
+									echo number_format(@$remainingStock[$item->id], 2).' '.$itemUnit[$item->id];
+									 echo  $this->Form->control('item_ledgers['.$i.'][remainingStock]',['class'=>'form-control input-sm remainingStock','value'=>number_format(@$remainingStock[$item->id], 2),'label'=>false,'type'=>'hidden']); 
 								}else{
 									echo "-";
 								} ?>
 							</td>
 							<?php if(@$remainingStock[$item->id] > 0){ ?>
 								<td>
-									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>@$remainingStock[$item->id],'label'=>false,'placeholder'=>'Actual Quantity']); ?>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>number_format(@$remainingStock[$item->id], 2) ,'label'=>false,'placeholder'=>'Actual Quantity']); ?>
 								</td>
 								<td>
-									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>@$remainingStock[$item->id]]); ?>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>number_format(@$remainingStock[$item->id], 2) ]); ?>
 								</td>
 							<?php }else{ ?>
 								<td>
-									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>@$remainingStock[$item->id],'label'=>false,'placeholder'=>'Actual Quantity','disabled'=>'disabled']); ?>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][itemquantity]',['class'=>'form-control input-sm quantity','max'=>number_format(@$remainingStock[$item->id], 2) ,'label'=>false,'placeholder'=>'Actual Quantity','disabled'=>'disabled']); ?>
 								</td>
 								<td>
-									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>@$remainingStock[$item->id],'disabled'=>'disabled']); ?>
+									<?php echo  $this->Form->control('item_ledgers['.$i.'][quantity]',['class'=>'form-control input-sm wastage','placeholder'=>'Wastage Quantity','label'=>false,'max'=>number_format(@$remainingStock[$item->id], 2),'disabled'=>'disabled']); ?>
 								</td>
 							<?php } ?>
 						</tr>

@@ -403,8 +403,8 @@ $(document).ready(function() {
 		var unit_name = $(this).attr('unit_name');
 		if(!unit_name){ unit_name=0; }
 		var g_total = quant*minimum_quantity_factor;
-		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
-		$(this).closest('tr').find('.mains').val(g_total);
+		$(this).closest('tr').find('.msg_shw2').html(g_total.toFixed(2)+" "+unit_name);
+		$(this).closest('tr').find('.mains').val(g_total.toFixed(2));
 		calculate_total();
 	});
 	

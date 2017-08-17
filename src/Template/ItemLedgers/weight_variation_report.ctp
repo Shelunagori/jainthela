@@ -56,7 +56,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($weightvariationItems as $weightvariationItem):  ?>
+						<?php foreach ($weightvariationItems as $weightvariationItem):  
+							if($weightvariationItem->totalOutWarehouse>0){ ?>
 							<tr>
 								<td>
 									<?= h(++$page_no) ?>
@@ -69,7 +70,7 @@
 								</td>
 							</tr>
 							
-						<?php endforeach;?>
+						<?php } endforeach;?>
 					</tbody>
 				</table>
 			</div>

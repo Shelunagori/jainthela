@@ -496,7 +496,7 @@ class OrdersController extends AppController
 			$order->delivery_date=date('Y-m-d', strtotime($this->request->data['delivery_date']));
 			
             if ($orderDetails = $this->Orders->save($order)) {
-				/* $send_data = $orderDetails->id ;
+				  $send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
 				$delivery_date=date('Y-m-d', strtotime($order_detail_fetch->delivery_date));
@@ -548,7 +548,7 @@ class OrdersController extends AppController
 						die('FCM Send Error: ' . curl_error($ch));
 					}
 					curl_close($ch);
-				} */
+				}  
 				
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
@@ -602,7 +602,7 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from." - ".$time_to];
 		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze' => 0])->contain(['Units']);
 
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
@@ -669,7 +669,7 @@ class OrdersController extends AppController
 							])
 					->execute();
 				}
-				/*
+				 
 			  	$send_data = $orderDetails->id ;
 				$order_detail_fetch=$this->Orders->get($send_data);
 				$order_no=$order_detail_fetch->order_no;
@@ -724,7 +724,7 @@ class OrdersController extends AppController
 					}
 					curl_close($ch);
 				}  
-				*/
+				 
 				$customer = $this->Orders->Customers->get($order->customer_id);
 				$ledgerAccount = $this->Orders->LedgerAccounts->newEntity();
 				$ledgerAccount->name = $customer->name.$customer->mobile;
@@ -781,8 +781,11 @@ class OrdersController extends AppController
 			$delivery_time[]= ['value'=>$time_id,'text'=>$time_from. " - " .$time_to];
 		}
        // $promoCodes = $this->Orders->PromoCodes->find('list');
-		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze !='=>1, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
-
+	   if($order_type == 'Bulkorder'){
+		   $item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze'=>0])->contain(['Units']);
+	   }else{
+		$item_fetchs = $this->Orders->Items->find()->where(['Items.jain_thela_admin_id' => $jain_thela_admin_id, 'Items.freeze'=>0, 'Items.ready_to_sale' => 'Yes'])->contain(['Units']);
+	   }
 		foreach($item_fetchs as $item_fetch){
 			$item_name=$item_fetch->name;
 			$alias_name=$item_fetch->alias_name;
