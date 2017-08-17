@@ -164,8 +164,9 @@ class TransferInventoryVouchersController extends AppController
  		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
         $transferInventoryVoucher = $this->TransferInventoryVouchers->get($id, [
-            'contain' => []
+            'contain' => ['TransferInventoryVoucherRows'=>['Items'=>['Units']]]
         ]);
+		 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $transferInventoryVoucher = $this->TransferInventoryVouchers->patchEntity($transferInventoryVoucher, $this->request->getData());
             if ($inventory_data=$this->TransferInventoryVouchers->save($transferInventoryVoucher)) {
@@ -175,6 +176,7 @@ class TransferInventoryVouchersController extends AppController
 				$warehouse_id=$inventory_data->warehouse_id;
 				$inventory_created_on=$inventory_data->created_on;
 				$item_id=$inventory_data->item_id;
+				$waste_quantity=$inventory_data->waste_quantity;
 				
 				$query = $this->TransferInventoryVouchers->ItemLedgers->query();
 				$result = $query->delete()
@@ -216,6 +218,23 @@ class TransferInventoryVouchersController extends AppController
 				->execute();
 					
 				}
+				
+				if($waste_quantity>0){
+						$query = $this->TransferInventoryVouchers->ItemLedgers->query();
+						$query->insert(['warehouse_id', 'transaction_date', 'item_id', 'quantity','status','jain_thela_admin_id', 'inventory_transfer', 'transfer_inventory_voucher_id', 'wastage'])
+								->values([
+								'warehouse_id' => 0,
+								'transaction_date' => $inventory_created_on,
+								'item_id' => $transfer_item_id,
+								'quantity' => $waste_quantity,
+								'status' => '',
+								'jain_thela_admin_id' => $jain_thela_admin_id,
+								'inventory_transfer' => 'yes',
+								'transfer_inventory_voucher_id' => $transfer_inventory_voucher_id,
+								'wastage' => 1
+								])
+								->execute();
+					}
                 $this->Flash->success(__('The transfer inventory voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
