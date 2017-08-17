@@ -233,4 +233,23 @@ class CustomersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function sendMessage()
+    {
+	$customers = $this->Customers->find(); 
+	foreach($customers->toArray() as $customer)
+		{
+			$customer_id=$customer->id;
+			$mobile=$customer->mobile;
+			$sms=str_replace(' ', '+', 'Enjoy this monsoon with Jainthela cashback offer. Order from Jainthela
+App & get 100 % cashback. order fresh fruits & vegetables
+https://goo.gl/RFnBP8 offer valid till August 2017 T&c apply.');
+					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+					$sms_sender='JAINTE';
+					$sms=str_replace(' ', '+', $sms);
+					file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
+					
+		}
+		exit;
+	}
 }

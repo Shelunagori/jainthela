@@ -51,9 +51,9 @@ class WalkinSalesController extends AppController
 		}
 		
 		if($status=='yes'){$today = date('Y-m-d');
-			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today,'WalkinSales.cancel_id'=>0])->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+			$walkinSales = $this->WalkinSales->find()->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.transaction_date'=>$today,'WalkinSales.cancel_id'=>0])->where($where)->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.id'=>'Desc','WalkinSales.transaction_date'=>'Desc']);
 		}else{
-			$walkinSales = $this->WalkinSales->find()->where($where)->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.cancel_id'=>0])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.transaction_date'=>'Desc']);
+			$walkinSales = $this->WalkinSales->find()->where($where)->where(['WalkinSales.jain_thela_admin_id'=>$jain_thela_admin_id,'WalkinSales.cancel_id'=>0])->contain(['Drivers','Warehouses','WalkinSaleDetails'=>['Items'=>['Units']]])->order(['WalkinSales.id'=>'Desc','WalkinSales.transaction_date'=>'Desc']);
 		}
 		
 		$Drivers = $this->WalkinSales->Drivers->find('list');
