@@ -49,6 +49,8 @@
 								$driver_stock=number_format($itemLedger->totalInDriver-$itemLedger->totalOutDriver, 2);
 								$warehouse_stock=number_format($itemLedger->totalInWarehouse-$itemLedger->totalOutWarehouse, 2);
 								@$i++;
+								
+								if(($driver_stock!= 0) ||($warehouse_stock!= 0)) {
 								?>
 									<tr class="main_tr" class="tab">
 										<td width="1px"><?= $i ?>.</td>
@@ -65,7 +67,8 @@
 											<?= number_format($driver_stock+$warehouse_stock, 2).' '.$itemLedger->item->unit->shortname ?>
 										</td>
 									</tr>
-								<?php } ?>
+								<?php } 
+								} ?>
 							</tbody>
 						</table>
 					</div>
