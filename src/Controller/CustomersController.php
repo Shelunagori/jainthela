@@ -237,18 +237,21 @@ class CustomersController extends AppController
 	public function sendMessage()
     {
 	$customers = $this->Customers->find(); 
-	foreach($customers->toArray() as $customer)
+	foreach($customers as $customer)
 		{
 			$customer_id=$customer->id;
-			$mobile=$customer->mobile;
-			$sms=str_replace(' ', '+', 'Enjoy this monsoon with Jainthela cashback offer. Order from Jainthela
-App & get 100 % cashback. order fresh fruits & vegetables
-https://goo.gl/RFnBP8 offer valid till August 2017 T&c apply.');
-					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
-					$sms_sender='JAINTE';
-					$sms=str_replace(' ', '+', $sms);
-					file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
-					
+			  echo $mobile_no=$customer->mobile;
+			/////////////////SMS//START///////////////////////////
+				$sms='Order fresh fruits & vegetables https://goo.gl/RFnBP8';
+				
+                $working_key='A7a76ea72525fc05bbe9963267b48dd96';
+                $sms_sender='JAINTE';
+                echo $sms2=str_replace(' ', '+', $sms);
+               echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms2.'');
+				  
+				////////////////SMS//END////////////////////////////////
+					pr($check);
+					echo "<br>";
 		}
 		exit;
 	}

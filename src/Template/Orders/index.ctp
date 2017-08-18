@@ -129,6 +129,14 @@
 						<?php
 						$sr_no=0; foreach ($orders as $order): 
 						$delivery_date=date('d-m-Y', strtotime($order->delivery_date));
+						@$actual_deliver_time=$order->actual_deliver_time; 
+						if(!empty($actual_deliver_time)){
+							$date_show=$delivery_date.' ('.$actual_deliver_time.')';
+						}else if(empty($actual_deliver_time)){
+							$date_show=$delivery_date;
+						}
+						$date_show;
+						 
 						$current_date=date('d-m-Y');
 						$status=$order->status;
 						?>
@@ -152,7 +160,7 @@
 							<td align="right"><?= $this->Number->format($order->grand_total) ?></td>
 							<td><?= h($order->order_type) ?></td>
 							<td><?php $q=explode(' ',$order->order_date); ?> <span style="font-size:11px;"><?php echo $q[0] ?></span></td>
-							<td><span style="font-size:11px;"><?= h($delivery_date) ?></span></td>
+							<td><span style="font-size:11px;"><?= h($date_show) ?></span></td>
 							<td><span style="font-size:11px;"><?= h($order->delivery_time) ?></span></td>
 							<td><?= h($status) ?></td>
 							

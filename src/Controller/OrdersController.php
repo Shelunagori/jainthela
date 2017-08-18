@@ -185,7 +185,7 @@ class OrdersController extends AppController
 							$this->set(compact('orders','cur_date','cur_type'));
 		}else{
 							
-							$orders =$this->paginate($this->Orders->find('all')
+							$orders =$this->paginate($this->Orders->find()
 							->where($where)
 							->order(['Orders.id'=>'DESC'])
 							->where(['jain_thela_admin_id'=>$jain_thela_admin_id])

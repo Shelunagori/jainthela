@@ -161,10 +161,12 @@ class OrdersController extends AppController
  			    $odrer_datas=$this->Orders->get($order_id);
 				$o_date=$odrer_datas->otder_date;
 				$delivery_date=date('Y-m-d');
+				$current_time=date('h:i:s:a');
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
 						->set(['status' => 'Delivered',
-						'delivery_date'=>$delivery_date])
+						'delivery_date'=>$delivery_date,
+						'actual_deliver_time'=>$current_time])
 						->where(['id' => $order_id])
 						->execute();
 		//end tis code///
@@ -273,10 +275,12 @@ class OrdersController extends AppController
 		else if($is_login=='driver')
 		{
 			        $delivery_date=date('Y-m-d');
+					$current_time=date('h:i:s:a');
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
 						->set(['status' => 'Delivered',
-						'delivery_date' => $delivery_date])
+						'delivery_date' => $delivery_date,
+						'actual_deliver_time' => $current_time])
 						->where(['id' => $order_id])
 						->execute();
                     
