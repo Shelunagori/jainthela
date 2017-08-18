@@ -38,7 +38,7 @@
 				<td><?= h('#'.str_pad($this->Number->format($purchaseOutward->voucher_no), 4, '0', STR_PAD_LEFT)) ?></td>
                 <td><?= h(date('d-M-Y', strtotime($purchaseOutward->transaction_date))) ?></td>
                 <td><?= $purchaseOutward->vendor->name ?></td>
-                <td><?= $purchaseOutward->total_amount ?></td>
+                <td><?= number_format($purchaseOutward->total_amount,2) ?></td>
                 
                 <td><?= h(date('d-M-Y', strtotime($purchaseOutward->created_on))) ?></td>
                 <td class="actions">
