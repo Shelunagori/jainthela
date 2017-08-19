@@ -369,8 +369,11 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div id="toast-container" class="toast-top-right" aria-live="polite" role="alert">
-								<?= $this->Flash->render() ?>
-							</div>					
+								<!--div id="demo"></div-->
+									
+									<?= $this->Flash->render() ?>
+								
+							</div>
 							<?php echo $this->fetch('content'); ?>
 							<!--here is page content--->
 						</div>
@@ -464,9 +467,47 @@
 				 return false;
 			})
 			
-		</script>         		 
+		</script>
+		<script>
+			var myVar = setInterval(function(){ myTimer() }, 10000);
+			function myTimer() {
+			var d = new Date();
+			var t = d.toLocaleTimeString();
+			document.getElementById("toast-container").innerHTML = t;
+			
+			$('#popup').show();
+			var notification_id=1;
+			$('#popup').find('div.modal-body').html('Loading...');
+			var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "alert_notification"]); ?>";
+			url=url+'/'+notification_id;
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'text'
+			}).done(function(response) {
+				$('#popup').find('div.modal-body').html(response);
+			});	
+			$('.close').die().live('click',function() {
+				$('#popup').hide();
+			});
+	
+			}
+		</script>
 		</div>
 		<!-- END JAVASCRIPTS -->
 	</body>
 	<!-- END BODY -->
 </html>
+<div  class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;border:0px;" id="popup">
+<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" style="border:0px;">
+			<div class="modal-body flip-scroll" style="height: auto;
+    overflow-y: auto;" >
+				<p >
+					 Body goes here...
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

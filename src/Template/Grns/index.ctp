@@ -16,7 +16,7 @@
 				<div class="actions">
 					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/Grns/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
 					
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
+					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">&nbsp;
 					<?php if($status=='open'){
 						$class1="btn btn-xs blue";
 						$class2="btn btn-default";
@@ -57,7 +57,9 @@
 							
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $grn->id]) ?>
-								
+								<?php if($status=='open'){ ?>
+								<?= $this->Html->link(__('Book Invoice'), ['controller'=>'PurchaseBookings', 'action' => 'add', $grn->id]) ?>
+								<?php } ?>
 							</td>
 							
 						</tr>

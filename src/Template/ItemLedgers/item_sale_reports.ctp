@@ -63,7 +63,7 @@
 					$total_amount = @$order_online_rate[$itemLedger->id]+@$order_bulk_rate[$itemLedger->id]+@$walkins_sales_rate[$itemLedger->id];
 					if(in_array($id , $Itemsexists))
 					{
-						if(@$total_amount != 0){
+						//if(@$total_amount != 0){
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
@@ -119,7 +119,7 @@
 						</tr>
 						
 					<?php
-					}}
+					} //}
 						endforeach;?>
 					<tr>
 						<td align="right" colspan="6"><b>Total</b></td>

@@ -603,7 +603,7 @@ class ItemLedgersController extends AppController
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items'=>['Units','itemCategories']]);
-        $itemLedgers = ($query);	
+        $itemLedgers = ($query);
 		foreach($itemLedgers as $itemLedger){
 			$item_id=$itemLedger->item_id;
 			$total_in=$itemLedger->total_in;
@@ -667,7 +667,7 @@ class ItemLedgersController extends AppController
 		$order_bulk_rate = []; $walkins_sales_rate = []; $Itemsexists=[]; $qty=0; $units=[];
 		foreach($itemLedgers as $itemLedger){ 
 			$Orders = $this->ItemLedgers->Orders->find()->where(['id'=>$itemLedger->order_id])->toArray();
-			if(sizeof($Orders)>0){ 
+			if(sizeof($Orders)>0){
 				foreach($Orders as $order){
 					if($order->order_type == 'Online' || $order->order_type == 'Wallet' || $order->order_type == 'Cod' || $order->order_type == 'cod'|| $order->order_type =='Offline'){
 						@$order_online[$itemLedger->item_id] += $itemLedger->quantity; 
@@ -701,6 +701,17 @@ class ItemLedgersController extends AppController
 		 ,'bulkitemrate','bulkitemqty','Offlineitemrate','Offlineitemqty','Onlineitemrate','Onlineitemqty','list_items','order_online_rate','order_bulk_rate','order_offline_rate','order_online_name','Itemsexists','walkins_sales','walkins_sales_rate','units','url'));
 		 $this->set('_serialize', ['itemLedgers']);
 	}
+	
+	
+	
+	public function averageReport(){
+		
+		
+		
+		
+		
+	}
+	
 	
 	public function exportExcel()
 	{
@@ -1019,9 +1030,38 @@ class ItemLedgersController extends AppController
 		->contain(['Items'=>['Units']]);
         $wastageItems = ($query);
 		
-		
-		$this->set(compact('wastageItems','url'));
-        $this->set('_serialize', ['wastageItems']);
+		///////////////////////////////////////////////////////////
+		$query1 = $this->ItemLedgers->find();
+				$totalInCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalAmountCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query1->newExpr()->add(['amount']),
+						'integer'
+					);
+				$query1->select([
+					'total_quantity' => $query1->func()->sum($totalInCase),
+					'total_amount' => $query1->func()->sum($totalAmountCase),'id','item_id'
+				])
+				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
+				->group('item_id')
+				->autoFields(true);
+				$itemLedgers_details = ($query1);
+		foreach($itemLedgers_details as $itemLedgers_detail){
+			$item_id=$itemLedgers_detail->item_id;
+			$total_quantity=$itemLedgers_detail->total_quantity;
+			$total_amount=$itemLedgers_detail->total_amount;
+			$average_amount_per=round($total_amount/$total_quantity);
+			$item_average[$item_id]=$average_amount_per;
+		}
+		///////////////////////////////////////////////////////////
+		$this->set(compact('wastageItems', 'url', 'item_average'));
+        $this->set('_serialize', ['wastageItems', 'item_average']);
 		
 	}
 	

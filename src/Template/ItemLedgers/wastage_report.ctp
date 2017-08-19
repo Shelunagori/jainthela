@@ -48,10 +48,20 @@
 							<th>Sr.No.</th>
 							<th>Item Name</th>
 							<th>Wastage Quantity</th>
+							<th style="text-align:right">Average Amount</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($wastageItems as $wastageItem):  ?>
+						<?php 
+						$total_wastage_amount=0;
+						foreach ($wastageItems as $wastageItem):
+						$waste_quantity=$wastageItem->totalOutWarehouse;
+						$item_id=$wastageItem->item_id;
+						$average_rate_per=$item_average[$item_id];
+						$average_quantity_rate_amount=round($waste_quantity*$average_rate_per);
+						if($waste_quantity>0){ 
+						@$total_wastage_amount+=$average_quantity_rate_amount;
+						?>
 							<tr>
 								<td>
 									<?= h(++$page_no) ?>
@@ -60,11 +70,17 @@
 									<?= h($wastageItem->item->name).'('.$wastageItem->item->alias_name.')'  ?>
 								</td>
 								<td>
-									<?= h($wastageItem->totalOutWarehouse.$wastageItem->item->unit->unit_name)?>
+									<?= h($waste_quantity.' '.$wastageItem->item->unit->unit_name)?>
+								</td>
+								<td align="right">
+									<?= h($average_quantity_rate_amount)?>
 								</td>
 							</tr>
-							
-						<?php endforeach;?>
+						<?php }  endforeach;  ?>
+							<tr>
+								<td colspan="3" align="right"><b>Total Wastage Amount</b></td>
+								<td align="right"><b><?= h($total_wastage_amount) ?></b></td>
+							</tr>
 					</tbody>
 				</table>
 			</div>

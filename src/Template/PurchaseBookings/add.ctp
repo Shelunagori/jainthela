@@ -90,7 +90,7 @@
 									<th colspan="5" style="text-align:right;">Frieght Amount
 									</th>
 									<th id="frieght_amount">
-									<?php echo $this->Form->input('frieght_amount', ['label' => false,'class' => 'calculation_amount form-control input-sm number frieght_amount','placeholder'=>'Amount','type'=>'text']); ?>
+									<?php echo $this->Form->input('frieght_amount', ['label' => false,'class' => 'calculation_amount form-control input-sm number frieght_amount','placeholder'=>'Amount','type'=>'text', 'value' => 0]); ?>
 									</th>
 								</tr>
 								<tr>

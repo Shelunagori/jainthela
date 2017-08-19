@@ -44,7 +44,8 @@
 						</tr>
 					</thead>
 					<tbody id="main_tbody">
-						<?php $i=0; foreach ($Items as $item): ?>	
+						<?php $i=0; foreach ($Items as $item): 
+						 if(!empty(@$remainingStock[$item->id])){ ?>	
 						<tr class="main_tr">
 							<td><?php echo ++$i; $i--; ?></td>
                             <td>
@@ -81,7 +82,7 @@
 								</td>
 							<?php } ?>
 						</tr>
-						<?php $i++; endforeach; ?>
+						<?php $i++; } endforeach; ?>
 					
 					</tbody>
 				</table>
