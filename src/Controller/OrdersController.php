@@ -39,36 +39,37 @@ class OrdersController extends AppController
     { 
 		$this->viewBuilder()->layout('index_layout');
 		$curent_date=date('Y-m-d');
+		$next_date=date('Y-m-d', strtotime('+1 day'));
 		$query = $this->Orders->find();
 		
 		$totalOrder=$query
 		->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $curent_date])->first();
-		
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.order_type !=' =>'Bulkorder'])->first();
 		$this->set(compact('totalOrder'));
+		
+		$query = $this->Orders->find();
+		$inProcessnextdayOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process'])->first();
+		$this->set(compact('inProcessnextdayOrder'));
+		
 		
 		$query = $this->Orders->find();
 		$inProcessOrder=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'In Process'])->first();
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'In Process', 'Orders.order_type !=' =>'Bulkorder'])->first();
 		$this->set(compact('inProcessOrder'));
 		
-		$this->loadModel('WalkinSales');
-		$query = $this->WalkinSales->find();
-		$walkinsales=$query->select([
-		'count' => $query->func()->count('id'),
-		'total_amount' => $query->func()->sum('total_amount')]) 
-		->where(['WalkinSales.transaction_date' => $curent_date])->first();
-		$this->set(compact('walkinsales'));
 		
 		$query = $this->Orders->find();
 		$deliveredOrder=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered'])->first();
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered', 'Orders.order_type !=' =>'Bulkorder'])->first();
 		$this->set(compact('deliveredOrder'));
 		
 		
@@ -76,15 +77,71 @@ class OrdersController extends AppController
 		$cancelOrder=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel'])->first();
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel','Orders.order_type !=' =>'Bulkorder'])->first();
 		$this->set(compact('cancelOrder'));
 		
 		$query = $this->Orders->find();
-		$bulkOrder=$query->select([
+		$totalBulkOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.order_type' =>'Bulkorder'])->first();
+		
+		$this->set(compact('totalBulkOrder'));
+		
+		$query = $this->Orders->find();
+		$bulkOrderInProcess=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
 		->where(['Orders.delivery_date' => $curent_date, 'Orders.order_type' => 'Bulkorder', 'Orders.status' => 'In Process'])->first();
-		$this->set(compact('bulkOrder'));
+		$this->set(compact('bulkOrderInProcess'));
+		
+		$query = $this->Orders->find();
+		$bulkOrderdelivered=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.order_type' => 'Bulkorder', 'Orders.status' => 'Delivered'])->first();
+		$this->set(compact('bulkOrderdelivered'));
+		
+		$query = $this->Orders->find();
+		$cancelBulkOrder=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Cancel','Orders.order_type' =>'Bulkorder'])->first();
+		$this->set(compact('cancelBulkOrder'));
+		
+		$this->loadModel('WalkinSales');
+		$query = $this->WalkinSales->find();
+		$walkinsales=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('total_amount')]) 
+		->where(['WalkinSales.transaction_date' => $curent_date,'WalkinSales.cancel_id' => 0])->first();
+		$this->set(compact('walkinsales'));
+		
+		
+		$query = $this->Orders->find();
+		$wallet_amount=$query->select([
+		'total_amount' => $query->func()->sum('Orders.amount_from_wallet')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered','Orders.amount_from_wallet >' => 0])->first();
+		$this->set(compact('wallet_amount'));
+		
+		$query = $this->Orders->find();
+		$online_amount=$query->select([
+		'total_amount' => $query->func()->sum('Orders.online_amount')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered','Orders.online_amount >' => 0])->first();
+		$this->set(compact('online_amount'));
+		
+		$query = $this->Orders->find();
+		$pay_amount=$query->select([
+		'total_amount' => $query->func()->sum('Orders.pay_amount')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered','Orders.pay_amount >' => 0])->first();
+		$this->set(compact('pay_amount'));
+		
+		$query = $this->Orders->find();
+		$total_sale_amount=$query->select([
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $curent_date, 'Orders.status' => 'Delivered','Orders.grand_total >' => 0])->first();
+		$this->set(compact('total_sale_amount'));
+		
 		$curent_date=date('Y-m-d');
 		$orders = $this->Orders->find('all')->order(['Orders.id'=>'DESC'])->where(['curent_date'=>$curent_date, 'Orders.status'=>'In process'])->contain(['Customers']);
 		$this->set(compact('orders'));

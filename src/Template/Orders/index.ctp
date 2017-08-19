@@ -26,7 +26,7 @@
 					<?php if($status=='process'){
 						$class1="btn btn-xs blue";
 						$class2="btn btn-default";
-					}else if ($status==''){
+					}else {
 						$class1="btn btn-default";
 						$class2="btn btn-xs blue";
 					}
