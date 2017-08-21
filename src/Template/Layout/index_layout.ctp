@@ -473,33 +473,30 @@
 		//10000
 			var myVar = setInterval(function(){ myTimer() }, 300000);
 			function myTimer() {
-			var d = new Date();
-			var t = d.toLocaleTimeString();
-			document.getElementById("toast-container").innerHTML = t;
-			
-			
-			var notification_id=1;
-			//$('#popup').find('div.modal-body').html('Loading...');
-			var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "alert_notification"]); ?>";
-			url=url+'/'+notification_id;
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'text'
-			}).done(function(response) {
-				var count = (response);
-				if(count>0){
-					$('#popup').show();
-					var inner_div=$('#push').html();
-					$('#popup').find('div.modal-body').html(inner_div);
-					$('#txt').html(count+' New Order Push on Server');
-				}
-			});
-			$('.close').die().live('click',function() {
-				$('#popup').hide();
-				update_notification();
-			});
-	
+				var d = new Date();
+				var t = d.toLocaleTimeString();
+				document.getElementById("toast-container").innerHTML = t;
+				var notification_id=1;
+				//$('#popup').find('div.modal-body').html('Loading...');
+				var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "alert_notification"]); ?>";
+				url=url+'/'+notification_id;
+				$.ajax({
+					url: url,
+					type: 'GET',
+					dataType: 'text'
+				}).done(function(response) {
+					var count = (response);
+					if(count>0){
+						$('#popup').show();
+						var inner_div=$('#push').html();
+						$('#popup').find('div.modal-body').html(inner_div);
+						$('#txt').html(count+' New Order Push on Server');
+					}
+				});
+				$('.close').die().live('click',function() {
+					$('#popup').hide();
+					update_notification();
+				});
 			}
 			
 			$('.updt').die().live('click',function() {
