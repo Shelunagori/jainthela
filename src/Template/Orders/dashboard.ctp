@@ -113,8 +113,8 @@
 						<div class="dashboard-stat purple-soft">
 							<div class="caption">
 								<i class="icon-bar-chart font-green-sharp hide"></i>
-								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i><b> Payment Details</b>','/Orders/index?
-									status=&From='.$curent_date.'&To='.$curent_date,array('escape'=>false,'class'=>'more')); ?>
+								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i><b> Payment Details</b>','/WalkinSales/invoiceReports?
+									&From='.$curent_date.'&To='.$curent_date,array('escape'=>false,'class'=>'more')); ?>
 							</div>
 							
 							<div class="portlet-body">
@@ -190,7 +190,8 @@
 											<tr >
 												<td ><b></b></td>
 												<td></td>
-												<td></td>
+												<td><br>
+											</td>
 											
 											</tr>
 											
