@@ -53,9 +53,15 @@ class OrdersController extends AppController
 		$inProcessnextdayOrder=$query->select([
 		'count' => $query->func()->count('id'),
 		'total_amount' => $query->func()->sum('Orders.grand_total')])
-		->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process'])->first();
+		->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process', 'Orders.order_type !=' =>'Bulkorder'])->first();
 		$this->set(compact('inProcessnextdayOrder'));
 		
+		$query = $this->Orders->find();
+		$inProcessnextdayBulk=$query->select([
+		'count' => $query->func()->count('id'),
+		'total_amount' => $query->func()->sum('Orders.grand_total')])
+		->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process', 'Orders.order_type' =>'Bulkorder'])->first();
+		$this->set(compact('inProcessnextdayBulk'));
 		
 		$query = $this->Orders->find();
 		$inProcessOrder=$query->select([

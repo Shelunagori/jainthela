@@ -110,10 +110,10 @@
 					</div>
 						
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<div class="dashboard-stat blue-madison">
+						<div class="dashboard-stat purple-soft">
 							<div class="caption">
 								<i class="icon-bar-chart font-green-sharp hide"></i>
-								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i><b> Online Order</b>','/Orders/index?
+								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i><b> Payment Details</b>','/Orders/index?
 									status=&From='.$curent_date.'&To='.$curent_date,array('escape'=>false,'class'=>'more')); ?>
 							</div>
 							
@@ -154,7 +154,7 @@
 						<div class="dashboard-stat green-haze">
 							<div class="caption">
 								<i class="icon-bar-chart font-green-sharp hide"></i>
-								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> <b>WalkinSales</b>','/WalkinSales/index?
+								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i> <b>WalkinSales / Next Day Order</b>','/WalkinSales/index?
 								status=yes',array('escape'=>false,'class'=>'more')); ?>
 							</div>
 							
@@ -170,19 +170,25 @@
 											</thead>
 											<tbody>
 											<tr>
-												<td><b>Walkin Sales</b></td>
+												<td><b> Today's Walkin Sales</b></td>
 												<td><?php echo $walkinsales->count;?></td>
 												<td><?php if($walkinsales->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $walkinsales->total_amount; } else { echo  '0';}?></td>
 											</tr>
 											
 											<tr>
-												<td><b>Next Day Order</b></td>
+												<td><b>Next Day Online Order</b></td>
 												<td><?php echo $inProcessnextdayOrder->count;?></td>
 												<td><?php if($inProcessnextdayOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $inProcessnextdayOrder->total_amount; } else { echo  '0';}?></td>
 											
 											</tr>
 											<tr>
-												<td><b></b></td>
+												<td><b>Next Day Bulk Order</b></td>
+												<td><?php echo $inProcessnextdayBulk->count;?></td>
+												<td><?php if($inProcessnextdayBulk->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $inProcessnextdayBulk->total_amount; } else { echo  '0';}?></td>
+											
+											</tr>
+											<tr >
+												<td ><b></b></td>
 												<td></td>
 												<td></td>
 											
