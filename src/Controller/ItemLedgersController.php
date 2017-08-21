@@ -705,12 +705,125 @@ class ItemLedgersController extends AppController
 	
 	
 	public function averageReport(){
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		
+		$this->viewBuilder()->layout('index_layout'); 
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
+		$from_date = $this->request->query('From');
+		$to_date = $this->request->query('To');
 		
+		$this->set(compact('from_date', 'to_date'));
 		
+		$where=[];
+		if(!empty($from_date)){
+			$where['ItemLedgers.transaction_date >=']=date('Y-m-d',strtotime($from_date));
+			$org_from_date=date('Y-m-d',strtotime($from_date));
+		}
+		if(!empty($to_date)){
+			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
+		}
 		
-	}
+		$query =$this->ItemLedgers->find();
+		   
+		$totalWasteCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['wastage' => '1','item_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalInQuantityPurchaseCase = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['status' => 'In','purchase_booking_id']),
+					$query->newExpr()->add(['quantity']),
+					'integer'
+				);
+		$totalInAmountPurchaseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In','purchase_booking_id']),
+				$query->newExpr()->add(['amount']),
+				'integer'
+			);
+		$totalSaleOrderQuantityCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'Out','order_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalSaleOrderAmountCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'Out','order_id']),
+				$query->newExpr()->add(['amount']),
+				'integer'
+			);	
+		$totalwalkinSaleQuantityCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'Out','walkin_sales_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalwalkinSaleAmountCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'Out','walkin_sales_id']),
+				$query->newExpr()->add(['amount']),
+				'integer'
+			);	
+		$totalweightVariatonQuantityCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['weight_variation' => '1']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'totalwasteWarehouse' => $query->func()->sum($totalWasteCase),
+			'totalPurchaseQuantity' => $query->func()->sum($totalInQuantityPurchaseCase),
+			'totalPurchaseAmount' => $query->func()->sum($totalInAmountPurchaseCase),
+			'totalOrderSale' => $query->func()->sum($totalSaleOrderQuantityCase),
+			'totalOrderAmount' => $query->func()->sum($totalSaleOrderAmountCase),
+			'totalWalkinSale' => $query->func()->sum($totalwalkinSaleQuantityCase),
+			'totalWalkinAmount' => $query->func()->sum($totalwalkinSaleAmountCase),
+			'totalWeightVariation' => $query->func()->sum($totalweightVariatonQuantityCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->where($where)
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units']]);
+        $details = ($query);
+		///////////////////////////////////////////////////////////
+		$query1 = $this->ItemLedgers->find();
+				$totalInCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'In']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalOutCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'out']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$query1->select([
+					'total_in_quantity' => $query1->func()->sum($totalInCase),
+					'total_out_quantity' => $query1->func()->sum($totalOutCase),'id','item_id'
+				])
+				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id,'ItemLedgers.transaction_date <' => $org_from_date])
+				->group('item_id')
+				->autoFields(true);
+				$itemLedgers_details = ($query1);
+				foreach($itemLedgers_details as $itemLedgers_detail){
+					$item_id=$itemLedgers_detail->item_id;
+					$total_in_quantity=$itemLedgers_detail->total_in_quantity;
+					$total_out_quantity=$itemLedgers_detail->total_out_quantity;
+					$remaining_quantity=number_format($total_in_quantity-$total_out_quantity, 2);
+					$opening_balance[$item_id]=$remaining_quantity;
+				}
+		///////////////////////////////////////////////////////////
+		$this->set(compact('details', 'url', 'opening_balance'));
+        $this->set('_serialize', ['details', 'opening_balance']);
+    }
 	
 	
 	public function exportExcel()
