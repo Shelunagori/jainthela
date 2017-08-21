@@ -1034,6 +1034,43 @@ class OrdersController extends AppController
         $this->set('_serialize', ['bulkSales']);
 	}
 	
+	public function alertNotification($notification_id){
+		
+		$this->viewBuilder()->layout('ajax');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->loadModel('Notifications');
+		$notification_details = $this->Notifications->get($notification_id, $jain_thela_admin_id);
+		$orders_quantity = $this->Orders->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id])->count();
+		$notification_quantity = $notification_details->order_quantity;
+		$difference_quantity=$orders_quantity-$notification_quantity;
+		if($difference_quantity>0){
+			echo $difference_quantity;
+		}else{
+			echo 0;
+		}
+		exit;
+		$this->set(compact('orders_quantity', 'notification_quantity'));
+		
+	}
+	public function updateNotification($notification_id){
+		
+		$this->viewBuilder()->layout('ajax');
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->loadModel('Notifications');
+		$notification_details = $this->Notifications->get($notification_id, $jain_thela_admin_id);
+		$orders_quantity = $this->Orders->find()->where(['jain_thela_admin_id' => $jain_thela_admin_id])->count();
+		$notification_quantity = $notification_details->order_quantity;
+		$difference_quantity=$orders_quantity-$notification_quantity;
+		if($difference_quantity>0){
+			$query=$this->Notifications->query();
+				$result = $query->update()
+                    ->set(['order_quantity' => $orders_quantity])
+                    ->where(['id' => $notification_id])
+                    ->execute();
+		}
+		
+		
+	}
 	public function firstOrderDiscount(){
 		
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');

@@ -469,15 +469,17 @@
 			
 		</script>
 		<script>
-			var myVar = setInterval(function(){ myTimer() }, 10000);
+		//300000
+		//10000
+			var myVar = setInterval(function(){ myTimer() }, 300000);
 			function myTimer() {
 			var d = new Date();
 			var t = d.toLocaleTimeString();
 			document.getElementById("toast-container").innerHTML = t;
 			
-			$('#popup').show();
+			
 			var notification_id=1;
-			$('#popup').find('div.modal-body').html('Loading...');
+			//$('#popup').find('div.modal-body').html('Loading...');
 			var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "alert_notification"]); ?>";
 			url=url+'/'+notification_id;
 			$.ajax({
@@ -485,13 +487,31 @@
 				type: 'GET',
 				dataType: 'text'
 			}).done(function(response) {
-				$('#popup').find('div.modal-body').html(response);
-			});	
+				var count = (response);
+				if(count>0){
+					$('#popup').show();
+					var inner_div=$('#push').html();
+					$('#popup').find('div.modal-body').html(inner_div);
+					$('#txt').html(count+' New Order Push on Server');
+				}
+			});
 			$('.close').die().live('click',function() {
 				$('#popup').hide();
+				update_notification();
 			});
 	
 			}
+			
+			$('.updt').die().live('click',function() {
+				var notification_id=1;
+				var url="<?php echo $this->Url->build(["controller" => "Orders", "action" => "update_notification"]); ?>";
+				url=url+'/'+notification_id;
+				$.ajax({
+					url: url,
+					type: 'GET',
+					dataType: 'text'
+				});
+			});
 		</script>
 		</div>
 		<!-- END JAVASCRIPTS -->
@@ -504,10 +524,22 @@
 		<div class="modal-content" style="border:0px;">
 			<div class="modal-body flip-scroll" style="height: auto;
     overflow-y: auto;" >
-				<p >
-					 Body goes here...
-				</p>
+				
+			
 			</div>
 		</div>
 	</div>
+</div>
+
+<div style="display:none;" id="push">
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;margin-top: -10px;width: 100%;font-size:14px;" class="maindiv">	
+			<button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
+			<div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
+					<div align="center">
+						<span id="txt" ></span>
+						<?= $this->Html->link('Click Here',['controller'=>'Orders','action' => 'index?status=process'],['escape'=>false,'class'=>'btn btn-xs blue updt']); ?>
+					</div>
+					<!--button type="button" class="btn btn-xs blue updt" onclick="update();" >Order List</button-->
+					
+			</div>	
 </div>
