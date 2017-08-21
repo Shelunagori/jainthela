@@ -1410,13 +1410,6 @@ class ItemLedgersController extends AppController
 			}
 		
 		
-		
-		//
-		//$inProcessnextdayOrder=$query3->select([
-		//'count' => $query3->func()->sum('OrderDetails.quantity')])
-		//->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process'])->first()
-		//->group('item_id');
-		
 		$this->set(compact('inProcessnextdayOrder'));
 		$this->set(compact('itemLedgers','url','item_average_sale','next_day_item_requirement'));
     }
