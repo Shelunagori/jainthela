@@ -1198,6 +1198,137 @@ class ItemLedgersController extends AppController
 		$this->set(compact('wastageItems','url'));
         $this->set('_serialize', ['wastageItems']);
 	}
+	
+	
+	public function orderEstimate()
+    {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->viewBuilder()->layout('index_layout');
+
+		$query = $this->ItemLedgers->find();
+
+		$totalInWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In', 'warehouse_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutWarehouseCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'warehouse_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalInDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In', 'driver_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutDriverCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'driver_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'totalInWarehouse' => $query->func()->sum($totalInWarehouseCase),
+			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),
+			'totalInDriver' => $query->func()->sum($totalInDriverCase),
+			'totalOutDriver' => $query->func()->sum($totalOutDriverCase),'id','item_id'
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units','itemCategories']]);
+		$itemLedgers=$query;
+		
+		$curent_date=date('Y-m-d');
+		$before_date=date('Y-m-d', strtotime('-7 day'));
+		$query1 = $this->ItemLedgers->find();
+		
+		$totalOrderSale = $query1->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'order_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalWalkinSale = $query1->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out', 'walkin_sales_id']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+			
+		$query1->select([
+			'totalOrderSaleSum' => $query->func()->sum($totalOrderSale),
+			'totalWalkinSaleSum' => $query->func()->sum($totalWalkinSale),'id','item_id'
+			
+		])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'ItemLedgers.transaction_date >='=>$before_date,'ItemLedgers.transaction_date <='=>$curent_date])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items'=>['Units','itemCategories']]);
+		$itemLedgers_details = ($query1);
+	
+		foreach($itemLedgers_details as $itemLedgers_detail){
+			$item_id=$itemLedgers_detail->item_id;
+			$total_quantity=$itemLedgers_detail->totalOrderSaleSum + $itemLedgers_detail->totalWalkinSaleSum ;
+			 $total_quantity;
+			$average_sale=$total_quantity/7;
+			$item_average_sale[$item_id]=$average_sale;
+		}
+		$next_date=date('Y-m-d', strtotime('+1 day'));
+		
+		$orders = $this->ItemLedgers->Orders->OrderDetails->find();
+
+		$orders
+		->contain(['Orders'=>function ($q) use($next_date){
+			return $q->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process']);
+		}])
+        ->select(['item_id','total' => $orders->func()->sum('OrderDetails.quantity')])
+        ->group('OrderDetails.item_id');
+		foreach($orders as $order){
+			$item_id=$order->item_id;
+			$next_day_item_requirement[$item_id]=$order->total;
+			}
+		
+		
+		
+		//
+		//$inProcessnextdayOrder=$query3->select([
+		//'count' => $query3->func()->sum('OrderDetails.quantity')])
+		//->where(['Orders.delivery_date' => $next_date, 'Orders.status' => 'In Process'])->first()
+		//->group('item_id');
+		
+		$this->set(compact('inProcessnextdayOrder'));
+		$this->set(compact('itemLedgers','url','item_average_sale','next_day_item_requirement'));
+    }
+
+	
+	public function ajaxNextOrder($item_id = null,$order_qty=null){
+	
+	$query = $this->ItemLedgers->Items->query();
+					$query->update()
+							->set(['next_day_requirement' => $order_qty])
+							->where(['id' => $item_id])
+							->execute();
+	exit;
+
+	}
+	
+	public function ajaxallNextempty(){
+	$query = $this->ItemLedgers->Items->query();
+					$query->update()
+							->set(['next_day_requirement' => 0])
+							->where(1)
+							->execute();
+	exit;
+	
+	}
     /**
      * Delete method
      *
