@@ -49,6 +49,10 @@ class UsersTable extends Table
             'foreignKey' => 'jain_thela_admin_id',
             'joinType' => 'INNER'
         ]);
+		
+		 $this->belongsTo('TermConditions');
+		  $this->belongsTo('CompanyDetails');
+		  $this->belongsTo('SupplierAreas');
     }
 
     /**
