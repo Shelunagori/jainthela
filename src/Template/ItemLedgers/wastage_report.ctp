@@ -60,6 +60,9 @@
 						$average_rate_per=$item_average[$item_id];
 						$average_quantity_rate_amount=round($waste_quantity*$average_rate_per);
 						if($waste_quantity>0){ 
+						if(empty($average_quantity_rate_amount)){
+							$average_quantity_rate_amount=0;
+						}
 						@$total_wastage_amount+=$average_quantity_rate_amount;
 						?>
 							<tr>

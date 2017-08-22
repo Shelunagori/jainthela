@@ -104,9 +104,12 @@ class CustomersController extends AppController
 			$customerDetails = $this->Customers->find()->where(['mobile'=>$mobile_no, 'otp'=>$otp, 'status'=>'incompleted'])->first();
 				if($customerDetails)
 				{
+					$today=date('Y-m-d');
 					$customerDetails = $this->Customers->get($customerDetails->id);
 				    $customerDetails->status='completed';
 				    $customerDetails->first_time_win_status='No';
+				    $customerDetails->new_scheme='Yes';
+				    $customerDetails->created_on=$today;
 					$customerDetails->notification_key='AAAAXmNqxY4:APA91bG0X6RHVhwJKXUQGNSSCas44hruFdR6_CFd6WHPwx9abUr-WsrfEzsFInJawElgrp24QzaE4ksfmXu6kmIL6JG3yP487fierMys5byv-I1agRtMPIoSqdgCZf8R0iqsnds-u4CU';
 					$customerDetails->referral_code=$customerDetails->id;
 					$this->Customers->save($customerDetails);
