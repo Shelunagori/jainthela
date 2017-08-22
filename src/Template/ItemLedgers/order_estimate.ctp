@@ -154,13 +154,12 @@ $(document).ready(function(){
 	$('.all_empty').die().live("click",function() {
 	$('.nextdayorder').val(0);
 	$(".msg_shw2").text('');
-	var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'ajaxallNextempty']);
+	var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'ajaxNext']);
 		?>";
-		url=url,
+		url=url;
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			
 		});		
     });
 	

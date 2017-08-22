@@ -795,6 +795,7 @@ class ItemLedgersController extends AppController
 		->autoFields(true)
 		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $details = ($query);
+		//pr($details->toArray());
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
 				$totalInCase = $query1->newExpr()
@@ -1431,13 +1432,14 @@ class ItemLedgersController extends AppController
 
 	}
 	
-	public function ajaxallNextempty(){
-	$query = $this->ItemLedgers->Items->query();
-					$query->update()
-							->set(['next_day_requirement' => 0])
-							->where(1)
-							->execute();
-	exit;
+	public function ajaxNext(){
+		$this->viewBuilder()->layout(''); 
+		$query = $this->ItemLedgers->Items->query();
+		$query->update()
+				->set(['next_day_requirement' => 0])
+				->execute();
+							
+				exit;
 	
 	}
     /**
