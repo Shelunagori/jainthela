@@ -106,6 +106,7 @@
 							 $total_in_quantity=$totalPurchaseQuantity+$opening_balance_quantity;
 							 $total_out_quantity=$total_sales_quantity+$totalwasteWarehouse+$totalWeightVariation;
 							 $closing_balance_quantity=number_format(($total_in_quantity-$total_out_quantity), 2);
+							 $closing_balance_amount=number_format(($closing_balance_quantity*$per_item_average_amount), 2);
 							@$total_wastage_amount+=$average_quantity_rate_amount;
 						?>
 							<tr>
@@ -148,21 +149,21 @@
 									<?= h($totalWeightVariation.' '.$detail->item->unit->unit_name)?>
 								</td>
 								<td align="right">
-									<?= h($total_weight_variation_amount)?>
+									<?= h($total_weight_variation_amount) ?>
 								</td>
 								
 								<td align="right">
 									<?= h($closing_balance_quantity.' '.$detail->item->unit->unit_name)?>
 								</td>
 								<td align="right">
-									<?php ?>
+									<?= h($closing_balance_amount) ?>
 								</td>
 							</tr>
 						<?php  endforeach;  ?>
-							<tr>
+							<!--tr>
 								<td colspan="3" align="right"><b>Total Wastage Amount</b></td>
-								<td align="right"><b><?= h($total_wastage_amount) ?></b></td>
-							</tr>
+								<td align="right"><b><?php //h($total_wastage_amount) ?></b></td>
+							</tr-->
 					</tbody>
 				</table>
 			</div>
