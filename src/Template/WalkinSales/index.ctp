@@ -20,7 +20,9 @@
 						<i class="fa fa-plus"></i> Walkin Sales
 					</span>
 				</div>
-			
+				<div class="actions">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add new','/WalkinSales/Add',['escape'=>false,'class'=>'btn btn-default']) ?>
+				</div>
 			<div class="portlet-body">
 				<form method="GET" >
 				<table width="50%" class="table table-condensed">
