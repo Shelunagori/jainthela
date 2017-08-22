@@ -526,7 +526,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units','itemCategories']]);
+		->contain(['Items'=>['Units','itemCategories']])->order(['Items.name' => 'ASC']);
 
 		$itemLedgers=$query;
 		$this->set(compact('itemLedgers','url'));
@@ -789,7 +789,7 @@ class ItemLedgersController extends AppController
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $details = ($query);
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
@@ -1088,7 +1088,7 @@ class ItemLedgersController extends AppController
 			->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item->id])
 			->group('item_id')
 			->autoFields(true)
-			->contain(['Items'=>['Units']]);
+			->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
 			$itemLedgers = ($query);
 			foreach($itemLedgers as $itemLedger){
 				$available_stock=$itemLedger->total_in;
@@ -1140,7 +1140,7 @@ class ItemLedgersController extends AppController
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $wastageItems = ($query);
 		
 		///////////////////////////////////////////////////////////
@@ -1217,7 +1217,7 @@ class ItemLedgersController extends AppController
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $weightvariationItems = ($query);
 		//pr($weightvariationItems->toArray());exit;
 		$drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
@@ -1262,7 +1262,7 @@ class ItemLedgersController extends AppController
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $weightvariationItems = ($query);
 		//pr($weightvariationItems->toArray());exit;
 		$drivers = $this->ItemLedgers->Drivers->find('list')->where(['jain_thela_admin_id' => $jain_thela_admin_id]);
@@ -1304,7 +1304,7 @@ class ItemLedgersController extends AppController
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units']]);
+		->contain(['Items'=>['Units']])->order(['Items.name' => 'ASC']);
         $wastageItems = ($query);
 		
 		
