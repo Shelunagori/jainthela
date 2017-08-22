@@ -99,7 +99,7 @@
 											<tfoot>
 											<tr>
 												<td><b>Total</b></td>
-												<td><?php echo $totalOrder->count;?></td>
+												<td><?php echo $totalBulkOrder->count;?></td>
 												<td><?php if($totalBulkOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $totalBulkOrder->total_amount; } else { echo  '0';}?></td>
 											</tr>
 											</tfoot>

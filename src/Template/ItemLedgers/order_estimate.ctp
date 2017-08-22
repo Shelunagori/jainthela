@@ -1,10 +1,5 @@
 <style>
-td {
-text-align:center;
-}
-th{
-text-align:center;
-}
+
 @media print{
 	.maindiv{
 		width:100% !important;
@@ -61,13 +56,13 @@ margin-bottom: 0;
 									<th>
 										<label>Next Day Requirement<label>
 									</th>
-									<th width="20%">
+									<th>
 										<label>Average Sale( As per last 7 Days )<label>
 									</th>
 									<th>
 										<label>Current Stock<label>
 									</th>
-									<th width="20%">
+									<th>
 										<label>To be Ordered<label>
 									</th>
 								</tr>
@@ -96,7 +91,7 @@ margin-bottom: 0;
 											<?= number_format(@$next_day_item_requirement[$item_id]) ?>
 										
 										<td>
-											<?= number_format(@$item_average_sale[$item_id],2) ?>
+											<?= number_format(@$item_average_sale[$item_id],2).' '.$item_unit_name[$item_id] ?>
 										</td>
 										<td>
 											<?= number_format($driver_stock+$warehouse_stock, 2).' '.$itemLedger->item->unit->shortname ?>

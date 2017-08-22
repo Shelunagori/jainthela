@@ -1356,7 +1356,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units','itemCategories']]);
+		->contain(['Items'=>['Units','itemCategories']])->order(['Items.name' => 'ASC']);
 		$itemLedgers=$query;
 		
 		$curent_date=date('Y-m-d');
@@ -1391,6 +1391,7 @@ class ItemLedgersController extends AppController
 			$item_id=$itemLedgers_detail->item_id;
 			$total_quantity=$itemLedgers_detail->totalOrderSaleSum + $itemLedgers_detail->totalWalkinSaleSum ;
 			 $total_quantity;
+			$item_unit_name[$item_id]=$itemLedgers_detail->item->unit->shortname;
 			$average_sale=$total_quantity/7;
 			$item_average_sale[$item_id]=$average_sale;
 		}
@@ -1411,7 +1412,7 @@ class ItemLedgersController extends AppController
 		
 		
 		$this->set(compact('inProcessnextdayOrder'));
-		$this->set(compact('itemLedgers','url','item_average_sale','next_day_item_requirement'));
+		$this->set(compact('itemLedgers','url','item_average_sale','next_day_item_requirement','item_unit_name'));
     }
 
 	
