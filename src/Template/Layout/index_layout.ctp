@@ -212,6 +212,9 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-globe"></i> Weight Variation Report','/itemLedgers/weightVariationReport',['escape'=>false]) ?>
 								</li>
+									<li>
+									<?php echo $this->Html->link('<i class="fa fa-info"></i> Item Indent Report','/itemLedgers/orderEstimate',['escape'=>false]) ?>
+								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Drivers/driver_location',['escape'=>false]) ?>
 								</li>
