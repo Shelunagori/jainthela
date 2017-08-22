@@ -25,12 +25,12 @@ class GrnsController extends AppController
         
 		if($status=='open' || $status=='')
 		{	$status='open';
-			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'No'])->contain(['Vendors', 'Warehouses']);
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'No'])->order(['Grns.id'=>'DESC'])->contain(['Vendors', 'Warehouses']);
 		} 
 		elseif($status=='closed')
 		{
 			$status='closed';
-			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'Yes'])->contain(['Vendors', 'Warehouses']);
+			$grns = $this->Grns->find()->where(['Grns.jain_thela_admin_id'=>$jain_thela_admin_id, 'purchase_booked'=>'Yes'])->order(['Grns.id'=>'DESC'])->contain(['Vendors', 'Warehouses']);
 		}
 		
         $this->set(compact(['grns','status']));
