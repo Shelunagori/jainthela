@@ -92,7 +92,7 @@
 											</tr>
 											<tr>
 												<td><b>Cancel</b></td>
-												<td><?php echo $cancelOrder->count;?></td>
+												<td><?php echo $cancelBulkOrder->count;?></td>
 												<td><?php if($cancelBulkOrder->total_amount) { echo '<i class="fa fa-rupee"> </i>' .' '.  $cancelBulkOrder->total_amount; } else { echo  '0';}?></td>
 											</tr>
 											</tbody>
@@ -122,8 +122,8 @@
 									<table class="table table-condensed" style="color:white;">
 											<thead>
 											<tr>
-												<td></td>
 												<td>Payment Type</td>
+												<td>Amount</td>
 											</tr>										
 											</thead>
 											<tbody>

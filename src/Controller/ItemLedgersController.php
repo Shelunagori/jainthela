@@ -264,7 +264,8 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.driver_id' => $driver_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'])
+		->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		$count=$itemLedgers->count();
 
@@ -309,7 +310,8 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.warehouse_id' => $warehouse_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'])
+		->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		$count=$itemLedgers->count();
         $this->set(compact('itemLedgers','count'));
@@ -342,7 +344,8 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.warehouse_id' => $warehouse_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'])
+		->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		  foreach($itemLedgers as $itemLedger){
 			   $available_stock=$itemLedger->total_in;
@@ -380,7 +383,8 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.warehouse_id' => $warehouse_id, 'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id, 'ItemLedgers.item_id' => $item_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'])
+		->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		  foreach($itemLedgers as $itemLedger){
 			   $available_stock=$itemLedger->total_in;
@@ -571,7 +575,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units','itemCategories']]);
+		->contain(['Items'=>['Units','itemCategories']])->order(['Items.name' => 'ASC']);
 
 		$itemLedgers=$query;
 
@@ -602,7 +606,7 @@ class ItemLedgersController extends AppController
 		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items'=>['Units','itemCategories']]);
+		->contain(['Items'=>['Units','itemCategories']])->order(['Items.name' => 'ASC']);
         $itemLedgers = ($query);
 		foreach($itemLedgers as $itemLedger){
 			$item_id=$itemLedger->item_id;
