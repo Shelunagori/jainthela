@@ -54,6 +54,28 @@
 				-->
 				</div><br/>
 				<div class="row">
+				
+					<div class="row">
+					<?php if($order->order_type=="Bulkorder"){ ?>
+				
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Provide Cash Back <span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" style="padding-right: 5px;">
+									<?php echo $this->Form->radio(
+									'cash_back_flag',
+									[
+										['value' => 'no', 'text' => 'Yes','class' => 'radio-task'],
+										['value' => 'yes', 'text' => 'No','class' => 'radio-task']
+									]
+									); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+			
+				<?php } ?>
 					<div class="col-md-6">
 						<label class="control-label">Address</label>
 							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address','value'=>@$customer_address_id]); ?>

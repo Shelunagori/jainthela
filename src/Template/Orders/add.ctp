@@ -36,6 +36,7 @@
 						<label class=" control-label">Warehouse <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->control('warehouse_id',['options' => $warehouses,'class'=>'form-control input-sm','id'=>'customer_id','label'=>false]); ?>
 					</div>
+					
 					<div class="col-md-3">
 						<label class="control-label">Order Date <span class="required" aria-require>*</span></label>
 						<?php echo $this->Form->control('order_date1',['placeholder'=>'dd-mm-yyyy','class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'type'=>'text','value'=>date('d-m-Y')]); ?>
@@ -54,6 +55,27 @@
 				-->
 				</div><br/>
 				<div class="row">
+					<?php if($order_type=="Bulkorder"){ ?>
+				
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Provide Cash Back<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" style="padding-right: 5px;">
+									<?php echo $this->Form->radio(
+									'cash_back_flag',
+									[
+										['value' => 'no', 'text' => 'Yes','class' => 'radio-task'],
+										['value' => 'yes', 'text' => 'No','class' => 'radio-task','checked' => 'checked']
+									]
+									); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+			
+				<?php } ?>
+					
 					<div class="col-md-6">
 						<label class="control-label">Address</label>
 							<?php echo $this->Form->input('customer_address_id', ['type'=>'hidden','label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
@@ -62,10 +84,10 @@
 							 Add Address </a>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
-							
-						
-					</div>
 				</div>
+					
+				</div>
+				
 				<div class="col-md-12"><br/></div>
 				<div class="row">
 					

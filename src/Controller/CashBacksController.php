@@ -173,7 +173,7 @@ class CashBacksController extends AppController
 		
        	$this->viewBuilder()->layout('index_layout');
 
-		$fetch_cashback_win_details = $this->CashBacks->find()->order(['created_on' => 'DESC'])
+		$fetch_cashback_win_details = $this->CashBacks->find()->order(['CashBacks.created_on' => 'DESC'])
 										->where(['won'=>'yes', 'flag'=>2])
 										->contain(['Customers'])
 										->autoFields(true);
@@ -192,8 +192,8 @@ class CashBacksController extends AppController
 		@$data->customer->name=$fetch_customer_name->name;
 		}
         }
-		//pr($fetch_cashback_win_details->toArray());
-		//exit;
+		
+		
 		$this->set(compact('url'));
 		$this->set('fetch_cashback_win_details', $fetch_cashback_win_details);
         $this->set('_serialize', ['fetch_cashback_win_details']); 

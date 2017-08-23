@@ -82,9 +82,11 @@ class CustomersController extends AppController
 			$customer->status='completed';
 			$customer->first_time_win_status='No';
 			$customer->new_scheme='Yes';
+			$customer->created_on=date('Y-m-d');
 			$customer->notification_key='AAAAXmNqxY4:APA91bG0X6RHVhwJKXUQGNSSCas44hruFdR6_CFd6WHPwx9abUr-WsrfEzsFInJawElgrp24QzaE4ksfmXu6kmIL6JG3yP487fierMys5byv-I1agRtMPIoSqdgCZf8R0iqsnds-u4CU';
             $customer= $this->Customers->patchEntity($customer, $this->request->getData());
             if ($this->Customers->save($customer)) {
+			
                 $this->Flash->success(__('The customer has been saved.'));
                 return $this->redirect(['action' => 'index','controller'=>'CustomerAddresses/index/'.$customer->id]);
             }
