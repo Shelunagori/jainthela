@@ -999,9 +999,6 @@ class OrdersController extends AppController
 				$this->viewBuilder()->layout('index_layout');
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		
-		
-		
 		$ItemLedgers=$this->Orders->ItemLedgers->find()
 					->where(['item_id'=>$item_id,'order_id !='=>0,'transaction_date >='=>$from_date,'transaction_date <='=>$to_date])
 					->contain(['Orders','Items'=>['Units']])
@@ -1086,7 +1083,8 @@ class OrdersController extends AppController
 		$customer_details=$this->Orders->Customers->find()
 				->where(['first_time_win_status'=> 'No']);
 		
-		 foreach($customer_details as $customer_detail){
+			foreach($customer_details as $customer_detail)
+			{
 					$customer_id=$customer_detail->id;
 					$mobile=$customer_detail->mobile;
 					$API_ACCESS_KEY=$customer_detail->notification_key;
@@ -1109,7 +1107,7 @@ class OrdersController extends AppController
 							->first();
 					@$order_id=$order_details->id;
 					
-			 if($order_count>0){
+				if($order_count>0){
 						$query=$this->Orders->Wallets->query();
 						$query->insert(['customer_id', 'return_order_id', 'narration', 'plan_id', 'advance'])
 						->values([
@@ -1182,8 +1180,8 @@ class OrdersController extends AppController
 
 	    /////SMS AND NOTIFICATIONS///////////////////
 					 	
-			 }
-		 }
+			}
+		}
 		 exit;
 	}
 }
