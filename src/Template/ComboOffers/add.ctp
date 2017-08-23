@@ -31,7 +31,7 @@
 								 <div class="col-md-12">
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Print Rate<span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate','Readonly'=>'Readonly']) ?>
+										<?= $this->Form->input('print_rate',['class'=>'form-control input-sm number grnd_ttl calc','label'=>false,'placeholder'=>'Print Rate']) ?>
 									</div>
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Discount (%)<span class="required" aria-required="true">*</span></label>
@@ -39,7 +39,7 @@
 									</div>
 									<div class="col-md-3">
 										<label class="col-md-6 control-label">Sales Rate<span class="required" aria-required="true">*</span></label>
-										<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate','Readonly'=>'Readonly']) ?>
+										<?= $this->Form->input('sales_rate',['class'=>'form-control input-sm number sls_rat calc','label'=>false,'placeholder'=>'Sales Rate']) ?>
 									</div>
 								 
 								 </div>
@@ -52,11 +52,20 @@
 									<td width="12%">
 										<label>Sr<label>
 									</td>
-									<td width="35%">
+									<td width="25%">
 										<label>Item<label>
 									</td>
-									<td width="35%">
+									<td width="15%">
 										<label>Quantity<label>
+									</td>
+									<td width="15%">
+										<label>Sales Rate<label>
+									</td>
+									<td width="15%">
+										<label>Combo Rate<label>
+									</td>
+									<td width="15%">
+										<label>Combo Amount<label>
 									</td>
 									<td></td>
 								</tr>
@@ -210,9 +219,15 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(3) input").attr({name:"combo_offer_details["+i+"][quantity]", id:"combo_offer_details-"+i+"-quantity"}).rules('add', {
 								required: true
 							});
-					$(this).find("td:nth-child(4) input").attr({name:"combo_offer_details["+i+"][amount]", id:"combo_offer_details-"+i+"-amount"}).rules('add', {
+					$(this).find("td:nth-child(4) input").attr({name:"combo_offer_details["+i+"][extra]", id:"combo_offer_details-"+i+"-extra"}).rules('add', {
 								required: true
 							});
+					$(this).find("td:nth-child(5) input").attr({name:"combo_offer_details["+i+"][rate]", id:"combo_offer_details-"+i+"-rate"}).rules('add', {
+								required: true
+							});
+					$(this).find("td:nth-child(6) input").attr({name:"combo_offer_details["+i+"][amount]", id:"combo_offer_details-"+i+"-amount"}).rules('add', {
+								required: true
+							});				
 					i++;
 				});
 			}
@@ -234,6 +249,14 @@ $(document).ready(function() {
 	$(".del_calculation").die().live('click',function(){
 		calculation();				
 	});
+	$(".calc").die().live('keyup',function(){
+		var total=$(".grnd_ttl").val();
+		var discount=$(".dscnt").val();
+		var final_amount=((total*discount)/100);
+		var sales_amount=Math.round(total-final_amount);
+		$(".sls_rat").val(sales_amount);
+		calculation();	
+	});
 	function calculation(){
 		var grand_total = 0;		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
@@ -246,16 +269,25 @@ $(document).ready(function() {
 			if(!unit_name){ unit_name=0; }
 			amount = quantity*price;
 			grand_total=grand_total+amount;
-			
 			$(this).find("td:nth-child(4) input").val(amount);
 		});
-		$(".grnd_ttl").val(grand_total.toFixed(2));
-		var total=$(".grnd_ttl").val();
-		var discount=$(".dscnt").val();
-		var final_amount=((total*discount)/100);
-		var sales_amount=total-final_amount;
-		$(".sls_rat").val(sales_amount.toFixed(2));
+			var selling_rate=parseFloat($(".sls_rat").val());
+			if(!selling_rate){ selling_rate=0; }
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){	
+			var amount_value=parseFloat($(this).find("td:nth-child(4) input").val());
+			if(!amount_value){ amount_value=0; }
+			var quantity1 = parseFloat($(this).find("td:nth-child(3) input").val());
+			if(!quantity1){ quantity1=0; }
+			var actual_amount=Math.round((selling_rate*amount_value)/grand_total);
+			var actual_rate=Math.round(actual_amount/quantity1);
+			$(this).find("td:nth-child(6) input").val(actual_amount);
+			$(this).find("td:nth-child(5) input").val(actual_rate);
+		});
+		//$(".grnd_ttl").val(grand_total.toFixed(2));
+		
+		
 	}
+	
 
 	$(document).on('keyup', '.number', function(e)
     { 
@@ -276,7 +308,7 @@ $(document).ready(function() {
 		var raw_attr_unit_name3 = $('option:selected', this).attr('unit_name');
 		var raw_attr_minimum_quantity_factor = $('option:selected', this).attr('minimum_quantity_factor');	
 		var raw_attr_minimum_quantity_purchase = $('option:selected', this).attr('minimum_quantity_purchase');	
-		var raw_attr_rates = $('option:selected', this).attr('rates');		
+		var raw_attr_rates = $('option:selected', this).attr('rates');
 		//alert(raw_attr_rates);
 		$(this).closest('tr').find('.msg_shw').html("selling factor: "+raw_attr_name);
 		$(this).closest('tr').find('.quant').attr('minimum_quantity_factor', +raw_attr_minimum_quantity_factor);
@@ -319,8 +351,13 @@ $(document).ready(function() {
 					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number amnt','placeholder'=>'Amount']); ?>
-					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
+					<?php echo $this->Form->input('extra', ['label' => false,'class' => 'form-control input-sm number amnt','placeholder'=>'extra']); ?>
+				</td>
+				<td>
+					<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'rate' ,'readonly'=>'readonly']); ?>
+				</td>
+				<td>
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm number','placeholder'=>'amount','readonly'=>'readonly']); ?>
 				</td>
 				<td>
 					<a class="btn btn-default delete-tr input-sm del_calculation" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>

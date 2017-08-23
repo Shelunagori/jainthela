@@ -237,12 +237,13 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
-							//'rate' => $combo_details_data->rate,
+							'rate' => $combo_details_data->rate,
+							'amount' => $combo_details_data->amount,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -253,12 +254,13 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							//'rate' => $combo_details_data->rate,
+							'rate' => $combo_details_data->rate,
+							'amount' => $combo_details_data->amount,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -350,12 +352,13 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id','status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id','status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
-							//'rate' => $combo_details_data->rate,
+							'rate' => $combo_details_data->rate,
+							'amount' => $combo_details_data->amount,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -366,12 +369,13 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							//'rate' => $combo_details_data->rate,
+							'rate' => $combo_details_data->rate,
+							'amount' => $combo_details_data->amount,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
