@@ -218,7 +218,9 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-cubes"></i> Driver Location Report','/Drivers/driver_location',['escape'=>false]) ?>
 								</li>
-								
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-edit"></i> Consolidate Report','/itemLedgers/averageReport?From='.$t_date.'&To='.$t_date,['escape'=>false]) ?>
+								</li>
 							</ul>
 						</li>
 					</ul>
