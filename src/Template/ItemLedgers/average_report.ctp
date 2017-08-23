@@ -88,8 +88,10 @@
 							$totalwasteWarehouse=round($detail->totalwasteWarehouse, 2);
 							$totalWeightVariation=round($detail->totalWeightVariation, 2);
 							
-							  $per_item_average_amount=round(($totalPurchaseAmount/$totalPurchaseQuantity), 2);
-							
+							$per_item_average_amount=round(($totalPurchaseAmount/$totalPurchaseQuantity), 2);
+							if(is_nan($per_item_average_amount)){
+								$per_item_average_amount=0;
+							}
 							$opening_balance_quantity=$opening_balance[$item_id];
 							$opening_balance_amount=round($opening_balance_quantity*$per_item_average_amount, 2);
 							

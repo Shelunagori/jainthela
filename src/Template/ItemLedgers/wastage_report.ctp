@@ -58,6 +58,9 @@
 						$waste_quantity=$wastageItem->totalOutWarehouse;
 						$item_id=$wastageItem->item_id;
 						$average_rate_per=$item_average[$item_id];
+						if(is_nan($average_rate_per)){
+							$average_rate_per=0;
+						}
 						$average_quantity_rate_amount=round($waste_quantity*$average_rate_per);
 						if($waste_quantity>0){ 
 						if(empty($average_quantity_rate_amount)){
