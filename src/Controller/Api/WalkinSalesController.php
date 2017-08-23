@@ -18,10 +18,10 @@ class WalkinSalesController extends AppController
 		$order_no=$this->request->data('order_no');
 		$total_ids=sizeof($items_id);
 		
-	
-			
-		if($is_login=='warehouse')
-		{	
+		$order_count=$this->WalkinSales->find()->where(['order_no'=>$order_no])->count();
+		if(empty($order_count)){	
+			if($is_login=='warehouse')
+			{	
 	 $last_order_no = $this->WalkinSales->find()
 			->order(['get_auto_no'=>'DESC'])->where(['warehouse_id'=>$driver_warehouse_id, 'transaction_date'=>$transaction_date])
 			->first();
@@ -162,6 +162,7 @@ class WalkinSalesController extends AppController
 					
 		  }
 	    }
+	}
 		$status=true;
 		$error="Thank You, bill submitted successfully";
         $this->set(compact('status', 'error'));
