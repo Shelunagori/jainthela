@@ -182,6 +182,7 @@ class OrdersController extends AppController
 					  $parent_item_id=$item_type->parent_item_id;
 					  $is_combo=$item_type->is_combo;
 					  $combo_offer_id=$item_type->combo_offer_id;
+					  $actual_quantities=$deliver_data->actual_quantity;
 					  
 				  if($is_combo=='no')
 				  {
@@ -225,6 +226,8 @@ class OrdersController extends AppController
 					else{
 					  $combo_details=$this->Orders->ComboOfferDetails->find()
 					->where(['ComboOfferDetails.combo_offer_id' => $combo_offer_id]);
+					for($i=1;$i<=$actual_quantities;$i++)
+					{
 					  foreach($combo_details as $combo_details_data)
 					  {
 					  $item_type=$this->Orders->Items->find()
@@ -271,6 +274,7 @@ class OrdersController extends AppController
 					  }  
 					 }
 					}
+				   }
 					  
 				}
 		}
