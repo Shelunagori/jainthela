@@ -216,9 +216,12 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(2) select").select2().attr({name:"combo_offer_details["+i+"][item_id]", id:"combo_offer_details-"+i+"-item_id"}).rules('add', {
 								required: true
 							});
-					$(this).find("td:nth-child(3) input").attr({name:"combo_offer_details["+i+"][quantity]", id:"combo_offer_details-"+i+"-quantity"}).rules('add', {
+					$(this).find("td:nth-child(3) input.quant").attr({name:"combo_offer_details["+i+"][show]", id:"combo_offer_details-"+i+"-show"}).rules('add', {
 								required: true
 							});
+					$(this).find("td:nth-child(3) input.act_quant").attr({name:"combo_offer_details["+i+"][quantity]", id:"combo_offer_details-"+i+"-quantity"}).rules('add', {
+								required: true
+							});		
 					$(this).find("td:nth-child(4) input").attr({name:"combo_offer_details["+i+"][extra]", id:"combo_offer_details-"+i+"-extra"}).rules('add', {
 								required: true
 							});
@@ -267,7 +270,7 @@ $(document).ready(function() {
 			if(!price){ price=0; }			
 			var unit_name = parseFloat($(this).find("td:nth-child(3) input").attr("unit_name"));
 			if(!unit_name){ unit_name=0; }
-			amount = quantity*price;
+			amount = Math.round(quantity*price);
 			grand_total=grand_total+amount;
 			$(this).find("td:nth-child(4) input").val(amount);
 		});
@@ -327,9 +330,10 @@ $(document).ready(function() {
 		var price =  parseFloat($(this).attr('price'));
 		if(!price){ price=0; }
 		var g_total = quant*minimum_quantity_factor;
-		var rate = quant*price;
+		var rate = Math.round(quant*price);
 		$(this).closest('tr').find('.amnt').val(rate);
 		$(this).closest('tr').find('.msg_shw2').html(g_total+" "+unit_name);
+		$(this).closest('tr').find('.act_quant').val(g_total);
 		var g_total =  parseFloat($('.grnd_ttl').val());
 		if(!g_total){ g_total=0; }
 		var final_val = g_total+rate;
@@ -347,7 +351,8 @@ $(document).ready(function() {
 					<span class="msg_shw" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
-					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm number quant calculation_amount','placeholder'=>'Quantity']); ?>
+					<?php echo $this->Form->input('show', ['label' => false,'class' => 'form-control input-sm number quant calculation_amount','placeholder'=>'Quantity']); ?>
+					<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm act_quant ','type'=>'hidden']); ?>
 					<span class="msg_shw2" style="color:blue;font-size:12px;"></span>
 				</td>
 				<td>
