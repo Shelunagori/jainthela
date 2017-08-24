@@ -182,7 +182,6 @@ class OrdersController extends AppController
 					  $parent_item_id=$item_type->parent_item_id;
 					  $is_combo=$item_type->is_combo;
 					  $combo_offer_id=$item_type->combo_offer_id;
-					  $actual_quantities=$deliver_data->actual_quantity;
 					  
 				  if($is_combo=='no')
 				  {
@@ -226,8 +225,6 @@ class OrdersController extends AppController
 					else{
 					  $combo_details=$this->Orders->ComboOfferDetails->find()
 					->where(['ComboOfferDetails.combo_offer_id' => $combo_offer_id]);
-					for($i=1;$i<=$actual_quantities;$i++)
-					{
 					  foreach($combo_details as $combo_details_data)
 					  {
 					  $item_type=$this->Orders->Items->find()
@@ -240,13 +237,12 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
-							'rate' => $combo_details_data->rate,
-							'amount' => $combo_details_data->amount,
+							//'rate' => $combo_details_data->rate,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -257,13 +253,12 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'warehouse_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							'rate' => $combo_details_data->rate,
-							'amount' => $combo_details_data->amount,
+							//'rate' => $combo_details_data->rate,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -274,7 +269,6 @@ class OrdersController extends AppController
 					  }  
 					 }
 					}
-				   }
 					  
 				}
 		}
@@ -356,13 +350,12 @@ class OrdersController extends AppController
 					  if($is_virtual=='yes')
 					  {
 							$query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id','status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id','status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $parent_item_id,
-							'rate' => $combo_details_data->rate,
-							'amount' => $combo_details_data->amount,
+							//'rate' => $combo_details_data->rate,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -373,13 +366,12 @@ class OrdersController extends AppController
 					  }
 					  else if($is_virtual=='no'){
 						  $query = $this->Orders->ItemLedgers->query();
-					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'rate', 'amount', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
+					        $query->insert(['jain_thela_admin_id', 'driver_id', 'item_id', 'quantity', 'inventory_transfer','transaction_date','order_id', 'status'])
 							->values([
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							'rate' => $combo_details_data->rate,
-							'amount' => $combo_details_data->amount,
+							//'rate' => $combo_details_data->rate,
 							'quantity' => $combo_details_data->quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -486,15 +478,17 @@ curl_close($ch);
 		$curent_date=date('Y-m-d');
 		$order_date=date('Y-m-d H:i:s');
 		
-		
-		
-		if($total_amount >=100)
+		$order_no_counts=$this->Orders->find()->where(['transaction_order_no' => $order_no, 'status' => 'In Process'])->count();
+		if(empty($order_no_counts))
 		{
-			$delivery_charge=0;
-		}
-		else{
-			$delivery_charge=$delivery_charge1;
-		}
+		
+				if($total_amount >=100)
+				{
+					$delivery_charge=0;
+				}
+				else{
+					$delivery_charge=$delivery_charge1;
+				}
 		
 				///////////////////////GET TIME/////////////////	
 				$delivery_time_data = $this->Orders->DeliveryTimes->find()
@@ -762,12 +756,45 @@ curl_close($ch);
 				$sms=str_replace(' ', '+', $sms);
 				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
 				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
-
-	    /////SMS AND NOTIFICATIONS///////////////////
+		
 		$status=true;
 		$error="Thank You, Your order has been placed.";
         $this->set(compact('status', 'error','result'));
         $this->set('_serialize', ['status', 'error', 'result']);
+		}else{
+		$get_data = $this->Orders->find()
+		->order(['id'=>'DESC'])
+		->first();
+		    $delivery_day_date=date('D M j', strtotime($get_data->delivery_date));
+            $order_day_date=date('D M j, Y H:i a', strtotime($get_data->order_date));
+            $c_date=$curent_date;
+			$d_date=date('Y-m-d', strtotime($get_data->delivery_date));
+			
+			if($c_date==$d_date)
+			{
+				$isOrderType='Today';
+			}
+			else{
+				$isOrderType='Next day';
+			}
+			
+			$result=array('order_date'=>$order_day_date,
+			'delivery_date'=>$delivery_day_date,
+			'order_no'=>$get_data->order_no,
+			'pay_amount'=>$get_data->pay_amount,
+			'order_type'=>$get_data->order_type,
+			'grand_total'=>$get_data->grand_total,
+			'order_day'=>$isOrderType
+			);
+			$status=true;
+		$error="Thank You, Your order has been placed.";
+        $this->set(compact('status', 'error','result'));
+        $this->set('_serialize', ['status', 'error', 'result']);
+			
+		}
+		
+	    /////SMS AND NOTIFICATIONS///////////////////
+		
     }
 	
 	public function pendingOrderList()

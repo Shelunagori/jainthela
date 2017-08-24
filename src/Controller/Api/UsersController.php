@@ -10,7 +10,7 @@ class UsersController extends AppController
 		$tcs = $this->Users->TermConditions->find()->where(['TermConditions.term_name'=>'tcs'])->first();
 		$aboutus = $this->Users->TermConditions->find()->where(['TermConditions.term_name'=>'aboutus'])->first();
 		$company_details = $this->Users->CompanyDetails->find()->first();
-		$supplier_areas = $this->Users->SupplierAreas->find();
+		$supplier_areas = $this->Users->SupplierAreas->find()->order(['area_name' => 'ASC']);
 		
 		$status=true;
 		$error="";
