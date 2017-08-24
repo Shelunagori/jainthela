@@ -1182,6 +1182,10 @@ class OrdersController extends AppController
 					 	
 			}
 		}
-		 exit;
+		
+			echo "First Order Discount Amount has been Added in Customer Wallet";
+			
+			echo "&nbsp;&nbsp;<a href='http://app.jainthela.in/orders/dashboard' >Back</a>";
+			exit;
 	}
 }
