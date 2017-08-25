@@ -1,48 +1,21 @@
-<?php $url_excel="/?".$url; ?>
-<div class="portlet light bordered">
-	<div class="portlet-title">
-		<div class="caption">
-			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Consolidate Report</span>
-		</div>
-		<div class="actions">
-			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/ExcelAverageReport/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
-		</div>
-		<div class="portlet-body form">
-			<form method="GET" >
-				<table width="50%" class="table table-condensed">
-					<tbody>
-						<tr>
-							<td width="2%">
-							<?php if(!empty($from_date)){ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
-							<?php }else{ ?>
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
-							<?php } ?>	
-							</td>	
-							<td width="2%">
-							<?php if(!empty($to_date)){ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php }else{ ?>
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
-							<?php } ?>	
-							</td>
-							
-							<td width="10%">
-								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
-							</td>
-							<td width="2%" align="right">
-								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-		<!-- BEGIN FORM-->
-		<div class="row ">
-			<div class="col-md-12">
-			<?php $page_no=0; ?>
-				<table class="table table-bordered table-striped table-hover" id="main_tble" width="100%">
+
+<?php 
+
+	$date= date("d-m-Y"); 
+	$time=date('h:i:a',time());
+
+	$filename="CONSOLIDATE REPORT_".$date.'_'.$time;
+
+	header ("Expires: 0");
+	header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+	header ("Cache-Control: no-cache, must-revalidate");
+	header ("Pragma: no-cache");
+	header ("Content-type: application/vnd.ms-excel");
+	header ("Content-Disposition: attachment; filename=".$filename.".xls");
+	header ("Content-Description: Generated Report" );
+
+?>
+<table border="1">
 					<thead>
 						<tr>
 							<th rowspan="2">Sr.</th>
@@ -180,24 +153,3 @@
 							</tr-->
 					</tbody>
 				</table>
-			</div>
-		</div>
-	</div>
-</div>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<script>
-var $rows = $('#main_tble tbody tr');
-	$('#search3').on('keyup',function() {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-		var v = $(this).val();
-		if(v){ 
-			$rows.show().filter(function() {
-				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-	
-				return !~text.indexOf(val);
-			}).hide();
-		}else{
-			$rows.show();
-		}
-	});
-</script>
