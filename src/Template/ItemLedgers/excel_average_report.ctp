@@ -51,7 +51,7 @@
 						<?php
 						$total_wastage_amount=0;
 						foreach ($details as $detail):
-								$item_id=$detail->item_id;
+							$item_id=$detail->item_id;
 							$totalPurchaseQuantity=round($detail->totalPurchaseQuantity, 2);
 							$totalPurchaseAmount=round($detail->totalPurchaseAmount, 2);;
 							$totalOrderSale=round($detail->totalOrderSale, 2);
@@ -65,8 +65,7 @@
 							if(is_nan($per_item_average_amount)){
 								$per_item_average_amount=0;
 							}
-							
-							$purchase_amount_total=$totalPurchaseQuantity*$per_item_average_amount;
+							//$purchase_amount_total=$totalPurchaseQuantity*$per_item_average_amount;
 							$opening_balance_quantity=$opening_balance_quantity[$item_id];
 							$opening_balance_amount=$opening_balance_amount[$item_id];
 							$opening_item_average_amount=round(($opening_balance_amount/$opening_balance_quantity), 2);
@@ -74,27 +73,20 @@
 							
 							$total_sales_quantity=$totalOrderSale+$totalWalkinSale;
 							$total_sales_amount=$totalOrderAmount+$totalWalkinAmount;
-							//$sales_closing_amount=$total_sales_amount*$per_item_average_amount;
 							
 							
 							$total_waste_quantity=$totalwasteWarehouse+$totalWeightVariation;
 							$total_waste_amount=round($totalwasteWarehouse*$per_item_average_amount, 2);
 							$total_weight_variation_amount=round($totalWeightVariation*$per_item_average_amount, 2);
-							/*$item_id=$detail->item_id;
-							$average_rate_per=$item_average[$item_id];
-							$average_quantity_rate_amount=round($waste_quantity*$average_rate_per);
-							 */
-							 $total_in_quantity=$totalPurchaseQuantity+$opening_balance_quantity;
-							 $total_out_quantity=$total_sales_quantity+$totalwasteWarehouse+$totalWeightVariation;
-							 $closing_balance_quantity=round(($total_in_quantity-$total_out_quantity), 2);
+							
+							$total_in_quantity=$totalPurchaseQuantity+$opening_balance_quantity;
+							$total_out_quantity=$total_sales_quantity+$totalwasteWarehouse+$totalWeightVariation;
+							$closing_balance_quantity=round(($total_in_quantity-$total_out_quantity), 2);
 							 
-							 $total_in_amount=$purchase_amount_total+$total_opening_balance_amount;
-							 $total_out_amount=$total_waste_amount+$total_weight_variation_amount+$total_sales_amount;
-							 $closing_balance_amount=round(($total_in_amount-$total_out_amount), 2);
-							 //$closing_balance_amount=round(($closing_balance_quantity*$per_item_average_amount), 2);
-							 //$closing_balance_quantity=round(($total_in_quantity-$total_out_quantity), 2);
-							 //$closing_balance_amount=round(($closing_balance_quantity*$per_item_average_amount), 2);
-							/* @$total_wastage_amount+=$average_quantity_rate_amount; */
+							$total_in_amount=$totalPurchaseAmount+$total_opening_balance_amount;
+							$total_out_amount=$total_waste_amount+$total_weight_variation_amount+$total_sales_amount;
+							$closing_balance_amount=round(($total_in_amount-$total_out_amount), 2);
+							
 						?>
 							<tr>
 								<td>
@@ -152,4 +144,4 @@
 								<td align="right"><b><?php //h($total_wastage_amount) ?></b></td>
 							</tr-->
 					</tbody>
-				</table>
+	</table>
