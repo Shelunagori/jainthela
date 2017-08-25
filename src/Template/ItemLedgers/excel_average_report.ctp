@@ -69,6 +69,10 @@
 							$opening_balance_quantity=$opening_balance_quantity[$item_id];
 							$opening_balance_amount=$opening_balance_amount[$item_id];
 							$opening_item_average_amount=round(($opening_balance_amount/$opening_balance_quantity), 2);
+							$opening_item_average_amount=round(($opening_balance_amount/$opening_balance_quantity), 2);
+							if(is_nan($opening_item_average_amount)){
+								$opening_item_average_amount=0;
+							}
 							$total_opening_balance_amount=round($opening_balance_quantity*$opening_item_average_amount, 2);
 							
 							$total_sales_quantity=$totalOrderSale+$totalWalkinSale;
