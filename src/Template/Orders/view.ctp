@@ -112,13 +112,6 @@ margin-bottom: 0;
 					<td align="center"><b><?= h($delivery_charge) ?></b></td>
 				</tr>
 				
-				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
-					<td colspan="5">&nbsp;</td>
-					<td align="right"><b>Total Amount</b></td>
-					<td align="center"><b><?= h(@$order->grand_total) ?></b></td>
-				</tr>
-			
-			
 				<?php if(!empty($discount_per)){ ?>
 				<tr style="background-color:#fff; border-top:1px solid #000">
 					<td colspan="5">&nbsp;</td>
@@ -126,6 +119,15 @@ margin-bottom: 0;
 					<td align="center"><b><?= h($discount_per) ?><?php echo '%'; ?></b></td>
 				</tr>
 				<?php } ?>
+				
+				<tr style="background-color:#F5F5F5; border-top:1px solid #000; border-bottom:1px solid #000">
+					<td colspan="5">&nbsp;</td>
+					<td align="right"><b>Total Amount</b></td>
+					<td align="center"><b><?= h(@$order->grand_total) ?></b></td>
+				</tr>
+			
+			
+				
 				
 				<?php if(!empty($amount_from_jain_cash)){ ?>
 				<tr style="background-color:#fff; border-top:1px solid #000">

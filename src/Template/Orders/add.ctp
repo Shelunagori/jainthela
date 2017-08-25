@@ -383,9 +383,12 @@ $(document).ready(function() {
 					success: function(data)   // A function to be called if request succeeds
 					{
 						$('#main_table tfoot').prepend(data);
+						calculate_total();
 					}	
 				});	
+				
 		});
+			
 	<?php
 	}
 	?>
@@ -471,7 +474,7 @@ $(document).ready(function() {
 			}
 			
 			//validator.reset();
-			
+		calculate_total();	
 	});
 	
 	$('.btnsubmit').on("click",function(e) {

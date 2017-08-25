@@ -380,6 +380,7 @@ $(document).ready(function() {
 		});
 	}
 	
+	
 	function rename_rows(){
 		var i=0; 
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
@@ -411,7 +412,37 @@ $(document).ready(function() {
 		calculate_total();
 	});
 
-
+	
+	<?php
+	if($order->order_type==='Bulkorder')
+	{
+	?>
+		$(document).on('change','#customer_id',function(){ 
+			var customer_id=$(this).val();
+			$('#data').html('<i style= "margin-top: 20px;" class="fa fa-refresh fa-spin fa-3x fa-fw"></i><b> Loading... </b>');
+				var m_data = new FormData();
+				m_data.append('customer_id',customer_id);
+				$('#discount').remove();
+				$.ajax({
+					url: "<?php echo $this->Url->build(["controller" => "Orders", "action" => "ajax_customer_discount"]); ?>",
+					data: m_data,
+					processData: false,
+					contentType: false,
+					type: 'POST',
+					dataType:'text',
+					success: function(data)   // A function to be called if request succeeds
+					{
+						$('#main_table tfoot').prepend(data);
+						calculate_total();
+					}	
+				});	
+				
+		});
+	<?php
+	}
+	?>
+	
+	
 	$(".attribute").die().live('change',function(){
 		
 		var raw_attr_name = $('option:selected', this).attr('print_quantity');
