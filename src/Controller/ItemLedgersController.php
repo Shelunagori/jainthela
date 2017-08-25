@@ -805,23 +805,26 @@ class ItemLedgersController extends AppController
 						$query1->newExpr()->add(['quantity']),
 						'integer'
 					);
-				$totalInCaseAmount = $query1->newExpr()
+					
+					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
-						$query1->newExpr()->add(['status' => 'In']),
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
 						$query1->newExpr()->add(['amount']),
 						'decimal'
 					);
-				$totalOutCaseAmount = $query1->newExpr()
+					
+					$totalInCaseQuantity = $query1->newExpr()
 					->addCase(
-						$query1->newExpr()->add(['status' => 'out']),
-						$query1->newExpr()->add(['amount']),
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query1->newExpr()->add(['quantity']),
 						'decimal'
 					);
+				
 				$query1->select([
 					'total_in_quantity' => $query1->func()->sum($totalInCase),
 					'total_out_quantity' => $query1->func()->sum($totalOutCase),
-					'total_in_amount' => $query1->func()->sum($totalInCaseAmount),
-					'total_out_amount' => $query1->func()->sum($totalOutCaseAmount),
+					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
+					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
 				])
 				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id,'ItemLedgers.transaction_date <' => $org_from_date])
@@ -832,13 +835,17 @@ class ItemLedgersController extends AppController
 					$item_id=$itemLedgers_detail->item_id;
 					$total_in_quantity=$itemLedgers_detail->total_in_quantity;
 					$total_out_quantity=$itemLedgers_detail->total_out_quantity;
+					$total_in_purchase_amount=$itemLedgers_detail->total_in_purchase_amount;
+					$total_in_purchase_qty=$itemLedgers_detail->total_in_purchase_qty;
+					$old_purchase_average_rate=round($total_in_purchase_amount/$total_in_purchase_qty,2);
 					$remaining_quantity=number_format($total_in_quantity-$total_out_quantity, 2);
-					$total_in_amount=$itemLedgers_detail->total_in_amount;
-					$total_out_amount=$itemLedgers_detail->total_out_amount;
-					$remaining_amount=number_format($total_in_amount-$total_out_amount, 2);
 					$opening_balance_quantity[$item_id]=$remaining_quantity;
-					$opening_balance_amount[$item_id]=$remaining_amount;
+					$actual_opening_amount=round($remaining_quantity*$old_purchase_average_rate, 2);
+					$opening_balance_amount[$item_id]=$actual_opening_amount;
+				
 				}
+				
+			
 		///////////////////////////////////////////////////////////
 		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);
@@ -947,23 +954,26 @@ class ItemLedgersController extends AppController
 						$query1->newExpr()->add(['quantity']),
 						'integer'
 					);
-				$totalInCaseAmount = $query1->newExpr()
+					
+					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
-						$query1->newExpr()->add(['status' => 'In']),
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
 						$query1->newExpr()->add(['amount']),
 						'decimal'
 					);
-				$totalOutCaseAmount = $query1->newExpr()
+					
+					$totalInCaseQuantity = $query1->newExpr()
 					->addCase(
-						$query1->newExpr()->add(['status' => 'out']),
-						$query1->newExpr()->add(['amount']),
+						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query1->newExpr()->add(['quantity']),
 						'decimal'
 					);
+				
 				$query1->select([
 					'total_in_quantity' => $query1->func()->sum($totalInCase),
 					'total_out_quantity' => $query1->func()->sum($totalOutCase),
-					'total_in_amount' => $query1->func()->sum($totalInCaseAmount),
-					'total_out_amount' => $query1->func()->sum($totalOutCaseAmount),
+					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
+					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
 				])
 				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id,'ItemLedgers.transaction_date <' => $org_from_date])
@@ -974,13 +984,17 @@ class ItemLedgersController extends AppController
 					$item_id=$itemLedgers_detail->item_id;
 					$total_in_quantity=$itemLedgers_detail->total_in_quantity;
 					$total_out_quantity=$itemLedgers_detail->total_out_quantity;
+					$total_in_purchase_amount=$itemLedgers_detail->total_in_purchase_amount;
+					$total_in_purchase_qty=$itemLedgers_detail->total_in_purchase_qty;
+					$old_purchase_average_rate=round($total_in_purchase_amount/$total_in_purchase_qty,2);
 					$remaining_quantity=number_format($total_in_quantity-$total_out_quantity, 2);
-					$total_in_amount=$itemLedgers_detail->total_in_amount;
-					$total_out_amount=$itemLedgers_detail->total_out_amount;
-					$remaining_amount=number_format($total_in_amount-$total_out_amount, 2);
 					$opening_balance_quantity[$item_id]=$remaining_quantity;
-					$opening_balance_amount[$item_id]=$remaining_amount;
+					$actual_opening_amount=round($remaining_quantity*$old_purchase_average_rate, 2);
+					$opening_balance_amount[$item_id]=$actual_opening_amount;
+				
 				}
+				
+			
 		///////////////////////////////////////////////////////////
 		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);

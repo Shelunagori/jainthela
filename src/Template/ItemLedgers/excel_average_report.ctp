@@ -48,7 +48,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php
+					<?php
 						$total_wastage_amount=0;
 						foreach ($details as $detail):
 							$item_id=$detail->item_id;
@@ -69,13 +69,14 @@
 							//$purchase_amount_total=$totalPurchaseQuantity*$per_item_average_amount;
 							$opening_balance_qty=$opening_balance_quantity[$item_id];
 							$opening_balance_amt=$opening_balance_amount[$item_id];
-							
-							$opening_item_average_amount=round(($opening_balance_amt/$opening_balance_qty), 2);
-							if(is_nan($opening_item_average_amount)){
-								$opening_item_average_amount=0;
+							if(!$opening_balance_amt){
+								$opening_balance_amt=0;
 							}
-							$total_opening_balance_amount=round($opening_balance_qty*$opening_item_average_amount, 2);
 							
+							$total_opening_balance_amount=round($opening_balance_amt, 2);
+							if(is_nan($total_opening_balance_amount)){
+								$total_opening_balance_amount=0;
+							}
 							$total_sales_quantity=$totalOrderSale+$totalWalkinSale;
 							$total_sales_amount=$totalOrderAmount+$totalWalkinAmount;
 							
@@ -105,7 +106,7 @@
 									<?= h($opening_balance_qty.' '.$detail->item->unit->unit_name)?>
 								</td>
 								<td align="right">
-									<?= h($total_opening_balance_amount)?>
+									<?= h($opening_balance_amt)?>
 								</td>
 								
 								<td align="right">
