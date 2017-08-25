@@ -190,6 +190,7 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> Cash Back Winner','/CashBacks/CashBackWinner',['escape'=>false]) ?>
 								</li>
+								
 								<li>
 									<?php 
 									$t_date = date('d-m-Y');
@@ -220,6 +221,9 @@
 								</li>
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-edit"></i> Consolidate Report','/itemLedgers/averageReport?From='.$t_date.'&To='.$t_date,['escape'=>false]) ?>
+								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> First Order Discount Report','/Orders/newCustomer',['escape'=>false]) ?>
 								</li>
 							</ul>
 						</li>

@@ -21,7 +21,8 @@
 						<tr>
 							<th>Sr</th>
 							<th>Name</th>
-							<th> First Order Delivered</th>
+							<th>Registration Date</th>
+							<th>First Order Delivered</th>
 							<th>Cash Back Won</th>
 						</tr>
 					</thead>
@@ -41,6 +42,7 @@
 						<tr>
 							<td><?= $i ?></td>
 							<td><?= h($show_name) ?></td>
+							<td><?= h(h($customer->created_on)) ?></td>
 							<td><?php if($total_order[$customer_id]>0) { echo 'Yes';} else { echo '-'; } ?></td>
 							<td><?php if($customer->first_time_win_status =='Yes') { echo $customer->first_time_win_status; }  else { echo '-'; } ?></td>
 							
