@@ -1078,7 +1078,7 @@ class OrdersController extends AppController
 	public function newCustomer(){
 	$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		$this->viewBuilder()->layout('index_layout');
-		$customers = $this->Orders->Customers->find()->contain(['Orders'])->where(['new_scheme' => 'Yes']);
+		$customers = $this->Orders->Customers->find()->contain(['Orders'])->where(['new_scheme' => 'Yes'])->order(['Customers.id'=>'DESC']);
 		foreach($customers as $customer_detail)
 			{
 			$customer_id=$customer_detail->id;
