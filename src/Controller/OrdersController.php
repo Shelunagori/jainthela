@@ -1074,6 +1074,24 @@ class OrdersController extends AppController
 		
 		
 	}
+	
+	public function newCustomer(){
+	$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$this->viewBuilder()->layout('index_layout');
+		$customers = $this->Orders->Customers->find()->contain(['Orders'])->where(['new_scheme' => 'Yes']);
+		foreach($customers as $customer_detail)
+			{
+			$customer_id=$customer_detail->id;
+			$order_count=$this->Orders->find()
+					->where(['customer_id'=>$customer_id, 
+							'grand_total >='=>100,
+							'status'=> 'Delivered'])
+							->count();
+			@$total_order[$customer_id]=$order_count;
+			}
+			
+			$this->set(compact('customers','total_order'));
+	}
 	public function firstOrderDiscount(){
 		
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
