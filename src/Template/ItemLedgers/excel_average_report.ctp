@@ -15,7 +15,7 @@
 	header ("Content-Description: Generated Report" );
 
 ?>
-<table border="1">
+				<table border="1">
 					<thead>
 						<tr>
 							<th rowspan="2">Sr.</th>
@@ -62,18 +62,19 @@
 							$totalWeightVariation=round($detail->totalWeightVariation, 2);
 							
 							$per_item_average_amount=round(($totalPurchaseAmount/$totalPurchaseQuantity), 2);
+							
 							if(is_nan($per_item_average_amount)){
 								$per_item_average_amount=0;
 							}
 							//$purchase_amount_total=$totalPurchaseQuantity*$per_item_average_amount;
-							$opening_balance_quantity=$opening_balance_quantity[$item_id];
-							$opening_balance_amount=$opening_balance_amount[$item_id];
-							$opening_item_average_amount=round(($opening_balance_amount/$opening_balance_quantity), 2);
-							$opening_item_average_amount=round(($opening_balance_amount/$opening_balance_quantity), 2);
+							$opening_balance_qty=$opening_balance_quantity[$item_id];
+							$opening_balance_amt=$opening_balance_amount[$item_id];
+							
+							$opening_item_average_amount=round(($opening_balance_amt/$opening_balance_qty), 2);
 							if(is_nan($opening_item_average_amount)){
 								$opening_item_average_amount=0;
 							}
-							$total_opening_balance_amount=round($opening_balance_quantity*$opening_item_average_amount, 2);
+							$total_opening_balance_amount=round($opening_balance_qty*$opening_item_average_amount, 2);
 							
 							$total_sales_quantity=$totalOrderSale+$totalWalkinSale;
 							$total_sales_amount=$totalOrderAmount+$totalWalkinAmount;
@@ -83,7 +84,7 @@
 							$total_waste_amount=round($totalwasteWarehouse*$per_item_average_amount, 2);
 							$total_weight_variation_amount=round($totalWeightVariation*$per_item_average_amount, 2);
 							
-							$total_in_quantity=$totalPurchaseQuantity+$opening_balance_quantity;
+							$total_in_quantity=$totalPurchaseQuantity+$opening_balance_qty;
 							$total_out_quantity=$total_sales_quantity+$totalwasteWarehouse+$totalWeightVariation;
 							$closing_balance_quantity=round(($total_in_quantity-$total_out_quantity), 2);
 							 
@@ -101,7 +102,7 @@
 								</td>
 								
 								<td align="right">
-									<?= h($opening_balance_quantity.' '.$detail->item->unit->unit_name)?>
+									<?= h($opening_balance_qty.' '.$detail->item->unit->unit_name)?>
 								</td>
 								<td align="right">
 									<?= h($total_opening_balance_amount)?>
@@ -148,4 +149,4 @@
 								<td align="right"><b><?php //h($total_wastage_amount) ?></b></td>
 							</tr-->
 					</tbody>
-	</table>
+				</table>
