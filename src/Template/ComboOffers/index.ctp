@@ -47,7 +47,7 @@
 							<td><?= h(date('d-M-Y', strtotime($comboOffer->created_on))) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $comboOffer->id]) ?>
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $comboOffer->id]) ?>
+								<?php //$this->Html->link(__('Edit'), ['action' => 'edit', $comboOffer->id]) ?>
 								
 							</td>
 						</tr>
