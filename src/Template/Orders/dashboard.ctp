@@ -18,7 +18,7 @@
 							<div class="caption">
 								<i class="icon-bar-chart font-green-sharp hide"></i>
 								<?php echo $this->Html->link('<i class="m-icon-swapright m-icon-white"></i><b> Online Order</b>','/Orders/index?
-									status=&From='.$curent_date.'&To='.$curent_date,array('escape'=>false,'class'=>'more')); ?>
+									status=process&From='.$curent_date.'&To='.$curent_date,array('escape'=>false,'class'=>'more')); ?>
 							</div>
 							
 							<div class="portlet-body">

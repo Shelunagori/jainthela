@@ -710,6 +710,7 @@ class ItemLedgersController extends AppController
 	$this->viewBuilder()->layout(''); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
+		
 		$from_date = $this->request->query('From');
 		$to_date = $this->request->query('To');
 		
@@ -831,6 +832,8 @@ class ItemLedgersController extends AppController
 				->group('item_id')
 				->autoFields(true);
 				$itemLedgers_details = ($query1);
+				//pr($itemLedgers_details->toArray());
+				//exit;
 				foreach($itemLedgers_details as $itemLedgers_detail){
 					$item_id=$itemLedgers_detail->item_id;
 					$total_in_quantity=$itemLedgers_detail->total_in_quantity;
@@ -842,10 +845,9 @@ class ItemLedgersController extends AppController
 					$opening_balance_quantity[$item_id]=$remaining_quantity;
 					$actual_opening_amount=round($remaining_quantity*$old_purchase_average_rate, 2);
 					$opening_balance_amount[$item_id]=$actual_opening_amount;
-				
+					
 				}
 				
-			
 		///////////////////////////////////////////////////////////
 		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);
