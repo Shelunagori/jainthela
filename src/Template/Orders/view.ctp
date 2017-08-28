@@ -126,7 +126,18 @@ margin-bottom: 0;
 					<td align="center"><b><?= h(@$order->grand_total) ?></b></td>
 				</tr>
 			
-			
+				<?php if($order->order_type=="Bulkorder"){ ?>
+				<tr style="background-color:#fff; border-top:1px solid #000">
+					<td colspan="5">&nbsp;</td>
+					<td align="right"><b>CGST</b></td>
+					<td align="center"><b><?= h(0) ?></b></td>
+				</tr>
+				<tr style="background-color:#fff; border-top:1px solid #000">
+					<td colspan="5">&nbsp;</td>
+					<td align="right"><b>SGST</b></td>
+					<td align="center"><b><?= h(0) ?></b></td>
+				</tr>
+				<?php } ?>
 				
 				
 				<?php if(!empty($amount_from_jain_cash)){ ?>
