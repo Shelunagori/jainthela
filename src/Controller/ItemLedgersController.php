@@ -980,6 +980,8 @@ class ItemLedgersController extends AppController
 				->group('item_id')
 				->autoFields(true);
 				$itemLedgers_details = ($query1);
+				//pr($itemLedgers_details->toArray());
+				//exit;
 				foreach($itemLedgers_details as $itemLedgers_detail){
 					$item_id=$itemLedgers_detail->item_id;
 					$total_in_quantity=$itemLedgers_detail->total_in_quantity;
@@ -990,11 +992,10 @@ class ItemLedgersController extends AppController
 					$remaining_quantity=number_format($total_in_quantity-$total_out_quantity, 2);
 					$opening_balance_quantity[$item_id]=$remaining_quantity;
 					$actual_opening_amount=round($remaining_quantity*$old_purchase_average_rate, 2);
-					$opening_balance_amount[$item_id]=$actual_opening_amount;
-				
+					echo $opening_balance_amount[$item_id]=$actual_opening_amount;
+					echo '</br>';
 				}
 				
-			
 		///////////////////////////////////////////////////////////
 		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);
