@@ -24,6 +24,7 @@
 				</div>	
 			</div>
 			<div class="portlet-body">
+				
 				<table class="table table-bordered table-condensed" id="main_tble">
 					<thead>
 						<tr>

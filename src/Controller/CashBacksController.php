@@ -35,7 +35,7 @@ class CashBacksController extends AppController
 		$url=parse_url($url,PHP_URL_QUERY);
 		
        	$this->viewBuilder()->layout('index_layout');
-
+		
 		$cashBacks = $this->CashBacks->find()->order(['cash_back_no' => 'DESC'])
 		->where(['ready_to_win'=>'yes'])
 		->contain(['Customers']);
