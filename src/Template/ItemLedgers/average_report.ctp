@@ -7,6 +7,7 @@
 		</div>
 		<div class="actions">
 			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/ItemLedgers/ExcelAverageReport/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+			
 		</div>
 		<div class="portlet-body form">
 			<form method="GET" >

@@ -36,6 +36,8 @@
 							<th scope="col">Won</th>
 							<th scope="col">Claim</th>
 							<th scope="col">Created On</th>
+							<th scope="col" class="actions"><?= __('Actions') ?></th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -75,6 +77,8 @@
 							<td class="<?php echo $winner;?>"><b><?= h($winner) ?></b></td>
 							<td class="<?php echo $claimed;?>"><b><?= h($claimed) ?></b></td>
 							<td><?= $created_on ?></td>
+							<td><?php if($cb->won=='no') { ?><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $cb->id], ['confirm' => __('Are you sure you want to delete Cash Back id for  {0}?', $customer_name)]) ?><?php } ?>
+							</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
