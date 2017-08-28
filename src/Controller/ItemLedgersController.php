@@ -993,7 +993,7 @@ class ItemLedgersController extends AppController
 					$opening_balance_quantity[$item_id]=$remaining_quantity;
 					$actual_opening_amount=round($remaining_quantity*$old_purchase_average_rate, 2);
 					$opening_balance_amount[$item_id]=$actual_opening_amount;
-					 '</br>';
+					
 				}
 				
 		///////////////////////////////////////////////////////////
