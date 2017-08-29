@@ -403,7 +403,7 @@ class OrdersController extends AppController
 		
 		$total_amount=$final_amount;
 		if($total_amount<100){
-			$delivery_charge=100;
+			$delivery_charge=50;
 		}else{
 			$delivery_charge=0;
 		}

@@ -469,11 +469,11 @@ class ItemLedgersController extends AppController
 		$where['inventory_transfer']='yes';
 		//pr($where); exit;
  				 
-		$item_ledgers=$this->paginate(
+		$item_ledgers=
 			$this->ItemLedgers->find()
 			->where($where)
 			->order(['transaction_date'=> 'DESC'])
-			->contain(['Drivers', 'Items'=>['Units','itemCategories']])
+			->contain(['Drivers', 'Items'=>['Units','itemCategories']]
 		);
 		$drivers=$this->ItemLedgers->Drivers->find('list');
 		
