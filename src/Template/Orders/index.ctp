@@ -142,7 +142,7 @@
 						?>
 						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#ffe4e4; "<?php } ?> >
 							<td><?= ++$page_no ?></td>
-							<td><a class="view_order" order_id="<?php echo $order->id; ?>" ><?= h($order->order_no) ?></a> </td>
+							<td><a href="view/<?php echo $order->id; ?>/print" target='_blank'><?= h($order->order_no) ?></a> </td>
 							<td>
 							<?php
 								$customer_name=$order->customer->name;

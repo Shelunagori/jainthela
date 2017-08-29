@@ -288,13 +288,13 @@ class OrdersController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($id = null, $print= null)
     {
-		$this->viewBuilder()->layout('');
+		$this->viewBuilder()->layout('index_layout');
         $order = $this->Orders->get($id, [
             'contain' => ['Customers', 'PromoCodes', 'OrderDetails'=>['Items'=>['Units']], 'CustomerAddresses']
         ]);
-        $this->set('order', $order);
+        $this->set(compact('order', 'id', 'print'));
         $this->set('_serialize', ['order']);
     }
 	

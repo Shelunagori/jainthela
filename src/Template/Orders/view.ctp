@@ -3,9 +3,10 @@
 @media print{
 	.maindiv{
 		width:100% !important;
-		overflow:visible;
 	}	
-	.page-break { display: block; page-break-before: always; }
+	.hidden-print{
+		display:none;
+	}
 }
 p{
 margin-bottom: 0;
@@ -20,17 +21,29 @@ margin-bottom: 0;
 @page {
     size: auto;   /* auto is the initial value */
     margin: 0px 0px 0px 0px;  /* this affects the margin in the printer settings */
-	overflow:visible;
 }
 </style>
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv page-break">	
-<a class="btn  blue hidden-print" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv">	
+<?php
+if(empty($print))
+{
+	echo $this->Html->link('Print',['controller'=>'Orders','action'=>'view',$id,'print'],['escape'=>false,'class'=>'btn  blue hidden-print fa fa-print','target'=>'_blank',]);
+}
+else
+{
+	echo $this->Html->link('Print',array(),['escape'=>false,'class'=>'btn  blue hidden-print fa fa-print','onclick'=>'javascript:window.print();']);
+}
+?>
 <button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
 <div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
 	<div style="border:solid 2px #F98630; margin-bottom:0px;"></div>
 		<table width="100%">	
 			<thead>
 			
+				
+				
+			</thead>
+			<tbody>
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
 						<b>
@@ -53,9 +66,6 @@ margin-bottom: 0;
 					<th style="text-align:center;">Rate</th>
 					<th style="text-align:center;">Amount</th>
 				</tr>
-				
-			</thead>
-			<tbody>
 				<?php
 				foreach($order->order_details as $order_detail ){ 
 					@$i++;
