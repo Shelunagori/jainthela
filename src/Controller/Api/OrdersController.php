@@ -4,6 +4,20 @@ use App\Controller\Api\AppController;
 use Cake\ORM\TableRegistry;
 class OrdersController extends AppController
 {
+	public function updateOnlinePaymentStatus()
+    {
+		$order_id=$this->request->query('order_id');
+		$online_payment_status=$this->request->query('online_payment_status');
+
+		$orderStatus = $this->Orders->query();
+					$result = $orderStatus->update()
+						->set(['online_payment_status' => $online_payment_status])
+						->where(['transaction_order_no' => $order_id])
+						->execute();
+						
+		exit;				
+    }
+	
     public function trackOrder()
     {
 		$jain_thela_admin_id=$this->request->query('jain_thela_admin_id');

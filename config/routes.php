@@ -226,6 +226,10 @@ Router::prefix('api', function ($routes) {
 				   'action' => 'view_my_track_order',
 				   'method' => 'GET'
 				  ],
+				'update_online_payment_status' => [
+				   'action' => 'update_online_payment_status',
+				   'method' => 'GET'
+				  ],	
 			   'my_order' => [
 				   'action' => 'my_order',
 				   'method' => 'GET'
