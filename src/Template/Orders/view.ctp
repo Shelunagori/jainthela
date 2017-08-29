@@ -21,13 +21,14 @@ margin-bottom: 0;
     margin: 0px 0px 0px 0px;  /* this affects the margin in the printer settings */
 }
 </style>
-
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;margin-top: -10px;width: 100%;font-size:14px;" class="maindiv">	
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv">	
+<a class="btn  blue hidden-print" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 <button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
 <div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
-	<div style="border:solid 2px #F98630; margin-bottom:15px;"></div>
+	<div style="border:solid 2px #F98630; margin-bottom:0px;"></div>
 		<table width="100%">	
 			<thead>
+			
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
 						<b>
@@ -35,6 +36,7 @@ margin-bottom: 0;
 						</b>
 					</td>
 				</tr>
+				
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
 					<b>Address: </b><?= h(ucwords(@$order->customer_address->name)) ?><br><?= h(@$order->customer_address->house_no) ?> &nbsp;<?= h(ucfirst(@$order->customer_address->address)) ?>,&nbsp;<br/><?= h(ucwords(@$order->customer_address->locality)) ?><br><b>Mobile:</b> <?= h(@$order->customer_address->mobile) ?>	
@@ -190,10 +192,10 @@ margin-bottom: 0;
 					<td colspan="2"><b>Deliver Between:-</b></td>
 					<td colspan="2"><b><?php echo $order->delivery_time ;?></b></td>
 				</tr>
-				<tr>
+				<!--<tr>
 				<td colspan="6"><a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 				</td>
-				</tr>
+				</tr>-->
 			</tfoot>
 		</table>
 	</div>

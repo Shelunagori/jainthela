@@ -13,6 +13,10 @@ use App\Controller\AppController;
 class ItemLedgersController extends AppController
 {
 
+	public $paginate = [
+		'limit' => 100
+	];
+		
     /**
      * Index method
      *
