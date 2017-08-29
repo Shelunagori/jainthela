@@ -4,7 +4,7 @@
 	.maindiv{
 		width:100% !important;
 	}	
-	
+	.page-break { display: block; page-break-before: always; }
 }
 p{
 margin-bottom: 0;
@@ -21,7 +21,7 @@ margin-bottom: 0;
     margin: 0px 0px 0px 0px;  /* this affects the margin in the printer settings */
 }
 </style>
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv">	
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv page-break">	
 <a class="btn  blue hidden-print" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 <button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
 <div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
