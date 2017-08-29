@@ -3,6 +3,7 @@
 @media print{
 	.maindiv{
 		width:100% !important;
+		overflow:visible;
 	}	
 	.page-break { display: block; page-break-before: always; }
 }
@@ -19,6 +20,7 @@ margin-bottom: 0;
 @page {
     size: auto;   /* auto is the initial value */
     margin: 0px 0px 0px 0px;  /* this affects the margin in the printer settings */
+	overflow:visible;
 }
 </style>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding:10px;width: 100%;font-size:14px;" class="maindiv page-break">	
