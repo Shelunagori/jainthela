@@ -712,7 +712,7 @@ class ItemLedgersController extends AppController
 	
 	public function excelAverageReport(){
 	$this->viewBuilder()->layout(''); 
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+	$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
 		$from_date = $this->request->query('From');
 		$to_date = $this->request->query('To');
@@ -797,8 +797,19 @@ class ItemLedgersController extends AppController
 		//pr($details->toArray());
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
-				
-					
+					$totalInCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'In']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+					$totalOutCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'out']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+							
 					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
 						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
@@ -814,6 +825,8 @@ class ItemLedgersController extends AppController
 					);
 				
 				$query1->select([
+					'total_in_quantity' => $query1->func()->sum($totalInCase),
+					'total_out_quantity' => $query1->func()->sum($totalOutCase),
 					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
 					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
@@ -963,8 +976,19 @@ class ItemLedgersController extends AppController
 		//pr($details->toArray());
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
-				
-					
+					$totalInCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'In']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+					$totalOutCase = $query1->newExpr()
+					->addCase(
+						$query1->newExpr()->add(['status' => 'out']),
+						$query1->newExpr()->add(['quantity']),
+						'integer'
+					);
+							
 					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
 						$query1->newExpr()->add(['status' => 'In','purchase_booking_id']),
@@ -980,6 +1004,8 @@ class ItemLedgersController extends AppController
 					);
 				
 				$query1->select([
+					'total_in_quantity' => $query1->func()->sum($totalInCase),
+					'total_out_quantity' => $query1->func()->sum($totalOutCase),
 					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
 					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
