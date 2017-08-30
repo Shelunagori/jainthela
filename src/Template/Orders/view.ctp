@@ -33,8 +33,9 @@ else
 {
 	echo $this->Html->link('Print',array(),['escape'=>false,'class'=>'btn  blue hidden-print fa fa-print','onclick'=>'javascript:window.print();']);
 }
+echo $this->Html->link('Close',array(),['escape'=>false,'class'=>'btn  red hidden-print fa fa-remove pull-right','onclick'=>'javascript:window.close();']);
+
 ?>
-<button type="button" class="close hidden-print" data-dismiss="modal" aria-hidden="true"></button>
 <div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
 	<div style="border:solid 2px #F98630; margin-bottom:0px;"></div>
 		<table width="100%">	
