@@ -714,7 +714,6 @@ class ItemLedgersController extends AppController
 	$this->viewBuilder()->layout(''); 
 		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
 		
-		
 		$from_date = $this->request->query('From');
 		$to_date = $this->request->query('To');
 		
@@ -798,18 +797,7 @@ class ItemLedgersController extends AppController
 		//pr($details->toArray());
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
-				$totalInCase = $query1->newExpr()
-					->addCase(
-						$query1->newExpr()->add(['status' => 'In']),
-						$query1->newExpr()->add(['quantity']),
-						'integer'
-					);
-				$totalOutCase = $query1->newExpr()
-					->addCase(
-						$query1->newExpr()->add(['status' => 'out']),
-						$query1->newExpr()->add(['quantity']),
-						'integer'
-					);
+				
 					
 					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
@@ -826,8 +814,6 @@ class ItemLedgersController extends AppController
 					);
 				
 				$query1->select([
-					'total_in_quantity' => $query1->func()->sum($totalInCase),
-					'total_out_quantity' => $query1->func()->sum($totalOutCase),
 					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
 					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
@@ -852,8 +838,37 @@ class ItemLedgersController extends AppController
 					
 				}
 				
+				$query2 = $this->ItemLedgers->find();
+				$totalInCase = $query2->newExpr()
+					->addCase(
+						$query2->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query2->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalAmountCase = $query2->newExpr()
+					->addCase(
+						$query2->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query2->newExpr()->add(['amount']),
+						'integer'
+					);
+				$query2->select([
+					'total_quantity' => $query2->func()->sum($totalInCase),
+					'total_amount' => $query2->func()->sum($totalAmountCase),'id','item_id'
+				])
+				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
+				->group('item_id')
+				->autoFields(true);
+				$itemLedgers_purchase_details = ($query2);
+			foreach($itemLedgers_purchase_details as $itemLedgers_purchase_detail){
+			$item_id=$itemLedgers_purchase_detail->item_id;
+			$total_quantity=$itemLedgers_purchase_detail->total_quantity;
+			$total_amount=$itemLedgers_purchase_detail->total_amount;
+			$average_amount_per=round($total_amount/$total_quantity);
+			$item_average[$item_id]=$average_amount_per;
+			}
+				
 		///////////////////////////////////////////////////////////
-		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
+		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount','item_average'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);
     }
 	
@@ -948,18 +963,7 @@ class ItemLedgersController extends AppController
 		//pr($details->toArray());
 		///////////////////////////////////////////////////////////
 		$query1 = $this->ItemLedgers->find();
-				$totalInCase = $query1->newExpr()
-					->addCase(
-						$query1->newExpr()->add(['status' => 'In']),
-						$query1->newExpr()->add(['quantity']),
-						'integer'
-					);
-				$totalOutCase = $query1->newExpr()
-					->addCase(
-						$query1->newExpr()->add(['status' => 'out']),
-						$query1->newExpr()->add(['quantity']),
-						'integer'
-					);
+				
 					
 					$totalInCaseAmount = $query1->newExpr()
 					->addCase(
@@ -976,8 +980,6 @@ class ItemLedgersController extends AppController
 					);
 				
 				$query1->select([
-					'total_in_quantity' => $query1->func()->sum($totalInCase),
-					'total_out_quantity' => $query1->func()->sum($totalOutCase),
 					'total_in_purchase_amount' => $query1->func()->sum($totalInCaseAmount),
 					'total_in_purchase_qty' => $query1->func()->sum($totalInCaseQuantity),
 					'id','item_id'
@@ -1002,8 +1004,37 @@ class ItemLedgersController extends AppController
 					
 				}
 				
+				$query2 = $this->ItemLedgers->find();
+				$totalInCase = $query2->newExpr()
+					->addCase(
+						$query2->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query2->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalAmountCase = $query2->newExpr()
+					->addCase(
+						$query2->newExpr()->add(['status' => 'In','purchase_booking_id']),
+						$query2->newExpr()->add(['amount']),
+						'integer'
+					);
+				$query2->select([
+					'total_quantity' => $query2->func()->sum($totalInCase),
+					'total_amount' => $query2->func()->sum($totalAmountCase),'id','item_id'
+				])
+				->where(['ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id])
+				->group('item_id')
+				->autoFields(true);
+				$itemLedgers_purchase_details = ($query2);
+			foreach($itemLedgers_purchase_details as $itemLedgers_purchase_detail){
+			$item_id=$itemLedgers_purchase_detail->item_id;
+			$total_quantity=$itemLedgers_purchase_detail->total_quantity;
+			$total_amount=$itemLedgers_purchase_detail->total_amount;
+			$average_amount_per=round($total_amount/$total_quantity);
+			$item_average[$item_id]=$average_amount_per;
+			}
+				
 		///////////////////////////////////////////////////////////
-		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount'));
+		$this->set(compact('details', 'url', 'opening_balance_quantity','opening_balance_amount','item_average'));
         $this->set('_serialize', ['details', 'opening_balance_quantity','opening_balance_amount']);
     }
 	
@@ -1383,6 +1414,9 @@ class ItemLedgersController extends AppController
 			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
 		}
 		
+		if(!empty($driver_id)){
+			$where['ItemLedgers.different_driver_id ']=$driver_id;
+		}
 		$query =$this->ItemLedgers->find();
 		   
 		$totalOutWarehouseCase = $query->newExpr()
@@ -1395,7 +1429,7 @@ class ItemLedgersController extends AppController
 		$query->select([
 			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
 		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1','different_driver_id'=>$driver_id])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1'])
 		->where($where)
 		->group('item_id')
 		->autoFields(true)
@@ -1427,7 +1461,9 @@ class ItemLedgersController extends AppController
 		if(!empty($to_date)){
 			$where['ItemLedgers.transaction_date <=']=date('Y-m-d',strtotime($to_date));
 		}
-		
+		if(!empty($driver_id)){
+			$where['ItemLedgers.different_driver_id ']=$driver_id;
+		}
 		$query =$this->ItemLedgers->find();
 		   
 		$totalOutWarehouseCase = $query->newExpr()
@@ -1440,7 +1476,7 @@ class ItemLedgersController extends AppController
 		$query->select([
 			'totalOutWarehouse' => $query->func()->sum($totalOutWarehouseCase),'id','item_id'
 		])
-		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1','different_driver_id'=>$driver_id])
+		->where(['ItemLedgers.jain_thela_admin_id'=>$jain_thela_admin_id,'weight_variation'=>'1'])
 		->where($where)
 		->group('item_id')
 		->autoFields(true)

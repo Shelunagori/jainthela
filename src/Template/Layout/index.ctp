@@ -142,10 +142,7 @@
 						?>
 						<tr <?php if(($status=='In Process') || ($status=='In process')){ ?>style="background-color:#ffe4e4; "<?php } ?> >
 							<td><?= ++$page_no ?></td>
-							<td>
-							<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
-						
-							<!-- <a href="view/<?php echo $order->id; ?>/print" target='_blank'><?= h($order->order_no) ?></a> --> </td>
+							<td><a href="view/<?php echo $order->id; ?>/print" target='_blank'><?= h($order->order_no) ?></a> </td>
 							<td>
 							<?php
 								$customer_name=$order->customer->name;

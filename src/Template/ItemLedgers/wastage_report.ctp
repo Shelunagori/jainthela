@@ -61,7 +61,7 @@
 						if(is_nan($average_rate_per)){
 							$average_rate_per=0;
 						}
-						$average_quantity_rate_amount=round($waste_quantity*$average_rate_per);
+						$average_quantity_rate_amount=round($waste_quantity*$average_rate_per,2);
 						if($waste_quantity>0){ 
 						if(empty($average_quantity_rate_amount)){
 							$average_quantity_rate_amount=0;

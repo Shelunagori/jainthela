@@ -211,7 +211,7 @@
 									<?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Wastage Item Report','/itemLedgers/wastageReport?From='.$t_date.'&To='.$t_date,['escape'=>false]) ?>
 								</li>
 								<li>
-									<?php echo $this->Html->link('<i class="fa fa-globe"></i> Weight Variation Report','/itemLedgers/weightVariationReport',['escape'=>false]) ?>
+									<?php echo $this->Html->link('<i class="fa fa-globe"></i> Weight Variation Report','/itemLedgers/weightVariationReport?From='.$t_date.'&To='.$t_date,['escape'=>false]) ?>
 								</li>
 									<li>
 									<?php echo $this->Html->link('<i class="fa fa-info"></i> Item Indent Report','/itemLedgers/orderEstimate',['escape'=>false]) ?>

@@ -94,12 +94,6 @@
 							$totalWalkinAmount=round($detail->totalWalkinAmount, 2);
 							$totalwasteWarehouse=round($detail->totalwasteWarehouse, 2);
 							$totalWeightVariation=round($detail->totalWeightVariation, 2);
-							
-							$per_item_average_amount=round(($totalPurchaseAmount/$totalPurchaseQuantity), 2);
-							
-							if(is_nan($per_item_average_amount)){
-								$per_item_average_amount=0;
-							}
 							//$purchase_amount_total=$totalPurchaseQuantity*$per_item_average_amount;
 							$opening_balance_qty=$opening_balance_quantity[$item_id];
 							$opening_balance_amt=$opening_balance_amount[$item_id];
@@ -112,7 +106,10 @@
 							$total_sales_quantity=$totalOrderSale+$totalWalkinSale;
 							$total_sales_amount=$totalOrderAmount+$totalWalkinAmount;
 							
-							
+							$per_item_average_amount=round($item_average[$item_id],2);
+							if(is_nan($per_item_average_amount)){
+								$per_item_average_amount=0;
+							}
 							$total_waste_quantity=$totalwasteWarehouse+$totalWeightVariation;
 							$total_waste_amount=round($totalwasteWarehouse*$per_item_average_amount, 2);
 							$total_weight_variation_amount=round($totalWeightVariation*$per_item_average_amount, 2);

@@ -114,7 +114,8 @@
 									<?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?>
 								</td>
 								<td align="center">
-									<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+									<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
+						
 								</td>
 								<td align="center">
 									<?= h(@$order->order_date) ?>
