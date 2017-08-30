@@ -50,6 +50,12 @@
 					<tbody>
 						<?php
 						$total_wastage_amount=0;
+						$grand_total_opening_bal=0;
+						$grand_total_purchase_bal=0;
+						$grand_total_sale_bal=0;
+						$grand_total_wastage_bal=0;
+						$grand_total_weight_bal=0;
+						$grand_total_closing_bal=0;
 						foreach ($details as $detail):
 							$item_id=$detail->item_id;
 							$totalPurchaseQuantity=round($detail->totalPurchaseQuantity, 2);
@@ -91,6 +97,12 @@
 							$total_out_amount=$total_waste_amount+$total_weight_variation_amount+$total_sales_amount;
 							$closing_balance_amount=round(($total_in_amount-$total_out_amount), 2);
 							
+							$grand_total_opening_bal=$grand_total_opening_bal + $opening_balance_amt;
+							$grand_total_purchase_bal=$grand_total_purchase_bal+$totalPurchaseAmount;
+							$grand_total_sale_bal=$grand_total_sale_bal+$total_sales_amount;
+							$grand_total_wastage_bal=$grand_total_wastage_bal+$total_waste_amount;
+							$grand_total_weight_bal=$grand_total_weight_bal+$total_weight_variation_amount;
+							$grand_total_closing_bal=$grand_total_closing_bal+$closing_balance_amount;
 						?>
 							<tr>
 								<td>
@@ -143,9 +155,20 @@
 								</td>
 							</tr>
 						<?php  endforeach;  ?>
-							<!--tr>
-								<td colspan="3" align="right"><b>Total Wastage Amount</b></td>
-								<td align="right"><b><?php //h($total_wastage_amount) ?></b></td>
-							</tr-->
+							<tr>
+								<td colspan="2"></td>
+								<td ><b>Total Opening</b></td>
+								<td align="right"><b><?= h($grand_total_opening_bal) ?></b></td>
+								<td ><b>Total Purchase</b></td>
+								<td align="right"><b><?= h($grand_total_purchase_bal) ?></b></td>
+								<td ><b>Total Sale</b></td>
+								<td align="right"><b><?= h($grand_total_sale_bal) ?></b></td>
+								<td ><b>Total Wastage</b></td>
+								<td align="right"><b><?= h($grand_total_wastage_bal) ?></b></td>
+								<td ><b>Total Weight Variation</b></td>
+								<td align="right"><b><?= h($grand_total_weight_bal) ?></b></td>
+								<td ><b>Total Closing</b></td>
+								<td align="right"><b><?= h($grand_total_closing_bal) ?></b></td>
+							</tr>
 					</tbody>
 				</table>

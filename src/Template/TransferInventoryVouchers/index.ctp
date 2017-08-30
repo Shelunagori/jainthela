@@ -40,8 +40,7 @@
                 
                 <td><?= h(date('d-M-Y', strtotime($transferInventoryVoucher->created_on))) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $transferInventoryVoucher->id]) ?>
-					   <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transferInventoryVoucher->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transferInventoryVoucher->id]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
