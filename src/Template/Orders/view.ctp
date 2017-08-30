@@ -38,11 +38,7 @@ else
 <div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
 	<div style="border:solid 2px #F98630; margin-bottom:0px;"></div>
 		<table width="100%">	
-			<thead>
 			
-				
-				
-			</thead>
 			<tbody>
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="5">
@@ -57,6 +53,9 @@ else
 					<b>Address: </b><?= h(ucwords(@$order->customer_address->name)) ?><br><?= h(@$order->customer_address->house_no) ?> &nbsp;<?= h(ucfirst(@$order->customer_address->address)) ?>,&nbsp;<br/><?= h(ucwords(@$order->customer_address->locality)) ?><br><b>Mobile:</b> <?= h(@$order->customer_address->mobile) ?>	
 					</td>
 				</tr>
+			</table>
+			<table width="100%">
+				<thead>
 				<tr style="background-color:#F98630; color:#fff;">
 					<th style="text-align:right;">#</th>
 					<th style="text-align:center;">Image</th>
@@ -66,6 +65,8 @@ else
 					<th style="text-align:center;">Rate</th>
 					<th style="text-align:center;">Amount</th>
 				</tr>
+				</thead>
+				
 				<?php
 				foreach($order->order_details as $order_detail ){ 
 					@$i++;
