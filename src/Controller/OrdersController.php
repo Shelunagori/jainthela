@@ -413,7 +413,7 @@ class OrdersController extends AppController
 		}
 		$pay_amount=$Orders->pay_amount;
 		$final_amount;
-		
+			
 			$grand_total=$total_amount+$delivery_charge-$discount_amount;
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;

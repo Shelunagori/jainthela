@@ -36,7 +36,7 @@
 						<tr>
 							<td><?= h($i++) ?></td>
 							<td>
-								<a class="view_order" order_id="<?php echo @$ItemLedger->order->id; ?>" ><?= h(@$ItemLedger->order->order_no) ?></a>
+								<?php echo $this->Html->link(@$ItemLedger->order->order_no,['controller'=>'Orders','action' => 'view', $ItemLedger->order->id, 'print'],['target'=>'_blank']); ?>
 							</td>
 							<td><?= h(@$ItemLedger->quantity).$ItemLedger->item->unit->unit_name;
 							@$total+=@$ItemLedger->quantity; 

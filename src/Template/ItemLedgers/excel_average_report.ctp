@@ -93,10 +93,9 @@
 							$total_out_quantity=$total_sales_quantity+$totalwasteWarehouse+$totalWeightVariation;
 							$closing_balance_quantity=round(($total_in_quantity-$total_out_quantity), 2);
 							 
-							$total_in_amount=$totalPurchaseAmount+$total_opening_balance_amount;
-							$total_out_amount=$total_waste_amount+$total_weight_variation_amount+$total_sales_amount;
-							$closing_balance_amount=round(($total_in_amount-$total_out_amount), 2);
-							
+							//$total_in_amount=$totalPurchaseAmount+$total_opening_balance_amount;
+							//$total_out_amount=$total_waste_amount+$total_weight_variation_amount+$total_sales_amount;
+							$closing_balance_amount=round(($closing_balance_quantity*$per_item_average_amount), 2);
 							$grand_total_opening_bal=$grand_total_opening_bal + $opening_balance_amt;
 							$grand_total_purchase_bal=$grand_total_purchase_bal+$totalPurchaseAmount;
 							$grand_total_sale_bal=$grand_total_sale_bal+$total_sales_amount;
