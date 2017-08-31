@@ -399,9 +399,13 @@ class OrdersController extends AppController
 		$amount_from_jain_cash=$Orders->amount_from_jain_cash;
 		$amount_from_promo_code=$Orders->amount_from_promo_code;
 		$online_amount=$Orders->online_amount;
+		
 		$paid_amount=$amount_from_wallet+$amount_from_jain_cash+$amount_from_promo_code+$online_amount;
 		
 		$total_amount=$final_amount;
+		$discount_percent=$Orders->discount_percent;
+		$discount_amount=$total_amount*($discount_percent/100);
+		
 		if($total_amount<100){
 			$delivery_charge=50;
 		}else{
@@ -410,7 +414,7 @@ class OrdersController extends AppController
 		$pay_amount=$Orders->pay_amount;
 		$final_amount;
 		
-			$grand_total=$total_amount+$delivery_charge;
+			$grand_total=$total_amount+$delivery_charge-$discount_amount;
 			$remaining_amount=$grand_total-$paid_amount;
 			$remaining_paid_amount=$paid_amount-$grand_total;
  			$this->Orders->Wallets->deleteAll(['return_order_id'=>$order_id]);
