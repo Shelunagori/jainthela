@@ -1,33 +1,20 @@
-<?php $url_excel="/?".$url; ?>
-<style>
-.table>thead>tr>th{
-	font-size:12px !important;
-}
-.YES{
-	color:green;
-	
-}
-</style>
-<?php $url_excel="/?".$url; ?>
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light bordered">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="font-purple-intense"></i>
-					<span class="caption-subject font-purple-intense ">
-						<i class="fa fa-book"></i> Cash Back Winners</span>
-				</div>
-				<div class="actions"> 
-					<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/CashBacks/Export-Winner/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
-					
-					<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;margin-right: 5px;">
-					
-				</div>		
-			</div>
-			<a href="sendNotification" class="btn green btn-md pull-left" >Send SMS / Notification to Winners</a>
-			<div class="portlet-body">
-				<table class="table table-bordered table-condensed" id="main_tble">
+<?php 
+
+	$date= date("d-m-Y"); 
+	$time=date('h:i:a',time());
+
+	$filename="Cash_back_winner_".$date.'_'.$time;
+
+	header ("Expires: 0");
+	header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+	header ("Cache-Control: no-cache, must-revalidate");
+	header ("Pragma: no-cache");
+	header ("Content-type: application/vnd.ms-excel");
+	header ("Content-Disposition: attachment; filename=".$filename.".xls");
+	header ("Content-Description: Generated Report" );
+
+?>		
+				<table border="1">
 					<thead>
 						<tr>
 							<th>Sr No</th>
@@ -75,27 +62,4 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-			</div>
-		</div>
-	</div>
-</div>
-			
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<script>
-$(document).ready(function() {
-	var $rows = $('#main_tble tbody tr');
-	$('#search3').on('keyup',function() {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-		var v = $(this).val();
-		if(v){ 
-			$rows.show().filter(function() {
-				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();	
-				return !~text.indexOf(val);
-			}).hide();
-		}else{
-			$rows.show();
-		}
-	});
-});
-</script>				 
 				

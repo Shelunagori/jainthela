@@ -36,7 +36,7 @@ else
 echo $this->Html->link('Close',array(),['escape'=>false,'class'=>'btn  red hidden-print fa fa-remove pull-right','onclick'=>'javascript:window.close();']);
 
 ?>
-<div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">ORDERS</div>
+<div align="center" style="color:#F98630; font-size: 16px;font-weight: bold;">INVOICE</div>
 	<div style="border:solid 2px #F98630; margin-bottom:0px;"></div>
 		<table width="100%">	
 			

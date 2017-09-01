@@ -193,17 +193,15 @@ class CashBacksController extends AppController
 		}
         }
 		
+		$this->set(compact( 'url', 'fetch_cashback_win_details'));
 		
-		$this->set(compact('url'));
-		$this->set('fetch_cashback_win_details', $fetch_cashback_win_details);
         $this->set('_serialize', ['fetch_cashback_win_details']); 
     }
 	
-	public function exportExcelCb()
+	public function exportWinner()
 	{
-		$this->viewBuilder()->layout('');
-		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
-		$fetch_cashback_win_details = $this->CashBacks->find()->order(['created_on' => 'DESC'])
+		$this->viewBuilder()->layout(''); 
+		$fetch_cashback_win_details = $this->CashBacks->find()->order(['CashBacks.created_on' => 'DESC'])
 										->where(['won'=>'yes', 'flag'=>2])
 										->contain(['Customers'])
 										->autoFields(true);
@@ -222,9 +220,9 @@ class CashBacksController extends AppController
 		@$data->customer->name=$fetch_customer_name->name;
 		}
         }
-		//pr($fetch_cashback_win_details->toArray());
-		//exit;
-		$this->set('fetch_cashback_win_details', $fetch_cashback_win_details);
+		
+		$this->set(compact( 'url', 'fetch_cashback_win_details'));
+		
         $this->set('_serialize', ['fetch_cashback_win_details']); 
 	}	
     /**
