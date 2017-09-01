@@ -121,6 +121,35 @@ class ItemLedgersController extends AppController
         $this->set('_serialize', ['itemLedger']);
     }
 
+	public function amountReceivable($driver_id=null)
+    {
+		$driver_id=$driver_id;
+		$jain_thela_admin_id=$this->Auth->User('jain_thela_admin_id');
+		$stock_return_vouchers=$this->ItemLedgers->StockReturnVouchers->find()->where(['StockReturnVouchers.jain_thela_admin_id' => $jain_thela_admin_id,'StockReturnVouchers.driver_id'=> $driver_id])->order(['StockReturnVouchers.id' => 'DESC'])->first();
+		
+		$query = $this->ItemLedgers->find();
+		
+		$totalOutCaseAmount = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out','walkin_sales_id']),
+				$query->newExpr()->add(['amount']),
+				'integer'
+			);
+		$query->select([
+			'total_receive_amount' => $query->func()->sum($totalOutCaseAmount)
+		])
+		->where(['ItemLedgers.driver_id' => $driver_id,'ItemLedgers.jain_thela_admin_id' => $jain_thela_admin_id,'ItemLedgers.created_on >'=>$stock_return_vouchers->created_on_date])
+		->group('driver_id');
+        $itemLedgers = ($query->first());
+		if($itemLedgers->total_receive_amount){
+		$receivable_amount=$itemLedgers->total_receive_amount;
+		} else {
+		$receivable_amount=0;	
+		}
+		$this->set(compact('stock_return_voucher','itemLedgers','receivable_amount'));
+        $this->set('_serialize', ['itemLedgers','stock_return_voucher']);
+	}
+	
 	public function stockReturn()
     {
 		$this->viewBuilder()->layout('index_layout'); 
@@ -130,9 +159,13 @@ class ItemLedgersController extends AppController
 			$item_ledgers=$this->request->getData('item_ledgers');
 			 
 			$driver_id=$this->request->data['driver_id'];
-			$warehouse_id=$this->request->data['warehouse_id'];			
+			$warehouse_id=$this->request->data['warehouse_id'];	
+			$amount_received=$this->request->data['amount_received'];	
+			$amount_receivable=$this->request->data['amount_receivable'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
+			$created_on_date=date('Y-m-d h:i:s'); 
 			$i=0;
+			
 			foreach($item_ledgers as $item_ledger){
 				$item_ledger=(object)$item_ledger;
 				$item_ledger_quantity=$item_ledger->quantity;
@@ -184,8 +217,19 @@ class ItemLedgersController extends AppController
 							])
 					->execute();
 				}
+				
 			}
-			
+			$query1 = $this->ItemLedgers->StockReturnVouchers->query();
+					$query1->insert(['driver_id','created_on_date','amount_receivable', 'amount_received', 'jain_thela_admin_id'])
+							->values([
+							'driver_id' => $driver_id,
+							'created_on_date' => $created_on_date,
+							'amount_receivable' => $amount_receivable,
+							'amount_received' => $amount_received,
+							'jain_thela_admin_id' => $jain_thela_admin_id
+							
+							])
+					->execute();
 			$this->Flash->success(__('The item ledger has been saved.'));
 			return $this->redirect(['action' => 'stock_return']);         
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));

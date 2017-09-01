@@ -17,7 +17,7 @@
 								<div class="col-md-12">
 									<div class="col-md-4">
 										<label class="col-md-6 control-label">Drivers <span class="required" 	aria-required="true">*</span></label>
-										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'chng form-control input-sm select2me','empty' => 'Select','label'=>false)) ?>
+										<?= $this->Form->input('driver_id',array('options' => $drivers,'class'=>'chng form-control input-sm select2me driver_id','empty' => 'Select','label'=>false)) ?>
 									</div>
 									<div class="col-md-4">
 											<label class="col-md-6 control-label">Warehouses <span class="required" 	aria-required="true">*</span></label>
@@ -35,7 +35,14 @@
 									</div>
 									
 								 </div>
-								 <div class="col-md-12"><br></div>
+								 <div class="col-md-12">
+									<div id="result_ajax">
+						
+									</div>
+								</div>
+								<div class="col-md-12">
+									</br></br>
+								</div>
 							</div>
 						<!-- END FORM-->
 						<div id="data">
@@ -202,6 +209,18 @@ $(document).ready(function() {
         return false;
     }
     });
+	$('.driver_id').on("change",function() {
+		var driver_id=$(this).val();
+		
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'amount_receivable']); ?>";
+		url=url+'/'+driver_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	});
 	
 	$('.go').die().live('click',function() 
 	{ 

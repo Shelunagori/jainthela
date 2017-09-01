@@ -126,8 +126,8 @@
 									}?>
 								</td>
 								<td align="right">
-									<?= $this->Number->precision($order->total_amount,2); 
-									$amount_total+=$order->total_amount;?>
+									<?= $this->Number->precision($order->grand_total,2); 
+									$amount_total+=$order->grand_total;?>
 								</td>
 							</tr>
 							<?php }}
@@ -157,8 +157,8 @@
 										}?>
 									</td>
 									<td align="right">
-										<?= $this->Number->precision($order->total_amount,2); 
-										$amount_total+=$order->total_amount;?>
+										<?= $this->Number->precision($order->grand_total,2); 
+										$amount_total+=$order->grand_total;?>
 									</td>
 								</tr>
 							 <?php }}
@@ -195,8 +195,8 @@
 											echo "BulkOrder";
 										}?>
 										</td>
-										<td align="right"><?= $this->Number->precision($order->total_amount,2); 
-										$amount_total+=$order->total_amount;
+										<td align="right"><?= $this->Number->precision($order->grand_total,2); 
+										$amount_total+=$order->grand_total;
 										?></td>
 									</tr><?php }} ?>
 									<tr>
