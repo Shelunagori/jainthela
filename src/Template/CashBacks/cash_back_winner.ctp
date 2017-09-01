@@ -25,7 +25,7 @@
 					
 				</div>		
 			</div>
-			<a href="sendNotification" class="btn green btn-md pull-left" >Send SMS / Notification to Winners</a>
+			<?php echo $this->Html->link('Send SMS / Notification to Winners',['controller'=>'CashBacks','action' => 'Send-Notification'],['escape'=>false,'class'=>'btn green btn-md pull-left']); ?>
 			<div class="portlet-body">
 				<table class="table table-bordered table-condensed" id="main_tble">
 					<thead>
@@ -44,7 +44,7 @@
 					<tbody>
 						
 						<?php
-						$num_rows=1; $i=1;
+						$num_rows=1; $i=1;$total_amt=0;
 						foreach($fetch_cashback_win_details as $cb){
 						$num_rows++;
 						}
@@ -55,7 +55,7 @@
 						$customer_name=$cb->customer->name;
 						$customer_mobile=$cb->customer->mobile;
 						$firstCharacter = substr($customer_name, 0, 1);
-						
+						$total_amt+=$cb->amount;
 						?>
 						<tr>
 							<td><?php echo $i++;?></td>
@@ -73,6 +73,9 @@
 							
 						</tr>
 						<?php endforeach; ?>
+						<tr>
+							<td colspan="5" align="right"><b> Total</b></td><td><b><?php echo $this->Number->format($total_amt,['places'=>2]); ?></b></td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

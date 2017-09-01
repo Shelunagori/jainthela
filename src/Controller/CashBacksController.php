@@ -88,7 +88,7 @@ class CashBacksController extends AppController
 	
 	public function sendNotification()
     {
-	$fetch_cashback_win_details = $this->CashBacks->find()->order(['created_on' => 'DESC'])
+	$fetch_cashback_win_details = $this->CashBacks->find()->order(['CashBacks.created_on' => 'DESC'])
 		->where(['won'=>'yes', 'flag'=>2, 'sms_sent'=>'no','claim'=>'no'])
 		->contain(['Customers'])
 		->autoFields(true);
