@@ -6,6 +6,7 @@ class OrdersController extends AppController
 {
 	public function updateOnlinePaymentStatus()
     {
+		
 		$order_id=$this->request->query('order_id');
 		$online_payment_status=$this->request->query('online_payment_status');
 
@@ -14,8 +15,7 @@ class OrdersController extends AppController
 						->set(['online_payment_status' => $online_payment_status])
 						->where(['transaction_order_no' => $order_id])
 						->execute();
-						
-		exit;				
+					exit;
     }
 	
     public function trackOrder()
@@ -173,8 +173,9 @@ class OrdersController extends AppController
 		if($is_login=='warehouse')
 		{
  			    $odrer_datas=$this->Orders->get($order_id);
-				$o_date=$odrer_datas->otder_date;
-				$delivery_date=date('Y-m-d');
+				$o_date=$odrer_datas->order_date;
+				$discount_percent=$odrer_datas->discount_percent;
+				$delivery_date=date('Y-m-d 00:00:00');
 				$current_time=date('h:i:s:a');
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
@@ -197,6 +198,13 @@ class OrdersController extends AppController
 					  $is_combo=$item_type->is_combo;
 					  $combo_offer_id=$item_type->combo_offer_id;
 					  $combo_actual_quantity=$deliver_data->actual_quantity;
+					  $rate=$deliver_data->rate;
+					  $amount=$deliver_data->amount;
+					  
+					  $discount_amount=round(($amount*$discount_percent)/100);
+					  $actual_amount=($amount-$discount_amount);
+					  $actual_rate=$actual_amount/$combo_actual_quantity;
+					  
 				  if($is_combo=='no')
 				  {
 					  if($is_virtual=='yes')
@@ -224,8 +232,8 @@ class OrdersController extends AppController
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'warehouse_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							'rate' => $deliver_data->rate,
-							'amount' => $deliver_data->amount,
+							'rate' => $actual_rate,
+							'amount' => $actual_amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -295,7 +303,10 @@ class OrdersController extends AppController
 		}
 		else if($is_login=='driver')
 		{
-			        $delivery_date=date('Y-m-d');
+					$odrer_datas=$this->Orders->get($order_id);
+					$o_date=$odrer_datas->order_date;
+					$discount_percent=$odrer_datas->discount_percent;
+			        $delivery_date=date('Y-m-d 00:00:00');
 					$current_time=date('h:i:s:a');
 			        $order_delivered = $this->Orders->query();
 					$result = $order_delivered->update()
@@ -311,12 +322,19 @@ class OrdersController extends AppController
 					{
 					 $item_type=$this->Orders->Items->find()
 					->where(['Items.id' => $deliver_data->item_id])->first();
-				      $is_virtual=$item_type->is_virtual;
-					  $is_id=$item_type->id;
-					  $parent_item_id=$item_type->parent_item_id;
-					  $is_combo=$item_type->is_combo;
-					  $combo_offer_id=$item_type->combo_offer_id;
-					   $combo_actual_quantity=$deliver_data->actual_quantity;
+						$is_virtual=$item_type->is_virtual;
+						$is_id=$item_type->id;
+						$parent_item_id=$item_type->parent_item_id;
+						$is_combo=$item_type->is_combo;
+						$combo_offer_id=$item_type->combo_offer_id;
+						$combo_actual_quantity=$deliver_data->actual_quantity;
+						$rate=$deliver_data->rate;
+						$amount=$deliver_data->amount;
+
+						$discount_amount=round(($amount*$discount_percent)/100);
+						$actual_amount=($amount-$discount_amount);
+						$actual_rate=$actual_amount/$combo_actual_quantity;
+					  
 				  if($is_combo=='no')
 				  {
 					  if($is_virtual=='yes')
@@ -344,8 +362,8 @@ class OrdersController extends AppController
 							'jain_thela_admin_id' => $jain_thela_admin_id,
 							'driver_id' => $driver_warehouse_id,
 							'item_id' => $is_id,
-							'rate' => $deliver_data->rate,
-							'amount' => $deliver_data->amount,
+							'rate' => $actual_rate,
+							'amount' => $actual_amount,
 							'quantity' => $deliver_data->actual_quantity,
 							'inventory_transfer' => 'no',
 							'transaction_date'=>$transaction_date,
@@ -503,7 +521,8 @@ curl_close($ch);
 		$warehouse_id=1;
 		$order = $this->Orders->newEntity();
 		$curent_date=date('Y-m-d');
-		$order_date=date('Y-m-d H:i:s');
+		$order_date=date('Y-m-d 00:00:00');
+		$order_time=date('h:i:s:a');
 		
 		$order_no_counts=$this->Orders->find()->where(['transaction_order_no' => $order_no, 'status' => 'In Process'])->count();
 		if(empty($order_no_counts))
@@ -543,10 +562,10 @@ curl_close($ch);
 				$end = "12";
 	if($current_ampm=='pm' &&  $current_timess > $start  && $current_timess < $end || $counts>0) 
 				{
-				    $delivery_date=date('Y-m-d', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
+				    $delivery_date=date('Y-m-d 00:00:00', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
 				}
     else{
-				$delivery_date=date('Y-m-d');//delivery_date///
+				$delivery_date=date('Y-m-d 00:00:00');//delivery_date///
 				}
 		
 			///////////////////////GET LAST ORDER NO/////////////////
@@ -608,6 +627,7 @@ curl_close($ch);
 			$order->delivery_time=$delivery_time;
 			$order->delivery_time_id=$delivery_time_id;
 			$order->order_date=$order_date;
+			$order->order_time=date('h:i:s:a');
 			$this->Orders->save($order);
 			
 			
@@ -789,6 +809,7 @@ curl_close($ch);
         $this->set(compact('status', 'error','result'));
         $this->set('_serialize', ['status', 'error', 'result']);
 		}else{
+			
 		$get_data = $this->Orders->find()
 		->order(['id'=>'DESC'])
 		->first();
