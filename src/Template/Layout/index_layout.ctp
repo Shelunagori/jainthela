@@ -225,6 +225,9 @@
 								<li>
 									<?php echo $this->Html->link('<i class="fa fa-trophy"></i> First Order Discount Report','/Orders/newCustomer',['escape'=>false]) ?>
 								</li>
+								<li>
+									<?php echo $this->Html->link('<i class="fa fa-database"></i> Stock Return Voucher Report','/StockReturnVouchers/',['escape'=>false]) ?>
+								</li>
 							</ul>
 						</li>
 					</ul>

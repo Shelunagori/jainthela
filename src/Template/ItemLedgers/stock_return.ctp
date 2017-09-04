@@ -36,10 +36,12 @@
 									
 								 </div>
 								 <div class="col-md-12">
-									<div id="result_ajax">
+									<div id="result_ajax" style="display:none;">
 						
 									</div>
+									
 								</div>
+								
 								<div class="col-md-12">
 									</br></br>
 								</div>
@@ -211,7 +213,8 @@ $(document).ready(function() {
     });
 	$('.driver_id').on("change",function() {
 		var driver_id=$(this).val();
-		
+		$("#result_ajax").hide();
+		$('#data').hide();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'ItemLedgers','action'=>'amount_receivable']); ?>";
 		url=url+'/'+driver_id,
@@ -238,7 +241,9 @@ $(document).ready(function() {
 			dataType:'text',
 			success: function(data)   // A function to be called if request succeeds
 			{ 
+				$("#result_ajax").show();
 				$('#data').html(data);
+				$('#data').show();
 				$("#main_table tbody#main_tbody tr.main_tr").each(function(){ 
 				 var remaning = $(this).find("td:nth-child(3) .remaining").val();
 				 var quantity = $(this).find("td:nth-child(4) .quantity").val();

@@ -144,8 +144,7 @@
 							<td><?= ++$page_no ?></td>
 							<td>
 							<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
-						
-							<!-- <a href="view/<?php echo $order->id; ?>/print" target='_blank'><?= h($order->order_no) ?></a> --> </td>
+						</td>
 							<td>
 							<?php
 								$customer_name=$order->customer->name;

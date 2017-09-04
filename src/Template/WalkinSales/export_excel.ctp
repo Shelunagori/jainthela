@@ -17,15 +17,43 @@
 
 ?>		
 				<table border="1">
+				<tbody>
+						<tr>
+							<td width="2%">
+								<?php echo $this->Form->input('warehouse', ['empty'=>'--Warehouses--','options' => $Warehouses,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$warehouse_id) ]); ?>
+							</td>
+							<td width="2%">
+								<?php echo $this->Form->input('drivers', ['empty'=>'--Drivers--','options' => $Drivers,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category','value'=> h(@$drivers_id) ]); ?>
+							</td>
+							<td width="2%">
+								<?php echo $this->Form->input('type', ['empty'=>'--Type--','options' => $types,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Type','value'=> h(@$type) ]); ?>
+							</td>
+							<td width="5%">
+							<?php if(!empty($from_date)){ ?>
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($from_date));  ?>"  data-date-format="dd-mm-yyyy">
+							<?php }else{ ?>
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy">
+							<?php } ?>	
+							</td>	
+							<td width="5%">
+							<?php if(!empty($to_date)){ ?>
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($to_date));  ?>"  data-date-format="dd-mm-yyyy" >
+							<?php }else{ ?>
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y');  ?>"  data-date-format="dd-mm-yyyy" >
+							<?php } ?>	
+							</td>
+							<td width="10%">
+								<button type="submit" class="btn btn-success btn-sm"><i class="fa fa-filter"></i> Filter</button>
+							</td>
+							<td width="2%" align="right">
+								<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 200px;">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+				<table class="table table-condensed table-hover table-bordered" id="main_tble">
 					<thead>
-						<tr>
-							<td colspan="7" align="center">Invoice Report From <?php echo $from_date; ?> TO <?php echo $to_date; ?></td>
-							
-						</tr>
-						<tr>
-							<td>Type :</td>
-							<td><?php echo $type; ?></td>
-						</tr>
 						<tr> 
 							<th>Sr</th>
 							<th style="text-align:center;">Warehouse</th>
@@ -39,7 +67,7 @@
 					<tbody>
 						<?php $amount_total=0; $i=0;
 							if(@$type=='Walkin'){
-								foreach ($walkinSales as $walkinSale){  ?>
+								foreach ($walkinSales as $walkinSale){ ?>
 						<tr>
 							<td>
 								<?= h(++$i) ?>
@@ -51,7 +79,7 @@
 								<?php if(!empty(h(@$walkinSale->driver_id))){echo @$walkinSale->driver->name ;} else { echo "-"; }?>
 							</td>
 							<td align="center">
-								<?= h(@$walkinSale->order_no) ?>
+								<a class="view_walk" order_id="<?php echo @$walkinSale->id; ?>" ><?= h(@$walkinSale->order_no) ?></a>
 							</td>
 							<td align="center">
 								<?= h(@$walkinSale->created_on) ?>
@@ -75,7 +103,8 @@
 									<?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?>
 								</td>
 								<td align="center">
-									<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+									<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
+						
 								</td>
 								<td align="center">
 									<?= h(@$order->order_date) ?>
@@ -86,8 +115,8 @@
 									}?>
 								</td>
 								<td align="right">
-									<?= $this->Number->precision($order->total_amount,2); 
-									$amount_total+=$order->total_amount;?>
+									<?= $this->Number->precision($order->grand_total,2); 
+									$amount_total+=$order->grand_total;?>
 								</td>
 							</tr>
 							<?php }}
@@ -104,7 +133,7 @@
 										<?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?>
 									</td>
 									<td align="center">
-										<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+										<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
 									</td>
 									<td align="center">
 										<?= h(@$order->order_date) ?>
@@ -117,13 +146,13 @@
 										}?>
 									</td>
 									<td align="right">
-										<?= $this->Number->precision($order->total_amount,2); 
-										$amount_total+=$order->total_amount;?>
+										<?= $this->Number->precision($order->grand_total,2); 
+										$amount_total+=$order->grand_total;?>
 									</td>
 								</tr>
 							 <?php }}
-									else{ 
-										foreach ($walkinSales as $walkinSale){  ?>
+									else{
+										foreach ($walkinSales as $walkinSale){ ?>
 									<tr>
 										<td><?= h(++$i) ?></td>
 										<td align="center"><?php if(!empty(h(@$walkinSale->warehouse_id))){echo @$walkinSale->warehouse->name ;} else { echo "-"; }?></td>
@@ -145,7 +174,7 @@
 										<td align="center"><?php if(!empty(h(@$order->warehouse_id))){echo $order->warehouse->name ;} else { echo "-"; }?></td>
 										<td align="center"><?php if(!empty(h(@$order->driver_id))){echo $order->driver->name ;} else { echo "-"; }?></td>
 										<td align="center">
-											<a class="view_order" order_id="<?php echo @$order->id; ?>" ><?= h(@$order->order_no) ?></a>
+											<?php echo $this->Html->link($order->order_no,['controller'=>'Orders','action' => 'view', $order->id, 'print'],['target'=>'_blank']); ?>
 										</td>
 										<td align="center"><?= h(@$order->order_date) ?></td>
 										<td align="center">
@@ -155,8 +184,8 @@
 											echo "BulkOrder";
 										}?>
 										</td>
-										<td align="right"><?= $this->Number->precision($order->total_amount,2); 
-										$amount_total+=$order->total_amount;
+										<td align="right"><?= $this->Number->precision($order->grand_total,2); 
+										$amount_total+=$order->grand_total;
 										?></td>
 									</tr><?php }} ?>
 									<tr>
@@ -164,5 +193,5 @@
 										<td align="right"><b><?php echo $this->Number->format($amount_total,['places'=>2]); ?></b></td>
 									<tr>
 								</tbody>
-				</table>
+							</table>
 				

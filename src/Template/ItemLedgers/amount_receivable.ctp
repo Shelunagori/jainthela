@@ -7,6 +7,6 @@
 		</div>
 		<div class="col-md-4">
 				<label class="col-md-6 control-label">Amount Received <span class="required" 	aria-required="true">*</span></label>
-				<?= $this->Form->input('amount_received',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?> 
+				<?= $this->Form->input('amount_received',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value'=>0]); ?> 
 		</div>
 </div>

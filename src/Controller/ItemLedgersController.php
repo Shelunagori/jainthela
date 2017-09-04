@@ -128,7 +128,7 @@ class ItemLedgersController extends AppController
 		$stock_return_vouchers=$this->ItemLedgers->StockReturnVouchers->find()->where(['StockReturnVouchers.jain_thela_admin_id' => $jain_thela_admin_id,'StockReturnVouchers.driver_id'=> $driver_id])->order(['StockReturnVouchers.id' => 'DESC'])->first();
 		
 		$query = $this->ItemLedgers->find();
-		
+		$created_on_date=date('Y-m-d h:i:s', strtotime($stock_return_vouchers->created_on_date)); 
 		$totalOutCaseAmount = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'out','walkin_sales_id']),
@@ -163,8 +163,20 @@ class ItemLedgersController extends AppController
 			$amount_received=$this->request->data['amount_received'];	
 			$amount_receivable=$this->request->data['amount_receivable'];
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date'])); 
-			$created_on_date=date('Y-m-d h:i:s'); 
+			$created_on_date=date('Y-m-d H:i:s'); 
 			$i=0;
+			$query1 = 	$this->ItemLedgers->StockReturnVouchers->query();
+			$stock_return_voucher=	$query1->insert(['driver_id','created_on_date',	'amount_receivable', 'amount_received', 'jain_thela_admin_id'])
+							->values([
+							'driver_id' => $driver_id,
+							'created_on_date' => $created_on_date,
+							'amount_receivable' => $amount_receivable,
+							'amount_received' => $amount_received,
+							'jain_thela_admin_id' => $jain_thela_admin_id
+							
+						])
+					->execute();
+			$stock_return_voucher_id =  $stock_return_voucher->lastInsertId('StockReturnVouchers');
 			
 			foreach($item_ledgers as $item_ledger){
 				$item_ledger=(object)$item_ledger;
@@ -188,7 +200,7 @@ class ItemLedgersController extends AppController
 				->execute();	
 				
 				$query = $this->ItemLedgers->query();
-				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id', 'inventory_transfer'])
+				$query->insert(['driver_id', 'warehouse_id', 'transaction_date', 'item_id', 'quantity','status', 'jain_thela_admin_id', 'inventory_transfer','stock_return_voucher_id'])
 						->values([
 						'driver_id' => $driver_id,
 						'warehouse_id' => 0,
@@ -197,7 +209,8 @@ class ItemLedgersController extends AppController
 						'quantity' => $total_quantity,
 						'status' => 'out',
 						'jain_thela_admin_id' => $jain_thela_admin_id,
-						'inventory_transfer' => 'yes'
+						'inventory_transfer' => 'yes',
+						'stock_return_voucher_id' => $stock_return_voucher_id
 						])
 				->execute();
 				if($waste>0){
@@ -219,17 +232,7 @@ class ItemLedgersController extends AppController
 				}
 				
 			}
-			$query1 = $this->ItemLedgers->StockReturnVouchers->query();
-					$query1->insert(['driver_id','created_on_date','amount_receivable', 'amount_received', 'jain_thela_admin_id'])
-							->values([
-							'driver_id' => $driver_id,
-							'created_on_date' => $created_on_date,
-							'amount_receivable' => $amount_receivable,
-							'amount_received' => $amount_received,
-							'jain_thela_admin_id' => $jain_thela_admin_id
-							
-							])
-					->execute();
+			
 			$this->Flash->success(__('The item ledger has been saved.'));
 			return $this->redirect(['action' => 'stock_return']);         
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
