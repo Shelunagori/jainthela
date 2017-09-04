@@ -40,7 +40,7 @@ class StockReturnVouchersController extends AppController
 			$where['StockReturnVouchers.driver_id']=$driver_id;
 		}
  		$where['StockReturnVouchers.jain_thela_admin_id'] = $jain_thela_admin_id;
-       
+		$where['StockReturnVouchers.amount_received <']=0;
 	   $this->paginate = [
             'contain' => ['Drivers']
         ];
@@ -68,7 +68,7 @@ class StockReturnVouchersController extends AppController
 			$where['StockReturnVouchers.driver_id']=$driver_id;
 		}
  		$where['StockReturnVouchers.jain_thela_admin_id'] = $jain_thela_admin_id;
-       
+		$where['StockReturnVouchers.amount_received <']=0;
 	   $this->paginate = [
             'contain' => ['Drivers']
         ];
