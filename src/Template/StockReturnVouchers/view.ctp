@@ -41,7 +41,7 @@ margin-bottom: 0;
 				<tr style="background-color:#fff; color:#000;">
 					<td align="left" colspan="6">
 						<b>
-							Voucher No.: <?= h('#'.str_pad(number_format($stockReturnVoucher->id),4, '0', STR_PAD_LEFT)) ?>
+							Voucher No.: <?= h('#'.str_pad(number_format($stockReturnVoucher->id),6, '0', STR_PAD_LEFT)) ?>
 						</b>
 					</td>
 				</tr>
@@ -86,7 +86,6 @@ margin-bottom: 0;
 				
 				 <?php foreach ($stockReturnVoucher->item_ledgers as $itemLedgers): 
 					@$i++;
-					$image=$itemLedgers->item->image;
 					$item_name=$itemLedgers->item->name;
 					$show_quantity=$itemLedgers->quantity.' '.$itemLedgers->item->unit->unit_name;
 				?>	

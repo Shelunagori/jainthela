@@ -48,19 +48,18 @@
 					</thead>
 					<tbody>
 					
-            <?php @$sr_no =0; foreach ($stockReturnVouchers as $stockReturnVoucher): 
-			if($stockReturnVoucher->amount_received > 0){ ?>
+            <?php @$sr_no =0; foreach ($stockReturnVouchers as $stockReturnVoucher): ?>
             <tr>
                 <td><?= $this->Number->format(++$sr_no) ?></td>
 				
-				<td><?php echo $this->Html->link('#'.str_pad(number_format($stockReturnVoucher->id),6, '0', STR_PAD_LEFT),['controller'=>'StockReturnVouchers','action' => 'view', $stockReturnVoucher->id],['target'=>'_blank']); ?></td>
+				<td><?php echo $this->Html->link('#'.str_pad(number_format($stockReturnVoucher->id),4, '0', STR_PAD_LEFT),['controller'=>'StockReturnVouchers','action' => 'view', $stockReturnVoucher->id],['target'=>'_blank']); ?></td>
                  <td><?= h($stockReturnVoucher->created_on_date) ?></td>
 				 <td><?= h($stockReturnVoucher->driver->name) ?></td>
                 <td align="right"><?= $this->Number->format($stockReturnVoucher->amount_receivable) ?></td>
                 <td align="right"><?= $this->Number->format($stockReturnVoucher->amount_received) ?></td>
 				
             </tr>
-            <?php  } endforeach; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">
