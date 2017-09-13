@@ -24,7 +24,9 @@ class CustomersController extends AppController
 					$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 					$sms_sender='JAINTE';
 					$sms=str_replace(' ', '+', $sms);
-					file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+					/* file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.''); */
+					
+					file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile_no.'&text='.$sms.'&route=7');
 					
 					$customerDetails = $this->Customers->get($customerDetails->id);
 					$customerDetails->otp=$random;
@@ -42,7 +44,9 @@ class CustomersController extends AppController
 						$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 						$sms_sender='JAINTE';
 						$sms=str_replace(' ', '+', $sms);
-						file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+						/* file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.''); */
+						
+						file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile_no.'&text='.$sms.'&route=7');
 						
 						$customerDetails = $this->Customers->get($customerDetails->id);
 						$customerDetails->otp=$random;
@@ -59,7 +63,10 @@ class CustomersController extends AppController
 							$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 							$sms_sender='JAINTE';
 							$sms=str_replace(' ', '+', $sms);
-							file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+							/* file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.''); */
+							
+							file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile_no.'&text='.$sms.'&route=7');
+							
 							if($this->Customers->save($customer)){
 								$new_signup='yes';
 								$status=true;

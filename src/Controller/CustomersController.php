@@ -250,7 +250,10 @@ class CustomersController extends AppController
 		$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 		$sms_sender='JAINTE';
 		$sms2=str_replace(' ', '+', $sms);
-		echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms2.'');
+		/* echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms2.'');
+		 */
+		echo file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile_no.'&text='.$sms2.'&route=7');
+		
 		  
 		////////////////SMS//END////////////////////////////////
 					 
