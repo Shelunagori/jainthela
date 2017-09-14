@@ -343,7 +343,34 @@ class CartsController extends AppController
 		}
 		
 		$current_time =  date('h:i a');
-		$delivery_time_schedule=$this->Carts->DeliveryTimes->find()
+		if($current_time>='10:00 am' && $current_time<'01:00 pm' )
+		{
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->where(['DeliveryTimes.id !=' =>1])
+		->autoFields(true);	
+		}
+		else if($current_time>='01:00 pm' && $current_time<'04:00 pm' )
+		{
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->where(['DeliveryTimes.id' =>3])
+		->autoFields(true);	
+		}
+		else if($current_time>='04:00 pm' && $current_time<='07:00 pm' )
+		{
+		$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->where(['DeliveryTimes.id !=' =>3])
+		->autoFields(true);
+		}
+		else{
+			$delivery_time=$this->Carts->DeliveryTimes->find()
+		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
+		->autoFields(true);
+		}
+		
+		/* $delivery_time_schedule=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->where(['DeliveryTimes.time_from <' =>$current_time, 'DeliveryTimes.time_to >' =>$current_time])
 		->orWhere(['DeliveryTimes.time_from =' =>$current_time])
@@ -361,7 +388,7 @@ class CartsController extends AppController
 			$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->autoFields(true);
-		}
+		} */
 		
 				
 		$carts=$this->Carts->find()
