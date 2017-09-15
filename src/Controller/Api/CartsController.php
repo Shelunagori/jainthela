@@ -342,22 +342,26 @@ class CartsController extends AppController
 			$isNextDayOrder=false;
 		}
 		
-		$current_time =  date('h:i a');
-		if($current_time>='10:00 am' && $current_time<'01:00 pm' )
+		 $current_time =  strtotime(date('h:i a'));
+		 $first_time=strtotime('10:00 am');
+		 $last_time=strtotime('01:00 pm');
+		 $first_time1=strtotime('04:00 pm');
+		 $last_time1=strtotime('07:00 pm');
+		if(($current_time>=$first_time) && ($current_time<$last_time) )
 		{
 		$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->where(['DeliveryTimes.id !=' =>1])
 		->autoFields(true);	
 		}
-		else if($current_time>='01:00 pm' && $current_time<'04:00 pm' )
+		else if(($current_time>=$last_time) && ($current_time<$first_time1) )
 		{
 		$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->where(['DeliveryTimes.id' =>3])
 		->autoFields(true);	
 		}
-		else if($current_time>='04:00 pm' && $current_time<='07:00 pm' )
+		else if(($current_time>=$first_time1) && ($current_time<=$last_time1) )
 		{
 		$delivery_time=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
@@ -369,7 +373,6 @@ class CartsController extends AppController
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->autoFields(true);
 		}
-		
 		/* $delivery_time_schedule=$this->Carts->DeliveryTimes->find()
 		->select(['delivery_time' => $this->Carts->DeliveryTimes->find()->func()->concat(['time_from' => 'identifier','-','time_to' => 'identifier' ])])
 		->where(['DeliveryTimes.time_from <' =>$current_time, 'DeliveryTimes.time_to >' =>$current_time])
