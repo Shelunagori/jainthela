@@ -53,7 +53,8 @@ class GrnsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('GrnDetails', [
-            'foreignKey' => 'grn_id'
+            'foreignKey' => 'grn_id',
+			'saveStrategy' => 'replace'
         ]);
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'grn_id'

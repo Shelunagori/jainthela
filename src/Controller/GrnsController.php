@@ -138,6 +138,25 @@ class GrnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
             if ($this->Grns->save($grn)) {
+				$query = $this->Grns->ItemLedgers->query();
+				$query->delete()->where(['grn_id'=> $grn->id,'jain_thela_admin_id'=>$jain_thela_admin_id])->execute();
+				foreach($grn->grn_details as $grn_detail){
+					$query = $this->Grns->ItemLedgers->query();
+					$query->insert(['jain_thela_admin_id', 'driver_id', 'grn_id', 'item_id', 'warehouse_id', 'rate', 'status', 'quantity', 'transaction_date'])
+						->values([
+							'jain_thela_admin_id' => $jain_thela_admin_id,
+							'driver_id' => 0,
+							'grn_id' => $grn->id,
+							'item_id' => $grn_detail->item_id,
+							'warehouse_id' => $grn->warehouse_id,
+							'rate' => 0,
+							'status' => 'In',
+							'quantity' => $grn_detail->quantity,
+							'transaction_date' => $grn->transaction_date,
+							'rate_updated' => 'No'
+						]);
+					$query->execute();
+				}
                 $this->Flash->success(__('The grn has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
