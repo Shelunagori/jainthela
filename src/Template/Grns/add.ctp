@@ -169,7 +169,7 @@ $(document).ready(function() {
 		var i=0; 
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			$(this).find('td:nth-child(1)').html(i+1);
-			$(this).find("td:nth-child(2) select").select2().attr({name:"grn_details["+i+"][item_id]", id:"grn_details-"+i+"-item_id"}).rules('add', {
+			$(this).find("td:nth-child(2) select").attr({name:"grn_details["+i+"][item_id]", id:"grn_details-"+i+"-item_id"}).rules('add', {
 						required: true
 					});
 			$(this).find("td:nth-child(3) input").attr({name:"grn_details["+i+"][quantity]", id:"grn_details-"+i+"-quantity"}).rules('add', {

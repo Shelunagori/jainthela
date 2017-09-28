@@ -120,7 +120,7 @@ class TransferInventoryVouchersController extends AppController
 								->values([
 								'warehouse_id' => 0,
 								'transaction_date' => $inventory_created_on,
-								'item_id' => $transfer_item_id,
+								'item_id' => $item_id,
 								'quantity' => $waste_quantity,
 								'status' => '',
 								'jain_thela_admin_id' => $jain_thela_admin_id,
@@ -225,7 +225,7 @@ class TransferInventoryVouchersController extends AppController
 								->values([
 								'warehouse_id' => 0,
 								'transaction_date' => $inventory_created_on,
-								'item_id' => $transfer_item_id,
+								'item_id' => $item_id,
 								'quantity' => $waste_quantity,
 								'status' => '',
 								'jain_thela_admin_id' => $jain_thela_admin_id,
