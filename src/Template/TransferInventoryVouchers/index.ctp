@@ -31,7 +31,9 @@
 					</thead>
 					<tbody>
             <?php
-			$sr_no=0; foreach ($transferInventoryVouchers as $transferInventoryVoucher): ?>
+			$sr_no=0; foreach ($transferInventoryVouchers as $transferInventoryVoucher): 
+			$transferInventoryVoucher->cancel;
+			?>
             <tr>
                 <td><?= ++$sr_no ?></td>
 				<td><?= h('#'.str_pad($this->Number->format($transferInventoryVoucher->voucher_no), 4, '0', STR_PAD_LEFT)) ?></td>
@@ -40,7 +42,11 @@
                 
                 <td><?= h(date('d-M-Y', strtotime($transferInventoryVoucher->created_on))) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transferInventoryVoucher->id]) ?>
+                    <!-- <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transferInventoryVoucher->id]) ?> -->
+					<?php 
+					if($transferInventoryVoucher->cancel==0) { ?>
+					<?= $this->Form->postLink(__('Cancel'), ['action' => 'cancelBox', $transferInventoryVoucher->id], ['confirm' => __('Are you sure you want to Cancel Order {0}?', $transferInventoryVoucher->voucher_no)]) ?>
+					<?php } else { echo 'Cancelled'; } ?>
                 </td>
             </tr>
             <?php endforeach; ?>
