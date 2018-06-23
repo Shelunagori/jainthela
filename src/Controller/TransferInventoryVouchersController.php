@@ -275,4 +275,23 @@ class TransferInventoryVouchersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function cancelBox($id = null)
+    {
+		$transferInventoryVoucher = $this->TransferInventoryVouchers->get($id);
+		$query = $this->TransferInventoryVouchers->query();
+					$query->update()
+							->set(['cancel' => 1])
+							->where(['id' => $id])
+							->execute();
+							
+		if ($this->TransferInventoryVouchers->save($transferInventoryVoucher)) {
+						
+		$this->TransferInventoryVouchers->ItemLedgers->deleteAll(['transfer_inventory_voucher_id'=>$transferInventoryVoucher->id]);
+		$this->Flash->success(__('The transfer inventory has been Cancel.'));
+        } else {
+            $this->Flash->error(__('Thetransfer inventory could not be Cancel. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
+    }
 }
