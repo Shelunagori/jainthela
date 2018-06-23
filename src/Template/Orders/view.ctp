@@ -27,7 +27,7 @@ margin-bottom: 0;
 <?php
 if(empty($print))
 {
-	echo $this->Html->link('Print',['controller'=>'Orders','action'=>'view',$id,'print'],['escape'=>false,'class'=>'btn  blue hidden-print fa fa-print','target'=>'_blank']);
+	echo $this->Html->link('Print',['controller'=>'Orders','action'=>'view',$id,'print'],['escape'=>false,'class'=>'btn  blue hidden-print fa fa-print','target'=>'_blank',]);
 }
 else
 {
