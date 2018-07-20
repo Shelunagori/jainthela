@@ -565,10 +565,11 @@ curl_close($ch);
 				$end = "12";
 	if($current_ampm=='pm' &&  $current_timess > $start  && $current_timess < $end || $counts>0) 
 				{
-				    $delivery_date=date('Y-m-d 00:00:00', strtotime('+1 day', strtotime($curent_date)));//delivery_date///
+				    $delivery_date=date('Y-m-d 00:00:00', strtotime('+1 day', strtotime($curent_date)));//$delivery_date='2017-10-21 00:00:00';
 				}
     else{
 				$delivery_date=date('Y-m-d 00:00:00');//delivery_date///
+				//$delivery_date='2017-10-21 00:00:00';
 				}
 		
 			///////////////////////GET LAST ORDER NO/////////////////
@@ -734,6 +735,45 @@ if ($result001 === FALSE) {
 	die('FCM Send Error: ' . curl_error($ch));
 }
 curl_close($ch);
+
+
+
+ /* $msg1 = array
+	(
+	'message' 	=> 'Due to festival season, our delivery is closed. We will resume our delivery services from 21st october 2017. Kindly place your order according to that. Team Jainthela',
+	'image' 	=> '',
+	'button_text'	=> 'Happy Diwali!',
+    'link' => 'jainthela://home',	
+    'notification_id'	=> 1,
+	);
+
+$url1 = 'https://fcm.googleapis.com/fcm/send';
+$fields1 = array
+(
+	'registration_ids' 	=> array($device_token1),
+	'data'			=> $msg1
+);
+$headers1 = array
+(
+	'Authorization: key=' .$API_ACCESS_KEY,
+	'Content-Type: application/json'
+);
+
+  //echo json_encode($fields);
+  $ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url1);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields1));
+$result001 = curl_exec($ch);
+if ($result001 === FALSE) {
+	die('FCM Send Error: ' . curl_error($ch));
+}
+curl_close($ch);  
+ */
 					}  
 									
 					if($get_data->driver_id>0)
@@ -801,11 +841,18 @@ $result121 = curl_exec($ch );
 curl_close($ch);
 	}	 	$sms=str_replace(' ', '+', 'Thank You, Your order placed successfully. order no. is: '.$get_data->order_no.'. 
 				Your order will be delivered on '.$delivery_day_date.' at '.$get_data->delivery_time.'. Bill Amount '.$pay_amount.' Please note amount of order may vary depending on the actual quantity delivered to you.');
+				
+				/* $diwaliSms=str_replace(' ', '+', 'Due to festival season, our delivery is closed. We will resume our delivery services from 21st october 2017. Kindly place your order according to that. Team Jainthela'); */
+				
+				
 				$working_key='A7a76ea72525fc05bbe9963267b48dd96';
 				$sms_sender='JAINTE';
 				$sms=str_replace(' ', '+', $sms);
 			/* 	file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms.'');
 				file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.''); */
+				
+				 /* file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile.'&text='.$diwaliSms.'&route=7');  */
+				
 				
 				file_get_contents('http://103.39.134.40/api/mt/SendSMS?user=phppoetsit&password=9829041695&senderid='.$sms_sender.'&channel=Trans&DCS=0&flashsms=0&number='.$mobile.'&text='.$sms.'&route=7');
 				

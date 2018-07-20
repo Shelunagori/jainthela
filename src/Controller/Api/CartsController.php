@@ -123,6 +123,7 @@ class CartsController extends AppController
 		$item_id=$this->request->data('item_id');
 		$customer_id=$this->request->data('customer_id');
 		$tag=$this->request->data('tag');
+		
 		if($tag=='add'){
 			$items = $this->Carts->Items->get($item_id);
 			$item_add_quantity=$items->minimum_quantity_factor;
@@ -210,7 +211,7 @@ class CartsController extends AppController
 		else if($tag=='cart'){
 			
 			$cart_count = $this->Carts->find('All')->where(['Carts.customer_id'=>$customer_id])->count();
-
+			
 		}
 		$address_availablity = $this->Carts->CustomerAddresses->find()
 			->where(['CustomerAddresses.customer_id'=>$customer_id]);
@@ -238,6 +239,8 @@ class CartsController extends AppController
 				else{
 				$carts=$carts;
 				}
+	
+		
 		
             $this->loadModel('DeliveryCharges');
 			$delivery_charges=$this->DeliveryCharges->find();
@@ -342,7 +345,7 @@ class CartsController extends AppController
 			$isNextDayOrder=false;
 		}
 		
-		 $current_time =  strtotime(date('h:i a'));
+		$current_time =  strtotime(date('h:i a'));
 		 $first_time=strtotime('10:00 am');
 		 $last_time=strtotime('01:00 pm');
 		 $first_time1=strtotime('04:00 pm');

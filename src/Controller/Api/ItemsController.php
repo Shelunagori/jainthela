@@ -26,6 +26,9 @@ class ItemsController extends AppController
 					}]);
 					$items->select(['image_url' => $items->func()->concat(['http://app.jainthela.in'.$this->request->webroot.'img/item_images/','image' => 'identifier' ])])
                     ->autoFields(true);
+					
+				//pr($items->toArray());	exit;
+					
 			
 		foreach($items as $item){
 			if(!$item->cart){
